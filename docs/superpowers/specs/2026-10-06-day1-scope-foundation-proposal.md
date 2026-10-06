@@ -53,7 +53,7 @@ Printer, offline cash, marketplace finance, GPS, dan microservices tetap deferre
 
 ## Keputusan B — Usulan fondasi untuk retained flow
 
-Bagian ini adalah rekomendasi teknik untuk dibahas setelah target release dipilih. Tidak ada migration atau implementasi yang dibuat berdasarkan proposal ini.
+Bagian ini adalah proposal awal. [Rancangan fondasi terbaru](2026-10-06-foundation-design.md) menjadi dokumen review F01–F11, masih pending adopsi. Rancangan terbaru mengganti usulan F06 dengan deadline berdasarkan waktu pemrosesan sesudah lock, serta memperjelas F07 menjadi token stabil yang disimpan terenkripsi. Jika berbeda, gunakan rancangan terbaru sebagai rekomendasi pending. Tidak ada migration atau implementasi yang dibuat berdasarkan proposal ini.
 
 | ID | Usulan aturan | Alasan dan kaitan review |
 | --- | --- | --- |

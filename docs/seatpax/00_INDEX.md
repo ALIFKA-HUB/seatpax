@@ -73,6 +73,8 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 
 ## Local organization
 
+[Foundation design for review](../superpowers/specs/2026-10-06-foundation-design.md) refines the retained-flow contracts. It is pending adoption and does not override the current product decisions.
+
 [30-day delivery calendar](../superpowers/plans/2026-10-05-seatpax-30-day-delivery.md) schedules the reduced release adopted on 6 October 2026 for 2–3 hours/day. Scope authority remains `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md`; technical foundation review is still pending.
 
 Imported on 5 October 2026: 22 source Markdown files. The source folder `docs/seatpax_docs` was renamed to `docs/seatpax`. `14_BRAND_LOGO.md` was renamed to `13A_BRAND_LOGO.md` to group it beside UI/UX and remove duplicate `14` numbering without renumbering all engineering/delivery files.
