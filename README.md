@@ -39,3 +39,6 @@ npm.cmd run build
 ```
 
 `package-lock.json` mencatat versi dependency. Business logic berikutnya mengikuti modules/services sesuai spesifikasi.
+## Koneksi database
+
+Jalankan npm.cmd run db:check setelah DATABASE_URL di .env.local terisi. Perintah ini hanya membaca select 1 dan menutup koneksi. Belum ada schema atau migration yang dijalankan; konfigurasi Drizzle disiapkan untuk slice berikutnya.
