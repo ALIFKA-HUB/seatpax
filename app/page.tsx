@@ -6,12 +6,12 @@ export default function HomePage() {
         <p className="eyebrow">Fondasi aplikasi</p>
         <h1 id="setup-title">Seatpax</h1>
         <p className="intro">Ticketing dan operasional penumpang bus antarkota.</p>
-        <p>Aplikasi sedang disiapkan. Pemesanan dan login belum tersedia.</p>
-        <a href="#langkah-berikutnya">Lihat langkah berikutnya <span aria-hidden="true">→</span></a>
+        <p>Masuk dengan email untuk mengakses akun Anda. Pemesanan sedang disiapkan.</p>
+        <a href="/account">Masuk / Akun saya <span aria-hidden="true">→</span></a>
       </section>
       <section id="langkah-berikutnya" aria-labelledby="next-title" className="next-steps">
         <h2 id="next-title">Langkah berikutnya</h2>
-        <ol><li>Hubungkan project Supabase development.</li><li>Siapkan login Email OTP.</li><li>Bangun akses Passenger, Admin PO, Crew, dan Super Admin.</li></ol>
+        <ol><li>Verifikasi pengiriman Email OTP.</li><li>Bangun akses Passenger, Admin PO, Crew, dan Super Admin.</li><li>Siapkan rute dan inventory kursi.</li></ol>
       </section>
       <footer>Seatpax · Lingkungan pengembangan</footer>
     </main>

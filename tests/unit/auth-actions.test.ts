@@ -1,0 +1,15 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+const f=vi.hoisted(()=>({signInWithOtp:vi.fn(),verifyOtp:vi.fn(),signOut:vi.fn(),factory:vi.fn(),redirect:vi.fn()}));
+vi.mock('server-only',()=>({}));
+vi.mock('@/lib/supabase/server',()=>({createServerSupabaseClient:f.factory}));
+vi.mock('next/navigation',()=>({redirect:f.redirect}));
+import {sendOtpAction,verifyOtpAction,logoutAction} from '@/app/login/actions';
+beforeEach(()=>{vi.resetAllMocks();f.factory.mockResolvedValue({auth:f});for(const method of [f.signInWithOtp,f.verifyOtp,f.signOut])method.mockResolvedValue({error:null});f.redirect.mockImplementation(()=>{throw Error('NEXT_REDIRECT');});});
+it('requests signup-capable OTP through writable client',async()=>{expect(await sendOtpAction(' user@example.com ')).toEqual({ok:true});expect(f.factory).toHaveBeenCalledWith({cookieMode:'read-write'});expect(f.signInWithOtp).toHaveBeenCalledWith({email:'user@example.com',options:{shouldCreateUser:true}});});
+it('invalid input avoids SDK',async()=>{expect(await sendOtpAction('bad')).toMatchObject({ok:false});expect(f.signInWithOtp).not.toHaveBeenCalled();});
+it('verifies email code and preserves Next redirect',async()=>{await expect(verifyOtpAction({email:'user@example.com',token:'01234567'})).rejects.toThrow('NEXT_REDIRECT');expect(f.verifyOtp).toHaveBeenCalledWith({email:'user@example.com',token:'01234567',type:'email'});expect(f.redirect).toHaveBeenCalledWith('/account');});
+it('invalid six digit code never verifies',async()=>{expect(await verifyOtpAction({email:'user@example.com',token:'123456'})).toMatchObject({code:'invalid_code'});expect(f.verifyOtp).not.toHaveBeenCalled();});
+it('provider error never redirects',async()=>{f.verifyOtp.mockResolvedValue({error:{code:'otp_expired'}});expect(await verifyOtpAction({email:'user@example.com',token:'12345678'})).toMatchObject({code:'verification_failed'});expect(f.redirect).not.toHaveBeenCalled();});
+it('logs out local session then redirects',async()=>{await expect(logoutAction()).rejects.toThrow('NEXT_REDIRECT');expect(f.signOut).toHaveBeenCalledWith({scope:'local'});expect(f.redirect).toHaveBeenCalledWith('/login');});
+it('failed logout stays visible',async()=>{f.signOut.mockResolvedValue({error:{status:500}});expect(await logoutAction()).toMatchObject({ok:false});expect(f.redirect).not.toHaveBeenCalled();});
+it('client creation failure is sanitized',async()=>{f.factory.mockRejectedValue(Error('PRIVATE'));const r=await sendOtpAction('user@example.com');expect(r).toMatchObject({ok:false});expect(JSON.stringify(r)).not.toContain('PRIVATE');});
