@@ -1,6 +1,6 @@
 # Supabase development setup
 
-Status: aplikasi/adapters lokal tersedia. **Project hosted, query nyata dan konfigurasi Auth belum diverifikasi.** Tidak ada migration, seed, login OTP, atau payment yang berjalan.
+Status: aplikasi/adapters lokal tersedia. **Project hosted dan query nyata terverifikasi pada 6 Oktober 2026; konfigurasi login Auth masih pending.** Tidak ada migration, seed, login OTP, atau payment yang berjalan.
 
 ## 1. Buat project
 
@@ -51,9 +51,9 @@ Client adapters di slice ini tidak memverifikasi role atau menjadi login flow. S
 
 ## Checklist provider
 
-- [ ] Project development siap dan project reference diketahui.
-- [ ] URL/publishable key/database URLs terisi di ignored environment.
-- [ ] Query nyata `db:check` sukses.
+- [x] Project development `seatpax-dev` siap; reference `slbkhdsfafcxaxqdxmet`, Singapore.
+- [x] URL/publishable key/runtime database URL terisi di ignored `.env.local`. Migration URL masih kosong; pilih sebelum Hari 4.
+- [x] Query nyata `db:check` sukses dengan verifikasi TLS aktif.
 - [ ] Site URL, allowlist, email delivery dan OTP template diperiksa.
 - [ ] Akses Midtrans Sandbox tersedia. Status saat penulisan: **unknown**; tidak ada account/token payment yang diverifikasi.
 - [ ] Hari 3 login OTP nyata diuji; **belum selesai**.
@@ -61,6 +61,18 @@ Client adapters di slice ini tidak memverifikasi role atau menjadi login flow. S
 RLS/domain tables/seed dua PO menjadi Hari 4. Hosted webhook baru diperiksa bersama adapter payment dan staging.
 
 ## Toolchain dan hasil lokal
+
+### Sertifikat untuk sesi lokal
+
+Node di laptop ini memerlukan CA Supabase tambahan (`SELF_SIGNED_CERT_IN_CHAIN` tanpa CA). Sertifikat diunduh melalui Database → Settings → SSL configuration → Download certificate. Sebelum menjalankan database check atau development server pada terminal PowerShell baru:
+
+```powershell
+$env:NODE_EXTRA_CA_CERTS = 'C:/Users/ASUS/Downloads/prod-ca-2021.crt'
+npm.cmd run db:check
+# Untuk aplikasi, gunakan npm.cmd run dev dalam terminal yang sama.
+```
+
+Variabel berlaku untuk sesi terminal tersebut. Sertifikat harus tetap tersedia pada path itu. Verifikasi sertifikat tidak dinonaktifkan.
 
 Node v26.3.0 / npm 11.16.0; package-lock adalah catatan versi yang digunakan. Next 16.3.8 / React 19.3.0 / TypeScript 6.0.3 / Vitest 5.0.3. SDK Supabase 2.117.2 + SSR 0.12.7, Drizzle ORM 0.45.3. Node >=26 dipilih karena engine Vitest 5 pada runtime yang tersedia.
 
@@ -77,3 +89,7 @@ ESLint 9 dipertahankan karena eslint-plugin-react pada eslint-config-next belum 
 ## Bukti slice lokal — 6 Oktober 2026
 
 22 unit tests pass; ESLint, TypeScript dan Next production build pass. GET / menghasilkan HTTP 200 dan heading Seatpax. Probe client Supabase dibuild dengan fake configuration; fake DB canary tidak muncul di client assets. Import database server-only dari client ditolak oleh Next; probe sementara sudah dihapus. CLI invalid env dan database tidak terjangkau masing-masing exit 1 tanpa membocorkan fake secret. Review GPT-6 Luna medium: tidak ada temuan Critical/Important/Minor. Hosted checklist tetap pending. User memilih merge lokal; perubahan sudah diintegrasikan ke main. Hosted checklist tetap pending.
+
+## Hari 3 — konfigurasi OTP aktual
+
+Pada 6 Oktober 2026, provider Email dibaca tanpa perubahan: aktif, kode **8 digit**, expiry **3600 detik**. Subject template Magic Link: `Kode masuk Seatpax`; Confirm signup: `Verifikasi email Seatpax`. Sumber template ada di `modules/auth/email-templates/`; pengguna menerapkannya sendiri pada Authentication → Email Templates. Site URL memakai http://localhost:3000. Default SMTP hanya mengizinkan penerima tertentu/anggota organization; pengiriman nyata belum diverifikasi.
