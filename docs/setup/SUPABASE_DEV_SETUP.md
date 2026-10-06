@@ -73,3 +73,7 @@ ESLint 9 dipertahankan karena eslint-plugin-react pada eslint-config-next belum 
 - [Email OTP](https://supabase.com/docs/guides/auth/auth-email-passwordless).
 - [Default SMTP restrictions](https://supabase.com/docs/guides/auth/auth-smtp).
 
+
+## Bukti slice lokal — 6 Oktober 2026
+
+22 unit tests pass; ESLint, TypeScript dan Next production build pass. GET / menghasilkan HTTP 200 dan heading Seatpax. Probe client Supabase dibuild dengan fake configuration; fake DB canary tidak muncul di client assets. Import database server-only dari client ditolak oleh Next; probe sementara sudah dihapus. CLI invalid env dan database tidak terjangkau masing-masing exit 1 tanpa membocorkan fake secret. Review GPT-6 Luna medium: tidak ada temuan Critical/Important/Minor. Hosted checklist tetap pending. Branch feat/day2-supabase-setup belum diintegrasikan ke main.

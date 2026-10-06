@@ -4,7 +4,7 @@ Platform ticketing dan operasional penumpang bus antarkota multi-stop, dengan in
 
 ## Status project
 
-Setup aplikasi Next.js sedang diimplementasikan pada branch feat/day2-supabase-setup. Halaman awal dan validasi environment tersedia; login, domain tables, booking dan payment belum diimplementasikan. Koneksi hosted Supabase belum diverifikasi.
+Setup aplikasi Next.js tersedia pada branch feat/day2-supabase-setup. Halaman awal dan validasi environment tersedia; login, domain tables, booking dan payment belum diimplementasikan. Koneksi hosted Supabase belum diverifikasi.
 
 ## Mulai membaca
 
