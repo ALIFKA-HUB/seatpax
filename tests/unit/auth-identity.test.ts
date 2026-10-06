@@ -1,0 +1,10 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+const f=vi.hoisted(()=>({getUser:vi.fn(),getSession:vi.fn()}));
+vi.mock('server-only',()=>({}));
+vi.mock('@/lib/supabase/server',()=>({createServerSupabaseClient:async()=>({auth:f})}));
+import {getVerifiedUser} from '@/modules/auth/identity';
+beforeEach(()=>vi.resetAllMocks());
+it('returns provider verified user',async()=>{f.getUser.mockResolvedValue({data:{user:{id:'verified'}},error:null});expect(await getVerifiedUser()).toEqual({id:'verified'});expect(f.getSession).not.toHaveBeenCalled();});
+it.each([null,{id:'untrusted'}])('denies user on auth error %s',async user=>{f.getUser.mockResolvedValue({data:{user},error:{code:'bad_jwt'}});expect(await getVerifiedUser()).toBeNull();});
+it('denies missing identity',async()=>{f.getUser.mockResolvedValue({data:{user:null},error:null});expect(await getVerifiedUser()).toBeNull();});
+it('denies network failure',async()=>{f.getUser.mockRejectedValue(Error('private'));expect(await getVerifiedUser()).toBeNull();});
