@@ -8,7 +8,7 @@
 
 **Tech Stack:** TypeScript, Next.js/React, Tailwind, Zod, Drizzle/postgres-js, `@supabase/supabase-js`, `@supabase/ssr`, Vitest, ESLint.
 
-**Spec:** [Adopted foundation](../specs/2026-10-06-foundation-design.md), sections 1 and 3 plus handoff; [structure](../../seatpax/11_API_PROJECT_STRUCTURE.md); [stack](../../seatpax/12_TECH_STACK_ECOSYSTEM_SCALING.md); [calendar](2026-10-05-seatpax-30-day-delivery.md). D2026-10-06-02 adopts foundation; this plan is **READY FOR WRITTEN REVIEW, not executed**.
+**Spec:** [Adopted foundation](../specs/2026-10-06-foundation-design.md), sections 1 and 3 plus handoff; [structure](../../seatpax/11_API_PROJECT_STRUCTURE.md); [stack](../../seatpax/12_TECH_STACK_ECOSYSTEM_SCALING.md); [calendar](2026-10-05-seatpax-30-day-delivery.md). D2026-10-06-02 adopts foundation; this plan is **LOCAL IMPLEMENTATION READY; HOSTED VERIFICATION PENDING** — user “rencana oke, eksekusi” on 6 October 2026.
 
 ## Global Constraints
 
@@ -37,8 +37,8 @@
 
 **Interfaces:** Consumes no prior code. Produces `parsePublicEnv(input: Record<string, string | undefined>): { supabaseUrl: string; supabasePublishableKey: string }`; `parseDatabaseEnv(input: Record<string, string | undefined>): { databaseUrl: string; migrationUrl: string }`. Migration URL uses `DATABASE_MIGRATION_URL` if present, otherwise database URL. Server-only loader wraps database parser; pure parsers remain unit-testable. Browser config passes explicit static `process.env.NEXT_PUBLIC_*` references so Next can inline values; never reads all process.env in browser code.
 
-- [ ] Step 1: Manually initialize root manifests/config and test runner without generating over docs. Runtime packages: next/react/react-dom, zod, server-only, supabase SDK/SSR, drizzle-orm, postgres. Dev packages: TypeScript/types, eslint/config-next, tailwindcss/postcss, vitest, drizzle-kit, tsx, dotenv. Add scripts `dev`, `build`, `start`, `lint` (`eslint .`), `typecheck` (`tsc --noEmit`), `test` (`vitest run`). Install with `npm.cmd install`; Expected: success, lockfile records compatible stable versions.
-- [ ] Step 2: Write failing env tests with these assertions:
+- [x] Step 1: Manually initialize root manifests/config and test runner without generating over docs. Runtime packages: next/react/react-dom, zod, server-only, supabase SDK/SSR, drizzle-orm, postgres. Dev packages: TypeScript/types, eslint/config-next, tailwindcss/postcss, vitest, drizzle-kit, tsx, dotenv. Add scripts `dev`, `build`, `start`, `lint` (`eslint .`), `typecheck` (`tsc --noEmit`), `test` (`vitest run`). Install with `npm.cmd install`; Expected: success, lockfile records compatible stable versions.
+- [x] Step 2: Write failing env tests with these assertions:
 
 ```ts
 expect(() => parsePublicEnv({})).toThrow(/NEXT_PUBLIC_SUPABASE_URL/);
@@ -48,10 +48,10 @@ expect(parseDatabaseEnv({ DATABASE_URL: 'postgresql://user:password@localhost:54
 ```
 
 Also test blank keys, invalid DB protocol, explicit migration override, public return omits DATABASE_URL, and thrown error excludes input secret string. Keep provider key content validation to nonempty; do not invent provider key format checks.
-- [ ] Step 3: Run `npm.cmd test -- tests/unit/env.test.ts`. Expected: FAIL due to missing parser modules/functions, not runner configuration errors.
-- [ ] Step 4: Implement parsers with Zod and sanitized errors; create minimal app/layout/styles. `.env.example` lists empty credentials, `NEXT_PUBLIC_APP_URL=http://localhost:3000`, and DB connection placeholders as comments. No eager env validation in page/layout/config. Add `.superpowers/` and TypeScript build artifacts to gitignore if needed.
-- [ ] Step 5: Run `npm.cmd test -- tests/unit/env.test.ts`, `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd run build`. Expected: all pass with no real Supabase config. Start `npm.cmd run dev`; GET `/` Expected: HTTP 200 and Seatpax heading. Stop only the process created by this task.
-- [ ] Step 6: Commit Task 1 files with `chore: bootstrap Seatpax application and environment boundaries`.
+- [x] Step 3: Run `npm.cmd test -- tests/unit/env.test.ts`. Expected: FAIL due to missing parser modules/functions, not runner configuration errors.
+- [x] Step 4: Implement parsers with Zod and sanitized errors; create minimal app/layout/styles. `.env.example` lists empty credentials, `NEXT_PUBLIC_APP_URL=http://localhost:3000`, and DB connection placeholders as comments. No eager env validation in page/layout/config. Add `.superpowers/` and TypeScript build artifacts to gitignore if needed.
+- [x] Step 5: Run `npm.cmd test -- tests/unit/env.test.ts`, `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd run build`. Expected: all pass with no real Supabase config. Start `npm.cmd run dev`; GET `/` Expected: HTTP 200 and Seatpax heading. Stop only the process created by this task.
+- [x] Step 6: Commit Task 1 files with `chore: bootstrap Seatpax application and environment boundaries`.
 
 ## Task 2: Read-only database connection and diagnostic command
 
@@ -59,11 +59,11 @@ Also test blank keys, invalid DB protocol, explicit migration override, public r
 
 **Interfaces:** Consumes Task 1 database parser. Produces `createDatabaseConnection(url: string): { db: ReturnType<typeof drizzle>; close: () => Promise<void> }` using postgres-js and `drizzle-orm/postgres-js`; server-only `getDatabase()` lazily caches runtime connection. Produces testable `checkDatabase(connection: { query: () => Promise<unknown>; close: () => Promise<void> }): Promise<{ ok: boolean }>`; CLI invokes real `select 1 as ok`, no write. Pure connection factory importable by CLI/tests, `getDatabase` server-only wrapper isolated.
 
-- [ ] Step 1: Write tests: successful query returns `{ok:true}` and close called once; rejected query returns `{ok:false}` and close called once; close failure returns `{ok:false}` without exposing thrown credential string. Run `npm.cmd test -- tests/unit/db-check.test.ts`; Expected: FAIL for missing diagnostic implementation.
-- [ ] Step 2: Implement factory with `prepare:false` for transaction-pooler compatibility and bounded pool `max:1`; keep certificate verification enabled using provider-supported SSL configuration. No DB connection on import/build. CLI loads `.env.local` with dotenv, returns exit 0/1, prints only `Database connection OK` or sanitized failure/invalid env field names, and always closes resources. Add `db:check` (`tsx scripts/check-db.ts`). Drizzle config reads migration URL, points to `db/schema/*.ts` and `db/migrations`, but generate/migrate are not executed here. Do not create speculative schema files.
-- [ ] Step 3: Run `npm.cmd test -- tests/unit/db-check.test.ts`, `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd run build`. Expected: all pass offline; fake secrets never appear in diagnostic output tests. Missing-env `npm.cmd run db:check` Expected: nonzero with variable names only, no stack/credential dump.
+- [x] Step 1: Write tests: successful query returns `{ok:true}` and close called once; rejected query returns `{ok:false}` and close called once; close failure returns `{ok:false}` without exposing thrown credential string. Run `npm.cmd test -- tests/unit/db-check.test.ts`; Expected: FAIL for missing diagnostic implementation.
+- [x] Step 2: Implement factory with `prepare:false` for transaction-pooler compatibility and bounded pool `max:1`; keep certificate verification enabled using provider-supported SSL configuration. No DB connection on import/build. CLI loads `.env.local` with dotenv, returns exit 0/1, prints only `Database connection OK` or sanitized failure/invalid env field names, and always closes resources. Add `db:check` (`tsx scripts/check-db.ts`). Drizzle config reads migration URL, points to `db/schema/*.ts` and `db/migrations`, but generate/migrate are not executed here. Do not create speculative schema files.
+- [x] Step 3: Run `npm.cmd test -- tests/unit/db-check.test.ts`, `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd run build`. Expected: all pass offline; fake secrets never appear in diagnostic output tests. Missing-env `npm.cmd run db:check` Expected: nonzero with variable names only, no stack/credential dump.
 - [ ] Step 4: When user has configured the dev project, run `npm.cmd run db:check`. Expected: exit 0, `Database connection OK`. If credentials/project are unavailable, record real DB check as pending; complete local tasks but do not claim hosted integration done.
-- [ ] Step 5: Commit Task 2 files with `chore: add server database adapter and safe connection check`.
+- [x] Step 5: Commit Task 2 files with `chore: add server database adapter and safe connection check`.
 
 ## Task 3: Supabase adapters and provider handoff
 
@@ -71,12 +71,12 @@ Also test blank keys, invalid DB protocol, explicit migration override, public r
 
 **Interfaces:** Consumes Task 1 public env parser. Produces `createBrowserSupabaseClient(): SupabaseClient` via `createBrowserClient`; `createServerSupabaseClient(): Promise<SupabaseClient>` via `createServerClient` and Next async cookies, using `getAll`/`setAll`. Not a role/session authorization helper. Server module uses `server-only`. Day 3 owns verified user helper, proxy/session refresh, OTP request/verification/logout and protected routes.
 
-- [ ] Step 1: Write failing tests with mocked SSR/cookie modules: browser constructor receives only public URL/key; server getAll returns current cookie store; setAll forwards name/value/options; expected read-only cookie write restriction is tolerated; unrelated failure is propagated. Missing public config yields sanitized field-only error. Run `npm.cmd test -- tests/unit/supabase-clients.test.ts`; Expected: FAIL for missing adapters. Mock server-only only in Vitest, never alias away its production import guard.
-- [ ] Step 2: Implement adapters using the current official Next.js SSR integration; do not infer roles from browser session or implement a fake login. In server rendering distinguish the documented cookie restriction, leaving session refresh to Day 3. If current API cannot distinguish this reliably, implement caller-explicit read-only cookie mode and ledger that ruling rather than swallowing arbitrary errors.
-- [ ] Step 3: Write user-facing setup guide: development/demo project; choose nearby region; save database password locally; copy project URL and publishable key; copy real pooler host/user from Connect panel, URL-encode DB password. Runtime transaction-pooler URL, migration direct URL or session pooler where IPv6 unavailable. Credentials go only into `.env.local`; never copy project keys into docs. Record project setup progress without credential values.
+- [x] Step 1: Write failing tests with mocked SSR/cookie modules: browser constructor receives only public URL/key; server getAll returns current cookie store; setAll forwards name/value/options; expected read-only cookie write restriction is tolerated; unrelated failure is propagated. Missing public config yields sanitized field-only error. Run `npm.cmd test -- tests/unit/supabase-clients.test.ts`; Expected: FAIL for missing adapters. Mock server-only only in Vitest, never alias away its production import guard.
+- [x] Step 2: Implement adapters using the current official Next.js SSR integration; do not infer roles from browser session or implement a fake login. In server rendering distinguish the documented cookie restriction, leaving session refresh to Day 3. If current API cannot distinguish this reliably, implement caller-explicit read-only cookie mode and ledger that ruling rather than swallowing arbitrary errors.
+- [x] Step 3: Write user-facing setup guide: development/demo project; choose nearby region; save database password locally; copy project URL and publishable key; copy real pooler host/user from Connect panel, URL-encode DB password. Runtime transaction-pooler URL, migration direct URL or session pooler where IPv6 unavailable. Credentials go only into `.env.local`; never copy project keys into docs. Record project setup progress without credential values.
 - [ ] Step 4: Guide user to set Auth Site URL `http://localhost:3000` and localhost callback allowlist for future `/auth/callback`, inspect email provider settings and delivery restrictions, record OTP-template configuration needed by Day 3. This step configures provider readiness, does not prove login. Confirm Midtrans Sandbox account access as an account checklist only; record accessible/unavailable/unknown. Defer hosted webhook reachability until actual staging deployment and verified webhook adapter; amend D02 calendar explicitly, do not deploy an empty public payment endpoint.
-- [ ] Step 5: Run `npm.cmd test`, `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd run build`; Expected: all pass. Inspect client output for server module leakage using fake canary DB secret in a controlled build, never printing real `.env.local` values. `npm.cmd run dev`, GET `/` Expected: 200; database check real result recorded independently from SDK unit mocks.
-- [ ] Step 6: Commit Task 3 files with `chore: prepare Supabase clients and development setup guide`.
+- [x] Step 5: Run `npm.cmd test`, `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd run build`; Expected: all pass. Inspect client output for server module leakage using fake canary DB secret in a controlled build, never printing real `.env.local` values. `npm.cmd run dev`, GET `/` Expected: 200; database check real result recorded independently from SDK unit mocks.
+- [x] Step 6: Commit Task 3 files with `chore: prepare Supabase clients and development setup guide`.
 
 ## Completion and handoff
 
@@ -94,4 +94,6 @@ Consulted 6 October 2026; check versions again at execution:
 - [Supabase PostgreSQL connections](https://supabase.com/docs/guides/database/connecting-to-postgres) for pooler/direct selection and prepared-statement limitations.
 - [Supabase Drizzle](https://supabase.com/docs/guides/database/drizzle) for SQL adapter integration.
 
-Self-review: scope is a standalone setup slice; domain adoption is not misrepresented as implemented. Parser→DB/client interfaces match; offline proofs and provider checks are separate. User-selected execution method is preserved; written plan review remains pending per writing-plans handoff.
+Self-review: scope is a standalone setup slice; domain adoption is not misrepresented as implemented. Parser→DB/client interfaces match; offline proofs and provider checks are separate. User-selected execution method is preserved; written plan review accepted; inline execution selected.
+
+Execution evidence: 22 unit tests, lint/typecheck/build and HTTP 200 passed; browser-adapter canary check passed and server-only negative import rejected. Whole-branch review pending. Task 2 Step 4 and Task 3 provider configuration remain pending without a development project. Ruling: explicit cookieMode read-only/read-write avoids blanket catch; session proxy stays Day 3. Pure DB parser split from server-only loader for CLI/test compatibility. Node >=26 reflects installed Vitest 5 engine; ESLint 9 retained for bundled React plugin compatibility.

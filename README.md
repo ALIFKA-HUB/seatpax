@@ -15,7 +15,7 @@ Setup aplikasi Next.js sedang diimplementasikan pada branch feat/day2-supabase-s
 - [Roadmap](docs/seatpax/17_DEVELOPMENT_ROADMAP.md)
 - [Rencana harian 30 hari — scope diadopsi untuk 2–3 jam/hari](docs/superpowers/plans/2026-10-05-seatpax-30-day-delivery.md)
 
-Scope demo 30 hari diadopsi pada 6 Oktober 2026. Fondasi teknis diadopsi sebagai D2026-10-06-02 pada [rancangan fondasi](docs/superpowers/specs/2026-10-06-foundation-design.md); aplikasi belum diimplementasikan.
+Scope demo 30 hari diadopsi pada 6 Oktober 2026. Fondasi teknis diadopsi sebagai D2026-10-06-02 pada [rancangan fondasi](docs/superpowers/specs/2026-10-06-foundation-design.md); setup lokal tersedia dan domain flow belum diimplementasikan.
 
 Dokumen modular menjadi acuan aktif. Arsip master dipertahankan sebagai konteks historis. Temuan analisis perlu dituntaskan pada spesifikasi terkait sebelum dipakai sebagai kontrak implementasi.
 
@@ -42,3 +42,7 @@ npm.cmd run build
 ## Koneksi database
 
 Jalankan npm.cmd run db:check setelah DATABASE_URL di .env.local terisi. Perintah ini hanya membaca select 1 dan menutup koneksi. Belum ada schema atau migration yang dijalankan; konfigurasi Drizzle disiapkan untuk slice berikutnya.
+
+## Setup Supabase development
+
+Ikuti [panduan Supabase](docs/setup/SUPABASE_DEV_SETUP.md). Client browser/server tersedia; server memakai cookieMode read-only secara default dan read-write hanya pada route/action. Login dan session-refresh proxy belum tersedia. Query hosted dan konfigurasi Auth perlu kredensial project development.
