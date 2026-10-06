@@ -4,7 +4,7 @@ Platform ticketing dan operasional penumpang bus antarkota multi-stop, dengan in
 
 ## Status project
 
-Project saat ini berisi dokumentasi. Belum ada aplikasi, migration database, atau konfigurasi dependency. Stack dan roadmap dalam spesifikasi adalah rencana implementasi.
+Setup aplikasi Next.js sedang diimplementasikan pada branch feat/day2-supabase-setup. Halaman awal dan validasi environment tersedia; login, domain tables, booking dan payment belum diimplementasikan. Koneksi hosted Supabase belum diverifikasi.
 
 ## Mulai membaca
 
@@ -18,3 +18,24 @@ Project saat ini berisi dokumentasi. Belum ada aplikasi, migration database, ata
 Scope demo 30 hari diadopsi pada 6 Oktober 2026. Fondasi teknis diadopsi sebagai D2026-10-06-02 pada [rancangan fondasi](docs/superpowers/specs/2026-10-06-foundation-design.md); aplikasi belum diimplementasikan.
 
 Dokumen modular menjadi acuan aktif. Arsip master dipertahankan sebagai konteks historis. Temuan analisis perlu dituntaskan pada spesifikasi terkait sebelum dipakai sebagai kontrak implementasi.
+
+## Menjalankan aplikasi lokal
+
+Prasyarat: Node.js >=26 dan npm; gunakan versi yang kompatibel dengan engine dependency pada package-lock.json.
+
+```powershell
+npm.cmd ci
+npm.cmd run dev
+```
+
+Buka http://localhost:3000. Halaman awal dapat berjalan tanpa kredensial Supabase.
+Salin `.env.example` ke `.env.local` ketika project development tersedia; kredensial tidak boleh dicommit.
+
+```powershell
+npm.cmd test
+npm.cmd run lint
+npm.cmd run typecheck
+npm.cmd run build
+```
+
+`package-lock.json` mencatat versi dependency. Business logic berikutnya mengikuti modules/services sesuai spesifikasi.

@@ -22,3 +22,7 @@ test-results/
 # Local OS files
 .DS_Store
 Thumbs.db
+
+# Execution scratch and TypeScript cache
+.superpowers/
+*.tsbuildinfo
