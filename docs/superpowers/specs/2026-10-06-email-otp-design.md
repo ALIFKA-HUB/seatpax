@@ -1,6 +1,6 @@
 # Seatpax — Login Email OTP (Hari 3)
 
-Tanggal: 6 Oktober 2026. Status: **DRAFT untuk review dokumen tertulis**. Pengguna menyetujui alur dalam chat; dokumen dan rencana implementasi masih memerlukan review. Tidak ada kode login atau perubahan konfigurasi Auth yang dibuat pada tahap ini.
+Tanggal: 6 Oktober 2026. Status: **APPROVED** melalui “spec oke. next”. Rencana implementasi masih memerlukan review. Tidak ada kode login atau perubahan konfigurasi Auth yang dibuat pada tahap ini.
 
 ## Tujuan dan batas
 
