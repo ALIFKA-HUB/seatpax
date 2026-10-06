@@ -1,5 +1,7 @@
 # Seatpax — Tech Stack, Third Parties & Scaling
 
+> **Active release — 6 Oktober 2026:** Stack tetap menjadi arah implementasi. Live realtime subscription dapat ditunda; refresh/polling menjadi baseline release. Jangan menambahkan dependency atau fitur deferred hanya karena tercantum dalam roadmap stack historis. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

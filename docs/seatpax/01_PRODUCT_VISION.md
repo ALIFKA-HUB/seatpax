@@ -1,5 +1,7 @@
 # Seatpax — Product Vision & Positioning
 
+> **Active release — 6 Oktober 2026:** Release 30 hari mempertahankan inti multi-stop inventory dan passenger operations. Guest booking dan fitur operasional yang lebih luas pada bagian lama di bawah adalah arah MVP asli, bukan target release aktif. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

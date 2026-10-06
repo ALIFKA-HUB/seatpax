@@ -1,10 +1,50 @@
 # Seatpax — MVP Scope & Product Boundary
 
+## Active release — 30-day demo, adopted 6 October 2026
+
+The user approved the reduced release package on 6 October 2026. This section is the active delivery scope for 6 October–4 November at 2–3 hours/day. The original MVP sections below remain historical/reference scope where they differ from this release. Retained domain rules still apply.
+
+| Area | Active release decision |
+| --- | --- |
+| Platform | Four roles, static RBAC, two demo PO contexts, server authorization and tenant isolation |
+| Passenger auth | Email OTP; login before checkout; My Tickets; Google OAuth deferred |
+| Booking | One passenger and one seat per booking; guest checkout/claim and multi-passenger checkout deferred |
+| Routes/pricing | Multi-stop route, ordered stops, adjacent-segment fare per service class; minimal admin setup forms |
+| Fleet | Click-cell seat template, vehicle association, trip/layout snapshot; drag-and-drop and duplication polish deferred |
+| Trips | Minimal scheduling/open-for-sale, assigned crew, segment/seat inventory snapshots |
+| Inventory | Segment-aware availability, 10-minute hold, conditional +1-minute grace, expiry/release, concurrency correctness |
+| Payment | Midtrans Sandbox, verified/idempotent webhook, late PAYMENT_CONFLICT, minimal admin confirmation after inventory recheck or recorded mock/manual refund resolution |
+| Ticket/operations | One QR per passenger, trip manifest, scanner/manual search, passenger trip profile, separate boarding/snack actions |
+| Crew client | PWA shell; online mutations; no offline sync |
+| Super Admin | Company list, activate/suspend; seeded demo companies/internal accounts; onboarding and invitations UI deferred |
+| Availability UX | Refresh/polling first; live subscriptions deferred if schedule demands |
+| Deferred operational features | Cash sale, general reschedule/reseat, trip cancellation/refund workflows and vehicle replacement on sold trips |
+| Delivery | Hosted demo, deterministic seed/reset, critical verification evidence, README/runbook; presentation preparation after implementation month |
+
+This is a demo release subset, not completion of every original MVP acceptance criterion. Company creation UI, guest claim, and deferred operational flows are not promised by this release. Mock refund recording is not evidence of a real provider refund.
+
+### Release acceptance checklist
+
+- [ ] Four roles work with two PO contexts; known IDs do not allow foreign-tenant or unassigned-trip access.
+- [ ] Admin can configure ordered route stops, fare, click-cell layout/vehicle and a sale-ready trip through minimal forms.
+- [ ] Trip snapshots remain stable when source templates/routes are edited.
+- [ ] Adjacent intervals reuse a seat; overlapping assignments/active holds cannot double-book, including 50 concurrent attempts.
+- [ ] Hold expiry and conditional payment grace preserve inventory consistently.
+- [ ] A logged-in passenger completes Sandbox payment and can reopen their QR ticket via My Tickets.
+- [ ] Verified webhook retries do not create duplicate tickets; late payment enters an admin-resolvable conflict.
+- [ ] Confirmed passenger appears in manifest; QR/manual search opens the same profile; boarding/snack are independently idempotent.
+- [ ] Super Admin can activate/suspend demo companies under an explicitly agreed policy.
+- [ ] Hosted phone/desktop flows, seed/reset, demo runbook and critical verification results are reproducible.
+
+### Foundation status
+
+Scope approval does not adopt all proposed technical policies. Assignment administration, immutable snapshot details, hold/booking ownership, deadline/receipt semantics, QR token lifecycle, suspension and stop-time policies remain to be reviewed in [Day 1 foundation proposal](../superpowers/specs/2026-10-06-day1-scope-foundation-proposal.md). Do not treat those proposal defaults as implemented or FINAL.
+
 
 > Modular documentation extracted from the Seatpax master specification.
 
 
-# 4. Scope Lock — MVP v1
+# 4. Original MVP v1 — reference scope before the 30-day release decision
 
 ## 4.1 Fitur yang masuk MVP
 
@@ -109,7 +149,7 @@ Yang **jangan dipotong**:
 ---
 
 
-# 42. Acceptance Criteria — MVP Definition of Done
+# 42. Original MVP Acceptance Criteria — broader than the active demo release
 
 Seatpax MVP dianggap selesai jika skenario berikut dapat didemokan tanpa edit database manual.
 

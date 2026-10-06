@@ -1,5 +1,7 @@
 # Seatpax — End-to-End Product Flows
 
+> **Active release — 6 Oktober 2026:** Flow aktif: login Email OTP → search → seat hold → one-passenger checkout → Sandbox payment → ticket → manifest → boarding/snack. Flow guest claim, crew cash sale, reschedule dan trip cancellation di bawah ditunda. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

@@ -1,5 +1,7 @@
 # Seatpax — Risks, Deferred Scope & Future Backlog
 
+> **Active release — 6 Oktober 2026:** Backlog release aktif sekarang juga mencakup guest/Google login, booking grup, cash sale, reschedule, reseat dan general cancellation/refund workflows. Risiko correctness/tenant isolation tetap wajib ditangani dalam core release. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

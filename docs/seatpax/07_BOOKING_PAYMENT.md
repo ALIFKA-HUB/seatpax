@@ -1,5 +1,7 @@
 # Seatpax — Booking, Payment, Refund & Transaction Rules
 
+> **Active release — 6 Oktober 2026:** Checkout aktif membutuhkan login dan menerima satu passenger/seat per booking. Contoh booking grup dan state reschedule di bawah adalah referensi perluasan; Sandbox payment, verified/idempotent webhook, late conflict dan ticket issuance tetap dikerjakan. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

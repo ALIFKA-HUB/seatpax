@@ -2,6 +2,8 @@
 
 Seatpax documentation is intentionally modular: **one context = one Markdown file**. Use this file as the entry point.
 
+**Current release:** The user adopted the 30-day demo subset on 6 October 2026. Read the active release section in `02_MVP_SCOPE.md` and decision D2026-10-06-01 in `19_DECISION_LEDGER.md` before using older guest/group-booking/cash/reschedule examples. Technical foundation proposals remain pending.
+
 ## Product & scope
 
 - [Product Vision & Positioning](01_PRODUCT_VISION.md)
@@ -71,7 +73,7 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 
 ## Local organization
 
-[30-day delivery calendar](../superpowers/plans/2026-10-05-seatpax-30-day-delivery.md) proposes a reduced release for 2–3 hours/day, starting 6 October 2026. It is a planning proposal; it does not override MVP scope or adopt its proposed deferrals.
+[30-day delivery calendar](../superpowers/plans/2026-10-05-seatpax-30-day-delivery.md) schedules the reduced release adopted on 6 October 2026 for 2–3 hours/day. Scope authority remains `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md`; technical foundation review is still pending.
 
 Imported on 5 October 2026: 22 source Markdown files. The source folder `docs/seatpax_docs` was renamed to `docs/seatpax`. `14_BRAND_LOGO.md` was renamed to `13A_BRAND_LOGO.md` to group it beside UI/UX and remove duplicate `14` numbering without renumbering all engineering/delivery files.
 

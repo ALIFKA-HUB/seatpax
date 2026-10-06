@@ -1,10 +1,35 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-10-06-01 — Adopt 30-day demo release
+
+**Status: ADOPTED.** User approved the reduced scope package on 6 October 2026 with “oke” after reviewing the retained/deferred scope summary and linked proposal.
+
+**Reason:** Available implementation time is 2–3 hours/day for 30 days. Preserve the demonstrable core inventory/payment/operations flow and explicitly defer broader MVP features.
+
+| Decision changed | Active choice |
+| --- | --- |
+| Release target | End-to-end demo subset, 6 October–4 November; not the full original MVP |
+| Passenger login | Email OTP before checkout; Google OAuth deferred |
+| Guest access/claim | Deferred; logged-in owner uses My Tickets |
+| Booking size | One passenger/seat per booking; group checkout deferred |
+| Cash sale | Deferred |
+| Reschedule/reseat | Deferred for this release |
+| Cancellation/refund operations | General workflow deferred; late payment retains minimal admin inventory recheck/confirmation or mock/manual refund recording |
+| Realtime | Polling/refresh baseline; live subscriptions can be deferred |
+| Company/account setup | Two PO and internal accounts seeded; company onboarding/invitation UI deferred; Super Admin list/activate/suspend retained |
+| Seat builder | Click-cell grid; drag-and-drop/polish deferred |
+
+**Unchanged core:** Multi-stop/segment fare, one seat per passenger interval, concurrency correctness, 10-minute hold/+1-minute conditional grace, Sandbox verified/idempotent webhook, QR per passenger, manifest, boarding/snack, four roles, tenant isolation and crew assignment boundaries.
+
+**Authority:** [Active release scope](02_MVP_SCOPE.md) and its release acceptance checklist. Earlier decisions below retain context and future behavior, but do not restore deferred features to this release.
+
+**Pending:** Technical foundation F01–F11 in [Day 1 proposal](../superpowers/specs/2026-10-06-day1-scope-foundation-proposal.md) need separate review. This scope adoption does not approve all schema/security/deadline defaults.
+
 
 > Modular documentation extracted from the Seatpax master specification.
 
 
-# 45. Decision Ledger — Final MVP
+# 45. Original MVP Decision Ledger — reference before D2026-10-06-01
 
 | Decision | Final Choice |
 |---|---|

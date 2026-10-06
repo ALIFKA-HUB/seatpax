@@ -1,5 +1,7 @@
 # Seatpax — UI/UX & Visual Design
 
+> **Active release — 6 Oktober 2026:** Untuk release aktif, login Email OTP sebelum checkout dan satu passenger/seat per booking. Tombol guest claim, cash sale, reschedule/reseat dan workflow refund umum ditunda. Pertahankan latest visual direction, tetapi render screen sesuai scope aktif; daftar 23 layar adalah cakupan desain awal, bukan kewajiban release semuanya. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

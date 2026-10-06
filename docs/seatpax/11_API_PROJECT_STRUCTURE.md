@@ -1,5 +1,7 @@
 # Seatpax — API Boundary & Project Structure
 
+> **Active release — 6 Oktober 2026:** Endpoint guest ticket claim, cash booking, reseat dan reschedule serta refund umum pada daftar lama bukan endpoint wajib release aktif. Implementasikan retained flow dan minimal payment-conflict resolution sesuai scope aktif; kontrak detailnya masih perlu ditetapkan. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

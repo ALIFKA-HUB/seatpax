@@ -1,5 +1,7 @@
 # Seatpax — Domain Glossary & Core Business Rules
 
+> **Active release — 6 Oktober 2026:** Cash sale, reschedule, operational reseat, vehicle replacement pada trip terjual, dan cancellation/refund workflow umum ditunda dari release aktif. Aturan historisnya di bawah dipertahankan sebagai referensi. Inventory, fare, hold/grace, dan payment conflict tetap masuk; detail fondasi belum seluruhnya diadopsi. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

@@ -1,5 +1,7 @@
 # Seatpax — Roles, RBAC, Tenant Isolation & Authentication
 
+> **Active release — 6 Oktober 2026:** Passenger memakai Email OTP dan login sebelum checkout. Google OAuth, guest booking/claim, cash sale, serta reseat/reschedule permissions tidak diaktifkan pada release ini. Empat role dan batas tenant/assigned-trip tetap berlaku; detail penugasan crew masih direview. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

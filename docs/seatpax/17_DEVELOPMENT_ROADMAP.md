@@ -1,5 +1,7 @@
 # Seatpax — Development Roadmap
 
+> **Active release — 6 Oktober 2026:** Roadmap 12 minggu di bawah adalah referensi awal. Eksekusi release aktif mengikuti kalender 30 hari yang diadopsi, dengan scope reduced demo dan keputusan fondasi yang masih direview. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

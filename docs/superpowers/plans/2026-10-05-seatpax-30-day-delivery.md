@@ -2,6 +2,8 @@
 
 > **For agentic workers:** Use `superpowers:executing-plans` for approved implementation tasks. This document is a delivery calendar; define the concrete file/API/test contract for each subsystem before implementing it. Do not execute proposed scope reductions until the user adopts them and the scope/decision ledger are updated.
 
+> **Update 6 October 2026:** Reduced scope adopted by the user and recorded as D2026-10-06-01 in the decision ledger. Technical foundation review and subsystem contracts remain pending. D01 is in progress, not complete.
+
 **Goal:** Deliver a stable, demonstrable Seatpax application within 30 days at 2–3 focused hours per day, preserving segment inventory, payment correctness, tenant isolation, QR, manifest, boarding, and snack claims.
 
 **Architecture:** One Next.js application with domain services and PostgreSQL as the source of truth. Passenger, Admin PO, Crew, and Super Admin share domain components but have different navigation and interaction density. Use server authorization and tenant policies for protected data.
@@ -20,11 +22,11 @@
 - The original roadmap covers 12 weeks. This calendar proposes a smaller demo release; it cannot honestly guarantee the full original MVP within 60–90 hours.
 - Actual speed depends on implementation experience, existing accounts, provider setup, and time spent reviewing generated code. Re-estimate after D08 and D16 using completed work.
 
-## Proposed scope for this deadline — requires a product decision
+## Adopted scope for this deadline — 6 October 2026
 
-The current `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md` remain authoritative. This table is a proposal to review on D01, not a change already made.
+The active release section of `02_MVP_SCOPE.md` and decision D2026-10-06-01 in `19_DECISION_LEDGER.md` are authoritative. The reduced package below was adopted on D01; detailed technical policies are still under review.
 
-| Area | Proposed 30-day release | Difference from current MVP |
+| Area | Adopted 30-day release | Difference from original MVP |
 | --- | --- | --- |
 | Passenger identity | Email OTP login before checkout, My Tickets | Defer Google OAuth, guest checkout, and guest-to-account claim |
 | Booking | One passenger and one seat per booking | Defer multi-passenger checkout and partial booking operations |
@@ -37,10 +39,10 @@ The current `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md` remain authoritative. 
 | Tickets/crew | QR, manifest, assigned-trip scanner, manual search, boarding/snack | Keep online mutation; PWA shell only, no offline sync |
 | Admin operations | Trip/manifest/booking view and payment-conflict resolution | Defer general cash sale, reschedule, operational reseat, trip cancellation/refund workflows |
 | Super Admin | Minimal company list and activate/suspend with defined policy | No analytics or full onboarding |
-| Realtime | Availability refresh/polling first | Defer live subscriptions if time runs short; this is broader than cutting animations and needs approval |
+| Realtime | Availability refresh/polling first | Deferring live subscriptions if time runs short is adopted |
 | Delivery | Hosted demo, deterministic seed/reset, critical tests, README/runbook | Presentation deck and rehearsal occur after this implementation month |
 
-Without adopting these reductions, treat this calendar as a core-flow milestone only, and extend the deadline for the remaining original MVP. Do not label a reduced release as completing every original acceptance criterion.
+These adopted reductions make the calendar a demo-release plan. Completion of the remaining original MVP requires separate scheduling. Do not label the reduced release as completing every original acceptance criterion.
 
 ## Global constraints
 
@@ -115,9 +117,9 @@ Do not fill tomorrow's slot by starting another module before today's dependency
 
 Feature deferral cannot compensate for an unproven inventory transaction or insecure tenant access. The five buffers are for uncertainty; they do not guarantee a release if setup or domain issues exceed capacity.
 
-## Completion checklist for the proposed release
+## Completion checklist for the adopted release
 
-- [ ] Reduced scope adopted and reflected in scope/decision ledger, or original scope retained with an extended completion date.
+- [x] Reduced scope adopted and reflected in scope/decision ledger on 6 October 2026; technical foundation remains pending.
 - [ ] Real Sandbox payment succeeds from hosted Passenger flow.
 - [ ] Adjacent segments reuse a seat; overlapping intervals cannot double-book under concurrency.
 - [ ] Expiry, grace, late payment and duplicate notifications preserve inventory/ticket consistency.
