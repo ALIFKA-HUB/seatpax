@@ -2,7 +2,7 @@
 
 > **For agentic workers:** Use `superpowers:executing-plans` for approved implementation tasks. This document is a delivery calendar; define the concrete file/API/test contract for each subsystem before implementing it. Do not execute proposed scope reductions until the user adopts them and the scope/decision ledger are updated.
 
-> **Update 6 October 2026:** Reduced scope adopted by the user and recorded as D2026-10-06-01 in the decision ledger. Foundation adopted as D2026-10-06-02 and synchronized. D01 complete; Day 2 plan approved and local setup implemented on feat/day2-supabase-setup; hosted DB/Auth readiness pending.
+> **Update 6 October 2026:** Reduced scope adopted by the user and recorded as D2026-10-06-01 in the decision ledger. Foundation adopted as D2026-10-06-02 and synchronized. D01 complete; Day 2 plan approved and local setup integrated into main; hosted DB/Auth readiness pending.
 
 **Goal:** Deliver a stable, demonstrable Seatpax application within 30 days at 2–3 focused hours per day, preserving segment inventory, payment correctness, tenant isolation, QR, manifest, boarding, and snack claims.
 

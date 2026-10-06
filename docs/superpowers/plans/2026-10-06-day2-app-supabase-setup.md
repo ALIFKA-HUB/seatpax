@@ -83,7 +83,7 @@ Also test blank keys, invalid DB protocol, explicit migration override, public r
 - [x] Local slice complete only after tests/lint/typecheck/build and HTTP smoke evidence, final fresh whole-branch review, and any material fix verification.
 - [ ] Supabase integration complete only after real `db:check` and configuration checklist. If user setup is pending, leave this item unchecked and provide the exact next dashboard step.
 - [ ] Record D02 partial/complete based on evidence, preserve D03 OTP and D04 tenancy/seed as future tasks. Update README actual capability status.
-- [ ] Present branch changes for integration using finishing-a-development-branch; no main merge/push inferred solely from design approval.
+- [x] Present branch changes for integration using finishing-a-development-branch; no main merge/push inferred solely from design approval.
 
 ## Verified documentation references
 
@@ -98,4 +98,6 @@ Self-review: scope is a standalone setup slice; domain adoption is not misrepres
 
 Execution evidence: 22 unit tests, lint/typecheck/build and HTTP 200 passed; browser-adapter canary check passed and server-only negative import rejected. Fresh whole-branch review by GPT-6 Luna medium: no Critical/Important/Minor findings. Task 2 Step 4 and Task 3 provider configuration remain pending without a development project. Ruling: explicit cookieMode read-only/read-write avoids blanket catch; session proxy stays Day 3. Pure DB parser split from server-only loader for CLI/test compatibility. Node >=26 reflects installed Vitest 5 engine; ESLint 9 retained for bundled React plugin compatibility.
 
-Final review rulings: explicit read-only cookies, lazy runtime singleton, syntactic URL validation and invoked CLI config are consistent with this slice. Hosted verification, domain migrations, auth/refresh and payment are deferred to their owning tasks; no provider success inferred from mocks. Known tooling advisories remain tracked. Commits: 727b6ff (Task 1), 1c5e248 (Task 2), 48bcab7 (Task 3). Final CLI checks on invalid fake config and unreachable DB each exited 1 with sanitized output. Integration choice remains pending; branch not merged/pushed.
+Final review rulings: explicit read-only cookies, lazy runtime singleton, syntactic URL validation and invoked CLI config are consistent with this slice. Hosted verification, domain migrations, auth/refresh and payment are deferred to their owning tasks; no provider success inferred from mocks. Known tooling advisories remain tracked. Commits: 727b6ff (Task 1), 1c5e248 (Task 2), 48bcab7 (Task 3). Final CLI checks on invalid fake config and unreachable DB each exited 1 with sanitized output. User selected option 1: merged to main locally. No GitHub push performed.
+
+Merge verification: main lokal pada 6 Oktober 2026, npm ci berhasil, 22 tests pass, lint/build/typecheck pass. Provider hosted tetap pending; integrasi lokal tidak menjalankan migration atau mengirim perubahan ke GitHub.

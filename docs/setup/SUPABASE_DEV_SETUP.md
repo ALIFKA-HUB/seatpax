@@ -11,9 +11,9 @@ Status: aplikasi/adapters lokal tersedia. **Project hosted, query nyata dan konf
 
 ## 2. Isi environment lokal
 
-Gunakan folder checkout tempat aplikasi dijalankan. Implementasi sekarang berada di worktree:
-`C:\Users\ASUS\.codex\worktrees\day2-supabase-setup\SeatPax`.
-Setelah integrasi branch, gunakan checkout project utama. File ignored tidak ikut merge.
+Gunakan folder checkout tempat aplikasi dijalankan. Implementasi sudah diintegrasikan ke main lokal pada folder project:
+`C:\Users\ASUS\Documents\ALIFKA\PROJECT\Ticketing\SeatPax`.
+Jalankan aplikasi dan isi .env.local pada folder tersebut. File ignored tidak ikut merge.
 
 ```powershell
 Copy-Item .env.example .env.local
@@ -76,4 +76,4 @@ ESLint 9 dipertahankan karena eslint-plugin-react pada eslint-config-next belum 
 
 ## Bukti slice lokal — 6 Oktober 2026
 
-22 unit tests pass; ESLint, TypeScript dan Next production build pass. GET / menghasilkan HTTP 200 dan heading Seatpax. Probe client Supabase dibuild dengan fake configuration; fake DB canary tidak muncul di client assets. Import database server-only dari client ditolak oleh Next; probe sementara sudah dihapus. CLI invalid env dan database tidak terjangkau masing-masing exit 1 tanpa membocorkan fake secret. Review GPT-6 Luna medium: tidak ada temuan Critical/Important/Minor. Hosted checklist tetap pending. Branch feat/day2-supabase-setup belum diintegrasikan ke main.
+22 unit tests pass; ESLint, TypeScript dan Next production build pass. GET / menghasilkan HTTP 200 dan heading Seatpax. Probe client Supabase dibuild dengan fake configuration; fake DB canary tidak muncul di client assets. Import database server-only dari client ditolak oleh Next; probe sementara sudah dihapus. CLI invalid env dan database tidak terjangkau masing-masing exit 1 tanpa membocorkan fake secret. Review GPT-6 Luna medium: tidak ada temuan Critical/Important/Minor. Hosted checklist tetap pending. User memilih merge lokal; perubahan sudah diintegrasikan ke main. Hosted checklist tetap pending.
