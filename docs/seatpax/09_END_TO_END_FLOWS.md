@@ -1,5 +1,7 @@
 # Seatpax — End-to-End Product Flows
 
+> **Fondasi diadopsi — D2026-10-06-02:** Retained flow mengikuti fondasi diadopsi: login akun sendiri, satu seat/passenger, bounded grace, confirmation atomik atau conflict, authorized QR read, boarding lalu snack. Hold release manual hanya sebelum initiation; refund conflict berupa pencatatan MOCK dengan audit. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
 > **Active release — 6 Oktober 2026:** Flow aktif: login Email OTP → search → seat hold → one-passenger checkout → Sandbox payment → ticket → manifest → boarding/snack. Flow guest claim, crew cash sale, reschedule dan trip cancellation di bawah ditunda. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
 
 

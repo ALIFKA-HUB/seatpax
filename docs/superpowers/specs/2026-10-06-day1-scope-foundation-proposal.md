@@ -1,6 +1,6 @@
 # Seatpax Hari 1 — Proposal scope dan fondasi
 
-Tanggal: 6 Oktober 2026. Status: **SCOPE DIADOPSI; FONDASI F01–F11 MASIH PROPOSAL**. Keputusan scope tercatat sebagai D2026-10-06-01; jawaban pengguna “oke” mengadopsi paket scope yang disajikan, bukan seluruh detail teknik pada dokumen ini.
+Tanggal: 6 Oktober 2026. Status: **SCOPE DAN FONDASI DIADOPSI; TABEL AWAL DI BAWAH HISTORIS**. Keputusan scope tercatat sebagai D2026-10-06-01; jawaban pengguna “oke” mengadopsi paket scope yang disajikan, bukan seluruh detail teknik pada dokumen ini.
 
 ## Tujuan sesi
 
@@ -53,7 +53,7 @@ Printer, offline cash, marketplace finance, GPS, dan microservices tetap deferre
 
 ## Keputusan B — Usulan fondasi untuk retained flow
 
-Bagian ini adalah proposal awal. [Rancangan fondasi terbaru](2026-10-06-foundation-design.md) menjadi dokumen review F01–F11, masih pending adopsi. Rancangan terbaru mengganti usulan F06 dengan deadline berdasarkan waktu pemrosesan sesudah lock, serta memperjelas F07 menjadi token stabil yang disimpan terenkripsi. Jika berbeda, gunakan rancangan terbaru sebagai rekomendasi pending. Tidak ada migration atau implementasi yang dibuat berdasarkan proposal ini.
+Bagian ini adalah proposal awal historis; D2026-10-06-02 mengadopsi rancangan terbaru. [Rancangan fondasi terbaru](2026-10-06-foundation-design.md) menjadi kontrak F01–F11 yang diadopsi. Rancangan terbaru mengganti usulan F06 dengan deadline berdasarkan waktu pemrosesan sesudah lock, serta memperjelas F07 menjadi token stabil yang disimpan terenkripsi. Jika berbeda, gunakan rancangan terbaru sebagai keputusan diadopsi. Tidak ada migration atau implementasi yang dibuat berdasarkan proposal ini.
 
 | ID | Usulan aturan | Alasan dan kaitan review |
 | --- | --- | --- |
@@ -76,14 +76,14 @@ Usulan F05/F06 tidak menjanjikan bahwa provider success selalu langsung menerbit
 - [x] Repo public dan commit dokumentasi awal tersedia.
 - [x] Proposal target release ditulis dengan dampak dan pengecualian eksplisit.
 - [x] Pengguna memilih target release yang direkomendasikan pada 6 Oktober 2026.
-- [ ] Fondasi F01–F11 direview, direvisi bila perlu, dan diadopsi.
-- [ ] Scope/ledger dan dokumen domain/schema/API terkait diselaraskan terhadap keputusan yang diadopsi.
+- [x] Fondasi F01–F11 direview, direvisi bila perlu, dan diadopsi.
+- [x] Scope/ledger dan dokumen domain/schema/API terkait diselaraskan terhadap keputusan yang diadopsi.
 - [ ] Kalender Hari 2–30 disesuaikan bila fitur tambahan dipertahankan.
-- [ ] Dokumen keputusan dan hasil review dicommit; D01 dicentang hanya ketika keputusan selesai.
+- [x] Hasil Hari 1 didokumentasikan dan disinkronkan; D01 selesai. Rencana setup tetap memerlukan review sebelum implementasi.
 
 Scaffolding aplikasi bukan hasil yang diwajibkan Hari 1. Setelah keputusan selesai, Hari 2 membangun setup terhadap kontrak yang sudah jelas.
 
-## Review independen
+## Review independen — catatan sebelum adopsi fondasi
 
 Review sinkronisasi setelah adopsi scope: scope, ledger dan kalender sudah membedakan keputusan produk yang diadopsi dari F01–F11 yang masih pending. D01 tetap belum selesai. Pemeriksaan tautan lokal lulus; review ini hanya untuk dokumentasi, bukan bukti implementasi.
 

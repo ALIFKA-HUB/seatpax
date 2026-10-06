@@ -1,5 +1,7 @@
 # Seatpax — Booking, Payment, Refund & Transaction Rules
 
+> **Fondasi diadopsi — D2026-10-06-02:** Hold login-only; satu booking terkait satu hold unik dan satu passenger akun checkout. Intent/order server yang tersimpan sebelum base deadline/cutoff memberi grace sekali +60 detik; provider call setelah commit. Auto-confirm memakai waktu processing sesudah lock, bukan receipt/provider timestamp. Late success mencatat PAID + PAYMENT_CONFLICT tanpa ticket. Admin recheck atau MOCK refund; aturan lengkap bagian 4–5 fondasi. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
 > **Active release — 6 Oktober 2026:** Checkout aktif membutuhkan login dan menerima satu passenger/seat per booking. Contoh booking grup dan state reschedule di bawah adalah referensi perluasan; Sandbox payment, verified/idempotent webhook, late conflict dan ticket issuance tetap dikerjakan. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
 
 

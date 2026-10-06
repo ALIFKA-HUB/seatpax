@@ -2,7 +2,7 @@
 
 Seatpax documentation is intentionally modular: **one context = one Markdown file**. Use this file as the entry point.
 
-**Current release:** The user adopted the 30-day demo subset on 6 October 2026. Read the active release section in `02_MVP_SCOPE.md` and decision D2026-10-06-01 in `19_DECISION_LEDGER.md` before using older guest/group-booking/cash/reschedule examples. Technical foundation proposals remain pending.
+**Current release:** The user adopted the 30-day demo subset on 6 October 2026. Read the active release section in `02_MVP_SCOPE.md` and decision D2026-10-06-01 in `19_DECISION_LEDGER.md` before using older guest/group-booking/cash/reschedule examples. The technical foundation was separately adopted as D2026-10-06-02; read its design before implementing retained flows.
 
 ## Product & scope
 
@@ -73,9 +73,11 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 
 ## Local organization
 
-[Foundation design for review](../superpowers/specs/2026-10-06-foundation-design.md) refines the retained-flow contracts. It is pending adoption and does not override the current product decisions.
+[Adopted foundation design](../superpowers/specs/2026-10-06-foundation-design.md) refines the retained-flow contracts. It was adopted as D2026-10-06-02 and takes precedence over earlier technical proposals for retained flows.
 
-[30-day delivery calendar](../superpowers/plans/2026-10-05-seatpax-30-day-delivery.md) schedules the reduced release adopted on 6 October 2026 for 2–3 hours/day. Scope authority remains `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md`; technical foundation review is still pending.
+[Day 2 setup implementation plan](../superpowers/plans/2026-10-06-day2-app-supabase-setup.md) defines app/environment/database/Supabase adapters. Written plan review is pending; the user selected inline execution through executing-plans.
+
+[30-day delivery calendar](../superpowers/plans/2026-10-05-seatpax-30-day-delivery.md) schedules the reduced release adopted on 6 October 2026 for 2–3 hours/day. Scope authority remains `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md`; foundation adoption and specification synchronization complete D01; setup implementation remains pending.
 
 Imported on 5 October 2026: 22 source Markdown files. The source folder `docs/seatpax_docs` was renamed to `docs/seatpax`. `14_BRAND_LOGO.md` was renamed to `13A_BRAND_LOGO.md` to group it beside UI/UX and remove duplicate `14` numbering without renumbering all engineering/delivery files.
 

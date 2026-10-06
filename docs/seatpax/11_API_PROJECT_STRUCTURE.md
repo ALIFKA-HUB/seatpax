@@ -1,6 +1,8 @@
 # Seatpax — API Boundary & Project Structure
 
-> **Active release — 6 Oktober 2026:** Endpoint guest ticket claim, cash booking, reseat dan reschedule serta refund umum pada daftar lama bukan endpoint wajib release aktif. Implementasikan retained flow dan minimal payment-conflict resolution sesuai scope aktif; kontrak detailnya masih perlu ditetapkan. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
+> **Fondasi diadopsi — D2026-10-06-02:** Tambahkan GET/POST /api/admin/trips/:id/crew-assignments, DELETE /api/admin/trips/:id/crew-assignments/:userId dan POST /api/admin/bookings/:id/payment-conflict/resolve (CONFIRM atau MOCK_REFUND, alasan wajib/idempotent). DELETE hold hanya sebelum initiation. Ticket token route wajib authorization; scan read-only, board/snack terpisah. Handler tipis memanggil domain service; transaction/authz mengikuti fondasi. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
+> **Active release — 6 Oktober 2026:** Endpoint guest ticket claim, cash booking, reseat dan reschedule serta refund umum pada daftar lama bukan endpoint wajib release aktif. Implementasikan retained flow dan minimal payment-conflict resolution sesuai scope aktif; kontrak detailnya mengikuti fondasi diadopsi. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
 
 
 > Modular documentation extracted from the Seatpax master specification.

@@ -1,6 +1,6 @@
 # Seatpax — Rancangan fondasi release 30 hari
 
-Tanggal: 6 Oktober 2026. **Status: READY FOR USER REVIEW — desain belum diadopsi dan belum diimplementasikan.** Scope produk sudah diadopsi melalui D2026-10-06-01. Dokumen ini memperjelas F01–F11 pada [proposal Hari 1](2026-10-06-day1-scope-foundation-proposal.md), bukan memperluas scope.
+Tanggal: 6 Oktober 2026. **Status: ADOPTED — D2026-10-06-02; belum diimplementasikan.** Scope produk sudah diadopsi melalui D2026-10-06-01. Pengguna menerima dokumen tertulis dengan “fondasi oke, lanjut”. Dokumen ini memperjelas F01–F11 pada [proposal Hari 1](2026-10-06-day1-scope-foundation-proposal.md), bukan memperluas scope.
 
 ## Ringkasan untuk pengguna
 
@@ -120,7 +120,7 @@ Tidak ada test aplikasi yang dijalankan pada tahap desain ini. Bukti tersebut me
 
 Review read-only oleh GPT-6 Luna, effort medium, menemukan race suspension versus sales pada wording guard awal. Revisi §3 menetapkan lock bersama dan urutan commit secara eksplisit. Pemeriksaan mandiri dan tautan lokal selesai; review ini merupakan pemeriksaan desain, bukan bukti implementasi.
 
-- Scope dan repo sudah selesai; dokumen ini menutup rancangan gap R01–R06/R10–R14 untuk retained flow setelah diadopsi. R07/R08/R09 dan vehicle-replacement portion R15 ditunda bersama fitur terkait.
-- Pengguna perlu review ringkasan perilaku dan menerima/revisi dokumen tertulis ini. Detail teknis merupakan rekomendasi; pengguna tidak diminta memilih format lock atau SQL.
-- Setelah review diterima: sinkronkan spec modular/schema/API dan ledger; buat plan subsystem pertama untuk setup/auth/tenant, review plan sebelum kode sesuai workflow project. Hari 1 dicentang selesai sesudah foundation adoption dan sinkronisasi.
+- Scope dan repo sudah selesai; dokumen ini menetapkan kontrak retained flow R01–R06/R10–R12/R14 dan suspension/occupancy R15. R13 event-key/status mapping masih harus dirinci dari dokumentasi Midtrans pada payment slice. R07/R08/R09 dan vehicle-replacement portion R15 ditunda bersama fitur terkait.
+- Pengguna telah menerima dokumen tertulis ini pada 6 Oktober 2026. Detail teknis menjadi kontrak desain diadopsi; pengguna tidak diminta memilih format lock atau SQL.
+- Adopsi dicatat di ledger dan delta spec modular/schema/API disinkronkan. Hari 1 selesai pada tahap keputusan/dokumentasi. Plan pertama mencakup setup/koneksi Hari 2; auth/tenant mengikuti Hari 3–4. Plan perlu review sebelum kode sesuai workflow project.
 - Dokumen ini tidak menjadikan setup, migration, atau provider account creation sudah disetujui/selesai secara otomatis.

@@ -1,5 +1,7 @@
 # Seatpax — Route, Segment, Seat Inventory & Concurrency
 
+> **Fondasi diadopsi — D2026-10-06-02:** Anchor inventory seat×segment dibuat saat publish. Semua occupancy writes memakai lock inventory terurut dan recheck waktu DB setelah lock. Expired hold tidak memblokir meski worker tertunda. Company FOR SHARE untuk penjualan versus FOR UPDATE untuk suspension; aturan lengkap dan lock order mengikuti bagian 3 rancangan fondasi. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

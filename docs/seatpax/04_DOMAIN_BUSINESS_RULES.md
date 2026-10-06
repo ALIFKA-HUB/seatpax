@@ -1,5 +1,7 @@
 # Seatpax — Domain Glossary & Core Business Rules
 
+> **Fondasi diadopsi — D2026-10-06-02:** Snapshot trip immutable sejak publish. Sales cutoff mengikuti departure stop asal atau global cutoff yang lebih awal. QR resolve hanya membaca; boarding membutuhkan konteks stop asal; snack sesudah boarding. Tidak ada auto no-show. Suspension memblokir penjualan baru dan menjaga lifecycle initiated payment/ticket existing. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
 > **Active release — 6 Oktober 2026:** Cash sale, reschedule, operational reseat, vehicle replacement pada trip terjual, dan cancellation/refund workflow umum ditunda dari release aktif. Aturan historisnya di bawah dipertahankan sebagai referensi. Inventory, fare, hold/grace, dan payment conflict tetap masuk; detail fondasi belum seluruhnya diadopsi. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
 
 

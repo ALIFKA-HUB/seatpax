@@ -2,7 +2,7 @@
 
 > **For agentic workers:** Use `superpowers:executing-plans` for approved implementation tasks. This document is a delivery calendar; define the concrete file/API/test contract for each subsystem before implementing it. Do not execute proposed scope reductions until the user adopts them and the scope/decision ledger are updated.
 
-> **Update 6 October 2026:** Reduced scope adopted by the user and recorded as D2026-10-06-01 in the decision ledger. Technical foundation review and subsystem contracts remain pending. D01 is in progress, not complete.
+> **Update 6 October 2026:** Reduced scope adopted by the user and recorded as D2026-10-06-01 in the decision ledger. Foundation adopted as D2026-10-06-02 and synchronized. D01 complete; Day 2 concrete setup plan is pending review.
 
 **Goal:** Deliver a stable, demonstrable Seatpax application within 30 days at 2–3 focused hours per day, preserving segment inventory, payment correctness, tenant isolation, QR, manifest, boarding, and snack claims.
 
@@ -24,7 +24,7 @@
 
 ## Adopted scope for this deadline — 6 October 2026
 
-The active release section of `02_MVP_SCOPE.md` and decision D2026-10-06-01 in `19_DECISION_LEDGER.md` are authoritative. The reduced package below was adopted on D01; detailed technical policies are still under review.
+The active release section of `02_MVP_SCOPE.md` and decision D2026-10-06-01 in `19_DECISION_LEDGER.md` are authoritative. The reduced package below was adopted on D01; technical foundation separately adopted as D2026-10-06-02.
 
 | Area | Adopted 30-day release | Difference from original MVP |
 | --- | --- | --- |
@@ -75,8 +75,8 @@ Do not fill tomorrow's slot by starting another module before today's dependency
 
 | Done | Day / date | Main deliverable | Checkable result |
 | --- | --- | --- | --- |
-| [ ] | D01 — 6 Oct | Agree reduced release and decision list; update scope/ledger only after adoption. Decide crew assignment, immutable layout, login-only booking, inventory locks, hold release/session link, payment deadline, and token lifecycle. | No contradictory rule remains for the first implementation slice; remaining review findings mapped to their owning day. |
-| [ ] | D02 — 7 Oct | Create app skeleton and database connection, scripts/env example, basic UI tokens; verify Supabase auth configuration and access to Midtrans Sandbox; establish a reachable staging webhook route early. | App boots, DB query works, secret keys remain server-side; provider/account blockers discovered now. |
+| [x] | D01 — 6 Oct | Agree reduced release and decision list; update scope/ledger only after adoption. Decide crew assignment, immutable layout, login-only booking, inventory locks, hold release/session link, payment deadline, and token lifecycle. | No contradictory rule remains for the first implementation slice; remaining review findings mapped to their owning day. |
+| [ ] | D02 — 7 Oct | Create app skeleton and database connection, scripts/env example, basic UI tokens; verify Supabase auth configuration and access to Midtrans Sandbox. Follow the [concrete setup plan](2026-10-06-day2-app-supabase-setup.md). Staging webhook reachability moves to the payment integration/deployment slice. | App boots, real read-only DB query works, secret keys remain server-side; provider/account blockers recorded. A public payment endpoint waits for its verified adapter. |
 | [ ] | D03 — 8 Oct | Email OTP/session flow and server auth helper. Minimal login/logout and protected layout. | Successful login/logout; anonymous users cannot access protected pages or mutations. |
 | [ ] | D04 — 9 Oct | Company/membership/crew assignment foundation, tenant checks and applicable RLS, two-company seed. | Admin A denied company B; crew denied unassigned trip; deterministic seed works. |
 | [ ] | D05 — 10 Oct | Minimal ordered route stops, service class, adjacent segment fare forms and calculation. | Create/select four-stop route; valid fare sum; reversed/equal endpoints rejected. |
@@ -119,7 +119,7 @@ Feature deferral cannot compensate for an unproven inventory transaction or inse
 
 ## Completion checklist for the adopted release
 
-- [x] Reduced scope adopted and reflected in scope/decision ledger on 6 October 2026; technical foundation remains pending.
+- [x] Reduced scope adopted and reflected in scope/decision ledger on 6 October 2026; technical foundation separately adopted as D2026-10-06-02.
 - [ ] Real Sandbox payment succeeds from hosted Passenger flow.
 - [ ] Adjacent segments reuse a seat; overlapping intervals cannot double-book under concurrency.
 - [ ] Expiry, grace, late payment and duplicate notifications preserve inventory/ticket consistency.
@@ -134,7 +134,7 @@ Feature deferral cannot compensate for an unproven inventory transaction or inse
 
 Ask for one deliverable at a time, for example:
 
-> Read `docs/seatpax/00_INDEX.md` and the 30-day delivery plan. Work on D01: prepare the reduced-scope decision proposal and resolve only the foundational spec gaps. Show the decisions before changing any FINAL product policy. Do not start app implementation yet.
+> Read `docs/seatpax/00_INDEX.md` and the 30-day delivery plan. D01 decisions are adopted. Read the concrete Day 2 setup plan; implement only after written plan review, using the user-selected executing-plans method.
 
 After scope decisions and the first subsystem contract are settled, each implementation session should say which day/task is being executed, produce a working slice, run its meaningful checks, and record evidence and the next dependency. Tick a day only when its result is achieved; calendar passage alone is not completion.
 

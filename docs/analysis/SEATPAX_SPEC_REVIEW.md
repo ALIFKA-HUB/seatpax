@@ -112,6 +112,10 @@ Tetapkan waktu keberangkatan yang ditampilkan untuk origin passenger, snapshot j
 
 [Ledger](../seatpax/19_DECISION_LEDGER.md) dan schema mengizinkan company suspension serta vehicle replacement. Tetapkan dampak suspend terhadap penjualan baru dan tiket existing; definisikan penanganan jika armada pengganti lebih kecil, apa yang terjadi pada active holds, kapan sales dihentikan sementara, dan bagaimana NEEDS_RESEAT tampil di manifest. Manual reseat sudah final; resolver otomatis tetap deferred.
 
+## Update adopsi — 6 Oktober 2026
+
+D2026-10-06-01 mengadopsi reduced demo scope; D2026-10-06-02 mengadopsi [fondasi retained flow](../superpowers/specs/2026-10-06-foundation-design.md). R01–R06/R10–R12/R14 serta retained suspension/occupancy R15 memiliki kontrak desain pada fondasi dan overlay spec terkait, belum bukti implementasi. R07–R09 dan replacement portion R15 ditunda bersama fitur terkait. R13 event-key/status mapping Midtrans masih memerlukan verifikasi resmi dan kontrak adapter pada payment slice; persistence/retry/confirmation boundaries sudah ditetapkan. Rekomendasi lain di review ini tidak otomatis diadopsi.
+
 ## Kerapian dokumentasi yang sudah ditangani
 
 | Masalah | Perubahan |

@@ -1,5 +1,7 @@
 # Seatpax — Security, Reliability & Offline Strategy
 
+> **Fondasi diadopsi — D2026-10-06-02:** RLS/default-deny untuk exposed tables tidak menggantikan authorization pada server privileged queries. Semua resource mengecek owner/tenant/assignment; QR hash + encrypted stable token, tanpa PII pada QR/log. Inventory memakai deterministic lock protocol; webhook persisted sebelum retry processing; timestamp receipt bukan hak inventory. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

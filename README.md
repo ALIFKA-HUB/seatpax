@@ -15,6 +15,6 @@ Project saat ini berisi dokumentasi. Belum ada aplikasi, migration database, ata
 - [Roadmap](docs/seatpax/17_DEVELOPMENT_ROADMAP.md)
 - [Rencana harian 30 hari — scope diadopsi untuk 2–3 jam/hari](docs/superpowers/plans/2026-10-05-seatpax-30-day-delivery.md)
 
-Scope demo 30 hari diadopsi pada 6 Oktober 2026. Fondasi teknis masih direview pada [dokumen Hari 1](docs/superpowers/specs/2026-10-06-day1-scope-foundation-proposal.md); aplikasi belum diimplementasikan.
+Scope demo 30 hari diadopsi pada 6 Oktober 2026. Fondasi teknis diadopsi sebagai D2026-10-06-02 pada [rancangan fondasi](docs/superpowers/specs/2026-10-06-foundation-design.md); aplikasi belum diimplementasikan.
 
 Dokumen modular menjadi acuan aktif. Arsip master dipertahankan sebagai konteks historis. Temuan analisis perlu dituntaskan pada spesifikasi terkait sebelum dipakai sebagai kontrak implementasi.

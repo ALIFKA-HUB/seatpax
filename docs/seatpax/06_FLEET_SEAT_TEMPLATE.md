@@ -1,5 +1,7 @@
 # Seatpax — Fleet, Vehicle & Seat Template
 
+> **Fondasi diadopsi — D2026-10-06-02:** Publish menyimpan layout_snapshot lengkap dan trip_seats dari input yang sama, atomik. Layout/vehicle/route/class/schedule tidak dapat diubah setelah publish pada release ini; template/source dapat diubah untuk trip mendatang. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

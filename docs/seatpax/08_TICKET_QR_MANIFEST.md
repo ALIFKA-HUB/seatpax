@@ -1,5 +1,7 @@
 # Seatpax — Ticket, QR, Entitlements & Passenger Manifest
 
+> **Fondasi diadopsi — D2026-10-06-02:** Token QR random 32 byte, unique hash untuk lookup dan ciphertext terenkripsi server untuk render ulang. Owner/tenant Admin/assigned crew tetap harus authorized; QR tidak memberi akses PII anonim. Ticket/active assignment dan boarding/snack memiliki uniqueness; resolve tidak mutate, snack membutuhkan boarding. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

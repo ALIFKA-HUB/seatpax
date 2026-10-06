@@ -38,7 +38,7 @@ This is a demo release subset, not completion of every original MVP acceptance c
 
 ### Foundation status
 
-Scope approval does not adopt all proposed technical policies. Assignment administration, immutable snapshot details, hold/booking ownership, deadline/receipt semantics, QR token lifecycle, suspension and stop-time policies remain to be reviewed in [Day 1 foundation proposal](../superpowers/specs/2026-10-06-day1-scope-foundation-proposal.md). Do not treat those proposal defaults as implemented or FINAL.
+Technical foundation F01–F11 was separately adopted as D2026-10-06-02: [foundation design](../superpowers/specs/2026-10-06-foundation-design.md). It governs retained-flow authorization, snapshots, locking, hold/payment deadlines, QR lifecycle and suspension. Design adoption does not imply implemented behavior.
 
 
 > Modular documentation extracted from the Seatpax master specification.

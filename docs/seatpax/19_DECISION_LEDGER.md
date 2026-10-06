@@ -23,7 +23,23 @@
 
 **Authority:** [Active release scope](02_MVP_SCOPE.md) and its release acceptance checklist. Earlier decisions below retain context and future behavior, but do not restore deferred features to this release.
 
-**Pending:** Technical foundation F01–F11 in [Day 1 proposal](../superpowers/specs/2026-10-06-day1-scope-foundation-proposal.md) need separate review. This scope adoption does not approve all schema/security/deadline defaults.
+**Foundation:** Subsequently adopted separately as D2026-10-06-02 below.
+
+## D2026-10-06-02 — Adopt retained-flow technical foundation
+
+**Status: ADOPTED.** On 6 October 2026 the user approved the written design with “fondasi oke, lanjut”. Authority: [reviewed foundation](../superpowers/specs/2026-10-06-foundation-design.md), sections 1–7, refining F01–F11. This approves the design, not a claim of implemented behavior.
+
+- Active membership and assigned-trip authorization; admin manages crew assignments within its PO. Privileged server authorization and exposed-table RLS are distinct safeguards.
+- Atomic immutable stop/time/fare/layout snapshots at first publish; stop-origin cutoff and explicit crew boarding context.
+- Pre-created seat×segment anchors, deterministic inventory locks, post-lock actual DB time, logical expiry independent of cleanup. Sales company guard `FOR SHARE` serializes against suspension `FOR UPDATE`.
+- Login-only owner hold, one hold/booking/passenger, fixed 10-minute base deadline, one +60-second grace on persisted valid server initiation before cutoff/base deadline. Provider calls outside transaction; same-order retry; manual release only before initiation.
+- Confirmation deadline uses processing time after lock. Verified late payment records PAID plus PAYMENT_CONFLICT without ticket. Admin confirms only after eligibility/availability recheck or records terminal MOCK refund with audit; original financial success retained.
+- Stable random QR token with unique hash and encrypted ciphertext; authenticated owner/tenant admin/assigned crew resolve. Boarding/snack uniquely recorded, scan read-only, snack after boarding.
+- Suspension denies publish/new hold/new initiation; valid initiated flow and existing tickets continue. Reactivation restores eligible sale-ready trips without resurrecting expired/terminal resources.
+
+**Superseded proposal:** Initial F06 receipt-time recommendation and F07 unspecified server-only token storage are replaced by processing-time confirmation and encrypted stable token in the adopted design. Deferred features retain D2026-10-06-01 boundaries.
+
+**Implementation boundary:** Day 2 is app/configuration/connection; Day 3 auth flow; Day 4 tenant schema/RLS/seed; remaining domain contracts follow their calendar tasks. Midtrans exact event key/status mapping still requires official-provider integration review on the payment slice. The user selected `executing-plans` for inline execution; the concrete setup plan requires its written review before implementation.
 
 
 > Modular documentation extracted from the Seatpax master specification.
