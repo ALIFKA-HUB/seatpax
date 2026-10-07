@@ -15,8 +15,9 @@ export function createPublicationService(repo:TripRepository){return {
   const clock=await tx<{now:string}[]>`select clock_timestamp()::text as now`;
   const projection=projectSnapshot(source,input(trip),clock[0].now);
   await repo.persistProjection(tx,ctx,id,projection);
-  await tx`update public.trips set status='OPEN_FOR_SALE',published_at=clock_timestamp(),layout_snapshot=${tx.json(projection.layout)},identity_snapshot=${tx.json(projection.identity)},revision=revision+1,updated_at=now() where id=${id} and company_id=${ctx.companyId}`;
-  await tx`insert into public.trip_audit_events(company_id,trip_id,actor_id,action,metadata) values(${ctx.companyId},${id},${ctx.actorId},'PUBLICATION',${tx.json({revision:trip.revision+1,source:projection.identity})})`;
+  // Text OID 25 avoids JSON serializer differences between raw postgres and Drizzle clients.
+  await tx`update public.trips set status='OPEN_FOR_SALE',published_at=clock_timestamp(),layout_snapshot=${tx.typed(JSON.stringify(projection.layout),25)}::jsonb,identity_snapshot=${tx.typed(JSON.stringify(projection.identity),25)}::jsonb,revision=revision+1,updated_at=now() where id=${id} and company_id=${ctx.companyId}`;
+  await tx`insert into public.trip_audit_events(company_id,trip_id,actor_id,action,metadata) values(${ctx.companyId},${id},${ctx.actorId},'PUBLICATION',${tx.typed(JSON.stringify({revision:trip.revision+1,source:projection.identity}),25)}::jsonb)`;
   return {tripId:id,revision:trip.revision+1,status:'OPEN_FOR_SALE'};
  });},
  preview(ctx:Context,id:string){resourceId(id);return repo.runAdmin(ctx,async tx=>{

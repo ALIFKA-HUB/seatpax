@@ -9,13 +9,13 @@
 
 ## Implemented fleet schema delta — 7 October 2026
 
-Sections 20.9–20.11 above are conceptual history; the development database uses the implemented migration [`0002_fleet_seat_templates.sql`](../../drizzle/0002_fleet_seat_templates.sql), with Drizzle definitions in `lib/db/schema.ts`. It replaces the older `metadata_json` proposal with explicit fields and company-scoped composite references.
+Sections 20.9–20.11 above are conceptual history; the development database uses implemented migrations [`0002_fleet_seat_templates.sql`](../../drizzle/0002_fleet_seat_templates.sql) and the Trip Engine migration, with Drizzle definitions in `lib/db/schema.ts`. These replace the older `metadata_json` proposal with explicit fields and company-scoped composite references. Trip schema and current verification limits are summarized in [Trip Engine setup evidence](../setup/TRIP_ENGINE_SETUP.md).
 
 - `seat_templates`: company, trimmed name, dimensions, `ACTIVE|ARCHIVED`, positive version and timestamps.
 - `seat_template_cells`: company/template FK, unique grid coordinate, bounded coordinate, type, optional label and seat code. SEAT codes are uppercase ASCII `[A-Z0-9-]{1,8}`; non-SEAT codes are null. The service validates the complete rectangle and at least one seat before an atomic replacement.
 - `vehicles`: company, name, normalized plate, optional fleet number, same-company seat-template/service-class references, `ACTIVE|MAINTENANCE|INACTIVE`, positive revision and timestamps. Plate is unique per company.
 - All three tables enable RLS and revoke all table grants from `anon` and `authenticated`; browser access goes through the guarded server domain.
-- Fleet integration tests verify tenant FK failures, malformed cell checks, browser grant denial and cleanup of unique fixtures. Published-trip snapshots are not part of migration 0002.
+- Fleet integration tests verify tenant FK failures, malformed cell checks, browser grant denial and cleanup of unique fixtures. Migration 0002 contains fleet sources; the additive Trip Engine migration supplies draft/publication snapshots, inventory anchors and crew assignments. The anchors do not encode occupancy or hold status.
 
 
 # 19. Recommended Data Model — Conceptual ERD
@@ -554,3 +554,7 @@ Jangan membuat puluhan index tanpa query nyata. Index final harus diverifikasi d
 ## Adopted route template slice — 7 October 2026
 
 The user approved the route/pricing design and implementation plan. Five template tables (stops, routes, route_stops, service_classes, segment_fares), exact IDR bigint adjacent fares, 2–50 unique ordered stops, soft status, tenant composite FKs and revision conflict checks are implemented. Reorder/add/remove requires clearing all route fares first. Preview creates no inventory or trip. See ../superpowers/specs/2026-10-07-route-pricing-design.md and ../setup/ROUTE_PRICING_SETUP.md for contracts and verification limits.
+
+## Implemented Trip Engine schema — 7 October 2026
+
+Migration [0003_trip_engine.sql](../../drizzle/0003_trip_engine.sql) adds `trips`, `trip_stops`, `trip_segments`, `trip_seats`, `trip_seat_inventory`, `trip_crew_assignments`, and `trip_audit_events`. Trips retain source references for drafts and independent JSON identity/full-grid snapshots after publication. Stops, segments, seats and anchors carry same-company/same-trip composite constraints. Crew assignments reference the same-company CREW membership and record active/revoked transitions. Every new table enables RLS and revokes browser-role grants; access is through guarded server services. Completeness and atomic publication are domain invariants, supported by database state/uniqueness/foreign-key checks.

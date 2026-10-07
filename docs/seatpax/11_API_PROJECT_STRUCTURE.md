@@ -7,6 +7,10 @@
 
 > Modular documentation extracted from the Seatpax master specification.
 
+## Implemented Trip Engine boundary — 7 October 2026
+
+Trip actions and data adapters are in `app/admin/trip-actions.ts`, `app/admin/trip-data.ts` and `app/crew/data.ts`; guarded business logic is in `modules/trip/`. Admin pages support draft list/create/edit, publication, snapshot detail and crew assignment. Crew pages list and read assigned published trips. These are server actions/data adapters, not the REST endpoint sketches below. No passenger search/availability, hold, booking or payment endpoint is part of this slice. Evidence and browser limitations: [Trip Engine setup](../setup/TRIP_ENGINE_SETUP.md).
+
 Fleet admin server actions and tenant-scoped services are implemented in `app/admin/fleet-actions.ts` and `modules/fleet/`. They accept no client-supplied actor/company fields; the verified user and active ADMIN_PO guard establish the tenant context. See [fleet setup evidence](../setup/FLEET_SETUP.md). Older endpoint sketches below remain conceptual and are not separately exposed REST APIs.
 
 

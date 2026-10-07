@@ -7,6 +7,12 @@
 
 > Modular documentation extracted from the Seatpax master specification.
 
+## Implemented Trip Engine overlay — 7 October 2026
+
+The Trip Engine implements DRAFT and OPEN_FOR_SALE preparation states. Admin edits drafts with expected-revision checks; first publication atomically snapshots route identity, ordered stop schedule, adjacent fares, complete seat layout and seat identities, then creates one lock anchor for each seat × segment. Source edits do not change published snapshot rendering. WIB is the input/display timezone; stored timestamps are instants. Missing required offsets or fares block publication; zero fare is valid. A first-stop departure offset other than zero blocks publish.
+
+OPEN_FOR_SALE means snapshot publication succeeded. It does not establish that a segment is available, nor does it authorize a sale. This implementation has no availability, hold, booking or payment flow. Crew assignment grants read access to an assigned published trip only while the crew membership and assignment remain active. See [Trip Engine evidence](../setup/TRIP_ENGINE_SETUP.md).
+
 
 # 8. Domain Glossary
 

@@ -40,6 +40,10 @@ This is a demo release subset, not completion of every original MVP acceptance c
 
 Technical foundation F01–F11 was separately adopted as D2026-10-06-02: [foundation design](../superpowers/specs/2026-10-06-foundation-design.md). It governs retained-flow authorization, snapshots, locking, hold/payment deadlines, QR lifecycle and suspension. Design adoption does not imply implemented behavior.
 
+### Trip preparation implementation status — 7 October 2026
+
+The approved Trip Engine preparation slice is implemented locally: Admin PO draft creation/edit, atomic publication of independent schedule/fare/full-layout snapshots and seat×segment inventory anchors, plus crew assignment and assigned published-trip read access. This does not implement passenger availability/search, holds, booking or sale processing; those remain the next inventory slice. See [Trip Engine setup evidence](../setup/TRIP_ENGINE_SETUP.md).
+
 
 > Modular documentation extracted from the Seatpax master specification.
 

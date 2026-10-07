@@ -55,3 +55,8 @@ it('serializes suspension and membership disable behind an in-flight publication
  const pid=await pidValue;let blocked=false;for(let i=0;i<30;i++){const row=await client`select cardinality(pg_blocking_pids(${pid}))>0 as blocked`;if(row[0].blocked){blocked=true;break;}}
  release();expect((await publishing).status).toBe('OPEN_FOR_SALE');await disabling;expect(blocked).toBe(true);await expect(createPublicationService(repo).publish(f.a,d.tripId,1)).rejects.toMatchObject({code:'forbidden'});
 }),60000);
+
+it('publishes and assigns crew through the application Drizzle connection',async()=>{
+ const {createDatabaseConnection}=await import('@/lib/db/connection');const {parseMigrationEnvironment}=await import('@/lib/env/migration');const {createCrewService}=await import('@/modules/trip/crew-service');const c=createDatabaseConnection(parseMigrationEnvironment(process.env).url);
+ try{await tripFixture(c.db.$client,async f=>{const repo=createTripRepository(c.db.$client);const d=await createDraftService(repo).save(f.a,f.input);expect((await createPublicationService(repo).publish(f.a,d.tripId,1)).status).toBe('OPEN_FOR_SALE');await createCrewService(repo).setAssignment(f.a,d.tripId,f.crewId,'ACTIVE');expect((await createCrewService(repo).detailMine(f.crewId,d.tripId)).inventoryCount).toBe(6);});}finally{await c.close();}
+},60000);

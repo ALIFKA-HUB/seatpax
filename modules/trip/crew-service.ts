@@ -18,7 +18,7 @@ export function createCrewService(repo:TripRepository){return {
    if(!rows.length&&status==='REVOKED')throw new DomainError('validation','Crew belum ditugaskan.');
    if(rows.length)await tx`update public.trip_crew_assignments set status=${status},assigned_by=case when ${status}='ACTIVE' then ${ctx.actorId}::uuid else assigned_by end,assigned_at=case when ${status}='ACTIVE' then clock_timestamp() else assigned_at end,revoked_at=case when ${status}='REVOKED' then clock_timestamp() else null end where trip_id=${id} and company_id=${ctx.companyId} and user_id=${userId}`;
    else await tx`insert into public.trip_crew_assignments(company_id,trip_id,user_id,membership_id,assigned_by) values(${ctx.companyId},${id},${userId},${target.id},${ctx.actorId})`;
-   await tx`insert into public.trip_audit_events(company_id,trip_id,actor_id,action,target_user_id,metadata) values(${ctx.companyId},${id},${ctx.actorId},${status==='ACTIVE'?'CREW_ASSIGNED':'CREW_REVOKED'},${userId},${tx.json({membershipId:target.id,previousStatus:rows[0]?.status??null})})`;
+   await tx`insert into public.trip_audit_events(company_id,trip_id,actor_id,action,target_user_id,metadata) values(${ctx.companyId},${id},${ctx.actorId},${status==='ACTIVE'?'CREW_ASSIGNED':'CREW_REVOKED'},${userId},${tx.typed(JSON.stringify({membershipId:target.id,previousStatus:rows[0]?.status??null}),25)}::jsonb)`;
    return {tripId:id,userId,status};
   });}catch(error){if(error instanceof DomainError)throw error;throw new DomainError('unavailable','Penugasan belum dapat diperbarui. Coba lagi.');}
  },

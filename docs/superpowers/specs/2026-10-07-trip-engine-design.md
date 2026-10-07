@@ -1,6 +1,6 @@
 # Seatpax — Trip Engine
 
-Tanggal: 7 Oktober 2026. Status: **APPROVED DESIGN — awaiting implementation plan approval.** Pengguna menyetujui paket jadwal, publikasi atomik, snapshot dan penugasan crew dengan “sstuju”, lalu spec tertulis dengan “spec oke”. Belum diimplementasikan.
+Tanggal: 7 Oktober 2026. Status: **APPROVED DESIGN — IMPLEMENTED LOCALLY; final verification and local integration remain in progress.** Pengguna menyetujui paket jadwal, publikasi atomik, snapshot dan penugasan crew dengan “sstuju”, lalu spec tertulis dengan “spec oke”. Plan kemudian disetujui. See [implementation evidence and pending checks](../../setup/TRIP_ENGINE_SETUP.md); this status does not claim build, complete browser verification or merge passed.
 
 ## Tujuan dan acuan
 

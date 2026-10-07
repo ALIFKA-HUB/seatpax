@@ -7,6 +7,10 @@
 
 > Modular documentation extracted from the Seatpax master specification.
 
+## Implemented Trip Engine access overlay — 7 October 2026
+
+Trip management is enforced by guarded server domain services. Admin PO access requires a verified identity and active ADMIN_PO membership for the trip company; Super Admin alone does not grant tenant trip access. Crew reads require a fresh active CREW membership and active assignment to the published trip. Crew cannot read drafts or unassigned/revoked trips. Assignment changes are admin-only and same-company; disable/revoke removes access on the next request. See [Trip Engine evidence](../setup/TRIP_ENGINE_SETUP.md). Passenger access and sales authorization are not implemented by this slice.
+
 
 # 5. Role Model
 
