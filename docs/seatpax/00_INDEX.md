@@ -77,7 +77,7 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 
 [Day 2 setup implementation plan](../superpowers/plans/2026-10-06-day2-app-supabase-setup.md) defines app/environment/database/Supabase adapters. The user approved the written plan on 6 October 2026 and selected inline execution through executing-plans.
 
-[30-day delivery calendar](../superpowers/plans/2026-10-05-seatpax-30-day-delivery.md) schedules the reduced release adopted on 6 October 2026 for 2–3 hours/day. Scope authority remains `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md`; foundation adoption and specification synchronization complete D01; local setup is integrated into main; hosted Supabase verification remains pending.
+[30-day delivery calendar](../superpowers/plans/2026-10-05-seatpax-30-day-delivery.md) schedules the reduced release adopted on 6 October 2026 for 2–3 hours/day. Scope authority remains `02_MVP_SCOPE.md` and `19_DECISION_LEDGER.md`; foundation adoption and specification synchronization complete D01; local setup and Email OTP are integrated into main. Hosted database connectivity was verified; the user reported successful OTP login, refresh, and logout. See [setup evidence](../setup/SUPABASE_DEV_SETUP.md) for remaining verification limits.
 
 Imported on 5 October 2026: 22 source Markdown files. The source folder `docs/seatpax_docs` was renamed to `docs/seatpax`. `14_BRAND_LOGO.md` was renamed to `13A_BRAND_LOGO.md` to group it beside UI/UX and remove duplicate `14` numbering without renumbering all engineering/delivery files.
 
