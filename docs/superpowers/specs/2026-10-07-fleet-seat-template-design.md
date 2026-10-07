@@ -1,6 +1,6 @@
 # Fleet and seat template design
 
-Date: 7 October 2026. Status: **DRAFT FOR WRITTEN SPEC REVIEW**. The user approved the conversational design: click-cell grid, automatic/manual seat codes, vehicle association and tenant authorization. Numeric bounds and detailed persistence rules below are proposed for approval in this document. Product implementation has not started.
+Date: 7 October 2026. Status: **APPROVED DESIGN — user accepted with “spec oke” on 7 October 2026**. The user approved the conversational design: click-cell grid, automatic/manual seat codes, vehicle association and tenant authorization. Numeric bounds and detailed persistence rules below were accepted in the written-spec approval. Product implementation has not started.
 
 ## Intent and scope
 
@@ -80,4 +80,4 @@ Provide a pure validated layout projection `{rows,cols,cells:[{rowIndex,colIndex
 
 ## Review status
 
-Self-review: scope stays in the fleet source slice; snapshot publication is deferred explicitly; completeness is transactional rather than overstated database enforcement; stale overwrites and tenant FK invariants have explicit rules. Proposed numeric limits, normalization, vehicle class-default semantics and archive/reference behavior need written-spec approval before planning. No product code or migration has been created for this slice.
+Self-review: scope stays in the fleet source slice; snapshot publication is deferred explicitly; completeness is transactional rather than overstated database enforcement; stale overwrites and tenant FK invariants have explicit rules. Numeric limits, normalization, vehicle class-default semantics and archive/reference behavior were approved with this written spec. No product code or migration has been created for this slice.
