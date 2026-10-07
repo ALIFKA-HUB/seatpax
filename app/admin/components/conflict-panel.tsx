@@ -1,0 +1,4 @@
+'use client';
+export default function ConflictPanel({ latest, onRefresh, onAdopt, onOverwrite }: { latest: unknown; onRefresh: () => void; onAdopt: () => void; onOverwrite: () => void }) {
+  return <div className="fleet-conflict" role="alert"><h3>Data berubah di sesi lain</h3><p>Draft Anda tetap tersimpan di form. Muat dan periksa data terbaru sebelum memilih tindakan.</p><button type="button" onClick={onRefresh}>Muat data terbaru</button>{latest !== null && <><details open><summary>Isi data terbaru</summary><pre>{JSON.stringify(latest, null, 2)}</pre></details><div className="admin-buttons"><button type="button" onClick={onAdopt}>Gunakan data terbaru</button><button type="button" onClick={() => { if (window.confirm('Pertahankan draft ini untuk mengganti data terbaru pada penyimpanan berikutnya?')) onOverwrite(); }}>Pertahankan draft untuk mengganti</button></div></>}</div>;
+}
