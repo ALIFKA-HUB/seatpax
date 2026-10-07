@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:check": "tsx scripts/check-db.ts",
+    "db:expire-holds": "tsx scripts/expire-holds.ts",
     "db:migrate": "tsx scripts/migrate-db.ts",
     "db:seed": "tsx scripts/seed-dev.ts",
     "db:test": "vitest run --config vitest.integration.config.ts"
