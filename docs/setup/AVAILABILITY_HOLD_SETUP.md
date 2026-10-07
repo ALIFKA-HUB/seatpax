@@ -31,3 +31,7 @@ One final read-only GPT-6 Luna medium reviewer found no critical/important corre
 ## Final fixes
 
 Regression tests reproduced and then verified fixes for microsecond expiry/cutoff comparison, safe unavailable errors during initial idempotency lookup, one-shot countdown refresh, and nullable terminal CHECK semantics. Migration 0005 preserves migration 0004. One full run hit a pooler connection handshake timeout; the final inventory test pool uses max10/connect_timeout15 and the complete41-test rerun passed. Production lock and statement limits remain5/15seconds.
+
+## Local integration
+
+Branch `codex/availability-hold` fast-forward merged into main at `2f88ad3` on 7 October 2026. Integrated checkout: 148 unit tests and typecheck passed. The pre-existing `next-env.d.ts` was preserved byte-for-byte (SHA256 B8B3A344484B959AF5E4E3FC1A1609DAC3CB9ECE0CDEB6C145BE29BC4C491000). Worktree preview stopped; main preview `/trips` was verified at http://localhost:3000/trips. Additional measured cutoff-anchor barrier passed. No push or deployment.
