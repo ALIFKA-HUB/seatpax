@@ -29,7 +29,7 @@ export async function runAdminAction(companyId:string,raw:unknown):Promise<Actio
     if(cmd.kind==='route')result={ok:true,...await route.saveRoute(context,cmd.input,cmd.id,cmd.revision)};
     if(cmd.kind==='status')result={ok:true,...await route.setRouteStatus(context,cmd.id,cmd.revision,cmd.status)};
     if(cmd.kind==='fare')result={ok:true,...await pricing.save(context,{routeId:cmd.routeId,serviceClassId:cmd.serviceClassId,expectedRevision:cmd.revision,prices:cmd.prices},cmd.remove)};
-    if(cmd.kind==='quote')return {ok:true,quote:await pricing.preview(context,cmd)};
+    if(cmd.kind==='quote')return {ok:true,quote:await pricing.preview(context,{routeId:cmd.routeId,serviceClassId:cmd.serviceClassId,fromRouteStopId:cmd.fromRouteStopId,toRouteStopId:cmd.toRouteStopId})};
     if(cmd.kind==='refresh'){const current=await route.detail(context,cmd.routeId);return {ok:true,revision:current.route.revision,stopIds:current.stops.map(s=>s.stopId),latestRoute:{name:current.route.name,code:current.route.code,stops:current.stops.map(s=>({stopId:s.stopId,name:s.name,arrivalOffsetMin:s.arrivalOffsetMin,departureOffsetMin:s.departureOffsetMin}))}};}
     revalidatePath('/admin/companies/'+companyId,'layout');return result;
   }catch(error){

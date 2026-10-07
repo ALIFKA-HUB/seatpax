@@ -18,10 +18,10 @@ Server actions verify Auth identity. Transactions recheck and lock active ADMIN_
 
 ## Verification
 
-- Unit suite: 101 tests, including validation, bigint arithmetic and action identity/error boundaries.
+- Unit suite: 102 tests, including validation, bigint arithmetic and action identity/error boundaries.
 - PostgreSQL suite: 10 tests, repeated. Covers cross-tenant denial, composite foreign key rejection, SELECT/INSERT/UPDATE/DELETE browser grant denial, exact large/zero totals, missing fare, inactive endpoints/classes, invalid-price rollback, fare clearing/reorder, concurrent revision writers and membership revocation serialization.
 - Typecheck, lint and production build are checked separately from the preview server. Running dev and build together produced a corrupted generated validator; regenerating build output resolved it.
-- Actual authenticated desktop/mobile/keyboard form smoke remains pending the user's admin OTP login. Unit mocks and database tests are not evidence of browser interaction. Admin B URL denial is proved at the service boundary; its browser flow remains pending.
+- Authenticated Chrome smoke passed as Admin A: four demo stops, Executive Demo class, four-stop route and fares 25000/0/35000. Full quote 60000 and subset quote 25000 verified; keyboard Tab/Enter calculation passed. Narrow 640px window and maximized desktop layout inspected. Admin A opening PO B routes returned 404. Actual phone viewport and reverse Admin B-to-A browser login check remain pending; both tenant directions are covered by database/service checks.
 
 ## Try it
 
@@ -35,3 +35,5 @@ No GitHub push or production deployment is part of this implementation. Trips, i
 
 Final Luna medium review found one Important stale-draft overwrite path. The fix displays the latest snapshot without advancing revision until the user adopts it or confirms overwrite. Reviewer rechecked and found no remaining Important issue. Full unit suite, typecheck, lint and production build passed in the isolated checkout before local integration.
 
+
+Browser smoke found the quote action forwarding its command kind into UUID-only service validation. Fixed the action to pass only the four resource IDs. Regression failed before the fix and passed afterwards; full unit suite102, typecheck and lint passed. Real browser quotes then passed. Demo data remains available in development for the user.
