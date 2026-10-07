@@ -24,6 +24,38 @@ export const memberships = pgTable('memberships', {
   uniqueIndex('membership_global_unique').on(t.userId, t.role).where(sql`${t.companyId} IS NULL`),
 ]).enableRLS();
 
+export const seatTemplateStatus = pgEnum('seat_template_status', ['ACTIVE', 'ARCHIVED']);
+export const seatCellType = pgEnum('seat_cell_type', ['SEAT', 'DRIVER', 'AISLE', 'DOOR', 'EMPTY', 'FACILITY']);
+export const vehicleStatus = pgEnum('vehicle_status', ['ACTIVE', 'MAINTENANCE', 'INACTIVE']);
+export const seatTemplates = pgTable('seat_templates', {
+  id: uuid('id').primaryKey().defaultRandom(), companyId: uuid('company_id').notNull().references(() => companies.id, { onDelete: 'restrict' }),
+  name: text('name').notNull(), rows: integer('rows').notNull(), cols: integer('cols').notNull(),
+  status: seatTemplateStatus('status').notNull().default('ACTIVE'), version: integer('version').notNull().default(1), ...timestamps(),
+}, t => [unique('seat_templates_tenant_key').on(t.id, t.companyId), check('seat_template_dimensions', sql`${t.rows} BETWEEN 1 AND 30 AND ${t.cols} BETWEEN 1 AND 8`), check('seat_template_version', sql`${t.version}>0`), check('seat_template_name', sql`length(trim(${t.name})) BETWEEN 1 AND 120`)]).enableRLS();
+export const seatTemplateCells = pgTable('seat_template_cells', {
+  id: uuid('id').primaryKey().defaultRandom(), companyId: uuid('company_id').notNull(), seatTemplateId: uuid('seat_template_id').notNull(),
+  rowIndex: integer('row_index').notNull(), colIndex: integer('col_index').notNull(), type: seatCellType('type').notNull(), label: text('label'), seatCode: text('seat_code'),
+}, t => [
+  foreignKey({ columns: [t.seatTemplateId, t.companyId], foreignColumns: [seatTemplates.id, seatTemplates.companyId] }).onDelete('restrict'),
+  unique('seat_cell_coordinate').on(t.seatTemplateId, t.rowIndex, t.colIndex), unique('seat_cell_code').on(t.seatTemplateId, t.seatCode),
+  check('seat_cell_bounds', sql`${t.rowIndex} BETWEEN 0 AND 29 AND ${t.colIndex} BETWEEN 0 AND 7`),
+  check('seat_cell_label', sql`${t.label} IS NULL OR length(${t.label})<=40`),
+  check('seat_cell_code_type', sql`(${t.type}='SEAT' AND ${t.seatCode} IS NOT NULL AND ${t.seatCode} ~ '^[A-Z0-9-]{1,8}$') OR (${t.type}<>'SEAT' AND ${t.seatCode} IS NULL)`),
+]).enableRLS();
+export const vehicles = pgTable('vehicles', {
+  id: uuid('id').primaryKey().defaultRandom(), companyId: uuid('company_id').notNull().references(() => companies.id, { onDelete: 'restrict' }),
+  name: text('name').notNull(), plateNumber: text('plate_number').notNull(), fleetNumber: text('fleet_number'),
+  seatTemplateId: uuid('seat_template_id').notNull(), defaultServiceClassId: uuid('default_service_class_id').notNull(),
+  status: vehicleStatus('status').notNull().default('ACTIVE'), revision: integer('revision').notNull().default(1), ...timestamps(),
+}, t => [
+  unique('vehicles_company_plate').on(t.companyId, t.plateNumber),
+  foreignKey({ columns: [t.seatTemplateId, t.companyId], foreignColumns: [seatTemplates.id, seatTemplates.companyId] }).onDelete('restrict'),
+  foreignKey({ columns: [t.defaultServiceClassId, t.companyId], foreignColumns: [serviceClasses.id, serviceClasses.companyId] }).onDelete('restrict'),
+  check('vehicle_revision', sql`${t.revision}>0`), check('vehicle_name', sql`length(trim(${t.name})) BETWEEN 1 AND 120`),
+  check('vehicle_plate', sql`${t.plateNumber} ~ '^[A-Z0-9 -]{1,24}$' AND ${t.plateNumber}=trim(${t.plateNumber}) AND ${t.plateNumber} NOT LIKE '%  %'`),
+  check('vehicle_fleet_number', sql`${t.fleetNumber} IS NULL OR length(${t.fleetNumber})<=32`),
+]).enableRLS();
+
 export const templateStatus=pgEnum('template_status',['ACTIVE','INACTIVE']);
 export const stops=pgTable('stops',{
   id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull().references(()=>companies.id,{onDelete:'restrict'}),name:text('name').notNull(),city:text('city').notNull(),address:text('address'),status:templateStatus('status').notNull().default('ACTIVE'),...timestamps(),

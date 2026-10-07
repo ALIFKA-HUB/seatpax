@@ -15,6 +15,13 @@
       "when": 1791337465545,
       "tag": "0001_route_pricing",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791340072362,
+      "tag": "0002_fleet_seat_templates",
+      "breakpoints": true
     }
   ]
 }
