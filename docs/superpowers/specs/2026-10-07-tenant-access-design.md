@@ -1,6 +1,6 @@
 # Seatpax — Fondasi perusahaan dan hak akses
 
-Tanggal: 7 Oktober 2026. **Status: PROPOSED — menunggu review spec tertulis.** Pengguna menyetujui pendekatan bertahap dengan “Setuju, fondasi akses dulu”. Persetujuan tersebut mengizinkan penulisan spec ini; migration dan kode belum dibuat.
+Tanggal: 7 Oktober 2026. **Status: APPROVED DESIGN — belum diimplementasikan.** Pengguna menyetujui pendekatan bertahap dengan “Setuju, fondasi akses dulu”, lalu menyetujui spec tertulis dengan “spec oke”. Migration dan kode belum dibuat.
 
 ## Tujuan dan batas
 
@@ -71,4 +71,4 @@ Acceptance:
 
 Pilihan tiga tabel sesuai pendekatan yang disetujui. Kekurangan UNIQUE dengan NULL pada proposal lama ditutup oleh partial indexes. Assignment crew tetap mengikuti fondasi, bukan disimulasikan dengan membership. Tidak ada perluasan fitur produk. RLS default-deny dan guard server diuji sebagai dua batas berbeda.
 
-Berikutnya: pengguna mereview spec ini; setelah disetujui, tulis implementation plan melalui writing-plans dan minta review plan/metode sebelum eksekusi. Desain belum menjadi keputusan ADOPTED sampai review tertulis tersebut.
+Berikutnya: tulis implementation plan melalui writing-plans dan minta review plan sebelum eksekusi. Persetujuan desain ini tidak merupakan bukti implementasi atau verifikasi hosted.
