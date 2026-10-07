@@ -1,6 +1,6 @@
 # Tenant access development setup
 
-Status: implementation in isolated branch; hosted migration applied and five database integration tests passed on7October2026. Persistent role seed still awaits five user-selected Auth IDs.
+Status: integrated locally; hosted migration and persistent two-company/five-membership seed applied on7October2026. Five database integration tests passed before persistent seed.
 
 ## Commands
 
@@ -29,6 +29,12 @@ All five UUIDs must be distinct and exist in auth.users. Dry-run inspects all ro
 Company IDs end 4000-8000-000000000001/002, slugs demo-po-a/b. Membership IDs are 00000000-0000-4000-9000-000000000001 through005. Existing conflicting IDs/slugs/memberships must be resolved explicitly, not deleted by the seed.
 
 ## Verification boundaries
+
+### Persistent seed completion — 7 October 2026
+
+User created the five agreed Gmail alias accounts and supplied the Auth Users screenshot. Exact email lookup matched five confirmed Auth identities. Mapping was saved only in ignored `.seatpax/seed-accounts.json`. Dry-run passed, explicit apply created two companies/five memberships, and read-back verified each ACTIVE role/company match. No existing passenger account received an internal role.
+
+The integration seed fixture currently requires absent fixed demo identities; after persistent seed, that fixture cannot run unchanged. Do not delete real seeded rows to rerun it. Future test maintenance must isolate seed fixture IDs or a separate development database.
 
 Unit guard/seed/parser tests do not prove hosted RLS. Opt-in DB tests use generated UUID fixtures and rollback; the concurrency test commits one generated Auth identity and cleans up that exact UUID in finally. No email/password delivery. A terminated concurrency test could leave that UUID fixture and requires explicit inspection, not broad deletion.
 
