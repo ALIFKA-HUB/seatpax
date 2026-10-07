@@ -7,6 +7,8 @@
 
 > Modular documentation extracted from the Seatpax master specification.
 
+Fleet admin server actions and tenant-scoped services are implemented in `app/admin/fleet-actions.ts` and `modules/fleet/`. They accept no client-supplied actor/company fields; the verified user and active ADMIN_PO guard establish the tenant context. See [fleet setup evidence](../setup/FLEET_SETUP.md). Older endpoint sketches below remain conceptual and are not separately exposed REST APIs.
+
 
 # 22. API / Server Boundary
 

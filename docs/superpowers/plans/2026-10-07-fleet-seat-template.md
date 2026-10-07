@@ -106,4 +106,4 @@ Tests: `tests/unit/fleet-validation.test.ts`, `fleet-grid.test.ts`, `fleet-actio
 
 Coverage: grid/input/projection Task1; schema/atomic template/version Task2; vehicle/status/reference/races Task3; actions/forms/conflict/responsiveness Task4; browser/DB/grants/review/docs Task5. Review Focus1→1/2,2→1/4,3→3,4→2/3/4,5→2/3/5. All cross-task function names/types above are consistent. Vehicle default class does not introduce trip override policy. Snapshot publication remains deferred.
 
-Spec approved; **plan awaiting user review**. Preserve inline executing-plans method and one Luna medium final review. No feature implementation starts before this written plan is approved.
+Spec and plan approved by the user on 7 October 2026. Execution completed inline. Final whole-branch review used GPT-6 Luna medium; its Important read-snapshot issue was fixed with a failing regression test, then unit and database suites passed. Local integration complete; no push or deployment.

@@ -86,3 +86,5 @@ Imported on 5 October 2026: 22 source Markdown files. The source folder `docs/se
 Numbered section headings retain the original master section numbers for traceability. The master archive remains unchanged. Original file hashes are recorded in [import manifest](../analysis/SEATPAX_IMPORT_MANIFEST.json).
 
 [Route/pricing design](../superpowers/specs/2026-10-07-route-pricing-design.md) and [plan](../superpowers/plans/2026-10-07-route-pricing.md) were approved on 7 October 2026. See [implementation evidence](../setup/ROUTE_PRICING_SETUP.md); Admin A browser create/quote/keyboard and cross-PO URL denial passed; actual phone and Admin B browser direction remain pending.
+
+[Fleet/seat-template design](../superpowers/specs/2026-10-07-fleet-seat-template-design.md) and [plan](../superpowers/plans/2026-10-07-fleet-seat-template.md) were approved and implemented locally on 7 October 2026. Schema, guarded template/vehicle services and Admin PO forms are integrated. See [fleet setup evidence](../setup/FLEET_SETUP.md). Trip snapshots and publication remain future work.

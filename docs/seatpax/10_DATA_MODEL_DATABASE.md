@@ -7,6 +7,16 @@
 
 > Modular documentation extracted from the Seatpax master specification.
 
+## Implemented fleet schema delta — 7 October 2026
+
+Sections 20.9–20.11 above are conceptual history; the development database uses the implemented migration [`0002_fleet_seat_templates.sql`](../../drizzle/0002_fleet_seat_templates.sql), with Drizzle definitions in `lib/db/schema.ts`. It replaces the older `metadata_json` proposal with explicit fields and company-scoped composite references.
+
+- `seat_templates`: company, trimmed name, dimensions, `ACTIVE|ARCHIVED`, positive version and timestamps.
+- `seat_template_cells`: company/template FK, unique grid coordinate, bounded coordinate, type, optional label and seat code. SEAT codes are uppercase ASCII `[A-Z0-9-]{1,8}`; non-SEAT codes are null. The service validates the complete rectangle and at least one seat before an atomic replacement.
+- `vehicles`: company, name, normalized plate, optional fleet number, same-company seat-template/service-class references, `ACTIVE|MAINTENANCE|INACTIVE`, positive revision and timestamps. Plate is unique per company.
+- All three tables enable RLS and revoke all table grants from `anon` and `authenticated`; browser access goes through the guarded server domain.
+- Fleet integration tests verify tenant FK failures, malformed cell checks, browser grant denial and cleanup of unique fixtures. Published-trip snapshots are not part of migration 0002.
+
 
 # 19. Recommended Data Model — Conceptual ERD
 

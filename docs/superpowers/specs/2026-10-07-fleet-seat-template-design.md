@@ -1,6 +1,6 @@
 # Fleet and seat template design
 
-Date: 7 October 2026. Status: **APPROVED DESIGN — user accepted with “spec oke” on 7 October 2026**. The user approved the conversational design: click-cell grid, automatic/manual seat codes, vehicle association and tenant authorization. Numeric bounds and detailed persistence rules below were accepted in the written-spec approval. Product implementation has not started.
+Date: 7 October 2026. Status: **IMPLEMENTED LOCALLY — design approved by the user with “spec oke”; branch `codex/fleet-seat-templates`, locally merged after verification**. The user approved the conversational design: click-cell grid, automatic/manual seat codes, vehicle association and tenant authorization. Numeric bounds and detailed persistence rules below were accepted in the written-spec approval. Evidence: `docs/setup/FLEET_SETUP.md`.
 
 ## Intent and scope
 

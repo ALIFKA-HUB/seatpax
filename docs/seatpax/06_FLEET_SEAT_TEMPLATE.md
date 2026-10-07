@@ -5,6 +5,16 @@
 
 > Modular documentation extracted from the Seatpax master specification.
 
+## Implemented source slice — 7 October 2026
+
+The active source-data slice is implemented locally; trip publication, immutable layout snapshots, schedules, inventory, bookings, and payment remain deferred. See [fleet setup evidence](../setup/FLEET_SETUP.md) and the approved [design](../superpowers/specs/2026-10-07-fleet-seat-template-design.md).
+
+- Admin PO can create/edit, archive/reactivate and reopen a complete rectangular grid (1–30 rows × 1–8 columns). Cell types: SEAT, DRIVER, AISLE, DOOR, EMPTY, FACILITY. At least one seat; normalized unique seat codes; capacity derives from seat cells.
+- Grid resize preserves overlap. Removing nonempty cells and replacing manual codes through auto-numbering require confirmation. Template writes replace cells atomically and increment `version`; stale updates conflict.
+- Vehicles have normalized company-unique plates, a status/revision, a same-company template and default service class. New/changed references must be active; existing archived/inactive references can remain during metadata/status edits.
+- Server access requires a verified actor and active Admin PO membership inside the transaction. Browser roles have no table grants; RLS is enabled. Tenant composite foreign keys protect vehicle associations.
+- Future published trips must copy the full validated layout atomically into an independent snapshot; source edits do not provide snapshot immutability by themselves.
+
 
 # 12. Vehicle & Seat Template
 
