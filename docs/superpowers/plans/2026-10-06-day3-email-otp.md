@@ -114,3 +114,7 @@ expect(gateway.request).toHaveBeenCalledWith('user@example.com');
 Coverage: provider templates/new-user delivery Task1/4; errors/validation Task1; cookies/identity/cache Task2; UI/actions/redirect/logout Task3; hosted verification and manual security changes Task4. Five Review Focus cases have an explicit owner/check. Existing contracts read-only/read-write stay intact. No dependency or migration introduced.
 
 Recommended execution: **Native/inline**, preserving the method selected earlier, with one final independent Luna medium reviewer. Tasks share the same service/session interfaces; per-task fresh implementers would add coordination cost for this small slice. Implementation begins only after user reviews this plan.
+
+## Status eksekusi — 7 Oktober 2026
+
+Tasks 1–3 complete; commits 38012ae, 4267913, 735d2de. Task4: local tests/build passed on6October; hosted delivery/verify visible on user screenshot, refresh/logout confirmed by user. Reviewer Luna medium found no issues. Full visual/keyboard QA and hosted expired/revoked-session checks remain deferred before staging; do not read unchecked historical steps as proof they were performed. OTP6digit + per-digit boxes explicitly deferred by user.
