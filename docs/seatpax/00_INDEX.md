@@ -84,3 +84,6 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 Imported on 5 October 2026: 22 source Markdown files. The source folder `docs/seatpax_docs` was renamed to `docs/seatpax`. `14_BRAND_LOGO.md` was renamed to `13A_BRAND_LOGO.md` to group it beside UI/UX and remove duplicate `14` numbering without renumbering all engineering/delivery files.
 
 Numbered section headings retain the original master section numbers for traceability. The master archive remains unchanged. Original file hashes are recorded in [import manifest](../analysis/SEATPAX_IMPORT_MANIFEST.json).
+
+[Route/pricing design](../superpowers/specs/2026-10-07-route-pricing-design.md) and [plan](../superpowers/plans/2026-10-07-route-pricing.md) were approved on 7 October 2026. See [implementation evidence](../setup/ROUTE_PRICING_SETUP.md); authenticated UI smoke is still pending.
+

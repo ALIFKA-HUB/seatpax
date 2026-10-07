@@ -540,3 +540,8 @@ boarding_events(trip_id, scanned_at)
 Jangan membuat puluhan index tanpa query nyata. Index final harus diverifikasi dengan query plan ketika fitur sudah berjalan.
 
 ---
+
+## Adopted route template slice — 7 October 2026
+
+The user approved the route/pricing design and implementation plan. Five template tables (stops, routes, route_stops, service_classes, segment_fares), exact IDR bigint adjacent fares, 2–50 unique ordered stops, soft status, tenant composite FKs and revision conflict checks are implemented. Reorder/add/remove requires clearing all route fares first. Preview creates no inventory or trip. See ../superpowers/specs/2026-10-07-route-pricing-design.md and ../setup/ROUTE_PRICING_SETUP.md for contracts and verification limits.
+

@@ -96,4 +96,4 @@
 
 Coverage: schema/invariants Task1; route/transaction/master Task2; pricing Task3; UI/boundary Task4; concurrency/tenant/browser/seed regressions Task5. Review Focus1→2/3/5,2→2/5,3→3/5,4→2/3/5,5→1/5. Wire prices remain strings across repository/action/UI. Identity outside transaction and database authorization inside transaction are separate checks. Optional loop/maps/drag-and-drop remain deferred.
 
-Spec approved7October2026. **Plan awaiting review.** Preserve inline method with one Luna medium final review. Implementation starts after the user reviews this plan.
+Spec approved7October2026. **Plan approved by the user.** Inline implementation completed; final review and verification recorded in docs/setup/ROUTE_PRICING_SETUP.md. Authenticated desktop/mobile/keyboard smoke remains pending; do not count it as passed.

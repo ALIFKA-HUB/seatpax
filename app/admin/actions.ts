@@ -7,7 +7,7 @@ import {createRouteRepository} from '@/modules/route/repository';
 import {createRouteService} from '@/modules/route/service';
 import {createPricingService} from '@/modules/pricing/service';
 import {DomainError} from '@/modules/access/transaction';
-export type ActionResult={ok:true;revision?:number;routeId?:string;stopIds?:string[];quote?:{currency:'IDR';total:string}}|{ok:false;code:'validation'|'forbidden'|'conflict'|'unavailable';message:string};
+export type ActionResult={ok:true;revision?:number;routeId?:string;stopIds?:string[];latestRoute?:{name:string;code:string|null;stops:{stopId:string;name:string;arrivalOffsetMin:number|null;departureOffsetMin:number|null}[]};quote?:{currency:'IDR';total:string}}|{ok:false;code:'validation'|'forbidden'|'conflict'|'unavailable';message:string};
 const uuid=z.uuid();
 const commandSchema=z.discriminatedUnion('kind',[
   z.object({kind:z.literal('stop'),id:uuid.optional(),input:z.unknown()}),
@@ -30,7 +30,7 @@ export async function runAdminAction(companyId:string,raw:unknown):Promise<Actio
     if(cmd.kind==='status')result={ok:true,...await route.setRouteStatus(context,cmd.id,cmd.revision,cmd.status)};
     if(cmd.kind==='fare')result={ok:true,...await pricing.save(context,{routeId:cmd.routeId,serviceClassId:cmd.serviceClassId,expectedRevision:cmd.revision,prices:cmd.prices},cmd.remove)};
     if(cmd.kind==='quote')return {ok:true,quote:await pricing.preview(context,cmd)};
-    if(cmd.kind==='refresh'){const current=await route.detail(context,cmd.routeId);return {ok:true,revision:current.route.revision,stopIds:current.stops.map(s=>s.stopId)};}
+    if(cmd.kind==='refresh'){const current=await route.detail(context,cmd.routeId);return {ok:true,revision:current.route.revision,stopIds:current.stops.map(s=>s.stopId),latestRoute:{name:current.route.name,code:current.route.code,stops:current.stops.map(s=>({stopId:s.stopId,name:s.name,arrivalOffsetMin:s.arrivalOffsetMin,departureOffsetMin:s.departureOffsetMin}))}};}
     revalidatePath('/admin/companies/'+companyId,'layout');return result;
   }catch(error){
     if(error instanceof z.ZodError)return {ok:false,code:'validation',message:'Periksa isian: nama, kode, urutan stop dan waktu harus valid.'};

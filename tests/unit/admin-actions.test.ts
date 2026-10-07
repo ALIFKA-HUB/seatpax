@@ -1,15 +1,16 @@
 import {beforeEach,it,expect,vi} from 'vitest';
-const f=vi.hoisted(()=>({identity:vi.fn(),stop:vi.fn(),route:vi.fn(),list:vi.fn(),preview:vi.fn(),revalidate:vi.fn()}));
+const f=vi.hoisted(()=>({identity:vi.fn(),stop:vi.fn(),route:vi.fn(),detail:vi.fn(),list:vi.fn(),preview:vi.fn(),revalidate:vi.fn()}));
 vi.mock('server-only',()=>({}));
 vi.mock('@/modules/auth/identity',()=>({getVerifiedUser:f.identity}));
 vi.mock('@/lib/db',()=>({getDatabase:()=>({$client:{}})}));
 vi.mock('@/modules/route/repository',()=>({createRouteRepository:()=>({})}));
-vi.mock('@/modules/route/service',()=>({createRouteService:()=>({saveStop:f.stop,saveRoute:f.route,list:f.list})}));
+vi.mock('@/modules/route/service',()=>({createRouteService:()=>({saveStop:f.stop,saveRoute:f.route,detail:f.detail,list:f.list})}));
 vi.mock('@/modules/pricing/service',()=>({createPricingService:()=>({preview:f.preview})}));
 vi.mock('next/cache',()=>({revalidatePath:f.revalidate}));
 import {runAdminAction} from '@/app/admin/actions';
 const cid='10000000-0000-4000-8000-000000000001';
 beforeEach(()=>{vi.resetAllMocks();f.identity.mockResolvedValue({id:'10000000-0000-4000-8000-000000000002'});f.stop.mockResolvedValue('id');});
+it('refresh supplies latest route metadata and ordered stops for conflict review',async()=>{f.detail.mockResolvedValue({route:{name:'Latest',code:'latest',revision:3},stops:[{stopId:cid,name:'Stop',arrivalOffsetMin:0,departureOffsetMin:5}]});expect(await runAdminAction(cid,{kind:'refresh',routeId:cid})).toMatchObject({ok:true,revision:3,latestRoute:{name:'Latest',code:'latest',stops:[{stopId:cid,name:'Stop',arrivalOffsetMin:0,departureOffsetMin:5}]}});});
 it('denies missing identity without service writes',async()=>{f.identity.mockResolvedValue(null);expect((await runAdminAction(cid,{kind:'stop',input:{}})).ok).toBe(false);expect(f.stop).not.toHaveBeenCalled();});
 it('validates target and command',async()=>{expect((await runAdminAction('bad',{kind:'stop',input:{}})).ok).toBe(false);expect((await runAdminAction(cid,{kind:'invented'})).ok).toBe(false);expect(f.stop).not.toHaveBeenCalled();});
 it('uses verified actor, revalidates fixed scoped path, sanitizes errors',async()=>{expect((await runAdminAction(cid,{kind:'stop',input:{}})).ok).toBe(true);expect(f.stop.mock.calls[0][0]).toEqual({actorId:'10000000-0000-4000-8000-000000000002',companyId:cid});expect(f.revalidate).toHaveBeenCalledWith('/admin/companies/'+cid,'layout');f.stop.mockRejectedValue(Error('secret query'));expect(JSON.stringify(await runAdminAction(cid,{kind:'stop',input:{}}))).not.toContain('secret');});

@@ -145,3 +145,8 @@ Bagian ini menjaga konteks brainstorming agar ide lama tidak hilang.
 - microservices.
 
 ---
+
+## D2026-10-07-02 — Route/pricing template slice (FINAL)
+
+Approved spec and plan: active ADMIN_PO manages stops, service classes, ordered route templates and adjacent IDR fares; quote preview only. Adopt 2–50 unique stops (no loops), bounded nullable monotonic offsets, revision conflicts, soft deactivation, exact decimal-string/bigint price, missing fare distinct from zero, and clearing all fares before structural changes. Template management remains allowed when the company is suspended; global Super Admin alone grants no tenant template editing. Conflict keeps the draft and requires reviewing latest data or explicitly confirming overwrite. Trip snapshot/inventory/payment remain subsequent work. See ../superpowers/specs/2026-10-07-route-pricing-design.md.
+
