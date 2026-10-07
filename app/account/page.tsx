@@ -10,5 +10,6 @@ export default async function AccountPage(){
  const user=await getVerifiedUser();if(!user)redirect('/login');
  await ensureVerifiedProfile();
  const adminCompanies=await listAdminCompanies(getDatabase().$client,user.id);
- return <main className="auth-shell"><Link href="/" className="auth-brand">SEATPAX</Link><section className="auth-card" aria-labelledby="account-title"><p className="eyebrow">Akun Seatpax</p><h1 id="account-title">Anda sudah masuk</h1><p className="auth-intro">Email akun</p><p className="auth-email">{user.email}</p>{adminCompanies.length>0&&<Link href="/admin">Buka admin PO →</Link>}<LogoutForm /></section></main>;
+ const crew=await getDatabase().$client`select id from public.memberships where user_id=${user.id} and role='CREW' and status='ACTIVE' limit 1`;
+ return <main className="auth-shell"><Link href="/" className="auth-brand">SEATPAX</Link><section className="auth-card" aria-labelledby="account-title"><p className="eyebrow">Akun Seatpax</p><h1 id="account-title">Anda sudah masuk</h1><p className="auth-intro">Email akun</p><p className="auth-email">{user.email}</p>{adminCompanies.length>0&&<Link href="/admin">Buka admin PO →</Link>}{crew.length>0&&<Link href="/crew">Perjalanan crew →</Link>}<LogoutForm /></section></main>;
 }
