@@ -73,6 +73,8 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 
 ## Local organization
 
+[Tenant access design](../superpowers/specs/2026-10-07-tenant-access-design.md) and [implementation plan](../superpowers/plans/2026-10-07-tenant-access.md) were approved on7October2026. The initial three tables, server guards and seed tooling are integrated locally; development migration/database tests passed. Persistent internal-account seed awaits explicit account mapping. See [tenant setup evidence](../setup/TENANT_ACCESS_SETUP.md).
+
 [Adopted foundation design](../superpowers/specs/2026-10-06-foundation-design.md) refines the retained-flow contracts. It was adopted as D2026-10-06-02 and takes precedence over earlier technical proposals for retained flows.
 
 [Day 2 setup implementation plan](../superpowers/plans/2026-10-06-day2-app-supabase-setup.md) defines app/environment/database/Supabase adapters. The user approved the written plan on 6 October 2026 and selected inline execution through executing-plans.
