@@ -16,3 +16,25 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
 ol { padding-left: 24px; }
 li { padding: 6px 0; }
 footer { border-top: 1px solid #d6dde7; padding-top: 24px; font-size: 13px; color: #526278; }
+
+.auth-shell { max-width: 460px; margin: 0 auto; padding: 40px 20px; }
+.auth-brand { font-size: 19px; letter-spacing: .08em; color: var(--foreground); text-decoration: none; margin: 0 0 32px; }
+.auth-card { background: #fff; padding: 32px; border: 1px solid #d6dde7; border-radius: 12px; box-shadow: 0 4px 18px #14243b08; }
+.auth-card h1 { font-size: 30px; line-height: 1.2; letter-spacing: -.03em; margin: 12px 0; }
+.auth-card .eyebrow { margin: 0; }
+.auth-intro, .auth-destination { color: #526278; margin-bottom: 24px; font-size: 15px; overflow-wrap: anywhere; }
+.auth-card label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+.auth-card input { box-sizing: border-box; width: 100%; padding: 13px 14px; border: 1px solid #9caabe; border-radius: 6px; font: inherit; background: white; color: var(--foreground); }
+.auth-card button { font: inherit; cursor: pointer; border-radius: 6px; min-height: 44px; }
+.auth-card button:disabled { cursor: default; opacity: .55; }
+.auth-card .auth-primary { width: 100%; border: 0; padding: 12px; margin-top: 20px; background: var(--accent); color: white; font-weight: 600; }
+.auth-secondary { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; margin-top: 12px; }
+.auth-secondary button { border: 0; background: transparent; color: var(--accent); font-size: 13px; padding: 4px; }
+.auth-code { letter-spacing: .16em; font-variant-numeric: tabular-nums; }
+.auth-card :focus-visible { outline: 3px solid #005bd1; outline-offset: 3px; }
+.auth-message { color: #a32323; font-size: 14px; min-height: 24px; overflow-wrap: anywhere; }
+.auth-note, .auth-footer { color: #526278; font-size: 12px; }
+.auth-note { margin-bottom: 0; padding-top: 16px; border-top: 1px solid #d6dde7; }
+.auth-footer { text-align: center; margin-top: 24px; }
+.auth-email { font-weight: 600; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .auth-shell { padding: 24px 16px; } .auth-card { padding: 24px; } }

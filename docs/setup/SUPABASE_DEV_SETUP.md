@@ -1,6 +1,6 @@
 # Supabase development setup
 
-Status: aplikasi/adapters lokal tersedia. **Project hosted dan query nyata terverifikasi pada 6 Oktober 2026; konfigurasi login Auth masih pending.** Tidak ada migration, seed, login OTP, atau payment yang berjalan.
+Status: aplikasi/adapters lokal tersedia. **Project hosted dan query nyata terverifikasi pada 6 Oktober 2026; login OTP nyata telah dicoba pengguna; lihat bukti Hari 3.** Login OTP tersedia; migration, seed tenant, dan payment belum dibuat.
 
 ## 1. Buat project
 
@@ -89,3 +89,16 @@ ESLint 9 dipertahankan karena eslint-plugin-react pada eslint-config-next belum 
 ## Bukti slice lokal — 6 Oktober 2026
 
 22 unit tests pass; ESLint, TypeScript dan Next production build pass. GET / menghasilkan HTTP 200 dan heading Seatpax. Probe client Supabase dibuild dengan fake configuration; fake DB canary tidak muncul di client assets. Import database server-only dari client ditolak oleh Next; probe sementara sudah dihapus. CLI invalid env dan database tidak terjangkau masing-masing exit 1 tanpa membocorkan fake secret. Review GPT-6 Luna medium: tidak ada temuan Critical/Important/Minor. Hosted checklist tetap pending. User memilih merge lokal; perubahan sudah diintegrasikan ke main. Hosted checklist tetap pending.
+
+## Hari 3 — konfigurasi OTP aktual
+
+Pada 6 Oktober 2026, provider Email dibaca tanpa perubahan: aktif, kode **8 digit**, expiry **3600 detik**. Subject template Magic Link: `Kode masuk Seatpax`; Confirm signup: `Verifikasi email Seatpax`. Sumber template ada di `modules/auth/email-templates/`; pengguna menerapkannya sendiri pada Authentication → Email Templates. Site URL memakai http://localhost:3000. Default SMTP hanya mengizinkan penerima tertentu/anggota organization; pengiriman nyata belum diverifikasi.
+
+## Bukti Hari 3 — ditutup 7 Oktober 2026
+
+- Kode branch codex/day3-email-otp: OTP8digit, cooldown60detik, identity getUser, proxy refresh, akun/logout.
+- Reviewer GPT-6 Luna medium pada range87d0073..735d2de: tidak ada temuan Critical/Important/Minor.
+- Pengguna mengonfigurasi Brevo SMTP, sender verified, dan template Confirm signup/Magic link dengan Token. Pengiriman dan verifikasi nyata berhasil terlihat pada screenshot akun6Oktober. Pengguna menyatakan refresh/logout aman; evidence ini laporan pengguna, bukan otomatisasi agen.
+- UI/keyboard mobile smoke lengkap dan expiry/revocation hosted belum dibuktikan; pemeriksaan otomatis identity/cookies tetap tersedia.
+- Perubahan OTP6digit + kotak per angka diminta pengguna namun ditunda ke tahap UI. Runtime tetap8digit.
+- Ruling review: hosted checks dibuktikan melalui pengguna; full visual/keyboard QA ditunda; cache header dev bukan bukti production caching. Risiko: perilaku deployment/keyboard harus diperiksa sebelum staging.
