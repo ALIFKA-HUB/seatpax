@@ -1,6 +1,6 @@
 # Seatpax — Rute dan tarif untuk admin PO
 
-Tanggal: 7 Oktober 2026. **Status: PROPOSED — review spec tertulis pending.** Pengguna menyetujui paket rute, stop, kelas layanan, tarif segmen dan halaman admin; belum menyetujui spec/plan implementasi baru.
+Tanggal: 7 Oktober 2026. **Status: APPROVED DESIGN — belum diimplementasikan.** Pengguna menyetujui paket rute, stop, kelas layanan, tarif segmen dan halaman admin, lalu spec tertulis dengan “spec oke”. Plan implementasi masih membutuhkan review.
 
 ## Tujuan dan acuan
 
