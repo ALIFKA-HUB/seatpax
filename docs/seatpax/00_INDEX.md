@@ -73,7 +73,7 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 
 ## Local organization
 
-[Tenant access design](../superpowers/specs/2026-10-07-tenant-access-design.md) and [implementation plan](../superpowers/plans/2026-10-07-tenant-access.md) were approved on7October2026. The initial three tables, server guards and seed tooling are integrated locally; development migration/database tests passed. Persistent internal-account seed awaits explicit account mapping. See [tenant setup evidence](../setup/TENANT_ACCESS_SETUP.md).
+[Tenant access design](../superpowers/specs/2026-10-07-tenant-access-design.md) and [implementation plan](../superpowers/plans/2026-10-07-tenant-access.md) were approved on7October2026. The initial three tables, server guards and seed tooling are integrated locally; development migration/database tests passed. The five approved internal accounts have been mapped and seeded persistently. See [tenant setup evidence](../setup/TENANT_ACCESS_SETUP.md).
 
 [Adopted foundation design](../superpowers/specs/2026-10-06-foundation-design.md) refines the retained-flow contracts. It was adopted as D2026-10-06-02 and takes precedence over earlier technical proposals for retained flows.
 
@@ -86,4 +86,3 @@ Imported on 5 October 2026: 22 source Markdown files. The source folder `docs/se
 Numbered section headings retain the original master section numbers for traceability. The master archive remains unchanged. Original file hashes are recorded in [import manifest](../analysis/SEATPAX_IMPORT_MANIFEST.json).
 
 [Route/pricing design](../superpowers/specs/2026-10-07-route-pricing-design.md) and [plan](../superpowers/plans/2026-10-07-route-pricing.md) were approved on 7 October 2026. See [implementation evidence](../setup/ROUTE_PRICING_SETUP.md); authenticated UI smoke is still pending.
-

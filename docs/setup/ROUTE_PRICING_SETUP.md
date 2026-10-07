@@ -32,3 +32,6 @@ Server actions verify Auth identity. Transactions recheck and lock active ADMIN_
 5. Sign in as `+adminb`; opening PO A's URL must deny access.
 
 No GitHub push or production deployment is part of this implementation. Trips, inventory, booking and payment remain later tasks; six-digit OTP and individual digit boxes remain deferred.
+
+Final Luna medium review found one Important stale-draft overwrite path. The fix displays the latest snapshot without advancing revision until the user adopts it or confirms overwrite. Reviewer rechecked and found no remaining Important issue. Full unit suite, typecheck, lint and production build passed in the isolated checkout before local integration.
+
