@@ -1,7 +1,26 @@
 import { sql } from 'drizzle-orm';
-import { pgSchema, pgTable, pgEnum, uuid, text, timestamp, integer, bigint, jsonb, check, uniqueIndex, unique, foreignKey } from 'drizzle-orm/pg-core';
+import { pgSchema, pgTable, pgEnum, uuid, text, timestamp, integer, bigint, jsonb, check, index, uniqueIndex, unique, foreignKey } from 'drizzle-orm/pg-core';
 
 const authUsers = pgSchema('auth').table('users', { id: uuid('id').primaryKey() });
+export const holdStatus=pgEnum('hold_status',['ACTIVE','RELEASED','EXPIRED','CONVERTED']);
+export const holdAuditAction=pgEnum('hold_audit_action',['HOLD_CREATED','HOLD_RELEASED','HOLD_EXPIRED']);
+export const seatHolds=pgTable('seat_holds',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),tripSeatId:uuid('trip_seat_id').notNull(),
+ fromTripStopId:uuid('from_trip_stop_id').notNull(),toTripStopId:uuid('to_trip_stop_id').notNull(),fromSequence:integer('from_sequence').notNull(),toSequence:integer('to_sequence').notNull(),
+ heldByUserId:uuid('held_by_user_id').notNull().references(()=>users.id,{onDelete:'restrict'}),requestKey:uuid('request_key').notNull(),status:holdStatus('status').notNull().default('ACTIVE'),
+ createdAt:timestamp('created_at',{withTimezone:true}).notNull(),baseExpiresAt:timestamp('base_expires_at',{withTimezone:true}).notNull(),effectiveExpiresAt:timestamp('effective_expires_at',{withTimezone:true}).notNull(),paymentInitiatedAt:timestamp('payment_initiated_at',{withTimezone:true}),releasedAt:timestamp('released_at',{withTimezone:true}),expiredAt:timestamp('expired_at',{withTimezone:true}),
+},t=>[unique('hold_owner_request').on(t.heldByUserId,t.requestKey),unique('hold_identity').on(t.id,t.tripId,t.companyId),
+ foreignKey({columns:[t.tripSeatId,t.tripId,t.companyId],foreignColumns:[tripSeats.id,tripSeats.tripId,tripSeats.companyId]}).onDelete('restrict'),
+ foreignKey({columns:[t.fromTripStopId,t.tripId,t.companyId],foreignColumns:[tripStops.id,tripStops.tripId,tripStops.companyId]}).onDelete('restrict'),
+ foreignKey({columns:[t.toTripStopId,t.tripId,t.companyId],foreignColumns:[tripStops.id,tripStops.tripId,tripStops.companyId]}).onDelete('restrict'),
+ check('hold_range',sql`${t.fromSequence}>0 AND ${t.toSequence}>${t.fromSequence}`),
+ check('hold_times',sql`${t.baseExpiresAt}=${t.createdAt}+interval '10 minutes' AND ${t.effectiveExpiresAt}>=${t.baseExpiresAt} AND (${t.paymentInitiatedAt} IS NULL OR ${t.paymentInitiatedAt}>=${t.createdAt})`),
+ check('hold_state',sql`(${t.status} IN ('ACTIVE','CONVERTED') AND ${t.releasedAt} IS NULL AND ${t.expiredAt} IS NULL) OR (${t.status}='RELEASED' AND ${t.releasedAt}>=${t.createdAt} AND ${t.expiredAt} IS NULL) OR (${t.status}='EXPIRED' AND ${t.expiredAt}>=${t.effectiveExpiresAt} AND ${t.releasedAt} IS NULL)`),
+ index('hold_active_seat').on(t.tripId,t.tripSeatId,t.fromSequence,t.toSequence).where(sql`${t.status}='ACTIVE'`),index('hold_expiry').on(t.effectiveExpiresAt).where(sql`${t.status}='ACTIVE'`),
+]).enableRLS();
+export const seatHoldAuditEvents=pgTable('seat_hold_audit_events',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),holdId:uuid('hold_id').notNull(),actorId:uuid('actor_id').references(()=>users.id,{onDelete:'restrict'}),action:holdAuditAction('action').notNull(),metadata:jsonb('metadata').notNull(),createdAt:timestamp('created_at',{withTimezone:true}).notNull(),
+},t=>[foreignKey({columns:[t.holdId,t.tripId,t.companyId],foreignColumns:[seatHolds.id,seatHolds.tripId,seatHolds.companyId]}).onDelete('restrict'),unique('hold_transition_audit').on(t.holdId,t.action)]).enableRLS();
 const timestamps = () => ({ createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow() });
 export const companyStatus = pgEnum('company_status', ['ACTIVE', 'SUSPENDED']);
 export const membershipStatus = pgEnum('membership_status', ['ACTIVE', 'DISABLED']);

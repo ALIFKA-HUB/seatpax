@@ -1,0 +1,2596 @@
+{
+  "id": "65702f53-4166-484b-aafe-11c4a9471cc8",
+  "prevId": "9966660d-828c-488a-a354-0c586600a9b5",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.companies": {
+      "name": "companies",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "logo_url": {
+          "name": "logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "company_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "refund_cutoff_minutes": {
+          "name": "refund_cutoff_minutes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "companies_slug_unique": {
+          "name": "companies_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "company_slug_valid": {
+          "name": "company_slug_valid",
+          "value": "\"companies\".\"slug\" ~ '^[a-z0-9]+(-[a-z0-9]+)*$'"
+        },
+        "company_cutoff_valid": {
+          "name": "company_cutoff_valid",
+          "value": "\"companies\".\"refund_cutoff_minutes\" IS NULL OR \"companies\".\"refund_cutoff_minutes\" >= 0"
+        },
+        "company_name_valid": {
+          "name": "company_name_valid",
+          "value": "length(trim(\"companies\".\"name\")) > 0"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.memberships": {
+      "name": "memberships",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "membership_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "membership_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "membership_tenant_unique": {
+          "name": "membership_tenant_unique",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "company_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "role",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"memberships\".\"company_id\" IS NOT NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "membership_global_unique": {
+          "name": "membership_global_unique",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "role",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"memberships\".\"company_id\" IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "memberships_user_id_users_id_fk": {
+          "name": "memberships_user_id_users_id_fk",
+          "tableFrom": "memberships",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "memberships_company_id_companies_id_fk": {
+          "name": "memberships_company_id_companies_id_fk",
+          "tableFrom": "memberships",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "membership_trip_identity": {
+          "name": "membership_trip_identity",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "user_id",
+            "company_id",
+            "role"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "membership_company_role": {
+          "name": "membership_company_role",
+          "value": "(\"memberships\".\"role\" = 'SUPER_ADMIN' AND \"memberships\".\"company_id\" IS NULL) OR (\"memberships\".\"role\" IN ('ADMIN_PO','CREW') AND \"memberships\".\"company_id\" IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.route_stops": {
+      "name": "route_stops",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "route_id": {
+          "name": "route_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stop_id": {
+          "name": "stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sequence": {
+          "name": "sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "arrival_offset_min": {
+          "name": "arrival_offset_min",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "departure_offset_min": {
+          "name": "departure_offset_min",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "route_stops_route_id_company_id_routes_id_company_id_fk": {
+          "name": "route_stops_route_id_company_id_routes_id_company_id_fk",
+          "tableFrom": "route_stops",
+          "tableTo": "routes",
+          "columnsFrom": [
+            "route_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "route_stops_stop_id_company_id_stops_id_company_id_fk": {
+          "name": "route_stops_stop_id_company_id_stops_id_company_id_fk",
+          "tableFrom": "route_stops",
+          "tableTo": "stops",
+          "columnsFrom": [
+            "stop_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "route_stops_endpoint_key": {
+          "name": "route_stops_endpoint_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "route_id",
+            "company_id"
+          ]
+        },
+        "route_stops_sequence": {
+          "name": "route_stops_sequence",
+          "nullsNotDistinct": false,
+          "columns": [
+            "route_id",
+            "sequence"
+          ]
+        },
+        "route_stops_stop": {
+          "name": "route_stops_stop",
+          "nullsNotDistinct": false,
+          "columns": [
+            "route_id",
+            "stop_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "route_stop_sequence_positive": {
+          "name": "route_stop_sequence_positive",
+          "value": "\"route_stops\".\"sequence\">=1"
+        },
+        "route_stop_offsets": {
+          "name": "route_stop_offsets",
+          "value": "(\"route_stops\".\"arrival_offset_min\" IS NULL OR \"route_stops\".\"arrival_offset_min\" BETWEEN 0 AND 10080) AND (\"route_stops\".\"departure_offset_min\" IS NULL OR \"route_stops\".\"departure_offset_min\" BETWEEN 0 AND 10080) AND (\"route_stops\".\"arrival_offset_min\" IS NULL OR \"route_stops\".\"departure_offset_min\" IS NULL OR \"route_stops\".\"arrival_offset_min\"<=\"route_stops\".\"departure_offset_min\")"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.routes": {
+      "name": "routes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "template_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "routes_company_id_companies_id_fk": {
+          "name": "routes_company_id_companies_id_fk",
+          "tableFrom": "routes",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "routes_tenant_key": {
+          "name": "routes_tenant_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "company_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "route_revision_positive": {
+          "name": "route_revision_positive",
+          "value": "\"routes\".\"revision\">0"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.seat_hold_audit_events": {
+      "name": "seat_hold_audit_events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hold_id": {
+          "name": "hold_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "action": {
+          "name": "action",
+          "type": "hold_audit_action",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "seat_hold_audit_events_actor_id_users_id_fk": {
+          "name": "seat_hold_audit_events_actor_id_users_id_fk",
+          "tableFrom": "seat_hold_audit_events",
+          "tableTo": "users",
+          "columnsFrom": [
+            "actor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "seat_hold_audit_events_hold_id_trip_id_company_id_seat_holds_id_trip_id_company_id_fk": {
+          "name": "seat_hold_audit_events_hold_id_trip_id_company_id_seat_holds_id_trip_id_company_id_fk",
+          "tableFrom": "seat_hold_audit_events",
+          "tableTo": "seat_holds",
+          "columnsFrom": [
+            "hold_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "hold_transition_audit": {
+          "name": "hold_transition_audit",
+          "nullsNotDistinct": false,
+          "columns": [
+            "hold_id",
+            "action"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.seat_holds": {
+      "name": "seat_holds",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_seat_id": {
+          "name": "trip_seat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "from_trip_stop_id": {
+          "name": "from_trip_stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "to_trip_stop_id": {
+          "name": "to_trip_stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "from_sequence": {
+          "name": "from_sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "to_sequence": {
+          "name": "to_sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "held_by_user_id": {
+          "name": "held_by_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_key": {
+          "name": "request_key",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "hold_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "base_expires_at": {
+          "name": "base_expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "effective_expires_at": {
+          "name": "effective_expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payment_initiated_at": {
+          "name": "payment_initiated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "released_at": {
+          "name": "released_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expired_at": {
+          "name": "expired_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "hold_active_seat": {
+          "name": "hold_active_seat",
+          "columns": [
+            {
+              "expression": "trip_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "trip_seat_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "from_sequence",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "to_sequence",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"seat_holds\".\"status\"='ACTIVE'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "hold_expiry": {
+          "name": "hold_expiry",
+          "columns": [
+            {
+              "expression": "effective_expires_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"seat_holds\".\"status\"='ACTIVE'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "seat_holds_held_by_user_id_users_id_fk": {
+          "name": "seat_holds_held_by_user_id_users_id_fk",
+          "tableFrom": "seat_holds",
+          "tableTo": "users",
+          "columnsFrom": [
+            "held_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "seat_holds_trip_seat_id_trip_id_company_id_trip_seats_id_trip_id_company_id_fk": {
+          "name": "seat_holds_trip_seat_id_trip_id_company_id_trip_seats_id_trip_id_company_id_fk",
+          "tableFrom": "seat_holds",
+          "tableTo": "trip_seats",
+          "columnsFrom": [
+            "trip_seat_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "seat_holds_from_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk": {
+          "name": "seat_holds_from_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk",
+          "tableFrom": "seat_holds",
+          "tableTo": "trip_stops",
+          "columnsFrom": [
+            "from_trip_stop_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "seat_holds_to_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk": {
+          "name": "seat_holds_to_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk",
+          "tableFrom": "seat_holds",
+          "tableTo": "trip_stops",
+          "columnsFrom": [
+            "to_trip_stop_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "hold_owner_request": {
+          "name": "hold_owner_request",
+          "nullsNotDistinct": false,
+          "columns": [
+            "held_by_user_id",
+            "request_key"
+          ]
+        },
+        "hold_identity": {
+          "name": "hold_identity",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "trip_id",
+            "company_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "hold_range": {
+          "name": "hold_range",
+          "value": "\"seat_holds\".\"from_sequence\">0 AND \"seat_holds\".\"to_sequence\">\"seat_holds\".\"from_sequence\""
+        },
+        "hold_times": {
+          "name": "hold_times",
+          "value": "\"seat_holds\".\"base_expires_at\"=\"seat_holds\".\"created_at\"+interval '10 minutes' AND \"seat_holds\".\"effective_expires_at\">=\"seat_holds\".\"base_expires_at\" AND (\"seat_holds\".\"payment_initiated_at\" IS NULL OR \"seat_holds\".\"payment_initiated_at\">=\"seat_holds\".\"created_at\")"
+        },
+        "hold_state": {
+          "name": "hold_state",
+          "value": "(\"seat_holds\".\"status\" IN ('ACTIVE','CONVERTED') AND \"seat_holds\".\"released_at\" IS NULL AND \"seat_holds\".\"expired_at\" IS NULL) OR (\"seat_holds\".\"status\"='RELEASED' AND \"seat_holds\".\"released_at\">=\"seat_holds\".\"created_at\" AND \"seat_holds\".\"expired_at\" IS NULL) OR (\"seat_holds\".\"status\"='EXPIRED' AND \"seat_holds\".\"expired_at\">=\"seat_holds\".\"effective_expires_at\" AND \"seat_holds\".\"released_at\" IS NULL)"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.seat_template_cells": {
+      "name": "seat_template_cells",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "seat_template_id": {
+          "name": "seat_template_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "row_index": {
+          "name": "row_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "col_index": {
+          "name": "col_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "seat_cell_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "seat_code": {
+          "name": "seat_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "seat_template_cells_seat_template_id_company_id_seat_templates_id_company_id_fk": {
+          "name": "seat_template_cells_seat_template_id_company_id_seat_templates_id_company_id_fk",
+          "tableFrom": "seat_template_cells",
+          "tableTo": "seat_templates",
+          "columnsFrom": [
+            "seat_template_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "seat_cell_coordinate": {
+          "name": "seat_cell_coordinate",
+          "nullsNotDistinct": false,
+          "columns": [
+            "seat_template_id",
+            "row_index",
+            "col_index"
+          ]
+        },
+        "seat_cell_code": {
+          "name": "seat_cell_code",
+          "nullsNotDistinct": false,
+          "columns": [
+            "seat_template_id",
+            "seat_code"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "seat_cell_bounds": {
+          "name": "seat_cell_bounds",
+          "value": "\"seat_template_cells\".\"row_index\" BETWEEN 0 AND 29 AND \"seat_template_cells\".\"col_index\" BETWEEN 0 AND 7"
+        },
+        "seat_cell_label": {
+          "name": "seat_cell_label",
+          "value": "\"seat_template_cells\".\"label\" IS NULL OR length(\"seat_template_cells\".\"label\")<=40"
+        },
+        "seat_cell_code_type": {
+          "name": "seat_cell_code_type",
+          "value": "(\"seat_template_cells\".\"type\"='SEAT' AND \"seat_template_cells\".\"seat_code\" IS NOT NULL AND \"seat_template_cells\".\"seat_code\" ~ '^[A-Z0-9-]{1,8}$') OR (\"seat_template_cells\".\"type\"<>'SEAT' AND \"seat_template_cells\".\"seat_code\" IS NULL)"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.seat_templates": {
+      "name": "seat_templates",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rows": {
+          "name": "rows",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cols": {
+          "name": "cols",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "seat_template_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "seat_templates_company_id_companies_id_fk": {
+          "name": "seat_templates_company_id_companies_id_fk",
+          "tableFrom": "seat_templates",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "seat_templates_tenant_key": {
+          "name": "seat_templates_tenant_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "company_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "seat_template_dimensions": {
+          "name": "seat_template_dimensions",
+          "value": "\"seat_templates\".\"rows\" BETWEEN 1 AND 30 AND \"seat_templates\".\"cols\" BETWEEN 1 AND 8"
+        },
+        "seat_template_version": {
+          "name": "seat_template_version",
+          "value": "\"seat_templates\".\"version\">0"
+        },
+        "seat_template_name": {
+          "name": "seat_template_name",
+          "value": "length(trim(\"seat_templates\".\"name\")) BETWEEN 1 AND 120"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.segment_fares": {
+      "name": "segment_fares",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "route_id": {
+          "name": "route_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "from_route_stop_id": {
+          "name": "from_route_stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "to_route_stop_id": {
+          "name": "to_route_stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "service_class_id": {
+          "name": "service_class_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currency": {
+          "name": "currency",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'IDR'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "segment_fares_from_route_stop_id_route_id_company_id_route_stops_id_route_id_company_id_fk": {
+          "name": "segment_fares_from_route_stop_id_route_id_company_id_route_stops_id_route_id_company_id_fk",
+          "tableFrom": "segment_fares",
+          "tableTo": "route_stops",
+          "columnsFrom": [
+            "from_route_stop_id",
+            "route_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "route_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "segment_fares_to_route_stop_id_route_id_company_id_route_stops_id_route_id_company_id_fk": {
+          "name": "segment_fares_to_route_stop_id_route_id_company_id_route_stops_id_route_id_company_id_fk",
+          "tableFrom": "segment_fares",
+          "tableTo": "route_stops",
+          "columnsFrom": [
+            "to_route_stop_id",
+            "route_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "route_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "segment_fares_service_class_id_company_id_service_classes_id_company_id_fk": {
+          "name": "segment_fares_service_class_id_company_id_service_classes_id_company_id_fk",
+          "tableFrom": "segment_fares",
+          "tableTo": "service_classes",
+          "columnsFrom": [
+            "service_class_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "fare_segment_class": {
+          "name": "fare_segment_class",
+          "nullsNotDistinct": false,
+          "columns": [
+            "route_id",
+            "from_route_stop_id",
+            "to_route_stop_id",
+            "service_class_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "fare_nonnegative": {
+          "name": "fare_nonnegative",
+          "value": "\"segment_fares\".\"price\">=0"
+        },
+        "fare_currency": {
+          "name": "fare_currency",
+          "value": "\"segment_fares\".\"currency\"='IDR'"
+        },
+        "fare_endpoints_different": {
+          "name": "fare_endpoints_different",
+          "value": "\"segment_fares\".\"from_route_stop_id\"<>\"segment_fares\".\"to_route_stop_id\""
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.service_classes": {
+      "name": "service_classes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "template_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "service_classes_company_id_companies_id_fk": {
+          "name": "service_classes_company_id_companies_id_fk",
+          "tableFrom": "service_classes",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "classes_tenant_key": {
+          "name": "classes_tenant_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "company_id"
+          ]
+        },
+        "classes_company_code": {
+          "name": "classes_company_code",
+          "nullsNotDistinct": false,
+          "columns": [
+            "company_id",
+            "code"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.stops": {
+      "name": "stops",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "city": {
+          "name": "city",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "template_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "stops_company_id_companies_id_fk": {
+          "name": "stops_company_id_companies_id_fk",
+          "tableFrom": "stops",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "stops_tenant_key": {
+          "name": "stops_tenant_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "company_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.trip_audit_events": {
+      "name": "trip_audit_events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "action": {
+          "name": "action",
+          "type": "trip_audit_action",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_user_id": {
+          "name": "target_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "trip_audit_events_actor_id_users_id_fk": {
+          "name": "trip_audit_events_actor_id_users_id_fk",
+          "tableFrom": "trip_audit_events",
+          "tableTo": "users",
+          "columnsFrom": [
+            "actor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trip_audit_events_target_user_id_users_id_fk": {
+          "name": "trip_audit_events_target_user_id_users_id_fk",
+          "tableFrom": "trip_audit_events",
+          "tableTo": "users",
+          "columnsFrom": [
+            "target_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trip_audit_events_trip_id_company_id_trips_id_company_id_fk": {
+          "name": "trip_audit_events_trip_id_company_id_trips_id_company_id_fk",
+          "tableFrom": "trip_audit_events",
+          "tableTo": "trips",
+          "columnsFrom": [
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.trip_crew_assignments": {
+      "name": "trip_crew_assignments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "membership_id": {
+          "name": "membership_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "membership_role": {
+          "name": "membership_role",
+          "type": "membership_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'CREW'"
+        },
+        "status": {
+          "name": "status",
+          "type": "crew_assignment_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "assigned_by": {
+          "name": "assigned_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "assigned_at": {
+          "name": "assigned_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "revoked_at": {
+          "name": "revoked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "trip_crew_assignments_assigned_by_users_id_fk": {
+          "name": "trip_crew_assignments_assigned_by_users_id_fk",
+          "tableFrom": "trip_crew_assignments",
+          "tableTo": "users",
+          "columnsFrom": [
+            "assigned_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trip_crew_assignments_trip_id_company_id_trips_id_company_id_fk": {
+          "name": "trip_crew_assignments_trip_id_company_id_trips_id_company_id_fk",
+          "tableFrom": "trip_crew_assignments",
+          "tableTo": "trips",
+          "columnsFrom": [
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trip_crew_assignments_membership_id_user_id_company_id_membership_role_memberships_id_user_id_company_id_role_fk": {
+          "name": "trip_crew_assignments_membership_id_user_id_company_id_membership_role_memberships_id_user_id_company_id_role_fk",
+          "tableFrom": "trip_crew_assignments",
+          "tableTo": "memberships",
+          "columnsFrom": [
+            "membership_id",
+            "user_id",
+            "company_id",
+            "membership_role"
+          ],
+          "columnsTo": [
+            "id",
+            "user_id",
+            "company_id",
+            "role"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "trip_crew_pair": {
+          "name": "trip_crew_pair",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "trip_crew_role": {
+          "name": "trip_crew_role",
+          "value": "\"trip_crew_assignments\".\"membership_role\"='CREW'"
+        },
+        "trip_crew_revocation": {
+          "name": "trip_crew_revocation",
+          "value": "(\"trip_crew_assignments\".\"status\"='ACTIVE' AND \"trip_crew_assignments\".\"revoked_at\" IS NULL) OR (\"trip_crew_assignments\".\"status\"='REVOKED' AND \"trip_crew_assignments\".\"revoked_at\" IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.trip_seat_inventory": {
+      "name": "trip_seat_inventory",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_seat_id": {
+          "name": "trip_seat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_segment_id": {
+          "name": "trip_segment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "trip_seat_inventory_trip_seat_id_trip_id_company_id_trip_seats_id_trip_id_company_id_fk": {
+          "name": "trip_seat_inventory_trip_seat_id_trip_id_company_id_trip_seats_id_trip_id_company_id_fk",
+          "tableFrom": "trip_seat_inventory",
+          "tableTo": "trip_seats",
+          "columnsFrom": [
+            "trip_seat_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trip_seat_inventory_trip_segment_id_trip_id_company_id_trip_segments_id_trip_id_company_id_fk": {
+          "name": "trip_seat_inventory_trip_segment_id_trip_id_company_id_trip_segments_id_trip_id_company_id_fk",
+          "tableFrom": "trip_seat_inventory",
+          "tableTo": "trip_segments",
+          "columnsFrom": [
+            "trip_segment_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "trip_inventory_unit": {
+          "name": "trip_inventory_unit",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "trip_seat_id",
+            "trip_segment_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.trip_seats": {
+      "name": "trip_seats",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "seat_code": {
+          "name": "seat_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "row_index": {
+          "name": "row_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "col_index": {
+          "name": "col_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "trip_seats_trip_id_company_id_trips_id_company_id_fk": {
+          "name": "trip_seats_trip_id_company_id_trips_id_company_id_fk",
+          "tableFrom": "trip_seats",
+          "tableTo": "trips",
+          "columnsFrom": [
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "trip_seat_identity": {
+          "name": "trip_seat_identity",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "trip_id",
+            "company_id"
+          ]
+        },
+        "trip_seat_code": {
+          "name": "trip_seat_code",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "seat_code"
+          ]
+        },
+        "trip_seat_coordinate": {
+          "name": "trip_seat_coordinate",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "row_index",
+            "col_index"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "trip_seat_values": {
+          "name": "trip_seat_values",
+          "value": "\"trip_seats\".\"row_index\" BETWEEN 0 AND 29 AND \"trip_seats\".\"col_index\" BETWEEN 0 AND 7 AND \"trip_seats\".\"seat_code\" ~ '^[A-Z0-9-]{1,8}$'"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.trip_segments": {
+      "name": "trip_segments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "from_trip_stop_id": {
+          "name": "from_trip_stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "to_trip_stop_id": {
+          "name": "to_trip_stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sequence": {
+          "name": "sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currency": {
+          "name": "currency",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'IDR'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "trip_segments_from_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk": {
+          "name": "trip_segments_from_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk",
+          "tableFrom": "trip_segments",
+          "tableTo": "trip_stops",
+          "columnsFrom": [
+            "from_trip_stop_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trip_segments_to_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk": {
+          "name": "trip_segments_to_trip_stop_id_trip_id_company_id_trip_stops_id_trip_id_company_id_fk",
+          "tableFrom": "trip_segments",
+          "tableTo": "trip_stops",
+          "columnsFrom": [
+            "to_trip_stop_id",
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "trip_id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "trip_segment_identity": {
+          "name": "trip_segment_identity",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "trip_id",
+            "company_id"
+          ]
+        },
+        "trip_segment_sequence": {
+          "name": "trip_segment_sequence",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "sequence"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "trip_segment_values": {
+          "name": "trip_segment_values",
+          "value": "\"trip_segments\".\"sequence\">0 AND \"trip_segments\".\"price\">=0 AND \"trip_segments\".\"currency\"='IDR' AND \"trip_segments\".\"from_trip_stop_id\"<>\"trip_segments\".\"to_trip_stop_id\""
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.trip_stops": {
+      "name": "trip_stops",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trip_id": {
+          "name": "trip_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_id": {
+          "name": "source_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stop_id": {
+          "name": "stop_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "city": {
+          "name": "city",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sequence": {
+          "name": "sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "arrival_at": {
+          "name": "arrival_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "departure_at": {
+          "name": "departure_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "trip_stops_trip_id_company_id_trips_id_company_id_fk": {
+          "name": "trip_stops_trip_id_company_id_trips_id_company_id_fk",
+          "tableFrom": "trip_stops",
+          "tableTo": "trips",
+          "columnsFrom": [
+            "trip_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "trip_stop_identity": {
+          "name": "trip_stop_identity",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "trip_id",
+            "company_id"
+          ]
+        },
+        "trip_stop_sequence": {
+          "name": "trip_stop_sequence",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trip_id",
+            "sequence"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "trip_stop_positive": {
+          "name": "trip_stop_positive",
+          "value": "\"trip_stops\".\"sequence\">0"
+        },
+        "trip_stop_time_order": {
+          "name": "trip_stop_time_order",
+          "value": "\"trip_stops\".\"arrival_at\"<=\"trip_stops\".\"departure_at\""
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.trips": {
+      "name": "trips",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "route_id": {
+          "name": "route_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "service_class_id": {
+          "name": "service_class_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "departure_at": {
+          "name": "departure_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sales_close_at": {
+          "name": "sales_close_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "status": {
+          "name": "status",
+          "type": "trip_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'DRAFT'"
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "layout_snapshot": {
+          "name": "layout_snapshot",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "identity_snapshot": {
+          "name": "identity_snapshot",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "trips_company_id_companies_id_fk": {
+          "name": "trips_company_id_companies_id_fk",
+          "tableFrom": "trips",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trips_route_id_company_id_routes_id_company_id_fk": {
+          "name": "trips_route_id_company_id_routes_id_company_id_fk",
+          "tableFrom": "trips",
+          "tableTo": "routes",
+          "columnsFrom": [
+            "route_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trips_vehicle_id_company_id_vehicles_id_company_id_fk": {
+          "name": "trips_vehicle_id_company_id_vehicles_id_company_id_fk",
+          "tableFrom": "trips",
+          "tableTo": "vehicles",
+          "columnsFrom": [
+            "vehicle_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "trips_service_class_id_company_id_service_classes_id_company_id_fk": {
+          "name": "trips_service_class_id_company_id_service_classes_id_company_id_fk",
+          "tableFrom": "trips",
+          "tableTo": "service_classes",
+          "columnsFrom": [
+            "service_class_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "trips_tenant_key": {
+          "name": "trips_tenant_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "company_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "trip_revision_positive": {
+          "name": "trip_revision_positive",
+          "value": "\"trips\".\"revision\">0"
+        },
+        "trip_name_valid": {
+          "name": "trip_name_valid",
+          "value": "length(trim(\"trips\".\"name\")) BETWEEN 1 AND 120"
+        },
+        "trip_publication_state": {
+          "name": "trip_publication_state",
+          "value": "(\"trips\".\"status\"='DRAFT' AND \"trips\".\"published_at\" IS NULL AND \"trips\".\"layout_snapshot\" IS NULL AND \"trips\".\"identity_snapshot\" IS NULL) OR (\"trips\".\"status\"='OPEN_FOR_SALE' AND \"trips\".\"published_at\" IS NOT NULL AND \"trips\".\"layout_snapshot\" IS NOT NULL AND \"trips\".\"identity_snapshot\" IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "avatar_url": {
+          "name": "avatar_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "users_id_users_id_fk": {
+          "name": "users_id_users_id_fk",
+          "tableFrom": "users",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.vehicles": {
+      "name": "vehicles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "plate_number": {
+          "name": "plate_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fleet_number": {
+          "name": "fleet_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "seat_template_id": {
+          "name": "seat_template_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "default_service_class_id": {
+          "name": "default_service_class_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "vehicle_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "vehicles_company_id_companies_id_fk": {
+          "name": "vehicles_company_id_companies_id_fk",
+          "tableFrom": "vehicles",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "vehicles_seat_template_id_company_id_seat_templates_id_company_id_fk": {
+          "name": "vehicles_seat_template_id_company_id_seat_templates_id_company_id_fk",
+          "tableFrom": "vehicles",
+          "tableTo": "seat_templates",
+          "columnsFrom": [
+            "seat_template_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "vehicles_default_service_class_id_company_id_service_classes_id_company_id_fk": {
+          "name": "vehicles_default_service_class_id_company_id_service_classes_id_company_id_fk",
+          "tableFrom": "vehicles",
+          "tableTo": "service_classes",
+          "columnsFrom": [
+            "default_service_class_id",
+            "company_id"
+          ],
+          "columnsTo": [
+            "id",
+            "company_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "vehicles_company_plate": {
+          "name": "vehicles_company_plate",
+          "nullsNotDistinct": false,
+          "columns": [
+            "company_id",
+            "plate_number"
+          ]
+        },
+        "vehicles_tenant_key": {
+          "name": "vehicles_tenant_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "company_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "vehicle_revision": {
+          "name": "vehicle_revision",
+          "value": "\"vehicles\".\"revision\">0"
+        },
+        "vehicle_name": {
+          "name": "vehicle_name",
+          "value": "length(trim(\"vehicles\".\"name\")) BETWEEN 1 AND 120"
+        },
+        "vehicle_plate": {
+          "name": "vehicle_plate",
+          "value": "\"vehicles\".\"plate_number\" ~ '^[A-Z0-9 -]{1,24}$' AND \"vehicles\".\"plate_number\"=trim(\"vehicles\".\"plate_number\") AND \"vehicles\".\"plate_number\" NOT LIKE '%  %'"
+        },
+        "vehicle_fleet_number": {
+          "name": "vehicle_fleet_number",
+          "value": "\"vehicles\".\"fleet_number\" IS NULL OR length(\"vehicles\".\"fleet_number\")<=32"
+        }
+      },
+      "isRLSEnabled": true
+    }
+  },
+  "enums": {
+    "public.company_status": {
+      "name": "company_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "SUSPENDED"
+      ]
+    },
+    "public.crew_assignment_status": {
+      "name": "crew_assignment_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "REVOKED"
+      ]
+    },
+    "public.hold_audit_action": {
+      "name": "hold_audit_action",
+      "schema": "public",
+      "values": [
+        "HOLD_CREATED",
+        "HOLD_RELEASED",
+        "HOLD_EXPIRED"
+      ]
+    },
+    "public.hold_status": {
+      "name": "hold_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "RELEASED",
+        "EXPIRED",
+        "CONVERTED"
+      ]
+    },
+    "public.membership_role": {
+      "name": "membership_role",
+      "schema": "public",
+      "values": [
+        "ADMIN_PO",
+        "CREW",
+        "SUPER_ADMIN"
+      ]
+    },
+    "public.membership_status": {
+      "name": "membership_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "DISABLED"
+      ]
+    },
+    "public.seat_cell_type": {
+      "name": "seat_cell_type",
+      "schema": "public",
+      "values": [
+        "SEAT",
+        "DRIVER",
+        "AISLE",
+        "DOOR",
+        "EMPTY",
+        "FACILITY"
+      ]
+    },
+    "public.seat_template_status": {
+      "name": "seat_template_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "ARCHIVED"
+      ]
+    },
+    "public.template_status": {
+      "name": "template_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "INACTIVE"
+      ]
+    },
+    "public.trip_audit_action": {
+      "name": "trip_audit_action",
+      "schema": "public",
+      "values": [
+        "PUBLICATION",
+        "CREW_ASSIGNED",
+        "CREW_REVOKED"
+      ]
+    },
+    "public.trip_status": {
+      "name": "trip_status",
+      "schema": "public",
+      "values": [
+        "DRAFT",
+        "OPEN_FOR_SALE"
+      ]
+    },
+    "public.vehicle_status": {
+      "name": "vehicle_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "MAINTENANCE",
+        "INACTIVE"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

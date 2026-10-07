@@ -29,6 +29,13 @@
       "when": 1791352102669,
       "tag": "0003_trip_engine",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791355113321,
+      "tag": "0004_availability_holds",
+      "breakpoints": true
     }
   ]
 }
