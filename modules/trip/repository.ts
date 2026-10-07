@@ -1,8 +1,20 @@
 import type {Sql} from 'postgres';
+import {randomUUID} from 'node:crypto';
 import {withAdminTransaction,DomainError,type Context,type DomainTx} from '@/modules/access/transaction';
-import type {TripRecord,TripDetail,PublicationSource} from './types';
+import type {TripRecord,TripDetail,PublicationSource,PublicationProjection} from './types';
 export function createTripRepository(client:Sql){return {
  client,
+ async persistProjection(tx:DomainTx,ctx:Context,tripId:string,p:PublicationProjection){
+  const stops=p.stops.map(s=>({...s,id:randomUUID()}));
+  await tx`insert into public.trip_stops ${tx(stops.map(s=>({id:s.id,company_id:ctx.companyId,trip_id:tripId,source_id:s.sourceId,stop_id:s.stopId,name:s.name,city:s.city,address:s.address,sequence:s.sequence,arrival_at:s.arrivalAt,departure_at:s.departureAt})))}`;
+  const segments=p.segments.map(s=>({...s,id:randomUUID()}));
+  await tx`insert into public.trip_segments ${tx(segments.map(s=>({id:s.id,company_id:ctx.companyId,trip_id:tripId,from_trip_stop_id:stops[s.fromSequence-1].id,to_trip_stop_id:stops[s.toSequence-1].id,sequence:s.sequence,price:s.price,currency:s.currency})))}`;
+  const seats=p.seats.map(s=>({...s,id:randomUUID()}));
+  await tx`insert into public.trip_seats ${tx(seats.map(s=>({id:s.id,company_id:ctx.companyId,trip_id:tripId,seat_code:s.seatCode,row_index:s.rowIndex,col_index:s.colIndex,label:s.label})))}`;
+  await tx`insert into public.trip_seat_inventory ${tx(seats.flatMap(seat=>segments.map(segment=>({company_id:ctx.companyId,trip_id:tripId,trip_seat_id:seat.id,trip_segment_id:segment.id}))))}`;
+  const count=await tx`select count(*)::int as n from public.trip_seat_inventory where trip_id=${tripId} and company_id=${ctx.companyId}`;
+  if(count[0].n!==seats.length*segments.length)throw new Error('Inventory invariant failed');
+ },
  runAdmin<T>(ctx:Context,work:(tx:DomainTx)=>Promise<T>){return withAdminTransaction(client,ctx,work);},
  async trip(tx:DomainTx,ctx:Context,id:string,lock=false):Promise<TripRecord>{
   const rows=await tx<TripRecord[]>`select id,company_id as "companyId",name,route_id as "routeId",vehicle_id as "vehicleId",service_class_id as "serviceClassId",departure_at::text as "departureAt",sales_close_at::text as "salesCloseAt",revision,status,published_at::text as "publishedAt",identity_snapshot as identity from public.trips where id=${id} and company_id=${ctx.companyId} ${lock?tx`for update`:tx``}`;
