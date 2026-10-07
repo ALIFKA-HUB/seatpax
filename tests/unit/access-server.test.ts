@@ -1,0 +1,12 @@
+import { beforeEach, it, expect, vi } from 'vitest';
+const f=vi.hoisted(()=>({identity:vi.fn(),ensure:vi.fn(),list:vi.fn(),database:vi.fn()}));
+vi.mock('server-only',()=>({}));
+vi.mock('@/modules/auth/identity',()=>({getVerifiedUser:f.identity}));
+vi.mock('@/lib/db',()=>({getDatabase:f.database}));
+vi.mock('@/modules/access/repository',()=>({createAccessRepository:()=>({ensureProfile:f.ensure,listMemberships:f.list})}));
+import { requireAccess, ensureVerifiedProfile } from '@/modules/access/server';
+beforeEach(()=>{vi.resetAllMocks();f.identity.mockResolvedValue({id:'user',email:'verified@example.test'});f.list.mockResolvedValue([{userId:'user',companyId:'A',role:'ADMIN_PO',status:'ACTIVE'}]);});
+it('anonymous never queries database',async()=>{f.identity.mockResolvedValue(null);await expect(requireAccess('tenant.admin','A')).rejects.toThrow('unauthenticated');expect(f.database).not.toHaveBeenCalled();});
+it('reads fresh memberships and denies subsequent disabled membership',async()=>{expect(await requireAccess('tenant.admin','A')).toEqual({userId:'user',companyId:'A'});f.list.mockResolvedValue([{userId:'user',companyId:'A',role:'ADMIN_PO',status:'DISABLED'}]);await expect(requireAccess('tenant.admin','A')).rejects.toThrow('forbidden');expect(f.list).toHaveBeenCalledTimes(2);expect(f.ensure.mock.invocationCallOrder[0]).toBeLessThan(f.list.mock.invocationCallOrder[0]);});
+it('sanitizes database failure',async()=>{f.list.mockRejectedValue(Error('secret database uri'));await expect(requireAccess('tenant.admin','A')).rejects.toThrow('Access unavailable');});
+it('bootstrap obtains identity itself and never grants membership',async()=>{await ensureVerifiedProfile();expect(f.ensure).toHaveBeenCalledWith({id:'user',email:'verified@example.test'});expect(f.list).not.toHaveBeenCalled();});
