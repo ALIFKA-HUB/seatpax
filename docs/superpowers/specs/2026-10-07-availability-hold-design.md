@@ -1,6 +1,6 @@
 # Seatpax — Availability dan Seat Hold
 
-Tanggal: 7 Oktober 2026. Status: **PROPOSED SPEC — cakupan percakapan disetujui; menunggu review spec tertulis.** Belum mengizinkan implementation code atau migration. Pengguna memilih availability + hold sebagai slice berikutnya setelah Trip Engine.
+Tanggal: 7 Oktober 2026. Status: **APPROVED SPEC — pengguna menyetujui dengan spekmoke; implementation plan menunggu review.** Belum mengizinkan implementation code atau migration. Pengguna memilih availability + hold sebagai slice berikutnya setelah Trip Engine.
 
 ## Tujuan dan acuan
 
