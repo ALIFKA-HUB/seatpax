@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { pgSchema, pgTable, pgEnum, uuid, text, timestamp, integer, bigint, check, uniqueIndex, unique, foreignKey } from 'drizzle-orm/pg-core';
+import { pgSchema, pgTable, pgEnum, uuid, text, timestamp, integer, bigint, jsonb, check, uniqueIndex, unique, foreignKey } from 'drizzle-orm/pg-core';
 
 const authUsers = pgSchema('auth').table('users', { id: uuid('id').primaryKey() });
 const timestamps = () => ({ createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow() });
@@ -22,7 +22,46 @@ export const memberships = pgTable('memberships', {
   check('membership_company_role', sql`(${t.role} = 'SUPER_ADMIN' AND ${t.companyId} IS NULL) OR (${t.role} IN ('ADMIN_PO','CREW') AND ${t.companyId} IS NOT NULL)`),
   uniqueIndex('membership_tenant_unique').on(t.userId, t.companyId, t.role).where(sql`${t.companyId} IS NOT NULL`),
   uniqueIndex('membership_global_unique').on(t.userId, t.role).where(sql`${t.companyId} IS NULL`),
+  unique('membership_trip_identity').on(t.id,t.userId,t.companyId,t.role),
 ]).enableRLS();
+
+export const tripStatus=pgEnum('trip_status',['DRAFT','OPEN_FOR_SALE']);
+export const crewAssignmentStatus=pgEnum('crew_assignment_status',['ACTIVE','REVOKED']);
+export const tripAuditAction=pgEnum('trip_audit_action',['PUBLICATION','CREW_ASSIGNED','CREW_REVOKED']);
+export const trips=pgTable('trips',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull().references(()=>companies.id,{onDelete:'restrict'}),name:text('name').notNull(),
+ routeId:uuid('route_id').notNull(),vehicleId:uuid('vehicle_id').notNull(),serviceClassId:uuid('service_class_id').notNull(),
+ departureAt:timestamp('departure_at',{withTimezone:true}).notNull(),salesCloseAt:timestamp('sales_close_at',{withTimezone:true}),
+ revision:integer('revision').notNull().default(1),status:tripStatus('status').notNull().default('DRAFT'),publishedAt:timestamp('published_at',{withTimezone:true}),layoutSnapshot:jsonb('layout_snapshot'),identitySnapshot:jsonb('identity_snapshot'),...timestamps(),
+},t=>[unique('trips_tenant_key').on(t.id,t.companyId),
+ foreignKey({columns:[t.routeId,t.companyId],foreignColumns:[routes.id,routes.companyId]}).onDelete('restrict'),
+ foreignKey({columns:[t.vehicleId,t.companyId],foreignColumns:[vehicles.id,vehicles.companyId]}).onDelete('restrict'),
+ foreignKey({columns:[t.serviceClassId,t.companyId],foreignColumns:[serviceClasses.id,serviceClasses.companyId]}).onDelete('restrict'),
+ check('trip_revision_positive',sql`${t.revision}>0`),check('trip_name_valid',sql`length(trim(${t.name})) BETWEEN 1 AND 120`),
+ check('trip_publication_state',sql`(${t.status}='DRAFT' AND ${t.publishedAt} IS NULL AND ${t.layoutSnapshot} IS NULL AND ${t.identitySnapshot} IS NULL) OR (${t.status}='OPEN_FOR_SALE' AND ${t.publishedAt} IS NOT NULL AND ${t.layoutSnapshot} IS NOT NULL AND ${t.identitySnapshot} IS NOT NULL)`),
+]).enableRLS();
+export const tripStops=pgTable('trip_stops',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),sourceId:uuid('source_id').notNull(),stopId:uuid('stop_id').notNull(),
+ name:text('name').notNull(),city:text('city').notNull(),address:text('address'),sequence:integer('sequence').notNull(),arrivalAt:timestamp('arrival_at',{withTimezone:true}).notNull(),departureAt:timestamp('departure_at',{withTimezone:true}).notNull(),
+},t=>[foreignKey({columns:[t.tripId,t.companyId],foreignColumns:[trips.id,trips.companyId]}).onDelete('restrict'),unique('trip_stop_identity').on(t.id,t.tripId,t.companyId),unique('trip_stop_sequence').on(t.tripId,t.sequence),check('trip_stop_positive',sql`${t.sequence}>0`),check('trip_stop_time_order',sql`${t.arrivalAt}<=${t.departureAt}`)]).enableRLS();
+export const tripSegments=pgTable('trip_segments',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),fromTripStopId:uuid('from_trip_stop_id').notNull(),toTripStopId:uuid('to_trip_stop_id').notNull(),sequence:integer('sequence').notNull(),price:bigint('price',{mode:'bigint'}).notNull(),currency:text('currency').notNull().default('IDR'),
+},t=>[unique('trip_segment_identity').on(t.id,t.tripId,t.companyId),unique('trip_segment_sequence').on(t.tripId,t.sequence),
+ foreignKey({columns:[t.fromTripStopId,t.tripId,t.companyId],foreignColumns:[tripStops.id,tripStops.tripId,tripStops.companyId]}).onDelete('restrict'),foreignKey({columns:[t.toTripStopId,t.tripId,t.companyId],foreignColumns:[tripStops.id,tripStops.tripId,tripStops.companyId]}).onDelete('restrict'),
+ check('trip_segment_values',sql`${t.sequence}>0 AND ${t.price}>=0 AND ${t.currency}='IDR' AND ${t.fromTripStopId}<>${t.toTripStopId}`),
+]).enableRLS();
+export const tripSeats=pgTable('trip_seats',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),seatCode:text('seat_code').notNull(),rowIndex:integer('row_index').notNull(),colIndex:integer('col_index').notNull(),label:text('label'),
+},t=>[foreignKey({columns:[t.tripId,t.companyId],foreignColumns:[trips.id,trips.companyId]}).onDelete('restrict'),unique('trip_seat_identity').on(t.id,t.tripId,t.companyId),unique('trip_seat_code').on(t.tripId,t.seatCode),unique('trip_seat_coordinate').on(t.tripId,t.rowIndex,t.colIndex),check('trip_seat_values',sql`${t.rowIndex} BETWEEN 0 AND 29 AND ${t.colIndex} BETWEEN 0 AND 7 AND ${t.seatCode} ~ '^[A-Z0-9-]{1,8}$'`)]).enableRLS();
+export const tripSeatInventory=pgTable('trip_seat_inventory',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),tripSeatId:uuid('trip_seat_id').notNull(),tripSegmentId:uuid('trip_segment_id').notNull(),
+},t=>[unique('trip_inventory_unit').on(t.tripId,t.tripSeatId,t.tripSegmentId),foreignKey({columns:[t.tripSeatId,t.tripId,t.companyId],foreignColumns:[tripSeats.id,tripSeats.tripId,tripSeats.companyId]}).onDelete('restrict'),foreignKey({columns:[t.tripSegmentId,t.tripId,t.companyId],foreignColumns:[tripSegments.id,tripSegments.tripId,tripSegments.companyId]}).onDelete('restrict')]).enableRLS();
+export const tripCrewAssignments=pgTable('trip_crew_assignments',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),userId:uuid('user_id').notNull(),membershipId:uuid('membership_id').notNull(),membershipRole:membershipRole('membership_role').notNull().default('CREW'),status:crewAssignmentStatus('status').notNull().default('ACTIVE'),assignedBy:uuid('assigned_by').notNull().references(()=>users.id,{onDelete:'restrict'}),assignedAt:timestamp('assigned_at',{withTimezone:true}).notNull().defaultNow(),revokedAt:timestamp('revoked_at',{withTimezone:true}),
+},t=>[unique('trip_crew_pair').on(t.tripId,t.userId),foreignKey({columns:[t.tripId,t.companyId],foreignColumns:[trips.id,trips.companyId]}).onDelete('restrict'),foreignKey({columns:[t.membershipId,t.userId,t.companyId,t.membershipRole],foreignColumns:[memberships.id,memberships.userId,memberships.companyId,memberships.role]}).onDelete('restrict'),check('trip_crew_role',sql`${t.membershipRole}='CREW'`),check('trip_crew_revocation',sql`(${t.status}='ACTIVE' AND ${t.revokedAt} IS NULL) OR (${t.status}='REVOKED' AND ${t.revokedAt} IS NOT NULL)`)]).enableRLS();
+export const tripAuditEvents=pgTable('trip_audit_events',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),actorId:uuid('actor_id').notNull().references(()=>users.id,{onDelete:'restrict'}),action:tripAuditAction('action').notNull(),targetUserId:uuid('target_user_id').references(()=>users.id,{onDelete:'restrict'}),metadata:jsonb('metadata').notNull(),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow(),
+},t=>[foreignKey({columns:[t.tripId,t.companyId],foreignColumns:[trips.id,trips.companyId]}).onDelete('restrict')]).enableRLS();
 
 export const seatTemplateStatus = pgEnum('seat_template_status', ['ACTIVE', 'ARCHIVED']);
 export const seatCellType = pgEnum('seat_cell_type', ['SEAT', 'DRIVER', 'AISLE', 'DOOR', 'EMPTY', 'FACILITY']);
@@ -49,6 +88,7 @@ export const vehicles = pgTable('vehicles', {
   status: vehicleStatus('status').notNull().default('ACTIVE'), revision: integer('revision').notNull().default(1), ...timestamps(),
 }, t => [
   unique('vehicles_company_plate').on(t.companyId, t.plateNumber),
+  unique('vehicles_tenant_key').on(t.id,t.companyId),
   foreignKey({ columns: [t.seatTemplateId, t.companyId], foreignColumns: [seatTemplates.id, seatTemplates.companyId] }).onDelete('restrict'),
   foreignKey({ columns: [t.defaultServiceClassId, t.companyId], foreignColumns: [serviceClasses.id, serviceClasses.companyId] }).onDelete('restrict'),
   check('vehicle_revision', sql`${t.revision}>0`), check('vehicle_name', sql`length(trim(${t.name})) BETWEEN 1 AND 120`),

@@ -22,7 +22,7 @@ export function projectSnapshot(source:PublicationSource,draft:TripDraftInput,no
  if(draft.salesCloseWib){const cutoff=Date.parse(parseWibInstant(draft.salesCloseWib));if(cutoff<=Date.parse(nowIso)||cutoff>Date.parse(stops.at(-1)!.departureAt))fail('Batas penjualan harus setelah sekarang dan paling lambat keberangkatan stop terakhir.');}
  const segments=source.stops.slice(0,-1).map((s,i)=>{
   const matches=source.fares.filter(f=>f.fromSourceId===s.sourceId&&f.toSourceId===source.stops[i+1].sourceId);
-  if(matches.length!==1||matches[0].currency!=='IDR'||!/^\d+$/.test(matches[0].price)||BigInt(matches[0].price)>9223372036854775807n)fail('Tarif segmen belum lengkap atau tidak valid.');
+  if(matches.length!==1||matches[0].currency!=='IDR'||!/^\d+$/.test(matches[0].price)||BigInt(matches[0].price)>BigInt('9223372036854775807'))fail('Tarif segmen belum lengkap atau tidak valid.');
   return {sequence:i+1,fromSequence:i+1,toSequence:i+2,price:BigInt(matches[0].price).toString(),currency:'IDR' as const};
  });
  const validated=parseTemplate({...source.layout,name:'Trip layout'});
