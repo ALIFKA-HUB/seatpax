@@ -5,13 +5,14 @@ import type {AvailabilityView,SearchInput,SearchResult} from './types';
 import {overlaps,resolveInterval,wibDayBounds} from './interval';
 import {quoteInterval} from './fare';
 import {searchInputSchema} from './validation';
+import {deadlineReached} from './deadline';
 export function availability(s:Snapshot,fromId:string,toId:string):AvailabilityView{
  const range=resolveInterval(s.stops,fromId,toId),fare=quoteInterval(s.segments,range);
  const origin=s.stops.find(x=>x.id===fromId)!;
- const cutoff=new Date(Math.min(Date.parse(origin.departureAt),s.trip.salesCloseAt?Date.parse(s.trip.salesCloseAt):Infinity)).toISOString();
+ const cutoff=s.trip.salesCloseAt&&deadlineReached(origin.departureAt,s.trip.salesCloseAt)?s.trip.salesCloseAt:origin.departureAt;
  const seats=s.seats.map(seat=>{if(!seat.id)throw new DomainError('unavailable','Inventori kursi tidak lengkap.');for(let seq=range.from;seq<range.to;seq++)if(s.anchors.filter(a=>a.seatId===seat.id&&a.sequence===seq).length!==1)throw new DomainError('unavailable','Inventori kursi tidak lengkap.');return {...seat,id:seat.id,status:s.holds.some(h=>h.seatId===seat.id&&overlaps(h,range))?'HELD' as const:'AVAILABLE' as const};});
  const {trip,stops,segments,layout,inventoryCount}=s;
- return {detail:{trip,stops,segments,seats:s.seats,layout,inventoryCount},fare,cutoff,serverNow:s.serverNow,saleOpen:s.companyStatus==='ACTIVE'&&trip.status==='OPEN_FOR_SALE'&&Date.parse(s.serverNow)<Date.parse(cutoff),seats};
+ return {detail:{trip,stops,segments,seats:s.seats,layout,inventoryCount},fare,cutoff,serverNow:s.serverNow,saleOpen:s.companyStatus==='ACTIVE'&&trip.status==='OPEN_FOR_SALE'&&!deadlineReached(s.serverNow,cutoff),seats};
 }
 export function createAvailabilityService(repo:InventoryRepository){return {
  locations:()=>repo.locations(),

@@ -1,6 +1,7 @@
 import {it,expect,vi} from 'vitest';
 import {safeReturnPath} from '@/modules/auth/return-path';
-import {holdIntent,startVisiblePolling} from '@/modules/inventory/selection-state';
+import {holdIntent,startVisiblePolling,deadlineCountdown} from '@/modules/inventory/selection-state';
+it('refreshes exactly once when the server-derived countdown reaches zero',()=>{const refresh=vi.fn(),tick=deadlineCountdown('2026-10-09T01:00:01Z','2026-10-09T01:00:00Z',100,refresh);expect(tick(500)).toBe(600);expect(tick(1100)).toBe(0);expect(tick(2100)).toBe(0);expect(refresh).toHaveBeenCalledTimes(1);});
 it('retains uncertain intent and changes key when selection changes',()=>{const key=()=>String(Math.random()),first=holdIntent(null,'seat-a',key);expect(holdIntent(first,'seat-a',key)).toBe(first);expect(holdIntent(first,'seat-b',key).requestKey).not.toBe(first.requestKey);});
 it('polls every 15 seconds only while visible and disposes timers',()=>{vi.useFakeTimers();let visible=true,listener!:()=>void;const refresh=vi.fn(),stop=startVisiblePolling({visible:()=>visible,subscribe:fn=>{listener=fn;return ()=>{};}},refresh);vi.advanceTimersByTime(15000);expect(refresh).toHaveBeenCalledTimes(1);visible=false;listener();vi.advanceTimersByTime(30000);expect(refresh).toHaveBeenCalledTimes(1);visible=true;listener();vi.advanceTimersByTime(15000);expect(refresh).toHaveBeenCalledTimes(3);stop();vi.advanceTimersByTime(15000);expect(refresh).toHaveBeenCalledTimes(3);vi.useRealTimers();});
 it('allows local trip return paths and rejects external destinations',()=>{expect(safeReturnPath('/trips/a?from=x')).toBe('/trips/a?from=x');for(const path of ['//evil.com','https://evil.com','/\\evil.com','/login'])expect(safeReturnPath(path)).toBe('/account');});

@@ -1,11 +1,12 @@
 import {DomainError,type DomainTx} from '@/modules/access/transaction';
 import type {InventoryRepository} from './repository';
 import type {HoldRecord} from './types';
+import {deadlineReached} from './deadline';
 export async function transition(repo:InventoryRepository,tx:DomainTx,identity:HoldRecord,owner:string|null){
  await repo.guards(tx,identity.tripId);await repo.anchors(tx,identity.tripId,identity.seatId,identity);
  const h=await repo.own(tx,identity.ownerId,identity.id,true);if(!h)throw new DomainError('forbidden','Hold tidak tersedia.');
  const now=await repo.now(tx);if(h.status!=='ACTIVE')return {hold:h,changed:false};
- const expired=Date.parse(now)>=Date.parse(h.effectiveExpiresAt);
+ const expired=deadlineReached(now,h.effectiveExpiresAt);
  if(!expired&&owner===null)return {hold:h,changed:false};
  if(!expired&&h.paymentInitiatedAt)throw new DomainError('conflict','Hold sudah memasuki proses pembayaran.');
  const status=expired?'EXPIRED':'RELEASED';

@@ -187,3 +187,7 @@ Redis dapat ditambahkan nanti untuk caching, rate limiting, dan high-volume ephe
 ## Adopted route template slice — 7 October 2026
 
 The user approved the route/pricing design and implementation plan. Five template tables (stops, routes, route_stops, service_classes, segment_fares), exact IDR bigint adjacent fares, 2–50 unique ordered stops, soft status, tenant composite FKs and revision conflict checks are implemented. Reorder/add/remove requires clearing all route fares first. Route quote preview creates no trip. The approved Trip Engine separately snapshots route stops, adjacent fares and seat×segment inventory anchors at first publication; these anchors do not implement availability or holds. See ../superpowers/specs/2026-10-07-route-pricing-design.md, ../setup/ROUTE_PRICING_SETUP.md and ../setup/TRIP_ENGINE_SETUP.md.
+
+## Adopted availability and hold slice — 7 October 2026
+
+The approved availability/hold design and plan implement public snapshot search/quote, half-open interval availability, owner-only single-seat ten-minute holds, idempotent request keys, release and logical expiry with bounded cleanup. Company/trip guards and ordered seat×segment locks precede DB-time eligibility and occupancy checks. Snapshot inventory is now used for active holds; confirmed bookings and payment conversion remain unimplemented. RLS/browser revokes protect hold tables. See [availability design](../superpowers/specs/2026-10-07-availability-hold-design.md) and [setup evidence](../setup/AVAILABILITY_HOLD_SETUP.md).

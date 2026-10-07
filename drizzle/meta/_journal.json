@@ -36,6 +36,13 @@
       "when": 1791355113321,
       "tag": "0004_availability_holds",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791356936103,
+      "tag": "0005_hold_terminal_timestamps",
+      "breakpoints": true
     }
   ]
 }

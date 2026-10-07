@@ -15,7 +15,7 @@ export const seatHolds=pgTable('seat_holds',{
  foreignKey({columns:[t.toTripStopId,t.tripId,t.companyId],foreignColumns:[tripStops.id,tripStops.tripId,tripStops.companyId]}).onDelete('restrict'),
  check('hold_range',sql`${t.fromSequence}>0 AND ${t.toSequence}>${t.fromSequence}`),
  check('hold_times',sql`${t.baseExpiresAt}=${t.createdAt}+interval '10 minutes' AND ${t.effectiveExpiresAt}>=${t.baseExpiresAt} AND (${t.paymentInitiatedAt} IS NULL OR ${t.paymentInitiatedAt}>=${t.createdAt})`),
- check('hold_state',sql`(${t.status} IN ('ACTIVE','CONVERTED') AND ${t.releasedAt} IS NULL AND ${t.expiredAt} IS NULL) OR (${t.status}='RELEASED' AND ${t.releasedAt}>=${t.createdAt} AND ${t.expiredAt} IS NULL) OR (${t.status}='EXPIRED' AND ${t.expiredAt}>=${t.effectiveExpiresAt} AND ${t.releasedAt} IS NULL)`),
+ check('hold_state',sql`(${t.status} IN ('ACTIVE','CONVERTED') AND ${t.releasedAt} IS NULL AND ${t.expiredAt} IS NULL) OR (${t.status}='RELEASED' AND ${t.releasedAt} IS NOT NULL AND ${t.releasedAt}>=${t.createdAt} AND ${t.expiredAt} IS NULL) OR (${t.status}='EXPIRED' AND ${t.expiredAt} IS NOT NULL AND ${t.expiredAt}>=${t.effectiveExpiresAt} AND ${t.releasedAt} IS NULL)`),
  index('hold_active_seat').on(t.tripId,t.tripSeatId,t.fromSequence,t.toSequence).where(sql`${t.status}='ACTIVE'`),index('hold_expiry').on(t.effectiveExpiresAt).where(sql`${t.status}='ACTIVE'`),
 ]).enableRLS();
 export const seatHoldAuditEvents=pgTable('seat_hold_audit_events',{

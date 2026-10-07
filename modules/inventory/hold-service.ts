@@ -5,15 +5,16 @@ import {holdInputSchema} from './validation';
 import {resolveInterval,sameHoldPayload} from './interval';
 import {availability} from './availability-service';
 import {quoteInterval} from './fare';
-import {databaseCode,inventoryTransaction} from './transaction';
+import {databaseCode,inventoryRead,inventoryTransaction} from './transaction';
 import type {InventoryRepository} from './repository';
 import type {HoldInput,HoldRecord,HoldView} from './types';
 import {transition} from './lifecycle';
-export function effectiveStatus(h:HoldRecord,now:string){return h.status==='ACTIVE'&&Date.parse(now)>=Date.parse(h.effectiveExpiresAt)?'EXPIRED' as const:h.status;}
+import {deadlineReached} from './deadline';
+export function effectiveStatus(h:HoldRecord,now:string){return h.status==='ACTIVE'&&deadlineReached(now,h.effectiveExpiresAt)?'EXPIRED' as const:h.status;}
 function actor(id:string){if(!z.uuid().safeParse(id).success)throw new DomainError('forbidden','Masuk untuk melanjutkan.');}
 export function createHoldService(repo:InventoryRepository){
- async function view(tx:DomainTx|InventoryRepository['client'],h:HoldRecord):Promise<HoldView>{const s=await repo.snapshot(tx,h.tripId),{trip,stops,segments,seats,layout,inventoryCount}=s;return {record:h,effectiveStatus:effectiveStatus(h,s.serverNow),serverNow:s.serverNow,detail:{trip,stops,segments,seats,layout,inventoryCount},fare:quoteInterval(s.segments,h)};}
- async function retry(owner:string,input:HoldInput){const h=await repo.byKey(repo.client,owner,input.requestKey);if(!h)return null;if(!sameHoldPayload(h,input))throw new DomainError('conflict','Kunci permintaan sudah dipakai untuk pilihan lain.');return view(repo.client,h);}
+ async function view(tx:DomainTx|InventoryRepository['client'],h:HoldRecord):Promise<HoldView>{const work=async()=>{const s=await repo.snapshot(tx,h.tripId),{trip,stops,segments,seats,layout,inventoryCount}=s;return {record:h,effectiveStatus:effectiveStatus(h,s.serverNow),serverNow:s.serverNow,detail:{trip,stops,segments,seats,layout,inventoryCount},fare:quoteInterval(s.segments,h)};};return tx===repo.client?inventoryRead(work):work();}
+ async function retry(owner:string,input:HoldInput){const h=await inventoryRead(()=>repo.byKey(repo.client,owner,input.requestKey));if(!h)return null;if(!sameHoldPayload(h,input))throw new DomainError('conflict','Kunci permintaan sudah dipakai untuk pilihan lain.');return view(repo.client,h);}
  return {
  async create(owner:string,input:HoldInput):Promise<HoldView>{
   actor(owner);if(!holdInputSchema.safeParse(input).success)throw new DomainError('validation','Pilihan kursi tidak valid.');const existing=await retry(owner,input);if(existing)return existing;
@@ -33,7 +34,7 @@ export function createHoldService(repo:InventoryRepository){
    const h=(await repo.own(tx,owner,id))!;await repo.audit(tx,h,'HOLD_CREATED',owner,now);return view(tx,h);
   });}catch(error){if(databaseCode(error)==='23505'){const result=await retry(owner,input);if(result)return result;throw new DomainError('unavailable','Permintaan belum dapat dipastikan. Coba lagi.');}throw error;}
  },
- async readMine(owner:string,id:string){actor(owner);if(!z.uuid().safeParse(id).success)throw new DomainError('validation','Hold tidak valid.');const h=await repo.own(repo.client,owner,id);if(!h)throw new DomainError('forbidden','Hold tidak tersedia.');return view(repo.client,h);},
- async release(owner:string,id:string){actor(owner);if(!z.uuid().safeParse(id).success)throw new DomainError('validation','Hold tidak valid.');const h=await repo.own(repo.client,owner,id);if(!h)throw new DomainError('forbidden','Hold tidak tersedia.');return inventoryTransaction(repo.client,async tx=>view(tx,(await transition(repo,tx,h,owner)).hold));},
+ async readMine(owner:string,id:string){actor(owner);if(!z.uuid().safeParse(id).success)throw new DomainError('validation','Hold tidak valid.');const h=await inventoryRead(()=>repo.own(repo.client,owner,id));if(!h)throw new DomainError('forbidden','Hold tidak tersedia.');return view(repo.client,h);},
+ async release(owner:string,id:string){actor(owner);if(!z.uuid().safeParse(id).success)throw new DomainError('validation','Hold tidak valid.');const h=await inventoryRead(()=>repo.own(repo.client,owner,id));if(!h)throw new DomainError('forbidden','Hold tidak tersedia.');return inventoryTransaction(repo.client,async tx=>view(tx,(await transition(repo,tx,h,owner)).hold));},
  };
 }

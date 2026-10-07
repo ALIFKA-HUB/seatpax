@@ -558,3 +558,7 @@ The user approved the route/pricing design and implementation plan. Five templat
 ## Implemented Trip Engine schema — 7 October 2026
 
 Migration [0003_trip_engine.sql](../../drizzle/0003_trip_engine.sql) adds `trips`, `trip_stops`, `trip_segments`, `trip_seats`, `trip_seat_inventory`, `trip_crew_assignments`, and `trip_audit_events`. Trips retain source references for drafts and independent JSON identity/full-grid snapshots after publication. Stops, segments, seats and anchors carry same-company/same-trip composite constraints. Crew assignments reference the same-company CREW membership and record active/revoked transitions. Every new table enables RLS and revokes browser-role grants; access is through guarded server services. Completeness and atomic publication are domain invariants, supported by database state/uniqueness/foreign-key checks.
+
+## Adopted availability and hold slice — 7 October 2026
+
+The approved availability/hold design and plan implement public snapshot search/quote, half-open interval availability, owner-only single-seat ten-minute holds, idempotent request keys, release and logical expiry with bounded cleanup. Company/trip guards and ordered seat×segment locks precede DB-time eligibility and occupancy checks. Snapshot inventory is now used for active holds; confirmed bookings and payment conversion remain unimplemented. RLS/browser revokes protect hold tables. See [availability design](../superpowers/specs/2026-10-07-availability-hold-design.md) and [setup evidence](../setup/AVAILABILITY_HOLD_SETUP.md).
