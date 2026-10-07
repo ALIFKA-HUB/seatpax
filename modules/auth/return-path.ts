@@ -1,0 +1,1 @@
+export function safeReturnPath(raw:unknown):string{if(typeof raw!=='string'||!/^\/(trips|holds)(\/|\?|$)/.test(raw)||/[\\\r\n]/.test(raw))return '/account';try{const url=new URL(raw,'http://localhost');return url.origin==='http://localhost'?url.pathname+url.search:'/account';}catch{return '/account';}}

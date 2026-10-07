@@ -1,5 +1,6 @@
 'use server';
 import { redirect } from 'next/navigation';
+import {safeReturnPath} from '@/modules/auth/return-path';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { EMAIL_OTP_LENGTH, requestOtp, verifyEmailOtp, logoutSession, type AuthGateway } from '@/modules/auth/service';
 
@@ -12,9 +13,9 @@ function gateway(): AuthGateway {
   };
 }
 export async function sendOtpAction(email: string) { return requestOtp(gateway(), email); }
-export async function verifyOtpAction(input: { email: string; token: string }) {
+export async function verifyOtpAction(input: { email: string; token: string }, next?:string) {
   const result = await verifyEmailOtp(gateway(), input, EMAIL_OTP_LENGTH);
-  if (result.ok) redirect('/account');
+  if (result.ok) redirect(safeReturnPath(next));
   return result;
 }
 export async function logoutAction() {

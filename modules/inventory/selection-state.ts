@@ -1,0 +1,3 @@
+export type Intent={selection:string;requestKey:string};
+export function holdIntent(previous:Intent|null,selection:string,key:()=>string):Intent{return previous?.selection===selection?previous:{selection,requestKey:key()};}
+export function startVisiblePolling(source:{visible:()=>boolean;subscribe:(fn:()=>void)=>()=>void},refresh:()=>void){let timer:ReturnType<typeof setInterval>|undefined;function sync(){if(timer)clearInterval(timer);timer=undefined;if(source.visible())timer=setInterval(refresh,15000);}const unsubscribe=source.subscribe(()=>{sync();if(source.visible())refresh();});sync();return ()=>{if(timer)clearInterval(timer);unsubscribe();};}

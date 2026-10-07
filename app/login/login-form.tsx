@@ -5,7 +5,7 @@ import { EMAIL_OTP_LENGTH, type AuthResult } from '@/modules/auth/service';
 import { initialLoginState, loginReducer } from '@/modules/auth/login-state';
 
 const networkFailure: AuthResult = { ok: false, code: 'provider_unavailable', message: 'Koneksi terputus. Coba lagi sebentar.' };
-export default function LoginForm() {
+export default function LoginForm({next="/account"}:{next?:string}) {
   const [state, dispatch] = useReducer(loginReducer, initialLoginState);
   const [token, setToken] = useState('');
   const [now, setNow] = useState(0);
@@ -40,7 +40,7 @@ export default function LoginForm() {
     busy.current = true;
     const id = state.requestId + 1;
     dispatch({ type: 'startVerify' });
-    try { dispatch({ type: 'verifyResult', id, result: await verifyOtpAction({ email: state.email, token }) }); }
+    try { dispatch({ type: 'verifyResult', id, result: await verifyOtpAction({ email: state.email, token }, next) }); }
     catch { dispatch({ type: 'verifyResult', id, result: networkFailure }); }
     finally { busy.current = false; }
   }
