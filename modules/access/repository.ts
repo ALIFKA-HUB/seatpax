@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { users, memberships } from '@/lib/db/schema';
 import type { Actor, Membership } from './service';
-export function createAccessRepository(db:PostgresJsDatabase) {
+export function createAccessRepository(db:Pick<PostgresJsDatabase,'insert'|'select'>) {
   return {
     async ensureProfile(actor:Actor):Promise<void> {
       await db.insert(users).values({id:actor.id,email:actor.email}).onConflictDoNothing({target:users.id});

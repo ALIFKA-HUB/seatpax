@@ -1,11 +1,7 @@
-import type { Sql } from 'postgres';
-import { DEMO_COMPANIES,seedMemberships,type SeedRepository } from './seed';
-export function createSeedRepository(client:Sql):SeedRepository {
+import type { Sql, TransactionSql } from 'postgres';
+import { DEMO_COMPANIES,seedMemberships,type SeedRepository,type SeedTransaction } from './seed';
+export function createSeedTransaction(tx:TransactionSql):SeedTransaction {
   return {
-    async transaction(fn) {
-      return await client.begin(async tx=>{
-        await tx`select pg_advisory_xact_lock(734217001)`;
-        return await fn({
           async inspect(mapping) {
             const ids=Object.values(mapping);
             const accounts=await tx`select id from auth.users where id in ${tx(ids)}`;
@@ -24,8 +20,13 @@ export function createSeedRepository(client:Sql):SeedRepository {
             for(const company of DEMO_COMPANIES)await tx`insert into public.companies(id,name,slug) values(${company.id},${company.name},${company.slug}) on conflict(id) do nothing`;
             for(const m of seedMemberships(mapping))await tx`insert into public.memberships(id,user_id,company_id,role) values(${m.id},${m.userId},${m.companyId},${m.role}) on conflict(id) do nothing`;
           },
-        });
-      }) as Awaited<ReturnType<typeof fn>>;
-    },
   };
+}
+export function createSeedRepository(client:Sql):SeedRepository {
+  return {async transaction(fn){
+    return await client.begin(async tx=>{
+      await tx`select pg_advisory_xact_lock(734217001)`;
+      return await fn(createSeedTransaction(tx));
+    }) as Awaited<ReturnType<typeof fn>>;
+  }};
 }
