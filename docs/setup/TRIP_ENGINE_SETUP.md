@@ -35,11 +35,8 @@ The service class override was verified in the database path only; the browser f
 
 ![Published trip narrow view](evidence/trip-published-narrow.png)
 
-## Remaining delivery work
+## Local integration
 
-1. Build passed.
-2. Full DB suite passed: 26 tests across 6 files.
-3. Crew browser login/read passed; UI class override remains limited to the single-class fixture.
-4. Review the final worktree diff and integrate locally into main while preserving the pre-existing `next-env.d.ts` change. No commit, push, or deploy is represented by this note.
+Branch codex/trip-engine was fast-forward merged into main on 7 October 2026. Integrated-checkout unit tests (137) and typecheck passed. The pre-existing next-env.d.ts change was preserved. The worktree server was stopped; the main preview uses http://localhost:3000. No push or deployment was performed.
 
 See the [approved Trip Engine design](../superpowers/specs/2026-10-07-trip-engine-design.md), [implementation plan](../superpowers/plans/2026-10-07-trip-engine.md), and [decision D2026-10-07-04](../seatpax/19_DECISION_LEDGER.md).

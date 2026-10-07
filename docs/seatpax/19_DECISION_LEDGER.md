@@ -156,7 +156,7 @@ Approved spec and plan: active ADMIN_PO manages reusable rectangular seat templa
 
 ## D2026-10-07-04 — Approve and implement Trip Engine preparation slice
 
-**Status: APPROVED DESIGN; IMPLEMENTED LOCALLY, final verification/integration in progress.** The user approved the Trip Engine spec and plan on 7 October 2026. This slice implements revisioned trip drafts, atomic first publication into independent stop/time/fare/full-layout snapshots, one inventory anchor per snapshotted seat × adjacent segment, and tenant-scoped crew assignment/revocation with assigned published-trip reads. Published snapshot data is immutable through the available services; publication retry is idempotent.
+**Status: FINAL; IMPLEMENTED AND VERIFIED LOCALLY.** The user approved the Trip Engine spec and plan on 7 October 2026. This slice implements revisioned trip drafts, atomic first publication into independent stop/time/fare/full-layout snapshots, one inventory anchor per snapshotted seat × adjacent segment, and tenant-scoped crew assignment/revocation with assigned published-trip reads. Published snapshot data is immutable through the available services; publication retry is idempotent.
 
 Trip input/display uses WIB while persisted values are instants. Publishing validates current active sources, route offsets/fares and the complete seat grid; a nonzero first-stop departure offset blocks publication. Company suspension blocks new publication. Crew access requires both active same-company CREW membership and active assignment. Drafts remain editable under expected-revision checks.
 

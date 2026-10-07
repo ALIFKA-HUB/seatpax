@@ -109,10 +109,10 @@ Create `modules/trip/types.ts`, `validation.ts`, `time.ts`, `snapshot.ts` (pure 
 - [x] Browser: Admin A draft/reopen, blocker fix/publication, crew assign/revoke/reactivate, foreign PO denial, narrow layout and keyboard revocation passed. Crew A own list/detail passed. UI class override unperformed with single-class fixture; DB override passed.
 - [x] Final GPT-6 Luna medium review completed with no findings.
 - [x] Record evidence/limits and update the decision ledger and related documentation. `git diff --check` passed. Commit intended changes before local integration, preserving generated files.
-- [ ] Stop any worktree server if running, merge locally into main while preserving the existing `next-env.d.ts` change, and verify the integrated checkout. No push/deploy.
+- [x] Worktree server stopped; branch fast-forward merged locally into main with existing next-env.d.ts preserved. Integrated unit137 and typecheck passed; main preview started. No push/deploy.
 
 ## Plan self-review and execution handoff
 
 Coverage maps pure times/projection to Task 1, schema/draft/tenant invariants to Task 2, snapshot/idempotency/locks to Task 3, crew/audit to Task 4, UI/adapters to Task 5 and browser/review/docs/integration to Task 6. Review Focus entries each have a named owning test step. Actual source lock order has been inspected; no provider dependencies are needed. Crew transaction intentionally avoids actor-first membership ordering when locking two identities.
 
-Status: **PLAN APPROVED — implementation Tasks 1–5 complete; Task 6 in progress.** Trip Engine implementation and automated suites are present locally. Build and browser checks completed with the documented single-class limitation. Local merge is pending. No push or deploy is included.
+Status: **PLAN IMPLEMENTED — Tasks 1–6 complete with documented browser limits.** Trip Engine implementation and automated suites are present locally. Build and browser checks completed with the documented single-class limitation. Local merge and integrated checks passed. No push or deploy is included.
