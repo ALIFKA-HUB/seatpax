@@ -26,3 +26,4 @@ Thumbs.db
 # Execution scratch and TypeScript cache
 .superpowers/
 *.tsbuildinfo
+.seatpax/
