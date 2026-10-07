@@ -88,4 +88,4 @@
 
 Spec sections 1/3/5 → Tasks1/4; section2 → Tasks2/4; section4 → Tasks3/4. Review Focus1/2 → Task2/4; 3/5 → Task3/4; 4 → Task1/4. Interfaces agree across tasks; privileged SQL and browser denial are separate verification paths. Membership revocation concurrent with future business mutations remains a later transactional concern explicitly stated in spec.
 
-User approved spec on7October2026. **Plan pending review.** Preserve inline execution already selected by user; final reviewer remains Luna medium. Hosted migration/seed requires valid port5432 URI and explicit existing account mapping. Implementation starts after plan review.
+User approved spec and plan on7October2026. Inline execution preserved; final reviewer Luna medium. Tasks1–3 implemented; Task4 migration and5real DBtests passed,83unit tests/typecheck/lint/build passed, reviewer found no code findings. Persistent seed of actual internal accounts awaits5user-chosen Auth UUIDs; it is not claimed complete. See tenant setup for detailed evidence and rulings.

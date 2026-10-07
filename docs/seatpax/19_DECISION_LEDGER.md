@@ -1,5 +1,17 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-10-07-01 — Approve tenant access foundation
+
+**Status: APPROVED DESIGN.** User approved [tenant access spec](../superpowers/specs/2026-10-07-tenant-access-design.md) with “spec oke” and its [implementation plan](../superpowers/plans/2026-10-07-tenant-access.md) with “Plan oke, lanjut eksekusi”. This refines D2026-10-06-02 without expanding release scope.
+
+- Three initial application tables: users, companies, memberships; profile FK to Auth and membership FKs use RESTRICT.
+- Tenant memberships require company; SUPER_ADMIN requires NULL company. Separate partial unique indexes enforce tenant and global uniqueness, replacing the earlier NULL-sensitive single UNIQUE proposal.
+- Fresh database membership authorization at server boundary; no privilege from user metadata or Super Admin fallback into tenant operations.
+- RLS enabled and anon/authenticated privileges revoked on these tables; browser direct policies remain absent on this slice.
+- Two-company seed uses explicit existing Auth IDs, dry-run default and immutable mappings; reruns preserve disabled/suspended state.
+
+Implementation/verification evidence belongs in [tenant setup](../setup/TENANT_ACCESS_SETUP.md); approval alone does not imply hosted seed completed.
+
 ## D2026-10-06-01 — Adopt 30-day demo release
 
 **Status: ADOPTED.** User approved the reduced scope package on 6 October 2026 with “oke” after reviewing the retained/deferred scope summary and linked proposal.

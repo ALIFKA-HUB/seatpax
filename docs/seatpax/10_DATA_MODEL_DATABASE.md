@@ -1,5 +1,7 @@
 # Seatpax — Data Model, Database Schema & Indexing
 
+> **Tenant slice — D2026-10-07-01:** users/companies/memberships now follow the [approved tenant design](../superpowers/specs/2026-10-07-tenant-access-design.md): RESTRICT FKs; CHECK ties role to company nullability; partial unique tenant/global indexes replace the single UNIQUE below; default-deny browser grants/RLS. Implementation evidence: [tenant setup](../setup/TENANT_ACCESS_SETUP.md). Other domain tables below remain proposals.
+
 > **Fondasi diadopsi — D2026-10-06-02:** Schema v1 di bawah adalah referensi sebelum fondasi, belum migration. Migration retained flow wajib menambahkan trip_crew_assignments; immutable trip_stops/trip_seats/layout snapshot; hold owner/base/effective/payment initiation timestamps dan RELEASED state; unique bookings.seat_hold_id dan booking_passengers.booking_id; hash+ciphertext ticket; uniqueness operasi; cross-trip/company constraints; event replay dan mock refund audit. Detail authoritative bagian 1–7 fondasi; jangan mengimplementasikan schema lama tanpa delta ini. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
 
 

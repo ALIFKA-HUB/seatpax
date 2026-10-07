@@ -1,6 +1,6 @@
 # Tenant access development setup
 
-Status: implementation in isolated branch; hosted migration/seed not verified yet.
+Status: implementation in isolated branch; hosted migration applied and five database integration tests passed on7October2026. Persistent role seed still awaits five user-selected Auth IDs.
 
 ## Commands
 
@@ -30,4 +30,10 @@ Company IDs end 4000-8000-000000000001/002, slugs demo-po-a/b. Membership IDs ar
 
 ## Verification boundaries
 
-Unit guard/seed/parser tests do not prove hosted RLS. Opt-in DB tests use generated UUID fixtures and rollback; no email/password delivery. Direct URL supplied on7October failed DNS ENOTFOUND; Session pooler URI is requested. Account mappings remain pending. Do not report migration/seed completed from code tests alone.
+Unit guard/seed/parser tests do not prove hosted RLS. Opt-in DB tests use generated UUID fixtures and rollback; the concurrency test commits one generated Auth identity and cleans up that exact UUID in finally. No email/password delivery. A terminated concurrency test could leave that UUID fixture and requires explicit inspection, not broad deletion.
+
+Direct URL supplied on7October failed DNS ENOTFOUND; the subsequently supplied Session pooler on verified host/port5432 connected successfully. Preflight found no existing target tables. Migration0000 then applied successfully. Database tests5passed: role/company/FK/unique constraints, RLS enabled and all SELECT/INSERT/UPDATE/DELETE denied for anon/authenticated on all three tables, actual membership isolation/revocation, concurrent profile bootstrap/no role, seed dry-run/apply/rerun/status preservation/reassignment rejection inside rollback.
+
+Persistent demo account mappings remain pending. Passing rollback seed tests does not mean actual internal users were granted roles. Final checks:83unit tests,5database tests,typecheck,lint,production build all passed. Fresh Luna medium review of bcab2c3..591d51f found no code findings. Reviewer did not independently run commands/access hosted DB. Its stale setup-evidence note was corrected in this document before integration.
+
+Rulings: migration uses existing DATABASE_MIGRATION_URL name; account bootstrap verifies identity itself (one additional Auth request); integration membership fixtures use Drizzle transactions because a raw TransactionSql lacks driver options metadata. The five account seed remains pending user mapping; concurrent fixture interruption can require cleanup of its exact generated UUID. No deployed browser/role-dashboard QA is claimed.
