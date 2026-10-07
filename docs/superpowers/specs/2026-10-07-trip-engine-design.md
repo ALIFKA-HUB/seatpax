@@ -1,6 +1,6 @@
 # Seatpax — Trip Engine
 
-Tanggal: 7 Oktober 2026. Status: **PROPOSED WRITTEN SPEC — conversational design approved; awaiting written-spec review.** Pengguna menyetujui paket jadwal, publikasi atomik, snapshot dan penugasan crew dengan “sstuju”. Detail baru di bawah masih memerlukan persetujuan spec tertulis sebelum plan/kode.
+Tanggal: 7 Oktober 2026. Status: **APPROVED DESIGN — awaiting implementation plan approval.** Pengguna menyetujui paket jadwal, publikasi atomik, snapshot dan penugasan crew dengan “sstuju”, lalu spec tertulis dengan “spec oke”. Belum diimplementasikan.
 
 ## Tujuan dan acuan
 
