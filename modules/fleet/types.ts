@@ -1,0 +1,10 @@
+export const cellTypes = ['SEAT', 'DRIVER', 'AISLE', 'DOOR', 'EMPTY', 'FACILITY'] as const;
+export type CellType = typeof cellTypes[number];
+export type TemplateStatus = 'ACTIVE' | 'ARCHIVED';
+export type VehicleStatus = 'ACTIVE' | 'MAINTENANCE' | 'INACTIVE';
+export type Cell = { rowIndex: number; colIndex: number; type: CellType; label: string | null; seatCode: string | null };
+export type Layout = { rows: number; cols: number; cells: Cell[] };
+export type TemplateInput = Layout & { name: string };
+export type TemplateDetail = TemplateInput & { id: string; version: number; status: TemplateStatus; capacity: number };
+export type VehicleInput = { name: string; plateNumber: string; fleetNumber: string | null; seatTemplateId: string; defaultServiceClassId: string; status: VehicleStatus };
+export type VehicleDetail = VehicleInput & { id: string; revision: number; capacity: number; templateStatus: TemplateStatus; classStatus: 'ACTIVE' | 'INACTIVE' };
