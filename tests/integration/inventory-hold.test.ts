@@ -1,0 +1,9 @@
+import {beforeAll,afterAll,it,expect} from 'vitest';
+import type {Sql} from 'postgres';
+import {randomUUID} from 'node:crypto';
+import {tripClient} from './helpers/trip-fixture';
+import {inventoryFixture} from './helpers/inventory-fixture';
+import {createHoldService} from '@/modules/inventory/hold-service';
+let c:Sql;beforeAll(()=>{c=tripClient();});afterAll(async()=>{await c.end({timeout:5});});
+it('creates adjacent holds, rejects overlap, retries without extension and isolates owners',async()=>inventoryFixture(c,async f=>{const s=createHoldService(f.repo),input=f.inputHold(0,1),v=await s.create(f.a.actorId,input);expect(Date.parse(v.record.baseExpiresAt)-Date.parse(v.record.createdAt)).toBe(600000);expect((await s.create(f.a.actorId,input)).record.id).toBe(v.record.id);await s.create(f.b.actorId,f.inputHold(1,3));await expect(s.create(f.a.actorId,f.inputHold(0,2))).rejects.toMatchObject({code:'conflict'});await expect(s.create(f.a.actorId,{...input,toStopId:f.detail.stops[2].id!})).rejects.toMatchObject({code:'conflict'});await expect(s.readMine(f.b.actorId,v.record.id)).rejects.toMatchObject({code:'forbidden'});const audit=await c`select metadata from public.seat_hold_audit_events where hold_id=${v.record.id}`;expect(audit).toHaveLength(1);expect(audit[0].metadata).toMatchObject({seatId:input.seatId});}));
+it('admits exactly one of 50 competing authenticated owners',async()=>inventoryFixture(c,async f=>{const ids=Array.from({length:50},()=>randomUUID());for(const id of ids){await c`insert into auth.users(id) values(${id})`;await c`insert into public.users(id) values(${id})`;f.users.push(id);}const s=createHoldService(f.repo);const results=await Promise.allSettled(ids.map(id=>s.create(id,f.inputHold())));expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);expect(results.filter(r=>r.status==='rejected'&&r.reason.code==='conflict')).toHaveLength(49);}),120000);
