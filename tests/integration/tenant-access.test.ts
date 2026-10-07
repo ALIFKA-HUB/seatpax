@@ -86,23 +86,23 @@ it('concurrent profile bootstrap creates one profile and no role',async()=>{
 it('seed is idempotent, preserves disabled status and rejects reassignment atomically',async()=>{
   try{await client.begin(async tx=>{
     await tx`select pg_advisory_xact_lock(734217001)`;
-    const existing=await tx`select id from public.companies where id in ${tx(DEMO_COMPANIES.map(c=>c.id))}`;
-    if(existing.length)throw new Error('Seed fixture requires absent demo identities; never overwrites operator seed');
+    const catalog={companies:DEMO_COMPANIES.map(c=>({...c,id:randomUUID(),slug:'fixture-'+randomUUID()})),membershipIds:[1,2,3,4,5].map(()=>randomUUID())};
+
     const mapping={adminA:randomUUID(),crewA:randomUUID(),adminB:randomUUID(),crewB:randomUUID(),superAdmin:randomUUID()};
     for(const id of Object.values(mapping))await tx`insert into auth.users(id) values(${id})`;
-    const repository={transaction:async<T>(fn:Parameters<import('@/modules/access/seed').SeedRepository['transaction']>[0])=>await tx.savepoint(async sub=>await fn(createSeedTransaction(sub))) as T};
+    const repository={transaction:async<T>(fn:Parameters<import('@/modules/access/seed').SeedRepository['transaction']>[0])=>await tx.savepoint(async sub=>await fn(createSeedTransaction(sub,catalog))) as T};
     const seed=(apply:boolean)=>seedDevelopment({projectRef:DEV_PROJECT_REF,mapping,apply},repository);
-    await seed(false);expect(await tx`select id from public.companies where id=${DEMO_COMPANIES[0].id}`).toHaveLength(0);
+    await seed(false);expect(await tx`select id from public.companies where id=${catalog.companies[0].id}`).toHaveLength(0);
     await seed(true);await seed(true);
-    expect(await tx`select id from public.memberships where id in ${tx(seedMemberships(mapping).map(m=>m.id))}`).toHaveLength(5);
-    await tx`update public.companies set status='SUSPENDED' where id=${DEMO_COMPANIES[0].id}`;
-    await tx`update public.memberships set status='DISABLED' where id=${seedMemberships(mapping)[0].id}`;
+    expect(await tx`select id from public.memberships where id in ${tx(seedMemberships(mapping,catalog).map(m=>m.id))}`).toHaveLength(5);
+    await tx`update public.companies set status='SUSPENDED' where id=${catalog.companies[0].id}`;
+    await tx`update public.memberships set status='DISABLED' where id=${seedMemberships(mapping,catalog)[0].id}`;
     await seed(true);
-    expect((await tx`select status from public.companies where id=${DEMO_COMPANIES[0].id}`)[0].status).toBe('SUSPENDED');
-    expect((await tx`select status from public.memberships where id=${seedMemberships(mapping)[0].id}`)[0].status).toBe('DISABLED');
+    expect((await tx`select status from public.companies where id=${catalog.companies[0].id}`)[0].status).toBe('SUSPENDED');
+    expect((await tx`select status from public.memberships where id=${seedMemberships(mapping,catalog)[0].id}`)[0].status).toBe('DISABLED');
     const replacement=randomUUID();await tx`insert into auth.users(id) values(${replacement})`;
     await expect(seedDevelopment({projectRef:DEV_PROJECT_REF,mapping:{...mapping,adminA:replacement},apply:true},repository)).rejects.toThrow('Seed failed');
-    expect((await tx`select user_id from public.memberships where id=${seedMemberships(mapping)[0].id}`)[0].user_id).toBe(mapping.adminA);
+    expect((await tx`select user_id from public.memberships where id=${seedMemberships(mapping,catalog)[0].id}`)[0].user_id).toBe(mapping.adminA);
     await expect(seedDevelopment({projectRef:DEV_PROJECT_REF,mapping:{...mapping,adminA:randomUUID()},apply:true},repository)).rejects.toThrow('Seed failed');
     throw rollback;
   });}catch(error){if(error!==rollback)throw error;}

@@ -11,11 +11,13 @@ export const DEMO_COMPANIES = [
   {id:'00000000-0000-4000-8000-000000000001',name:'Demo PO A',slug:'demo-po-a'},
   {id:'00000000-0000-4000-8000-000000000002',name:'Demo PO B',slug:'demo-po-b'},
 ] as const;
-export function seedMemberships(mapping:SeedMapping) {
+export type SeedCatalog={companies:readonly {id:string;name:string;slug:string}[];membershipIds:readonly string[]};
+export const DEMO_CATALOG:SeedCatalog={companies:DEMO_COMPANIES,membershipIds:[1,2,3,4,5].map(i=>`00000000-0000-4000-9000-00000000000${i}`)};
+export function seedMemberships(mapping:SeedMapping,catalog:SeedCatalog=DEMO_CATALOG) {
   return (['adminA','crewA','adminB','crewB','superAdmin'] as const).map((key,index)=>({
-    id:`00000000-0000-4000-9000-00000000000${index+1}`,userId:mapping[key],
+    id:catalog.membershipIds[index],userId:mapping[key],
     role:key==='superAdmin'?'SUPER_ADMIN' as const:key.startsWith('admin')?'ADMIN_PO' as const:'CREW' as const,
-    companyId:key==='superAdmin'?null:DEMO_COMPANIES[key.endsWith('A')?0:1].id,
+    companyId:key==='superAdmin'?null:catalog.companies[key.endsWith('A')?0:1].id,
   }));
 }
 export type SeedTransaction = {inspect(mapping:SeedMapping):Promise<void>;write(mapping:SeedMapping):Promise<void>};

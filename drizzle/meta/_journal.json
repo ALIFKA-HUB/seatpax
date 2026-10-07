@@ -8,6 +8,13 @@
       "when": 1791335484841,
       "tag": "0000_tenant_access",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791337465545,
+      "tag": "0001_route_pricing",
+      "breakpoints": true
     }
   ]
 }
