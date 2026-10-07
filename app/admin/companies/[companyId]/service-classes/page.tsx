@@ -1,0 +1,3 @@
+import {companyData} from '../../../data';
+import MasterForm from '../../../components/master-form';
+export default async function Page({params}:{params:Promise<{companyId:string}>}){const {companyId}=await params;const {data}=await companyData(companyId);return <><header className="admin-header"><p className="eyebrow">PILIHAN LAYANAN</p><h1>Kelas layanan</h1><p>Setiap kelas memiliki konfigurasi tarif segmennya sendiri.</p></header><section className="admin-panel"><h2>Tambah kelas</h2><MasterForm companyId={companyId} kind="class"/></section><div className="admin-master-list">{data.classes.map(c=><section className="admin-panel" key={c.id}><h2>{c.name}</h2><MasterForm companyId={companyId} kind="class" initial={c}/></section>)}</div></>;}
