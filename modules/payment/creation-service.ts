@@ -1,4 +1,5 @@
-import {createHash,randomUUID} from 'node:crypto';
+import {randomUUID} from 'node:crypto';
+import {observationKey} from './observation-key';
 import {z} from 'zod';
 import {DomainError} from '@/modules/access/transaction';
 import {inventoryTransaction} from '@/modules/inventory/transaction';
@@ -21,9 +22,10 @@ export function createPaymentCreationService(repo:PaymentRepository,provider:Pay
  });
  if('state' in claim)return claim;
  try{
-  if(claim.recover){const observation=await provider.status(claim.order.orderId);if(observation){const key=createHash('sha256').update(JSON.stringify(['midtrans-status-v1',observation])).digest('hex');await repo.client.begin(async tx=>{await tx`insert into public.payment_events(payment_id,event_key,fields,verified_observation,verified_at) values(${claim.paymentId},${key},'{}'::jsonb,${tx.typed(JSON.stringify(observation),25)}::jsonb,${observation.verifiedAt}::timestamptz) on conflict(event_key) do nothing`;await tx`update public.payments set creation_state='UNKNOWN',creation_lease=null,creation_lease_until=null where id=${claim.paymentId} and creation_lease=${claim.lease}`;});return {state:'PENDING'};}}
+  if(claim.recover){const observation=await provider.status(claim.order.orderId);if(observation){const key=observationKey(observation);await repo.client.begin(async tx=>{await tx`insert into public.payment_events(payment_id,event_key,fields,verified_observation,verified_at) values(${claim.paymentId},${key},'{}'::jsonb,${tx.typed(JSON.stringify(observation),25)}::jsonb,${observation.verifiedAt}::timestamptz) on conflict(event_key) do nothing`;await tx`update public.payments set creation_state='UNKNOWN',creation_lease=null,creation_lease_until=null where id=${claim.paymentId} and creation_lease=${claim.lease}`;});return {state:'PENDING'};}}
   const current=await repo.booking.view(repo.client,owner,id);if(!current||current.status!=='PENDING_PAYMENT'||Date.parse(current.effectiveExpiresAt)-Date.parse(current.serverNow)<=20000){await repo.client`update public.payments set creation_state='UNKNOWN',creation_lease=null,creation_lease_until=null where id=${claim.paymentId} and creation_lease=${claim.lease}`;return {state:'EXPIRED'};}
   const snap=await provider.create(claim.order);const saved=await repo.client`update public.payments set creation_state='READY',snap_token=${snap.token},snap_redirect_url=${snap.redirectUrl},creation_lease=null,creation_lease_until=null,last_error=null where id=${claim.paymentId} and creation_lease=${claim.lease} returning id`;const latest=await repo.booking.view(repo.client,owner,id);if(!latest||latest.status!=='PENDING_PAYMENT')return {state:'EXPIRED'};return saved.length?{state:'READY',token:snap.token}:{state:'PENDING'};
  }catch{await repo.client`update public.payments set creation_state='UNKNOWN',creation_lease=null,creation_lease_until=null,last_error='PROVIDER_UNAVAILABLE' where id=${claim.paymentId} and creation_lease=${claim.lease}`;return {state:'UNAVAILABLE'};}
  }};}
+
 
