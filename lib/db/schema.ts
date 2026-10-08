@@ -27,7 +27,7 @@ export const membershipStatus = pgEnum('membership_status', ['ACTIVE', 'DISABLED
 export const membershipRole = pgEnum('membership_role', ['ADMIN_PO', 'CREW', 'SUPER_ADMIN']);
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().references(() => authUsers.id, { onDelete: 'restrict' }),
-  name: text('name'), avatarUrl: text('avatar_url'), email: text('email'), ...timestamps(),
+  name: text('name'), phone: text('phone'), avatarUrl: text('avatar_url'), email: text('email'), ...timestamps(),
 }).enableRLS();
 export const companies = pgTable('companies', {
   id: uuid('id').primaryKey().defaultRandom(), name: text('name').notNull(), slug: text('slug').notNull().unique(),
@@ -139,3 +139,30 @@ export const segmentFares=pgTable('segment_fares',{
   foreignKey({columns:[t.fromRouteStopId,t.routeId,t.companyId],foreignColumns:[routeStops.id,routeStops.routeId,routeStops.companyId]}).onDelete('restrict'),foreignKey({columns:[t.toRouteStopId,t.routeId,t.companyId],foreignColumns:[routeStops.id,routeStops.routeId,routeStops.companyId]}).onDelete('restrict'),foreignKey({columns:[t.serviceClassId,t.companyId],foreignColumns:[serviceClasses.id,serviceClasses.companyId]}).onDelete('restrict'),
   check('fare_nonnegative',sql`${t.price}>=0`),check('fare_currency',sql`${t.currency}='IDR'`),check('fare_endpoints_different',sql`${t.fromRouteStopId}<>${t.toRouteStopId}`),
 ]).enableRLS();
+// Checkout/payment constraints are applied by 0006_checkout_payment.sql.
+export const bookings=pgTable('bookings',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),seatHoldId:uuid('seat_hold_id').notNull().unique(),bookerUserId:uuid('booker_user_id').notNull(),requestKey:uuid('request_key').notNull(),payloadHash:text('payload_hash').notNull(),mode:text('mode').notNull(),contactEmail:text('contact_email').notNull(),amount:bigint('amount',{mode:'bigint'}).notNull(),snapshot:jsonb('snapshot').notNull(),status:text('status').notNull().default('PENDING_PAYMENT'),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow(),confirmedAt:timestamp('confirmed_at',{withTimezone:true}),
+}).enableRLS();
+export const bookingPassengers=pgTable('booking_passengers',{
+ id:uuid('id').primaryKey().defaultRandom(),bookingId:uuid('booking_id').notNull().unique(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),bookerUserId:uuid('booker_user_id').notNull(),mode:text('mode').notNull(),accountId:uuid('account_id'),name:text('name').notNull(),phone:text('phone').notNull(),
+}).enableRLS();
+export const payments=pgTable('payments',{
+ id:uuid('id').primaryKey().defaultRandom(),bookingId:uuid('booking_id').notNull().unique(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),providerOrderId:text('provider_order_id').notNull().unique(),amount:bigint('amount',{mode:'bigint'}).notNull(),status:text('status').notNull().default('PENDING'),paidAt:timestamp('paid_at',{withTimezone:true}),providerTransactionId:text('provider_transaction_id').unique(),providerStatus:text('provider_status'),creationState:text('creation_state').notNull().default('NOT_STARTED'),creationLease:uuid('creation_lease'),creationLeaseUntil:timestamp('creation_lease_until',{withTimezone:true}),snapToken:text('snap_token'),snapRedirectUrl:text('snap_redirect_url'),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow(),lastError:text('last_error'),
+}).enableRLS();
+export const paymentEvents=pgTable('payment_events',{
+ id:uuid('id').primaryKey().defaultRandom(),paymentId:uuid('payment_id').notNull(),eventKey:text('event_key').notNull().unique(),fields:jsonb('fields').notNull(),receivedAt:timestamp('received_at',{withTimezone:true}).notNull().defaultNow(),verifiedObservation:jsonb('verified_observation'),verifiedAt:timestamp('verified_at',{withTimezone:true}),status:text('status').notNull().default('RECEIVED'),attempts:integer('attempts').notNull().default(0),leaseId:uuid('lease_id'),leaseUntil:timestamp('lease_until',{withTimezone:true}),nextAttemptAt:timestamp('next_attempt_at',{withTimezone:true}).notNull().defaultNow(),processedAt:timestamp('processed_at',{withTimezone:true}),lastError:text('last_error'),
+}).enableRLS();
+export const seatAssignments=pgTable('seat_assignments',{
+ id:uuid('id').primaryKey().defaultRandom(),bookingPassengerId:uuid('booking_passenger_id').notNull().unique(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),tripSeatId:uuid('trip_seat_id').notNull(),fromSequence:integer('from_sequence').notNull(),toSequence:integer('to_sequence').notNull(),assignedAt:timestamp('assigned_at',{withTimezone:true}).notNull().defaultNow(),
+}).enableRLS();
+export const confirmedOccupancy=pgTable('confirmed_occupancy',{inventoryId:uuid('inventory_id').primaryKey(),assignmentId:uuid('assignment_id').notNull(),tripId:uuid('trip_id').notNull(),companyId:uuid('company_id').notNull()}).enableRLS();
+export const tickets=pgTable('tickets',{
+ id:uuid('id').primaryKey().defaultRandom(),bookingPassengerId:uuid('booking_passenger_id').notNull().unique(),assignmentId:uuid('assignment_id').notNull().unique(),tripId:uuid('trip_id').notNull(),companyId:uuid('company_id').notNull(),tokenHash:text('token_hash').notNull().unique(),ciphertext:text('ciphertext').notNull(),nonce:text('nonce').notNull(),authTag:text('auth_tag').notNull(),keyVersion:text('key_version').notNull(),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow(),
+}).enableRLS();
+export const paymentResolutions=pgTable('payment_resolutions',{
+ id:uuid('id').primaryKey().defaultRandom(),bookingId:uuid('booking_id').notNull().unique(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),actorId:uuid('actor_id').notNull(),requestKey:uuid('request_key').notNull(),action:text('action').notNull(),amount:bigint('amount',{mode:'bigint'}).notNull(),reason:text('reason').notNull(),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow(),
+}).enableRLS();
+export const bookingAuditEvents=pgTable('booking_audit_events',{
+ id:uuid('id').primaryKey().defaultRandom(),bookingId:uuid('booking_id').notNull(),action:text('action').notNull(),actorId:uuid('actor_id'),metadata:jsonb('metadata').notNull(),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow(),
+}).enableRLS();
+
