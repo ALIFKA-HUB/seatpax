@@ -1,5 +1,7 @@
 # Seatpax — Rancangan fondasi release 30 hari
 
+> Amendment 8 October 2026: D2026-10-08-01 supersedes the requirement that passenger account equals booker for every booking. SELF retains that association; OTHER has a passenger snapshot without an account association, with ticket access owned by the logged-in booker. Other foundation contracts remain applicable.
+
 Tanggal: 6 Oktober 2026. **Status: ADOPTED — D2026-10-06-02; belum diimplementasikan.** Scope produk sudah diadopsi melalui D2026-10-06-01. Pengguna menerima dokumen tertulis dengan “fondasi oke, lanjut”. Dokumen ini memperjelas F01–F11 pada [proposal Hari 1](2026-10-06-day1-scope-foundation-proposal.md), bukan memperluas scope.
 
 ## Ringkasan untuk pengguna

@@ -8,7 +8,7 @@ The user approved the reduced release package on 6 October 2026. This section is
 | --- | --- |
 | Platform | Four roles, static RBAC, two demo PO contexts, server authorization and tenant isolation |
 | Passenger auth | Email OTP; login before checkout; My Tickets; Google OAuth deferred |
-| Booking | One passenger and one seat per booking; guest checkout/claim and multi-passenger checkout deferred |
+| Booking | Logged-in booker purchases one passenger/seat for SELF or OTHER; booker owns My Tickets access; guest checkout/claim and multi-passenger checkout deferred |
 | Routes/pricing | Multi-stop route, ordered stops, adjacent-segment fare per service class; minimal admin setup forms |
 | Fleet | Click-cell seat template, vehicle association, trip/layout snapshot; drag-and-drop and duplication polish deferred |
 | Trips | Minimal scheduling/open-for-sale, assigned crew, segment/seat inventory snapshots |

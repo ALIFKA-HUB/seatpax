@@ -1,5 +1,16 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-10-08-01 — Purchase for self or another passenger
+
+**Status: ADOPTED PRODUCT DECISION; implementation pending.** The user proposed self checkout using profile data and a separate form when purchasing for a friend, then accepted the described ownership model with “oke sikat, selanjut nya apa”.
+
+- One logged-in booker, one passenger and one seat per booking remain the release boundary.
+- SELF uses reviewed account profile data; OTHER collects the actual passenger name/phone without changing the booker's profile.
+- The booker owns booking/ticket access through My Tickets. OTHER passenger identity is a snapshot without an account association or automatic claim. Manifest/crew operations use the actual passenger identity.
+- Payment verification precedes ticket issuance in both modes. Snap popup was separately accepted for Sandbox checkout.
+
+This supersedes the account-equality restriction in foundation §1/§4 and the corresponding login-only ownership wording where it conflates booker and passenger. Guest checkout, group purchases and traveler claim remain deferred. The detailed [checkout/payment design](../superpowers/specs/2026-10-08-checkout-payment-design.md) is pending written user review; its technical refinements are not adopted merely by this product decision.
+
 ## D2026-10-07-01 — Approve tenant access foundation
 
 **Status: APPROVED DESIGN.** User approved [tenant access spec](../superpowers/specs/2026-10-07-tenant-access-design.md) with “spec oke” and its [implementation plan](../superpowers/plans/2026-10-07-tenant-access.md) with “Plan oke, lanjut eksekusi”. This refines D2026-10-06-02 without expanding release scope.
