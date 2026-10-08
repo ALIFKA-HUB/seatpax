@@ -11,6 +11,7 @@
     "test": "vitest run",
     "db:check": "tsx scripts/check-db.ts",
     "db:expire-holds": "tsx scripts/expire-holds.ts",
+    "db:reconcile-payments": "tsx scripts/reconcile-payments.ts",
     "db:migrate": "tsx scripts/migrate-db.ts",
     "db:seed": "tsx scripts/seed-dev.ts",
     "db:test": "vitest run --config vitest.integration.config.ts"
@@ -24,6 +25,7 @@
     "drizzle-orm": "^0.45.3",
     "next": "^16.3.8",
     "postgres": "^3.4.9",
+    "qrcode": "^1.5.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "server-only": "^0.0.1",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.4",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "dotenv": "^18.0.5",

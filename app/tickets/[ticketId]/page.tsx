@@ -1,0 +1,9 @@
+import Link from 'next/link';
+import {redirect} from 'next/navigation';
+import Image from 'next/image';
+import QRCode from 'qrcode';
+import {getVerifiedUser} from '@/modules/auth/identity';
+import {ticketData} from '../data';
+import '../../passenger.css';
+export const dynamic='force-dynamic';
+export default async function TicketPage({params}:{params:Promise<{ticketId:string}>}){const {ticketId}=await params,user=await getVerifiedUser();if(!user)redirect('/login?next='+encodeURIComponent('/tickets/'+ticketId));const ticket=await ticketData(ticketId);if(!ticket)return <main className="passenger"><h1>Ticket tidak tersedia</h1><p>Ticket hanya dapat dibuka oleh pemesan yang masuk.</p><Link href="/tickets">Tiket saya</Link></main>;const qr=ticket.bookingStatus==='CONFIRMED'?await QRCode.toDataURL(ticket.qrToken,{errorCorrectionLevel:'M',margin:1,width:320}):null;return <main className="passenger"><nav><Link href="/tickets">← Tiket saya</Link><Link href="/trips">Cari perjalanan</Link></nav><h1>Ticket perjalanan</h1><section className="passenger-card"><h2>{ticket.snapshot.fromName} → {ticket.snapshot.toName}</h2><p>{ticket.snapshot.tripName} · {ticket.snapshot.vehicleName} · {ticket.snapshot.plateNumber}</p><dl className="ticket-meta"><dt>Penumpang</dt><dd>{ticket.passenger.name}</dd><dt>Kursi</dt><dd>{ticket.snapshot.seatCode}</dd><dt>Keberangkatan</dt><dd>{new Date(ticket.snapshot.departureAt).toLocaleString('id-ID',{timeZone:'Asia/Jakarta'})} WIB</dd><dt>Status</dt><dd>{ticket.bookingStatus==='REFUNDED'?'Refunded':'Dikonfirmasi'}</dd></dl>{qr?<><Image className="ticket-qr" src={qr} unoptimized width={320} height={320} alt={`QR ticket untuk ${ticket.passenger.name}, kursi ${ticket.snapshot.seatCode}`}/><p>Tunjukkan QR ini kepada petugas saat naik.</p></>:<p>QR tidak tersedia untuk booking yang telah di-refund.</p>}</section></main>;}

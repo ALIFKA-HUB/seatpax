@@ -10,7 +10,7 @@ export function availability(s:Snapshot,fromId:string,toId:string):AvailabilityV
  const range=resolveInterval(s.stops,fromId,toId),fare=quoteInterval(s.segments,range);
  const origin=s.stops.find(x=>x.id===fromId)!;
  const cutoff=s.trip.salesCloseAt&&deadlineReached(origin.departureAt,s.trip.salesCloseAt)?s.trip.salesCloseAt:origin.departureAt;
- const seats=s.seats.map(seat=>{if(!seat.id)throw new DomainError('unavailable','Inventori kursi tidak lengkap.');for(let seq=range.from;seq<range.to;seq++)if(s.anchors.filter(a=>a.seatId===seat.id&&a.sequence===seq).length!==1)throw new DomainError('unavailable','Inventori kursi tidak lengkap.');return {...seat,id:seat.id,status:s.holds.some(h=>h.seatId===seat.id&&overlaps(h,range))?'HELD' as const:'AVAILABLE' as const};});
+ const seats=s.seats.map(seat=>{if(!seat.id)throw new DomainError('unavailable','Inventori kursi tidak lengkap.');for(let seq=range.from;seq<range.to;seq++)if(s.anchors.filter(a=>a.seatId===seat.id&&a.sequence===seq).length!==1)throw new DomainError('unavailable','Inventori kursi tidak lengkap.');const booked=s.booked.some(a=>a.seatId===seat.id&&overlaps(a,range));return {...seat,id:seat.id,status:booked?'BOOKED' as const:s.holds.some(h=>h.seatId===seat.id&&overlaps(h,range))?'HELD' as const:'AVAILABLE' as const};});
  const {trip,stops,segments,layout,inventoryCount}=s;
  return {detail:{trip,stops,segments,seats:s.seats,layout,inventoryCount},fare,cutoff,serverNow:s.serverNow,saleOpen:s.companyStatus==='ACTIVE'&&trip.status==='OPEN_FOR_SALE'&&!deadlineReached(s.serverNow,cutoff),seats};
 }

@@ -3,7 +3,7 @@ import {DomainError,type DomainTx} from '@/modules/access/transaction';
 import type {TripDetail} from '@/modules/trip/types';
 import type {HoldRecord,Range} from './types';
 
-export type Snapshot=TripDetail & {companyStatus:string;companyName:string;serverNow:string;anchors:{seatId:string;sequence:number}[];holds:{seatId:string;from:number;to:number}[]};
+export type Snapshot=TripDetail & {companyStatus:string;companyName:string;serverNow:string;anchors:{seatId:string;sequence:number}[];holds:{seatId:string;from:number;to:number}[];booked:{seatId:string;from:number;to:number}[]};
 const holdColumns='id,company_id as "companyId",trip_id as "tripId",trip_seat_id as "seatId",from_trip_stop_id as "fromStopId",to_trip_stop_id as "toStopId",from_sequence as "from",to_sequence as "to",held_by_user_id as "ownerId",request_key as "requestKey",status,created_at::text as "createdAt",base_expires_at::text as "baseExpiresAt",effective_expires_at::text as "effectiveExpiresAt",payment_initiated_at::text as "paymentInitiatedAt",released_at::text as "releasedAt",expired_at::text as "expiredAt"';
 export function createInventoryRepository(client:Sql){return {
  client,
@@ -16,6 +16,7 @@ export function createInventoryRepository(client:Sql){return {
    t.layout_snapshot as layout,(select count(*)::int from public.trip_seat_inventory i where i.trip_id=t.id) as "inventoryCount",c.status as "companyStatus",c.name as "companyName",clock.now::text as "serverNow",
    coalesce((select json_agg(json_build_object('seatId',i.trip_seat_id,'sequence',s.sequence)) from public.trip_seat_inventory i join public.trip_segments s on s.id=i.trip_segment_id where i.trip_id=t.id),'[]') as anchors,
    coalesce((select json_agg(json_build_object('seatId',h.trip_seat_id,'from',h.from_sequence,'to',h.to_sequence)) from public.seat_holds h where h.trip_id=t.id and h.status='ACTIVE' and h.effective_expires_at>clock.now),'[]') as holds
+   ,coalesce((select json_agg(json_build_object('seatId',a.trip_seat_id,'from',a.from_sequence,'to',a.to_sequence)) from public.seat_assignments a where a.trip_id=t.id),'[]') as booked
    from public.trips t join public.companies c on c.id=t.company_id cross join clock where t.id=${id} and t.status='OPEN_FOR_SALE'`;
   if(rows.length!==1)throw new DomainError('unavailable','Perjalanan tidak tersedia.');return rows[0];
  },
