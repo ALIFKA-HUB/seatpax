@@ -1,6 +1,6 @@
 # Checkout, Midtrans Sandbox, and ticket issuance
 
-Date: 8 October 2026. Status: written design for user review; implementation is not authorized by this document alone.
+Date: 8 October 2026. Status: written design approved by user with “spec oke”; implementation awaits written plan review.
 
 ## Intent and accepted product decisions
 

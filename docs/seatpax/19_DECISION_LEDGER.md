@@ -9,7 +9,7 @@
 - The booker owns booking/ticket access through My Tickets. OTHER passenger identity is a snapshot without an account association or automatic claim. Manifest/crew operations use the actual passenger identity.
 - Payment verification precedes ticket issuance in both modes. Snap popup was separately accepted for Sandbox checkout.
 
-This supersedes the account-equality restriction in foundation §1/§4 and the corresponding login-only ownership wording where it conflates booker and passenger. Guest checkout, group purchases and traveler claim remain deferred. The detailed [checkout/payment design](../superpowers/specs/2026-10-08-checkout-payment-design.md) is pending written user review; its technical refinements are not adopted merely by this product decision.
+This supersedes the account-equality restriction in foundation §1/§4 and the corresponding login-only ownership wording where it conflates booker and passenger. Guest checkout, group purchases and traveler claim remain deferred. The user separately approved the detailed [checkout/payment design](../superpowers/specs/2026-10-08-checkout-payment-design.md) with “spec oke”. Its [implementation plan](../superpowers/plans/2026-10-08-checkout-payment.md) awaits written review; design approval does not imply implementation or Sandbox verification.
 
 ## D2026-10-07-01 — Approve tenant access foundation
 
