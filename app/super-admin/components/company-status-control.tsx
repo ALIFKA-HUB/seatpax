@@ -1,0 +1,5 @@
+import type {CompanySummary} from '@/modules/company/types';
+export function CompanyStatusControl({company,confirming,pending,message,onRequest,onCancel,onConfirm}:{company:CompanySummary;confirming:boolean;pending:boolean;message:string;onRequest:()=>void;onCancel:()=>void;onConfirm:()=>void}){
+ const suspend=company.status==='ACTIVE';
+ return <div>{confirming?<div role="group" aria-label={`Konfirmasi status ${company.name}`}><p>{suspend?`Suspend ${company.name}? Ini menghentikan penjualan baru. Tiket yang sudah ada dan pembayaran yang sudah dimulai tetap mengikuti aturan sebelumnya.`:`Aktifkan ${company.name}? Penjualan yang masih memenuhi syarat dapat dilanjutkan. Hold kedaluwarsa dan penjualan yang sudah ditutup tetap tidak berlaku.`}</p><button disabled={pending} onClick={onConfirm}>{pending?'Menyimpan…':suspend?'Konfirmasi suspend':'Konfirmasi aktifkan'}</button><button disabled={pending} onClick={onCancel}>Batal</button></div>:<button disabled={pending} onClick={onRequest} aria-label={`${suspend?'Suspend':'Aktifkan'} ${company.name}`}>{suspend?'Suspend':'Aktifkan'}</button>}<p role="status" aria-live="polite">{message}</p></div>;
+}
