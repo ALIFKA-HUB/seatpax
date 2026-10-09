@@ -1,5 +1,7 @@
 # Seatpax Documentation Index
 
+> **Implementation update — 8 October 2026:** Checkout/payment implementation: read `../setup/CHECKOUT_PAYMENT_SETUP.md` together with the approved checkout spec/plan before changing initiation, provider reconciliation, conflict resolution or ticket access.
+
 Seatpax documentation is intentionally modular: **one context = one Markdown file**. Use this file as the entry point.
 
 **Current release:** The user adopted the 30-day demo subset on 6 October 2026. Read the active release section in `02_MVP_SCOPE.md` and decision D2026-10-06-01 in `19_DECISION_LEDGER.md` before using older guest/group-booking/cash/reschedule examples. The technical foundation was separately adopted as D2026-10-06-02; read its design before implementing retained flows.

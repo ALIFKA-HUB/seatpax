@@ -3,6 +3,7 @@ import type {Sql} from 'postgres';
 import type {BookingView} from '@/modules/booking/types';
 import {createHash,randomUUID} from 'node:crypto';
 import {inventoryClient,inventoryFixture} from './helpers/inventory-fixture';
+import {scopedPaymentClient} from './helpers/scoped-payment-client';
 import {createHoldService} from '@/modules/inventory/hold-service';
 import {createAvailabilityService} from '@/modules/inventory/availability-service';
 import {createCleanupService} from '@/modules/inventory/cleanup-service';
@@ -43,7 +44,7 @@ it('confirms adjacent intervals on the same seat without duplicate occupancy',as
  expect(await c`select inventory_id from public.confirmed_occupancy where trip_id=${f.detail.trip.id}`).toHaveLength(3);expect(await c`select id from public.tickets where trip_id=${f.detail.trip.id}`).toHaveLength(2);
 }));
 it('retains failed event processing for retry and reconciles pending orders without callbacks',async()=>inventoryFixture(c,async f=>{
- const b=await makeBooking(f),withoutCallback=await makeBooking(f,1),repo=createPaymentRepository(c),provider=createMidtransProvider(env),receipt=await createPaymentNotificationService(provider,createPaymentEventService(repo,{status:async()=>{throw Error('temporary outage');}},createConfirmationService(repo,env))).receive(signed(b.orderId));
+ const b=await makeBooking(f),withoutCallback=await makeBooking(f,1),repo=createPaymentRepository(scopedPaymentClient(c,f.a.companyId)),provider=createMidtransProvider(env),receipt=await createPaymentNotificationService(provider,createPaymentEventService(repo,{status:async()=>{throw Error('temporary outage');}},createConfirmationService(repo,env))).receive(signed(b.orderId));
  const failed=createPaymentEventService(repo,{status:async()=>{throw Error('temporary outage');}},createConfirmationService(repo,env));expect(await failed.process(receipt.receiptId)).toBe('RETRY');
  expect((await c`select status,attempts,last_error,next_attempt_at>clock_timestamp()+interval '4 seconds' as backed_off from public.payment_events where id=${receipt.receiptId}`)[0]).toMatchObject({status:'RECEIVED',attempts:1,last_error:'RETRYABLE_PROCESSING',backed_off:true});
  const reconciler=createPaymentEventService(repo,{status:async orderId=>paid(orderId)},createConfirmationService(repo,env));
@@ -51,7 +52,7 @@ it('retains failed event processing for retry and reconciles pending orders with
  expect(await reconciler.reconcilePayments(1)).toEqual({processed:1,retry:0});expect((await repo.booking.view(c,f.a.actorId,withoutCallback.id))?.status).toBe('CONFIRMED');
 }));
 it('caps automatic processing at eight failed attempts and excludes manual-review events from polling',async()=>inventoryFixture(c,async f=>{
- const b=await makeBooking(f),repo=createPaymentRepository(c),events=createPaymentEventService(repo,{status:async()=>{throw Error('provider unavailable');}},createConfirmationService(repo,env));
+ const b=await makeBooking(f),repo=createPaymentRepository(scopedPaymentClient(c,f.a.companyId)),events=createPaymentEventService(repo,{status:async()=>{throw Error('provider unavailable');}},createConfirmationService(repo,env));
  const receipt=await events.receive({orderId:b.orderId,eventKey:'retry-cap-'+b.id,fields:{order_id:b.orderId}});await c`update public.payment_events set attempts=7,next_attempt_at=clock_timestamp()-interval '1 second' where id=${receipt.receiptId}`;
  expect(await events.process(receipt.receiptId)).toBe('RETRY');expect((await c`select status,attempts,last_error from public.payment_events where id=${receipt.receiptId}`)[0]).toMatchObject({status:'REVIEW',attempts:8,last_error:'RECONCILIATION_REQUIRED'});
  expect(await events.reconcilePayments(1)).toEqual({processed:0,retry:0});expect(await c`select id from public.booking_audit_events where booking_id=${b.id} and action='PAYMENT_RECONCILIATION_REQUIRED'`).toHaveLength(1);

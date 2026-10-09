@@ -1,6 +1,6 @@
 # Checkout and Payment Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** A logged-in booker purchases one seat for SELF/OTHER through Midtrans Sandbox and receives exactly one authorized QR ticket after verified confirmation, with late-conflict administration.
 
@@ -59,11 +59,11 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 
 **Interfaces:** Produces the shared types and `parsePaymentEnv(input):PaymentEnv` with Sandbox Server Key, Client Key, Merchant ID and versioned 32-byte ticket encryption key. Domain services consume migration tables.
 
-- [ ] Write failing configuration/DB tests: production config rejected; malformed encryption key rejected; duplicate hold→booking/order/passenger/ticket and occupancy anchor rejected; cross-company/trip FK rejected; browser table privileges revoked; invalid state/timestamp rows rejected. Assert `OTHER.account_id === null`, `SELF.account_id === booker_user_id` through an enforced constraint/relationship.
-- [ ] Run `npm test -- tests/unit/payment-env.test.ts` and `npm run db:test -- tests/integration/payment-schema.test.ts`; expect missing module/table failures.
-- [ ] Implement bookings, one booking passenger, payments with finite creation lease, receipts/observations/processing leases, assignments/unique anchor occupancy, tickets, mock refunds and audit tables. Add profile name/phone only if missing; represent immutable fare/trip/contact snapshots. Add composite FKs and status/check constraints, RLS/revokes and minimal indexes for owner queries/replay. Keep unknown notification status text representable.
-- [ ] Extend fixture-specific teardown in reverse FK order and prove existing fixture cleanup still works. Add ignored-env placeholders only; safely collect actual keys during execution, with the user entering secrets locally if UI automation is unavailable.
-- [ ] Apply migration through `npm run db:migrate` using existing verified TLS CA and run targeted tests; expect pass. Commit only task files.
+- [x] Write failing configuration/DB tests: production config rejected; malformed encryption key rejected; duplicate hold→booking/order/passenger/ticket and occupancy anchor rejected; cross-company/trip FK rejected; browser table privileges revoked; invalid state/timestamp rows rejected. Assert `OTHER.account_id === null`, `SELF.account_id === booker_user_id` through an enforced constraint/relationship.
+- [x] Run `npm test -- tests/unit/payment-env.test.ts` and `npm run db:test -- tests/integration/payment-schema.test.ts`; expect missing module/table failures.
+- [x] Implement bookings, one booking passenger, payments with finite creation lease, receipts/observations/processing leases, assignments/unique anchor occupancy, tickets, mock refunds and audit tables. Add profile name/phone only if missing; represent immutable fare/trip/contact snapshots. Add composite FKs and status/check constraints, RLS/revokes and minimal indexes for owner queries/replay. Keep unknown notification status text representable.
+- [x] Extend fixture-specific teardown in reverse FK order and prove existing fixture cleanup still works. Add ignored-env placeholders only; safely collect actual keys during execution, with the user entering secrets locally if UI automation is unavailable.
+- [x] Apply migration through `npm run db:migrate` using existing verified TLS CA and run targeted tests; expect pass. Commit only task files.
 
 ### Task 2: Atomic checkout initiation and ownership
 
@@ -71,10 +71,10 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 
 **Interfaces:** `createCheckoutService(repo).initiate(actor:InitiationActor,input:CheckoutInput):Promise<BookingView>`; `createBookingQueryService(repo).readMine(userId:string,id:string):Promise<BookingView>` and `.listMine(userId:string):Promise<BookingView[]>`. Repository owns exact server quote and persisted provider order retrieval.
 
-- [ ] Write failing tests: trimmed names 1–120, normalized phone 8–15 digits, invalid mode/UUID; owner denial; exact snapshot fare; grace delta equals 60 seconds; SELF profile update and OTHER profile preservation; immutable retry payload; simultaneous same/different keys on one hold; cutoff/base expiry after lock wait; suspension; release denied after initiation.
-- [ ] Run `npm test -- tests/unit/checkout-validation.test.ts` and `npm run db:test -- tests/integration/checkout-initiation.test.ts`; expect missing service failures.
-- [ ] Implement validation, safe owner reads and transaction using company→trip→sorted anchors→hold→booking→payment. Generate/persist one deterministic provider identity derived from payment UUID. Handle unique collisions after rollback with ownership/fingerprint lookup. Reject new initiation at base expiry even if grace exists; return existing booking safely on retries.
-- [ ] Run targeted tests; expect one booking/order and unchanged grace across retries. Commit task files.
+- [x] Write failing tests: trimmed names 1–120, normalized phone 8–15 digits, invalid mode/UUID; owner denial; exact snapshot fare; grace delta equals 60 seconds; SELF profile update and OTHER profile preservation; immutable retry payload; simultaneous same/different keys on one hold; cutoff/base expiry after lock wait; suspension; release denied after initiation.
+- [x] Run `npm test -- tests/unit/checkout-validation.test.ts` and `npm run db:test -- tests/integration/checkout-initiation.test.ts`; expect missing service failures.
+- [x] Implement validation, safe owner reads and transaction using company→trip→sorted anchors→hold→booking→payment. Generate/persist one deterministic provider identity derived from payment UUID. Handle unique collisions after rollback with ownership/fingerprint lookup. Reject new initiation at base expiry even if grace exists; return existing booking safely on retries.
+- [x] Run targeted tests; expect one booking/order and unchanged grace across retries. Commit task files.
 
 ### Task 3: Sandbox provider and recoverable Snap creation
 
@@ -82,10 +82,10 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 
 **Interfaces:** `createMidtransProvider(env,fetchImpl):PaymentProvider`; `createPaymentCreationService(repo,provider).prepareMine(userId:string,bookingId:string):Promise<{state:'READY';token:string}|{state:'PENDING'|'UNAVAILABLE'|'EXPIRED'}>`. Use `ProviderOrder` exclusively from persisted booking.
 
-- [ ] Pin official response shapes, auth, status mapping, explicit expiry, original-string signature and amount handling with recorded nonsecret fixtures. Test accepted capture/settlement, pending/challenge, failures, unknown/refund review; merchant/transaction/currency mismatch and unsafe redirect URL rejection. Set HTTP timeout 10 seconds, creation lease 30 seconds, server-side UTC-to-provider timezone conversion and explicit persisted-start expiry.
-- [ ] Run `npm test -- tests/unit/midtrans-provider.test.ts`; expect missing adapter failures.
-- [ ] Implement Sandbox fetch endpoints, Basic server auth, constant-time signature authentication, allowlisted fields and canonical event SHA256 tuple. Require authenticated GET status before fulfillment. Use a 30-second creation lease without holding inventory locks across HTTP; compare lease identity when saving token. Recovery checks same order status; retry creation only when provider reports no transaction and remains eligible. Duplicate-order/timeout returns unresolved state, never replacement identity.
-- [ ] Write and run DB tests for concurrent prepare, crash/lease expiry, slow response after lease replacement, timeout then duplicate order, stored token reopening, local expiry and no extra grace. Expect one persisted identity and no token served after eligibility expiry. Commit task files.
+- [x] Pin official response shapes, auth, status mapping, explicit expiry, original-string signature and amount handling with recorded nonsecret fixtures. Test accepted capture/settlement, pending/challenge, failures, unknown/refund review; merchant/transaction/currency mismatch and unsafe redirect URL rejection. Set HTTP timeout 10 seconds, creation lease 30 seconds, server-side UTC-to-provider timezone conversion and explicit persisted-start expiry.
+- [x] Run `npm test -- tests/unit/midtrans-provider.test.ts`; expect missing adapter failures.
+- [x] Implement Sandbox fetch endpoints, Basic server auth, constant-time signature authentication, allowlisted fields and canonical event SHA256 tuple. Require authenticated GET status before fulfillment. Use a 30-second creation lease without holding inventory locks across HTTP; compare lease identity when saving token. Recovery checks same order status; retry creation only when provider reports no transaction and remains eligible. Duplicate-order/timeout returns unresolved state, never replacement identity.
+- [x] Write and run DB tests for concurrent prepare, crash/lease expiry, slow response after lease replacement, timeout then duplicate order, stored token reopening, local expiry and no extra grace. Expect one persisted identity and no token served after eligibility expiry. Commit task files.
 
 ### Task 4: Durable verified events and atomic confirmation
 
@@ -93,11 +93,11 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 
 **Interfaces:** `.receive(raw:unknown):Promise<{receiptId:string;duplicate:boolean}>`; `.process(receiptId:string):Promise<'PROCESSED'|'IGNORED'|'RETRY'>`; `reconcilePayments(limit:number):Promise<{processed:number;retry:number}>` with limit 1–100. `createConfirmationService(repo).apply(observation:ProviderObservation):Promise<BookingView>`. `encryptToken(token,keyVersion,keys)` and `decryptToken(record,keys)` use AES-256-GCM; issue repository is transaction-only.
 
-- [ ] Write failing tests: notification body limit 64 KiB, malformed/invalid signature rejection; status forgery cannot confirm; changed fraud/status tuple differs while exact retry deduplicates; receipt survives crash; provider failure preserves retry; encryption tamper/wrong key rejected and stable token reopens.
-- [ ] Run targeted unit tests, expect missing modules. Implement dedicated POST body parsing, durable receipt acceptance and response mapping (invalid 400/401; unknown order 404; durable acceptance 200; storage failure 503). Processing lease 30 seconds; bounded command retries eligible events with exponential backoff 5/10/20/40/80/160/300 seconds, max 8 automatic attempts, then visible manual review. Run maintenance without printing PII/keys/tokens.
-- [ ] Write DB tests for duplicate/out-of-order events; exactly one confirmation/ticket/assignment; pending→expired→late PAID conflict; event processing delayed past deadline; reassignment/adjacent reuse; PAID cannot downgrade; accepted initiation during later suspension; rollback on ticket failure; 32-byte token hash/ciphertext uniqueness and stable replay.
-- [ ] Implement locked confirmation and occupancy union in both snapshot availability and hold creation. Expand availability status to `BOOKED` and update consumers coherently. Add atomic pending-booking expiry to existing hold cleanup with consistent lock order. Use exact microsecond deadline helpers and shared audit uniqueness. Verify no unsigned fields are promoted into authenticated observations.
-- [ ] Run `npm test -- tests/unit/payment-notification.test.ts tests/unit/ticket-crypto.test.ts` and `npm run db:test -- tests/integration/payment-confirmation.test.ts tests/integration/inventory-hold.test.ts tests/integration/inventory-availability.test.ts tests/integration/inventory-release.test.ts`. Expect pass. Commit task files.
+- [x] Write failing tests: notification body limit 64 KiB, malformed/invalid signature rejection; status forgery cannot confirm; changed fraud/status tuple differs while exact retry deduplicates; receipt survives crash; provider failure preserves retry; encryption tamper/wrong key rejected and stable token reopens.
+- [x] Run targeted unit tests, expect missing modules. Implement dedicated POST body parsing, durable receipt acceptance and response mapping (invalid 400/401; unknown order 404; durable acceptance 200; storage failure 503). Processing lease 30 seconds; bounded command retries eligible events with exponential backoff 5/10/20/40/80/160/300 seconds, max 8 automatic attempts, then visible manual review. Run maintenance without printing PII/keys/tokens.
+- [x] Write DB tests for duplicate/out-of-order events; exactly one confirmation/ticket/assignment; pending→expired→late PAID conflict; event processing delayed past deadline; reassignment/adjacent reuse; PAID cannot downgrade; accepted initiation during later suspension; rollback on ticket failure; 32-byte token hash/ciphertext uniqueness and stable replay.
+- [x] Implement locked confirmation and occupancy union in both snapshot availability and hold creation. Expand availability status to `BOOKED` and update consumers coherently. Add atomic pending-booking expiry to existing hold cleanup with consistent lock order. Use exact microsecond deadline helpers and shared audit uniqueness. Verify no unsigned fields are promoted into authenticated observations.
+- [x] Run `npm test -- tests/unit/payment-notification.test.ts tests/unit/ticket-crypto.test.ts` and `npm run db:test -- tests/integration/payment-confirmation.test.ts tests/integration/inventory-hold.test.ts tests/integration/inventory-availability.test.ts tests/integration/inventory-release.test.ts`. Expect pass. Commit task files.
 
 ### Task 5: Tenant-scoped conflict resolution
 
@@ -105,9 +105,9 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 
 **Interfaces:** `.list(actor:{userId:string;companyId:string})`, `.resolve(actor,bookingId:string,input:{action:'CONFIRM'|'MOCK_REFUND';requestKey:string;reason:string}):Promise<BookingView>`. Reason is trimmed 1–500 characters; server obtains actor through `requireAccess('tenant.admin',companyId)` and rechecks membership inside mutation transaction.
 
-- [ ] Write failing tests for tenant foreign resource denial, revoked admin, Super Admin no tenant fallback, suspended mock refund allowed/manual confirm denied, cutoff/occupied interval, concurrent opposite resolutions, same resolution retry and exact paid amount. Assert one audit/refund or one ticket, no mixture, financial fact remains PAID.
-- [ ] Run targeted tests, expect missing service/action. Implement common lock protocol/recheck and terminal resolution idempotency. Add concise Admin PO forms showing paid conflict and explicitly labeled mock refund.
-- [ ] Run `npm test -- tests/unit/payment-admin-actions.test.ts` and `npm run db:test -- tests/integration/payment-conflicts.test.ts`; expect pass. Commit task files.
+- [x] Write failing tests for tenant foreign resource denial, revoked admin, Super Admin no tenant fallback, suspended mock refund allowed/manual confirm denied, cutoff/occupied interval, concurrent opposite resolutions, same resolution retry and exact paid amount. Assert one audit/refund or one ticket, no mixture, financial fact remains PAID.
+- [x] Run targeted tests, expect missing service/action. Implement common lock protocol/recheck and terminal resolution idempotency. Add concise Admin PO forms showing paid conflict and explicitly labeled mock refund.
+- [x] Run `npm test -- tests/unit/payment-admin-actions.test.ts` and `npm run db:test -- tests/integration/payment-conflicts.test.ts`; expect pass. Commit task files.
 
 ### Task 6: Owner checkout, Snap popup and My Tickets
 
@@ -115,10 +115,10 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 
 **Interfaces:** `createTicketService(repo,keys).readMine(userId:string,ticketId:string):Promise<TicketView>`; `.resolveOperational(actor:{userId:string;companyId:string;tripId:string;role:'ADMIN_PO'|'CREW'},token:string):Promise<Omit<TicketView,'qrToken'>>` with fresh membership/assigned-trip validation. Actions consume Task 2/3 interfaces with verified user and email, never browser actor IDs.
 
-- [ ] Write failing tests: OTHER prefill/reset never mutates profile, missing SELF fields required, safe request-key retention on uncertain retry, callbacks merely refresh, popup close stays pending, ownership denied for matching traveler email/phone, QR contains token only, foreign owner and unassigned crew rejected, same booker token reopens.
-- [ ] Run targeted unit/DB tests, expect missing modules. Implement accessible SELF/OTHER form, reviewed prefilled data, server-derived quote, Snap script loader scoped to Sandbox URL/client key and guarded token preparation. Preserve key/input on uncertain failure; no success from callback alone. Poll server state every 5 seconds while visible/pending, stop at terminal state; expiry refresh once.
-- [ ] Implement booking and My Tickets/detail pages with stable QR rendering server-side, authorized booker reads and minimum operational resolution. Render BOOKED cells disabled. Add safe return-path links for expired sessions and label refunded/conflict states clearly.
-- [ ] Run `npm test -- tests/unit/checkout-actions.test.ts tests/unit/checkout-ui-state.test.ts` and `npm run db:test -- tests/integration/ticket-access.test.ts`; expect pass. Commit task files.
+- [x] Write failing tests: OTHER prefill/reset never mutates profile, missing SELF fields required, safe request-key retention on uncertain retry, callbacks merely refresh, popup close stays pending, ownership denied for matching traveler email/phone, QR contains token only, foreign owner and unassigned crew rejected, same booker token reopens.
+- [x] Run targeted unit/DB tests, expect missing modules. Implement accessible SELF/OTHER form, reviewed prefilled data, server-derived quote, Snap script loader scoped to Sandbox URL/client key and guarded token preparation. Preserve key/input on uncertain failure; no success from callback alone. Poll server state every 5 seconds while visible/pending, stop at terminal state; expiry refresh once.
+- [x] Implement booking and My Tickets/detail pages with stable QR rendering server-side, authorized booker reads and minimum operational resolution. Render BOOKED cells disabled. Add safe return-path links for expired sessions and label refunded/conflict states clearly.
+- [x] Run `npm test -- tests/unit/checkout-actions.test.ts tests/unit/checkout-ui-state.test.ts` and `npm run db:test -- tests/integration/ticket-access.test.ts`; expect pass. Commit task files.
 
 ### Task 7: End-to-end evidence and integration
 
@@ -129,7 +129,7 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 - [ ] Run typecheck, lint, production build, full unit suite and full integration suite with the existing TLS CA. Expected all pass; record exact counts and failures honestly. No broad cleanup of hosted demo/auth data.
 - [ ] Configure an available HTTPS tunnel and Midtrans Sandbox callback via authorized tools; if unavailable, provide concrete endpoint instructions and continue independent verification. Keys stay in ignored `.env.local`; never request their values in chat. Confirm disabled/production config cannot expose payment UI.
 - [ ] Browser-check SELF/OTHER at desktop and 390px width, keyboard navigation, Snap success using Sandbox simulator and actual callback, pending popup close, second authenticated session My Tickets and late-conflict admin resolution. Record any unavailable evidence explicitly rather than claiming an end-to-end pass.
-- [ ] Run one focused GPT-6 Luna medium final reviewer with `fork_turns:'none'`; supply spec, plan, worktree path, diff and evidence. Fix material findings and rerun only affected checks plus justified regressions.
+- [x] Run one focused GPT-6 Luna medium final reviewer with `fork_turns:'none'`; supply spec, plan, worktree path, diff and evidence. Fix material findings and rerun only affected checks plus justified regressions.
 - [ ] Synchronize modular docs with implemented behavior/limits, commit task files, integrate approved local branch into main without overwriting pre-existing edits. Leave push/deployment for a separately authorized action and report local URL, evidence and remaining setup requirements.
 
 ## Self-review and handoff
@@ -137,3 +137,9 @@ Booker-only query returns `BookingView`; Snap token requires a separate owner/el
 The seven tasks cover approved product/ownership, initiation, provider uncertainty, durable verified processing, inventory/ticket atomicity, admin resolution, UI and evidence. Financial fulfillment pieces are coupled, so one coordinated plan is intentional. Each task has a testable domain boundary; payment UI remains unavailable until the full dependent confirmation path exists.
 
 Execution method is preserved from the user's prior inline preference. This written plan requires user review before implementation. No tests, dependencies, migration or product code were changed while writing it.
+
+
+## Execution status — 8 October 2026
+
+Tasks1–6 implemented and committed. Additional safeguards mirror SQL constraints in Drizzle, bind ticket assignment/passenger, fence delayed creation responses and deduplicate authenticated observations without verification-time changes. The final Luna/medium reviewer identified quoted route directory names and missing admin REVIEW visibility; fixed and rerun affected checks. Zero-total fare rejection and whole-minute provider expiry are recorded in setup documentation. Final automated counts and local integration will be appended after the full rerun. Browser/Sandbox simulator and actual callback acceptance remain unverified because Browser Use URL policy blocked the preview, Windows geometry capture failed, and automatic tool review rejected the live credentials request. `docs/setup/CHECKOUT_PAYMENT_SETUP.md` supplies the concrete manual acceptance path.
+9 October update: user screenshots prove Sandbox payment, callback-backed CONFIRMED booking, QR detail and My Tickets. Current unit evidence:39 files/174 tests; typecheck/lint/build pass. Full DB run:64 pass/1 timeout, unchanged failing file rerun:1 pass. Remaining browser phone/390px/keyboard/second-session evidence remains pending. Integration proceeds locally under approval.

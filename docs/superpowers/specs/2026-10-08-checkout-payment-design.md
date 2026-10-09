@@ -1,6 +1,6 @@
 # Checkout, Midtrans Sandbox, and ticket issuance
 
-Date: 8 October 2026. Status: written design approved by user with “spec oke”; implementation awaits written plan review.
+Date: 8 October 2026. Status: written design approved by user with “spec oke”; written plan approved and execution authorized. Implementation evidence and remaining manual acceptance are in ../../setup/CHECKOUT_PAYMENT_SETUP.md.
 
 ## Intent and accepted product decisions
 
