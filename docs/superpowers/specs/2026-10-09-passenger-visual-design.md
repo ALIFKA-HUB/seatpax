@@ -1,6 +1,6 @@
 # Seatpax visual foundation and passenger experience
 
-Date: 9 October 2026. Status: conversational direction approved; written specification awaiting user review. No implementation plan or product implementation is approved by this document alone.
+Date: 9 October 2026. Status: written specification approved by the user on 9 October 2026. Implementation plan review is pending; product implementation has not started.
 
 ## Intent and authority
 
@@ -142,4 +142,4 @@ User testing on a physical phone, physical QR/camera acceptance and manual payme
 
 ## Decisions and handoff
 
-The phase order and reuse of the supplied logo are approved conversationally. Exact tokens, screen composition and implementation boundaries above await written-spec approval. Crew and Admin/Super Admin visual redesigns follow separate cycles. The outstanding six-digit OTP request stays explicit and separate. After written-spec approval, write the implementation plan with asset preparation, scoped foundation, passenger pages and verification in that order.
+The user approved the written specification, including tokens, screen composition and implementation boundaries, on 9 October 2026. Crew and Admin/Super Admin visual redesigns follow separate cycles. The outstanding six-digit OTP request stays explicit and separate. The implementation plan covers asset preparation, scoped foundation, passenger pages and verification in that order; implementation awaits its review.

@@ -102,4 +102,4 @@ Numbered section headings retain the original master section numbers for traceab
 
 [Super Admin company controls](../setup/SUPER_ADMIN_COMPANY_SETUP.md) implement the approved minimum list and explicit activate/suspend slice; automated final verification and deferred manual acceptance are recorded there.
 
-[Visual foundation and passenger redesign specification](../superpowers/specs/2026-10-09-passenger-visual-design.md): the user approved the phase order and supplied-logo direction on 9 October 2026. Written specification review is pending; no implementation plan or redesigned screens are claimed yet. Crew and Admin/Super Admin redesigns follow separately.
+[Visual foundation and passenger redesign specification](../superpowers/specs/2026-10-09-passenger-visual-design.md) was approved on 9 October 2026. The [implementation plan](../superpowers/plans/2026-10-09-passenger-visual.md) awaits review; redesigned screens are not implemented yet. Crew and Admin/Super Admin redesigns follow separately.
