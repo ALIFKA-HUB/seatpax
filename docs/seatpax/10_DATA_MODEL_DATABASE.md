@@ -567,3 +567,7 @@ Migration [0003_trip_engine.sql](../../drizzle/0003_trip_engine.sql) adds `trips
 ## Adopted availability and hold slice — 7 October 2026
 
 The approved availability/hold design and plan implement public snapshot search/quote, half-open interval availability, owner-only single-seat ten-minute holds, idempotent request keys, release and logical expiry with bounded cleanup. Company/trip guards and ordered seat×segment locks precede DB-time eligibility and occupancy checks. Snapshot inventory is now used for active holds; confirmed bookings and payment conversion remain unimplemented. RLS/browser revokes protect hold tables. See [availability design](../superpowers/specs/2026-10-07-availability-hold-design.md) and [setup evidence](../setup/AVAILABILITY_HOLD_SETUP.md).
+
+## Adopted snack claim slice — 9 October 2026
+
+Migration 0009_snack_claims adds DB-clock snack_claims with UNIQUE(ticket_id,trip_id), composite ticket and boarding-event foreign keys, actor users FK, RLS and revoked browser grants. Boarding events receive UNIQUE(ticket_id,trip_id,company_id). The audit record is immutable through the domain service; no update/reversal endpoint exists. See ../setup/SNACK_CLAIM_SETUP.md for verification and manual acceptance limits.
