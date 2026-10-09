@@ -38,7 +38,7 @@
 
 ### Task 1: Immutable boarding schema and authorized reads
 
-**Files:** Create `lib/db/migrations/0008_manifest_boarding.sql`, `modules/boarding/{types,repository,service}.ts`, `tests/integration/boarding-manifest.test.ts`, `tests/integration/helpers/boarding-fixture.ts`; modify `lib/db/schema.ts`. Adapt migration number if an existing migration already uses 0008.
+**Files:** Create `drizzle/0008_manifest_boarding.sql`, `modules/boarding/{types,repository,service}.ts`, `tests/integration/boarding-manifest.test.ts`, `tests/integration/helpers/boarding-fixture.ts`; modify `lib/db/schema.ts` and `drizzle/meta/_journal.json`. Adapt migration number if an existing migration already uses 0008. Execution inspection confirmed the existing migrator reads `drizzle/`.
 
 **Interfaces:** `BoardingActor={userId:string;role:'CREW'|'ADMIN_PO'}`. `BoardingRecord={id,ticketId,tripId,stopId,actorId,source:'QR'|'MANIFEST',boardedAt:string}`. `PassengerProfile={ticketId,name,seatCode,fromStopId,fromSequence,fromName,toName,tripName,vehicleName,plateNumber,departureAt,boarding:BoardingRecord|null}`. `ManifestView={tripId,companyId,tripName,departureAt,capacity,passengerCount,boardedCount,stops:Array<{id,name,sequence}>,passengers:PassengerProfile[]}`. All unspecified scalar fields are strings except sequences/counts/capacity (numbers).
 
@@ -86,6 +86,6 @@
 
 ## Self-review and handoff
 
-Tasks cover approved scope/access, minimum data, stop matching, audit uniqueness/retries, scanner lifecycle, fallback, suspension and independent verification. Five Review Focus items have explicit tests in Tasks 1–3. Inline execution preference is preserved; subagent override applies to the final reviewer only. This plan is documentation; migration, dependency installation and tests have not run for boarding. Implementation waits for user's plan review.
+Tasks cover approved scope/access, minimum data, stop matching, audit uniqueness/retries, scanner lifecycle, fallback, suspension and independent verification. Five Review Focus items have explicit tests in Tasks 1–3. Inline execution preference is preserved; subagent override applies to the final reviewer only. User approved execution; Task 0 dependency verification is underway on 9 October 2026. Boarding migration, dependency installation and tests have not run yet.
 
 Scanner reference inspected: https://github.com/nimiq/qr-scanner (local worker, start/stop/destroy lifecycle); pin version 1.4.2 and verify bundling during Task 3.

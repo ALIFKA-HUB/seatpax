@@ -1,6 +1,6 @@
 # Manifest dan boarding online
 
-Tanggal: 8 Oktober 2026. Status: scope dan spec disetujui pengguna; plan menunggu review.
+Tanggal: 8 Oktober 2026. Status: scope, spec dan plan disetujui pengguna; eksekusi dimulai 9 Oktober 2026.
 
 ## Tujuan dan batas
 
