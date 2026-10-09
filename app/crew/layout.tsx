@@ -1,2 +1,7 @@
-import Link from 'next/link';import '../admin/admin.css';import {crewData} from './data';
-export default async function Layout({children}:{children:React.ReactNode}){await crewData();return <div className="admin-shell"><aside className="admin-sidebar"><Link href="/crew" className="admin-brand">SEATPAX<span>CREW</span></Link><nav aria-label="Navigasi crew"><Link href="/crew">Perjalanan saya</Link><Link href="/account">Akun & keluar</Link></nav></aside><main className="admin-main">{children}</main></div>;}
+import './crew.css';
+import {crewData} from './data';
+import CrewShell from './components/crew-shell';
+export default async function Layout({children}:{children:React.ReactNode}) {
+ await crewData();
+ return <CrewShell>{children}</CrewShell>;
+}
