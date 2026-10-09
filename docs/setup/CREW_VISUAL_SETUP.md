@@ -70,3 +70,8 @@ These pending checks do not require the user to interrupt their meeting. Do not 
 Requested primary GPT-6.1 Sol medium could not be selected through the chat's tools; no model-switch claim was made. Reviewer overrides were applied explicitly.
 
 The user's main-checkout `next-env.d.ts` was preserved with SHA256 `B8B3A344484B959AF5E4E3FC1A1609DAC3CB9ECE0CDEB6C145BE29BC4C491000`. Attachment directory remains untouched. Only the execution-owned generated worktree file was restored. Temporary files and environment values were excluded from commits.
+
+## Post-integration check
+
+Fast-forward integrated implementation through commit 123373e into local main. Fresh main-checkout unit run on 2026-10-09 at 17:20 WIB passed: 62 files, 248 tests. The production preview on port 3001 was restarted from the verified identical implementation build. No code changed during integration.
+
