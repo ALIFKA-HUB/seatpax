@@ -56,10 +56,49 @@
 .crew-shell .seat-cell { min-width:0; width:60px; min-height:60px; padding:6px; font-size:.75rem; opacity:1; }
 .crew-shell .seat-seat { background:#EDF3FB; border-color:#B7CBE5; }
 .crew-shell .seat-aisle,.crew-shell .seat-empty { background:transparent; border-style:dashed; color:#526078; }
+.crew-shell .manifest-counters { gap:16px; margin:0 0 24px; }
+.crew-shell .manifest-counters div { background:#F5F7FA; border:0; border-radius:8px; padding:12px; min-width:0; }
+.crew-shell .manifest-counters dt { color:#526078; overflow-wrap:anywhere; }
+.crew-shell .manifest-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.crew-shell .manifest-controls label { min-width:0; }
+.crew-shell .manifest-count { margin:20px 0 8px; color:#526078; font-size:.875rem; }
+.crew-shell .manifest-passengers { margin:0; }
+.crew-shell .manifest-passengers li { gap:20px; padding:20px 0; }
+.crew-shell .manifest-person { min-width:0; flex:1 1 240px; overflow-wrap:anywhere; }
+.crew-shell .manifest-person > span,.crew-shell .manifest-person > strong { display:block; }
+.crew-shell .manifest-name { font-size:1.125rem; }
+.crew-shell .manifest-seat { color:#526078; font-size:.875rem; }
+.crew-shell .manifest-seat strong { color:#0A2144; font-size:1.125rem; }
+.crew-shell .manifest-snack { color:#526078; font-size:.875rem; }
+.crew-shell .crew-state { width:fit-content; border-radius:6px; padding:4px 8px; font-size:.875rem; }
+.crew-shell .crew-state-success { color:#166534; background:#F0FDF4; }
+.crew-shell .crew-state-pending { color:#92400E; background:#FFFBEB; }
+.crew-shell .crew-empty { padding:24px 0; color:#526078; }
+.crew-shell .boarding-profile { display:grid; gap:24px; }
+.crew-shell .crew-profile-heading { display:flex; align-items:center; gap:20px; }
+.crew-shell .crew-profile-heading > div { min-width:0; }
+.crew-shell .crew-profile-heading p { margin-top:8px; }
+.crew-shell .crew-seat { display:grid; gap:4px; padding:12px 16px; border:1px solid #B7CBE5; background:#EDF3FB; border-radius:8px; flex:0 0 100px; overflow-wrap:anywhere; text-align:center; }
+.crew-shell .crew-seat span { font-size:.75rem; color:#526078; }
+.crew-shell .crew-seat strong { font-size:1.5rem; font-variant-numeric:tabular-nums; }
+.crew-shell .boarding-profile .crew-profile-facts { display:grid; grid-template-columns:140px minmax(0,1fr); gap:12px 20px; margin:0; }
+.crew-shell .crew-profile-facts dt { color:#526078; }
+.crew-shell .crew-profile-facts dd { margin:0; overflow-wrap:anywhere; }
+.crew-shell .crew-profile-statuses { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.crew-shell .crew-state-card { display:grid; gap:6px; padding:16px; border:1px solid #D5DFEA; border-radius:8px; min-width:0; overflow-wrap:anywhere; }
+.crew-shell .crew-state-card > span,.crew-shell .crew-state-card p { font-size:.875rem; }
 @media (max-width:600px) {
  .crew-shell .crew-main { padding:24px 16px 48px; }
  .crew-shell .crew-topbar-inner { padding:12px 16px; }
  .crew-shell .crew-topbar nav { width:100%; border-top:1px solid #D5DFEA; padding-top:4px; }
  .crew-shell .crew-panel { padding:20px 16px; }
  .crew-shell .crew-actions > * { flex:1 1 200px; }
+ .crew-shell .manifest-controls,.crew-shell .crew-profile-statuses { grid-template-columns:minmax(0,1fr); }
+ .crew-shell .manifest-counters { gap:8px; }
+ .crew-shell .manifest-counters div { padding:10px 8px; }
+ .crew-shell .manifest-counters dt { font-size:.75rem; }
+ .crew-shell .crew-profile-heading { align-items:start; gap:12px; }
+ .crew-shell .crew-seat { flex-basis:76px; padding:12px 8px; }
+ .crew-shell .boarding-profile .crew-profile-facts { grid-template-columns:minmax(0,1fr); gap:4px; }
+ .crew-shell .crew-profile-facts dd { margin-bottom:12px; }
 }
