@@ -25,7 +25,7 @@
 @media(max-width:480px) { .manifest-counters { gap:.5rem; } .manifest-counters dt { font-size:.75rem; } .boarding-profile dl { grid-template-columns:1fr; gap:.25rem; } .boarding-profile dd { margin-bottom:.75rem; } }
 
 :root { --background: #f5f7fa; --foreground: #14243b; --accent: #005bd1; }
-body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; line-height: 1.6; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-geist), Arial, Helvetica, sans-serif; line-height: 1.6; }
 .setup { max-width: 800px; margin: auto; padding: 32px 24px; }
 .brand { display: flex; align-items: center; gap: 16px; font-weight: 800; letter-spacing: .08em; padding-bottom: 24px; border-bottom: 1px solid #d6dde7; }
 .brand span { font-weight: 400; font-size: 12px; letter-spacing: 0; }
