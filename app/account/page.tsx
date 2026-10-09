@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PassengerShell from '../components/passenger-shell';
 import {redirect} from 'next/navigation';
 import {getVerifiedUser} from '@/modules/auth/identity';
 import LogoutForm from './logout-form';
@@ -12,5 +13,5 @@ export default async function AccountPage(){
  const adminCompanies=await listAdminCompanies(getDatabase().$client,user.id);
  const crew=await getDatabase().$client`select id from public.memberships where user_id=${user.id} and role='CREW' and status='ACTIVE' limit 1`;
  const superAdmin=await getDatabase().$client`select id from public.memberships where user_id=${user.id} and role='SUPER_ADMIN' and company_id is null and status='ACTIVE' limit 1`;
- return <main className="auth-shell"><Link href="/" className="auth-brand">SEATPAX</Link><section className="auth-card" aria-labelledby="account-title"><p className="eyebrow">Akun Seatpax</p><h1 id="account-title">Anda sudah masuk</h1><p className="auth-intro">Email akun</p><p className="auth-email">{user.email}</p><Link href="/tickets">Tiket saya →</Link>{adminCompanies.length>0&&<Link href="/admin">Buka admin PO →</Link>}{crew.length>0&&<Link href="/crew">Perjalanan crew →</Link>}{superAdmin.length>0&&<Link href="/super-admin/companies">Super Admin →</Link>}<Link href="/trips">Cari perjalanan →</Link><LogoutForm /></section></main>;
+ return <PassengerShell active="account"><div className="auth-shell"><section className="auth-card" aria-labelledby="account-title"><p className="eyebrow">Akun Seatpax</p><h1 id="account-title">Anda sudah masuk</h1><p className="auth-intro">Email akun</p><p className="auth-email">{user.email}</p><div className="sp-account-actions"><Link href="/tickets">Tiket saya →</Link>{adminCompanies.length>0&&<Link href="/admin">Buka admin PO →</Link>}{crew.length>0&&<Link href="/crew">Perjalanan crew →</Link>}{superAdmin.length>0&&<Link href="/super-admin/companies">Super Admin →</Link>}<Link href="/trips">Cari perjalanan →</Link></div><LogoutForm /></section></div></PassengerShell>;
 }

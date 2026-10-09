@@ -1,20 +1,5 @@
 import Link from 'next/link';
-export default function HomePage() {
-  return (
-    <main className="setup">
-      <header className="brand">SEATPAX <span>Development</span></header>
-      <section aria-labelledby="setup-title">
-        <p className="eyebrow">Fondasi aplikasi</p>
-        <h1 id="setup-title">Seatpax</h1>
-        <p className="intro">Ticketing dan operasional penumpang bus antarkota.</p>
-        <p>Masuk dengan email untuk mengakses perjalanan dan tiket Anda.</p>
-        <Link href="/trips">Cari perjalanan →</Link><Link href="/tickets">Tiket saya →</Link><a href="/account">Masuk / Akun saya <span aria-hidden="true">→</span></a>
-      </section>
-      <section id="langkah-berikutnya" aria-labelledby="next-title" className="next-steps">
-        <h2 id="next-title">Langkah berikutnya</h2>
-        <ol><li>Verifikasi pengiriman Email OTP.</li><li>Bangun akses Passenger, Admin PO, Crew, dan Super Admin.</li><li>Siapkan rute dan inventory kursi.</li></ol>
-      </section>
-      <footer>Seatpax · Lingkungan pengembangan</footer>
-    </main>
-  );
+import PassengerShell from './components/passenger-shell';
+export default function Home(){
+ return <PassengerShell><section className="sp-home"><div className="sp-home-rule" aria-hidden="true"/><p className="eyebrow">Perjalanan antarkota</p><h1>Perjalanan Anda, mulai dari satu kursi.</h1><p className="sp-muted">Cari perjalanan, pilih kursi, dan simpan tiket Anda dalam satu tempat.</p><div className="sp-actions"><Link href="/trips" className="sp-primary">Cari perjalanan <span aria-hidden="true">→</span></Link><Link href="/tickets" className="sp-secondary">Tiket saya</Link></div></section><section className="sp-home-note"><h2>Kursi pilihan Anda. Tiket yang mudah dibuka.</h2><p className="sp-muted">Masuk dengan email saat memesan. Setelah pembayaran dikonfirmasi, tiket dan QR tersedia di Tiket saya.</p></section></PassengerShell>;
 }

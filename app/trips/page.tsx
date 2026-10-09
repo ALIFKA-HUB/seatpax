@@ -1,7 +1,13 @@
 import Link from 'next/link';
 import {passengerServices} from './data';
 import SearchForm from './components/search-form';
-import '../passenger.css';
+import PassengerShell from '../components/passenger-shell';
+import StatePanel from '../components/state-panel';
+import TripCard from '../components/trip-card';
 export const dynamic='force-dynamic';
-export default async function TripsPage({searchParams}:{searchParams:Promise<Record<string,string|undefined>>}){const p=await searchParams,service=passengerServices().availability;let loaded;try{const locations=await service.locations(),results=p.from&&p.to&&p.date?await service.search({fromSourceStopId:p.from,toSourceStopId:p.to,dateWib:p.date}):null;loaded={locations,results};}catch{} if(loaded){const {locations,results}=loaded;return <main className="passenger"><nav><Link href="/">SEATPAX</Link><Link href="/account">Akun saya</Link></nav><h1>Cari perjalanan</h1><p>Pilih asal, tujuan, dan tanggal berangkat dalam WIB.</p><SearchForm locations={locations} initial={p}/>{results&&<section aria-label="Hasil pencarian"><h2>{results.length} perjalanan</h2>{results.length===0&&<p>Tidak ada perjalanan yang sedang dijual untuk pilihan ini.</p>}{results.map(r=><article className="passenger-card" key={r.tripId}><h2>{r.originName} → {r.destinationName}</h2><p>{r.companyName} · {r.className}</p><p>{new Date(r.departureAt).toLocaleString('id-ID',{timeZone:'Asia/Jakarta'})} WIB</p><p>Rp {BigInt(r.fare).toLocaleString('id-ID')} · {r.availableCount} kursi tersedia</p><Link href={`/trips/${r.tripId}?from=${r.fromStopId}&to=${r.toStopId}`}>Lihat kursi →</Link></article>)}</section>}</main>;}return <main className="passenger"><h1>Pencarian belum tersedia</h1><p>Periksa pilihan pencarian atau coba lagi sebentar.</p><Link href="/trips">Ulangi pencarian</Link></main>;}
-
+export default async function TripsPage({searchParams}:{searchParams:Promise<Record<string,string|undefined>>}){
+ const p=await searchParams,service=passengerServices().availability;
+ let locations:Awaited<ReturnType<typeof service.locations>>=[],results:Awaited<ReturnType<typeof service.search>>|null=null,failed=false;
+ try{locations=await service.locations();if(p.from&&p.to&&p.date)results=await service.search({fromSourceStopId:p.from,toSourceStopId:p.to,dateWib:p.date});}catch{failed=true;}
+ return <PassengerShell active="search"><div className="sp-page-heading"><p className="eyebrow">Cari perjalanan</p><h1>Pilih tujuan berikutnya.</h1><p className="sp-muted">Pilih asal, tujuan, dan tanggal berangkat dalam WIB.</p></div><SearchForm locations={locations} initial={p}/>{failed?<StatePanel title="Pencarian belum tersedia" tone="danger" action={<Link className="sp-secondary" href="/trips">Ulangi pencarian</Link>}><p>Periksa pilihan pencarian atau coba lagi sebentar.</p></StatePanel>:results!==null?<section aria-label="Hasil pencarian"><div className="sp-result-heading"><h2>{results.length} perjalanan</h2></div>{results.length===0?<StatePanel title="Belum ada perjalanan"><p>Tidak ada perjalanan yang sedang dijual untuk pilihan ini. Coba tanggal atau tujuan lain.</p></StatePanel>:results.map(trip=><TripCard key={trip.tripId} trip={trip}/>)}</section>:<p className="sp-muted">Perjalanan yang tersedia akan muncul setelah Anda mencari.</p>}</PassengerShell>;
+}
