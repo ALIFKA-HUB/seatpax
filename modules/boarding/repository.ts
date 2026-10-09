@@ -20,7 +20,7 @@ export function createBoardingRepository(client:Sql){return {
  },
  async passengers(tx:DomainTx,tripId:string,companyId:string,ticketId?:string):Promise<PassengerProfile[]>{
   return await tx<PassengerProfile[]>`select t.id as "ticketId",p.name,s.seat_code as "seatCode",origin.id as "fromStopId",a.from_sequence as "fromSequence",origin.name as "fromName",destination.name as "toName",b.snapshot->>'tripName' as "tripName",b.snapshot->>'vehicleName' as "vehicleName",b.snapshot->>'plateNumber' as "plateNumber",origin.departure_at::text as "departureAt",
-   case when e.id is null then null else json_build_object('id',e.id,'ticketId',e.ticket_id,'tripId',e.trip_id,'stopId',e.boarding_stop_id,'actorId',e.actor_user_id,'source',e.source,'boardedAt',e.boarded_at::text) end as boarding
+   case when e.id is null then null else json_build_object('id',e.id,'ticketId',e.ticket_id,'tripId',e.trip_id,'stopId',e.boarding_stop_id,'actorId',e.actor_user_id,'source',e.source,'boardedAt',e.boarded_at::text) end as boarding, case when snack.id is null then null else json_build_object('claimedAt',snack.claimed_at::text) end as snack
    from public.tickets t join public.booking_passengers p on p.id=t.booking_passenger_id and p.trip_id=t.trip_id and p.company_id=t.company_id
    join public.bookings b on b.id=p.booking_id and b.trip_id=t.trip_id and b.company_id=t.company_id and b.status='CONFIRMED'
    join public.seat_assignments a on a.id=t.assignment_id and a.booking_passenger_id=p.id and a.trip_id=t.trip_id and a.company_id=t.company_id
@@ -28,6 +28,7 @@ export function createBoardingRepository(client:Sql){return {
    join public.trip_stops origin on origin.trip_id=t.trip_id and origin.company_id=t.company_id and origin.sequence=a.from_sequence
    join public.trip_stops destination on destination.trip_id=t.trip_id and destination.company_id=t.company_id and destination.sequence=a.to_sequence
    left join public.boarding_events e on e.ticket_id=t.id and e.trip_id=t.trip_id and e.company_id=t.company_id
+   left join public.snack_claims snack on snack.ticket_id=t.id and snack.trip_id=t.trip_id and snack.company_id=t.company_id
    where t.trip_id=${tripId} and t.company_id=${companyId} ${ticketId?tx`and t.id=${ticketId}`:tx``}
    order by s.seat_code,a.from_sequence,t.id`;
  },

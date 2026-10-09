@@ -64,6 +64,13 @@
       "when": 1791508800000,
       "tag": "0008_manifest_boarding",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791508801000,
+      "tag": "0009_snack_claims",
+      "breakpoints": true
     }
   ]
 }

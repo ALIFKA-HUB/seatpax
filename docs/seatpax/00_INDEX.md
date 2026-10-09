@@ -1,6 +1,6 @@
 # Seatpax Documentation Index
 
-> **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack and offline operations remain subsequent work. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
+> **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack is the subsequent slice recorded below, and offline remains deferred. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
 
 
 > **Implementation update — 8 October 2026:** Checkout/payment implementation: read `../setup/CHECKOUT_PAYMENT_SETUP.md` together with the approved checkout spec/plan before changing initiation, provider reconciliation, conflict resolution or ticket access.
@@ -97,3 +97,5 @@ Numbered section headings retain the original master section numbers for traceab
 [Trip Engine design](../superpowers/specs/2026-10-07-trip-engine-design.md) and [implementation plan](../superpowers/plans/2026-10-07-trip-engine.md) were approved on 7 October 2026. The implemented slice creates revisioned drafts, atomically publishes immutable route/fare/schedule/layout snapshots with seat×segment inventory anchors, and manages assigned-crew read access. Availability, holds and sales are excluded. Verification and pending browser/build/integration checks are recorded in [Trip Engine setup evidence](../setup/TRIP_ENGINE_SETUP.md).
 
 [Availability and seat hold setup](../setup/AVAILABILITY_HOLD_SETUP.md) records the implemented passenger search/selection and owner hold slice, database concurrency evidence, and browser limitations. Payment/booking conversion remains a subsequent slice.
+
+[Snack claim design](../superpowers/specs/2026-10-09-snack-claim-design.md) and [plan](../superpowers/plans/2026-10-09-snack-claim.md) were approved on 9 October 2026. Explicit once-only handover after boarding is implemented; verification and manual acceptance are recorded in [snack setup evidence](../setup/SNACK_CLAIM_SETUP.md).

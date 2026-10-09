@@ -1,0 +1,51 @@
+import {it,expect,beforeAll,afterAll} from 'vitest';
+import type {Sql} from 'postgres';
+import {randomUUID} from 'node:crypto';
+import {inventoryClient} from './helpers/inventory-fixture';
+import {boardingFixture} from './helpers/boarding-fixture';
+import {createBoardingRepository} from '@/modules/boarding/repository';
+import {createBoardingService} from '@/modules/boarding/service';
+import {createSnackRepository} from '@/modules/snack/repository';
+import {createSnackService} from '@/modules/snack/service';
+import {createCrewService} from '@/modules/trip/crew-service';
+import {createTripRepository} from '@/modules/trip/repository';
+let c:Sql;beforeAll(()=>{c=inventoryClient();});afterAll(()=>c.end({timeout:5}));
+function gate(){let entered!:()=>void,release!:()=>void;return {locked:new Promise<void>(r=>{entered=r;}),wait:new Promise<void>(r=>{release=r;}),entered:()=>entered(),release:()=>release()};}
+it('requires boarding, rolls back and preserves one concurrent claim with fresh access',async()=>boardingFixture(c,async f=>{
+ const br=createBoardingRepository(c),board=createBoardingService(br),snack=createSnackService(createSnackRepository(c),br),crew={userId:f.crewId,role:'CREW' as const},trip=f.detail.trip.id,ticket=await f.confirmed(),input={ticketId:ticket.ticketId};
+ await expect(snack.claim(crew,trip,input)).rejects.toMatchObject({code:'validation'});
+ expect(await c`select id from public.snack_claims where trip_id=${trip}`).toHaveLength(0);
+ await expect(c`insert into public.snack_claims(company_id,trip_id,ticket_id,actor_user_id) values(${f.a.companyId},${trip},${ticket.ticketId},${f.crewId})`).rejects.toMatchObject({code:'23503'});
+ await expect(snack.claim({userId:f.a.actorId,role:'ADMIN_PO'},trip,input)).rejects.toMatchObject({code:'forbidden'});
+ await expect(snack.claim({userId:f.b.actorId,role:'CREW'},trip,input)).rejects.toMatchObject({code:'forbidden'});
+ await expect(snack.claim(crew,randomUUID(),input)).rejects.toMatchObject({code:'forbidden'});
+ await board.board(crew,trip,{...input,stopId:f.detail.stops[0].id!,source:'MANIFEST'});
+ const rollbackRepo=createSnackRepository(c),insert=rollbackRepo.insert;rollbackRepo.insert=async(...args)=>{await insert(...args);throw Error('Forced rollback');};await expect(createSnackService(rollbackRepo,br).claim(crew,trip,input)).rejects.toMatchObject({code:'unavailable'});expect(await c`select id from public.snack_claims where trip_id=${trip}`).toHaveLength(0);
+ const other=await f.confirmed(0,3,1);const second=randomUUID();f.users.push(second);await c`insert into auth.users(id) values(${second})`;await c`insert into public.users(id,name) values(${second},'Second crew fixture')`;await c`insert into public.memberships(company_id,user_id,role) values(${f.a.companyId},${second},'CREW')`;await createCrewService(createTripRepository(c)).setAssignment(f.a,trip,second,'ACTIVE');await c`update public.companies set status='SUSPENDED' where id=${f.a.companyId}`;
+ const results=await Promise.all([snack.claim(crew,trip,{...input,actorId:'forged',claimedAt:'forged'}),snack.claim({userId:second,role:'CREW'},trip,input)]);expect(results[0].claim).toEqual(results[1].claim);expect(results.map(r=>r.alreadyClaimed).sort()).toEqual([false,true]);expect([f.crewId,second]).toContain(results[0].claim.actorId);expect(await snack.claim(crew,trip,input)).toEqual({claim:results[0].claim,alreadyClaimed:true});
+ await expect(c`insert into public.snack_claims(company_id,trip_id,ticket_id,actor_user_id) values(${f.a.companyId},${trip},${ticket.ticketId},${second})`).rejects.toMatchObject({code:'23505'});
+ await expect(c`insert into public.snack_claims(company_id,trip_id,ticket_id,actor_user_id) values(${f.b.companyId},${trip},${other.ticketId},${second})`).rejects.toMatchObject({code:'23503'});
+ await c`update public.memberships set status='DISABLED' where id=${f.crewMembershipId}`;await expect(snack.claim(crew,trip,input)).rejects.toMatchObject({code:'forbidden'});await c`update public.memberships set status='ACTIVE' where id=${f.crewMembershipId}`;await createCrewService(createTripRepository(c)).setAssignment(f.a,trip,f.crewId,'REVOKED');await expect(snack.claim(crew,trip,input)).rejects.toMatchObject({code:'forbidden'});
+ const [security]=await c`select relrowsecurity as rls,has_table_privilege('anon','public.snack_claims','SELECT') as anon_read,has_table_privilege('authenticated','public.snack_claims','INSERT') as browser_write from pg_class where oid='public.snack_claims'::regclass`;expect(security).toEqual({rls:true,anon_read:false,browser_write:false});expect(await c`select id from public.snack_claims where trip_id=${trip}`).toHaveLength(1);
+}),180000);
+it('serializes claim-first and revoke-first without bypassing fresh authorization',async()=>boardingFixture(c,async f=>{
+ const trip=f.detail.trip.id,crew={userId:f.crewId,role:'CREW' as const},ticket=await f.confirmed(),br=createBoardingRepository(c);await createBoardingService(br).board(crew,trip,{ticketId:ticket.ticketId,stopId:f.detail.stops[0].id!,source:'MANIFEST'});
+ const g=gate(),auth=br.authorize;br.authorize=async(...args)=>{const result=await auth(...args);g.entered();await g.wait;return result;};
+ const claiming=createSnackService(createSnackRepository(c),br).claim(crew,trip,{ticketId:ticket.ticketId});await g.locked;const writer=createCrewService(createTripRepository(c));let revoked=false;const revoking=writer.setAssignment(f.a,trip,f.crewId,'REVOKED').then(()=>{revoked=true;});try{await c`select 1`;expect(revoked).toBe(false);}finally{g.release();}expect((await claiming).alreadyClaimed).toBe(false);await revoking;
+ await expect(createSnackService(createSnackRepository(c),createBoardingRepository(c)).claim(crew,trip,{ticketId:ticket.ticketId})).rejects.toMatchObject({code:'forbidden'});
+ await writer.setAssignment(f.a,trip,f.crewId,'ACTIVE');const other=await f.confirmed(0,3,1);await createBoardingService(createBoardingRepository(c)).board(crew,trip,{ticketId:other.ticketId,stopId:f.detail.stops[0].id!,source:'QR'});
+ const reverse=gate(),wr=createTripRepository(c),read=wr.trip;wr.trip=async(...args)=>{const result=await read(...args);reverse.entered();await reverse.wait;return result;};const revoke=createCrewService(wr).setAssignment(f.a,trip,f.crewId,'REVOKED');await reverse.locked;
+ let finished=false;const pending=createSnackService(createSnackRepository(c),createBoardingRepository(c)).claim(crew,trip,{ticketId:other.ticketId}).then(value=>{finished=true;return {value};},error=>{finished=true;return {error};});try{await c`select 1`;expect(finished).toBe(false);}finally{reverse.release();}await revoke;expect(await pending).toMatchObject({error:{code:'forbidden'}});expect(await c`select id from public.snack_claims where ticket_id=${other.ticketId}`).toHaveLength(0);
+}),180000);
+it('serializes board/claim in either order and allows explicit retry after rejection',async()=>boardingFixture(c,async f=>{
+ const trip=f.detail.trip.id,crew={userId:f.crewId,role:'CREW' as const},ticket=await f.confirmed(),origin=f.detail.stops[0].id!,g=gate(),br=createBoardingRepository(c),lock=br.lockPassenger;br.lockPassenger=async(...args)=>{await lock(...args);g.entered();await g.wait;};
+ const boarding=createBoardingService(br).board(crew,trip,{ticketId:ticket.ticketId,stopId:origin,source:'MANIFEST'});await g.locked;let finished=false;const claiming=createSnackService(createSnackRepository(c),createBoardingRepository(c)).claim(crew,trip,{ticketId:ticket.ticketId}).then(value=>{finished=true;return value;});try{await c`select 1`;expect(finished).toBe(false);}finally{g.release();}await boarding;expect((await claiming).alreadyClaimed).toBe(false);
+ const other=await f.confirmed(0,3,1),reverse=gate(),cr=createBoardingRepository(c),cl=cr.lockPassenger;cr.lockPassenger=async(...args)=>{await cl(...args);reverse.entered();await reverse.wait;};const denied=createSnackService(createSnackRepository(c),cr).claim(crew,trip,{ticketId:other.ticketId}).then(value=>({value}),error=>({error}));await reverse.locked;
+ let boarded=false;const board=createBoardingService(createBoardingRepository(c)).board(crew,trip,{ticketId:other.ticketId,stopId:origin,source:'QR'}).then(value=>{boarded=true;return value;});try{await c`select 1`;expect(boarded).toBe(false);}finally{reverse.release();}expect(await denied).toMatchObject({error:{code:'validation'}});await board;expect(await c`select id from public.snack_claims where ticket_id=${other.ticketId}`).toHaveLength(0);expect((await createSnackService(createSnackRepository(c),createBoardingRepository(c)).claim(crew,trip,{ticketId:other.ticketId})).alreadyClaimed).toBe(false);
+}),180000);
+it('keeps independent snack records for adjacent tickets sharing one seat',async()=>boardingFixture(c,async f=>{
+ const trip=f.detail.trip.id,crew={userId:f.crewId,role:'CREW' as const},br=createBoardingRepository(c),board=createBoardingService(br),snack=createSnackService(createSnackRepository(c),br),first=await f.confirmed(0,2),second=await f.confirmed(2,3);
+ expect((await board.profile(crew,trip,first.ticketId)).snack).toBeNull();expect(await board.profile(crew,trip,first.ticketId)).toEqual(await board.resolve(crew,trip,first.token));expect(await c`select id from public.snack_claims where trip_id=${trip}`).toHaveLength(0);
+ for(const [ticket,stop] of [[first,f.detail.stops[0]],[second,f.detail.stops[2]]] as const){await board.board(crew,trip,{ticketId:ticket.ticketId,stopId:stop.id!,source:'MANIFEST'});const result=await snack.claim(crew,trip,{ticketId:ticket.ticketId});const profile=await board.profile(crew,trip,ticket.ticketId);expect(profile).toEqual(await board.resolve(crew,trip,ticket.token));expect(profile.snack).toEqual({claimedAt:result.claim.claimedAt});const admin=await board.manifest({userId:f.a.actorId,role:'ADMIN_PO'},trip);expect(admin.passengers.find(p=>p.ticketId===ticket.ticketId)?.snack).toEqual({claimedAt:result.claim.claimedAt});expect(JSON.stringify(profile.snack)).not.toMatch(/actorId|companyId|ticketId|token|phone|email/);}
+ expect(await c`select id from public.snack_claims where trip_id=${trip}`).toHaveLength(2);expect((await board.manifest(crew,trip)).passengers.map(p=>p.seatCode)).toEqual(['01','01']);
+}),180000);

@@ -1,6 +1,6 @@
 # Snack Claim Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Preserve inline execution and one final reviewer.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking. Preserve inline execution and one final reviewer.
 
 **Goal:** Assigned active crew explicitly records one snack handover per boarded ticket/trip.
 
@@ -32,7 +32,7 @@
 
 ## Execution preflight
 
-- [ ] At execution start read using-git-worktrees, inspect attached worktrees, reuse suitable managed checkout from integrated main on `codex/snack-claim`; preserve ignored env without printing. Check current dependency baseline and dirty main file hash. Keep preview tied to attached worktree.
+- [x] At execution start read using-git-worktrees, inspect attached worktrees, reuse suitable managed checkout from integrated main on `codex/snack-claim`; preserve ignored env without printing. Check current dependency baseline and dirty main file hash. Keep preview tied to attached worktree.
 
 ### Task 1: Database invariant and claim service
 
@@ -40,7 +40,7 @@
 
 **Interfaces:** `SnackClaim={id,companyId,tripId,ticketId,actorId,claimedAt}` (strings). `parseSnackInput(unknown):{ticketId:string}` strips actor/company/time. `createSnackRepository(Sql)` exposes `client`, `boarding(tx,tripId,companyId,ticketId)` guarded SHARE lookup, `existing(...)`, `insert(tx,{companyId,tripId,ticketId,actorId})`. `createSnackService(repo,boardingRepo).claim(actor:BoardingActor,tripId:string,input:unknown):Promise<{claim:SnackClaim;alreadyClaimed:boolean}>`; both repositories use the same Sql instance and transaction.
 
-- [ ] Write validation units: malformed UUID rejected; forged actor/company/time stripped. Write real-service fixture assertions for before-board rejection/no event, successful claim, Admin/foreign-trip/foreign-company denial, suspension allowed, immutable retry, rollback-after-insert, adjacent same-seat independent claims and DB constraint rejection. Example core assertion:
+- [x] Write validation units: malformed UUID rejected; forged actor/company/time stripped. Write real-service fixture assertions for before-board rejection/no event, successful claim, Admin/foreign-trip/foreign-company denial, suspension allowed, immutable retry, rollback-after-insert, adjacent same-seat independent claims and DB constraint rejection. Example core assertion:
 
 ```ts
 await expect(snack.claim(crew,trip,{ticketId})).rejects.toMatchObject({code:'validation'});
@@ -49,13 +49,13 @@ const first=await snack.claim(crew,trip,{ticketId});
 expect(await snack.claim(crew,trip,{ticketId})).toEqual({claim:first.claim,alreadyClaimed:true});
 ```
 
-- [ ] Run targeted unit/DB files; record RED missing validation/service/schema, not a connectivity failure. Use 180-second per-fixture budget where multiple hosted checkout confirmations are required.
-- [ ] Add `boarding_events` UNIQUE(ticket_id,trip_id,company_id). Add `snack_claims`: UUID/default gen_random_uuid, required company/trip/ticket/actor, DB clock claimed_at, UNIQUE(ticket_id,trip_id), composite ticket FK and boarding FK, actor users FK, all DELETE RESTRICT. Enable RLS/revoke anon/authenticated grants; mirror Drizzle schema and ordered journal index9. Cleanup fixture-owned snack rows before boarding rows.
-- [ ] Apply migration with existing dev/TLS guard. Verify direct claim insert without boarding, cross-company/trip insert and duplicate insert fail with FK/unique constraints; do not relax grants for tests.
-- [ ] Implement one guarded transaction: validate role/IDs; lock via boardingRepo.authorize then lockPassenger; recheck eligible passenger; boarding SHARE required; existing claim or DB-clock insert. Use lock_timeout5s/statement_timeout15s, safe DomainError mapping. Access guard must precede existing claim return.
-- [ ] Add barriers: hold claim locks then start assignment revoke, claim commits before revoke and next retry denies; hold actual revoke writer's trip UPDATE lock then queue claim, release revoke and assert forbidden/no event. For board/claim order, hold board after passenger lock then queue claim and expect success after board commit; hold claim after passenger lock before boarding exists, queue board, release claim and expect validation/no claim then explicit retry succeeds. Bound gates with finally-release; don't use unbounded sleeps.
-- [ ] Add second valid crew and Promise.all claim test: identical claim ID/actor/time, exactly one alreadyClaimed=false and one=true; disabled membership/assignment rejects retry. Force repository insert to write then throw and verify rollback zero rows.
-- [ ] Run validation + snack integration + existing boarding files serially; require zero failures, then commit Task 1 only.
+- [x] Run targeted unit/DB files; record RED missing validation/service/schema, not a connectivity failure. Use 180-second per-fixture budget where multiple hosted checkout confirmations are required.
+- [x] Add `boarding_events` UNIQUE(ticket_id,trip_id,company_id). Add `snack_claims`: UUID/default gen_random_uuid, required company/trip/ticket/actor, DB clock claimed_at, UNIQUE(ticket_id,trip_id), composite ticket FK and boarding FK, actor users FK, all DELETE RESTRICT. Enable RLS/revoke anon/authenticated grants; mirror Drizzle schema and ordered journal index9. Cleanup fixture-owned snack rows before boarding rows.
+- [x] Apply migration with existing dev/TLS guard. Verify direct claim insert without boarding, cross-company/trip insert and duplicate insert fail with FK/unique constraints; do not relax grants for tests.
+- [x] Implement one guarded transaction: validate role/IDs; lock via boardingRepo.authorize then lockPassenger; recheck eligible passenger; boarding SHARE required; existing claim or DB-clock insert. Use lock_timeout5s/statement_timeout15s, safe DomainError mapping. Access guard must precede existing claim return.
+- [x] Add barriers: hold claim locks then start assignment revoke, claim commits before revoke and next retry denies; hold actual revoke writer's trip UPDATE lock then queue claim, release revoke and assert forbidden/no event. For board/claim order, hold board after passenger lock then queue claim and expect success after board commit; hold claim after passenger lock before boarding exists, queue board, release claim and expect validation/no claim then explicit retry succeeds. Bound gates with finally-release; don't use unbounded sleeps.
+- [x] Add second valid crew and Promise.all claim test: identical claim ID/actor/time, exactly one alreadyClaimed=false and one=true; disabled membership/assignment rejects retry. Force repository insert to write then throw and verify rollback zero rows.
+- [x] Run validation + snack integration + existing boarding files serially; require zero failures, then commit Task 1 only.
 
 ### Task 2: Minimum snack read state
 
@@ -63,9 +63,9 @@ expect(await snack.claim(crew,trip,{ticketId})).toEqual({claim:first.claim,alrea
 
 **Interfaces:** Add `snack:{claimedAt:string}|null` to PassengerProfile and ManifestView passenger rows. Boarding repository left joins snack by ticket/trip/company and returns claimedAt only; `manifestPassengers()` preserves that minimum state. Claim service response remains Task 1's record; list/profile reads do not expose actor metadata.
 
-- [ ] Write RED: manual profile equals QR-resolved profile with snack null before claim and original timestamp after claim; Admin manifest same timestamp; read/resolve creates no claim; projection excludes claim actor/company IDs and QR/PII fields.
-- [ ] Implement scoped LEFT JOIN and explicit projection; no global snack list, decrypt or broad TicketView. Preserve existing boarding fields/counters and adjacent rows.
-- [ ] Run minimum-projection unit, manifest/snack DB files; update affected fixture objects and run full unit suite/typecheck. Require zero failures and commit Task 2.
+- [x] Write RED: manual profile equals QR-resolved profile with snack null before claim and original timestamp after claim; Admin manifest same timestamp; read/resolve creates no claim; projection excludes claim actor/company IDs and QR/PII fields.
+- [x] Implement scoped LEFT JOIN and explicit projection; no global snack list, decrypt or broad TicketView. Preserve existing boarding fields/counters and adjacent rows.
+- [x] Run minimum-projection unit, manifest/snack DB files; update affected fixture objects and run full unit suite/typecheck. Require zero failures and commit Task 2.
 
 ### Task 3: Separate verified-session action and snack button
 
@@ -73,20 +73,22 @@ expect(await snack.claim(crew,trip,{ticketId})).toEqual({claim:first.claim,alrea
 
 **Interfaces:** `createSnackActions({getActor,claim}).claim(tripId,unknown)` returns `{ok:true,result:{claim,alreadyClaimed}}|{ok:false,message}`. Server `claimSnackAction(tripId,input)` obtains verified user, fixed CREW role then domain validates membership. `SnackForm({tripId,profile,onClaimed?})` renders state and invokes claim only on explicit submit. `applySnackToCurrentProfile(current:PassengerProfile|null,claim:SnackClaim)` updates only matching ticketId, mapping claimedAt minimum.
 
-- [ ] Write action RED: session actor wins over forged input; unauthenticated/malformed input never mutates; general safe error; pre-board validation message. Write UI/helper RED: disabled before boarding, enabled after boarding, claimed timestamp/no second button, pending double-submit gate, retry after failure and old-response guard for null/mismatched profile.
-- [ ] Implement action wrapper and form using existing submission gate, 44px controls, keyboard/focus/aria-live and WIB formatter. Exact copy: **Snack belum diserahkan**, **Serahkan snack**, **Mencatat…**, **Snack sudah diserahkan**. Do not optimistically mark success.
-- [ ] Add SnackForm to manual and QR profile; QR callback uses functional ticket-ID guard. Boarding response enables snack on the same profile; manual route refresh obtains updated boarding. Shared profile/manifest display snack state/time; Admin gets no mutation control. Preserve camera controller and scan-read-only behavior.
-- [ ] Run snack-action/UI and scanner/boarding units, full units, typecheck/lint/build; expect zero failures. Confirm dynamic routes/worker remain bundled. Commit Task 3.
+- [x] Write action RED: session actor wins over forged input; unauthenticated/malformed input never mutates; general safe error; pre-board validation message. Write UI/helper RED: disabled before boarding, enabled after boarding, claimed timestamp/no second button, pending double-submit gate, retry after failure and old-response guard for null/mismatched profile.
+- [x] Implement action wrapper and form using existing submission gate, 44px controls, keyboard/focus/aria-live and WIB formatter. Exact copy: **Snack belum diserahkan**, **Serahkan snack**, **Mencatat…**, **Snack sudah diserahkan**. Do not optimistically mark success.
+- [x] Add SnackForm to manual and QR profile; QR callback uses functional ticket-ID guard. Boarding response enables snack on the same profile; manual route refresh obtains updated boarding. Shared profile/manifest display snack state/time; Admin gets no mutation control. Preserve camera controller and scan-read-only behavior.
+- [x] Run snack-action/UI and scanner/boarding units, full units, typecheck/lint/build; expect zero failures. Confirm dynamic routes/worker remain bundled. Commit Task 3.
 
 ### Task 4: Evidence, final review and integration
 
 **Files:** Create `docs/setup/SNACK_CLAIM_SETUP.md`; update approved spec/plan status, `docs/seatpax/{00_INDEX,08_TICKET_QR_MANIFEST,09_END_TO_END_FLOWS,10_DATA_MODEL_DATABASE,11_API_PROJECT_STRUCTURE,19_DECISION_LEDGER}.md`.
 
-- [ ] Run full unit/DB suites serially with existing TLS CA, plus typecheck/lint/build; record exact counts, duration and any failures/reruns. Cleanup only generated fixture UUIDs.
-- [ ] Start preview. If browser surface/auth is available, human logs in and explicitly selects a demo ticket; verify before-board state, explicit snack claim and reopen timestamp, Admin read-only, keyboard/390px. No OTP automation/mass claim. Physical camera/phone acceptance remains separate if unavailable; don't broaden webhook tunnel.
-- [ ] One focused Luna medium reviewer checks whole diff/spec/plan, access/races/minimum data/UI callbacks; fix material findings with RED→GREEN regression and rerun affected checks.
-- [ ] Record evidence and pending manual checks, commit docs, perform authorized local integration into main and rerun merged units/typecheck/lint/build while preserving original dirty next-env bytes. No push/deploy; keep active preview worktree attached.
+- [x] Run full unit/DB suites serially with existing TLS CA, plus typecheck/lint/build; record exact counts, duration and any failures/reruns. Cleanup only generated fixture UUIDs.
+- [x] Start preview. If browser surface/auth is available, human logs in and explicitly selects a demo ticket; verify before-board state, explicit snack claim and reopen timestamp, Admin read-only, keyboard/390px. No OTP automation/mass claim. Physical camera/phone acceptance remains separate if unavailable; don't broaden webhook tunnel.
+- [x] One focused Luna medium reviewer checks whole diff/spec/plan, access/races/minimum data/UI callbacks; fix material findings with RED→GREEN regression and rerun affected checks.
+- [x] Record evidence and pending manual checks, commit docs, perform authorized local integration into main and rerun merged units/typecheck/lint/build while preserving original dirty next-env bytes. No push/deploy; keep active preview worktree attached.
 
 ## Self-review and execution handoff
 
-All spec requirements map to Tasks 1–4, and the five Review Focus cases have explicit tests. Nullable `snack` shape is consistent across read projections and UI; internal claim preserves actor/time while operational reads do not leak actor identity. No unresolved product policy or placeholder remains. Execution preflight prepares isolation before Task 1. Native inline execution preference is preserved; this plan awaits user approval before any implementation.
+All spec requirements map to Tasks 1–4, and the five Review Focus cases have explicit tests. Nullable `snack` shape is consistent across read projections and UI; internal claim preserves actor/time while operational reads do not leak actor identity. No unresolved product policy or placeholder remains. Execution preflight prepares isolation before Task 1. Native inline execution preference is preserved; the user approved execution on 9 October 2026. Implementation is complete; final regression/integration evidence is tracked in ../../setup/SNACK_CLAIM_SETUP.md.
+
+Execution evidence: 19 DB files / 73 tests passed703.10s, 47 unit files / 199 tests passed; typecheck/lint/build passed. One Luna medium reviewer found no material issue and accepted added read assertions. Preview started port3001; no Seatpax browser session available, so physical camera, keyboard/390px and authenticated visual acceptance are pending. Tasks1–3 ship together following the documented DNS-related execution ordering deviation. Final main verification is recorded in setup evidence.

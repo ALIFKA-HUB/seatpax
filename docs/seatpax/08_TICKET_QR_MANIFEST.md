@@ -165,3 +165,7 @@ Manifest dapat dibentuk dari confirmed booking passengers untuk `trip_id` terten
 Tidak wajib mempunyai entity `manifest` terpisah kecuali dibutuhkan snapshot/audit di masa depan.
 
 ---
+
+## Adopted snack claim slice — 9 October 2026
+
+Assigned active crew records one snack claim per boarded ticket/trip through a separate explicit action. Scan remains read-only. Retry returns the original event after fresh access checks; operational snack state contains claimedAt only. Admin PO reads but cannot claim. See ../setup/SNACK_CLAIM_SETUP.md for verification and manual acceptance limits.

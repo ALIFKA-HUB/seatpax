@@ -165,3 +165,7 @@ Reschedule    Full Refund
 ```
 
 ---
+
+## Adopted snack claim slice — 9 October 2026
+
+QR or manual manifest opens the passenger profile → explicit boarding → separate explicit snack handover. Before boarding the snack action is disabled. Successful handover shows its original WIB time; retry does not create another claim. See ../setup/SNACK_CLAIM_SETUP.md for verification and manual acceptance limits.
