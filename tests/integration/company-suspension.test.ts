@@ -40,6 +40,11 @@ it('blocks new sales while initiated payment, ticket, boarding and snack survive
  await service.changeStatus(f.superUserId,{companyId,target:'ACTIVE',expectedStatusRevision:1});
  expect((await holds.readMine(f.a.actorId,h.record.id)).record.status).toBe('RELEASED');
  const available=await holds.create(f.a.actorId,f.inputHold(0,3,0));expect(available.record.status).toBe('ACTIVE');await holds.release(f.a.actorId,available.record.id);
+ const expired=await holds.create(f.a.actorId,f.inputHold(0,3,0));
+ await c`with clock as materialized(select clock_timestamp() as now) update public.seat_holds set status='EXPIRED',created_at=clock.now-interval '20 minutes',base_expires_at=clock.now-interval '10 minutes',effective_expires_at=clock.now-interval '10 minutes',expired_at=clock.now from clock where id=${expired.record.id}`;
+ await service.changeStatus(f.superUserId,{companyId,target:'SUSPENDED',expectedStatusRevision:2});
+ await service.changeStatus(f.superUserId,{companyId,target:'ACTIVE',expectedStatusRevision:3});
+ expect((await holds.readMine(f.a.actorId,expired.record.id)).record.status).toBe('EXPIRED');
  await c`update public.trips set sales_close_at=clock_timestamp()-interval '1 minute' where id=${trip}`;
  await expect(holds.create(f.a.actorId,f.inputHold(0,3,0))).rejects.toMatchObject({code:'conflict'});
  expect((await c`select status from public.memberships where id=${f.crewMembershipId}`)[0].status).toBe('ACTIVE');

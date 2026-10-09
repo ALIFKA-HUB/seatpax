@@ -9,6 +9,7 @@ it('renders named confirmation, consequences and pending controls',()=>{
  const html=renderToStaticMarkup(createElement(CompanyStatusControl,props));expect(html).toContain('PO A');expect(html).toContain('penjualan baru');expect(html.toLowerCase()).toContain('tiket');expect(html).toContain('disabled');expect(html).toContain('aria-live');
  expect(renderToStaticMarkup(createElement(CompanyStatusControl,{...props,confirming:false,pending:false}))).toContain('Suspend');
  expect(renderToStaticMarkup(createElement(CompanyStatusControl,{...props,company:{...a,status:'SUSPENDED'},confirming:false,pending:false}))).toContain('Aktifkan');
+ expect(renderToStaticMarkup(createElement(CompanyStatusControl,{...props,pending:false}))).toContain('autofocus');
 });
 it('updates only matching ID and ignores older revisions',()=>{
  const b={...a,id:'00000000-0000-4000-8000-000000000002',name:'PO B'};
