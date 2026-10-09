@@ -1,1 +1,9 @@
-import Link from 'next/link';import {notFound} from 'next/navigation';import {crewData} from '../../data';import TripDetail from '@/app/admin/components/trip-detail';export default async function Page({params}:{params:Promise<{tripId:string}>}){const {tripId}=await params,{actorId,crew}=await crewData();let detail;try{detail=await crew.detailMine(actorId,tripId);}catch{notFound();}return <><header className="admin-header"><Link href="/crew">← Perjalanan saya</Link><h1>{detail.trip.name}</h1><p>Ringkasan perjalanan yang ditugaskan</p><nav className="boarding-camera-actions"><Link href={`/crew/trips/${tripId}/manifest`}>Manifest →</Link><Link href={`/crew/trips/${tripId}/scan`}>Scan QR →</Link></nav></header><section className="admin-panel"><TripDetail detail={detail}/></section></>;}
+import Link from 'next/link';
+import {notFound} from 'next/navigation';
+import {crewData} from '../../data';
+import CrewTripSummary from '../../components/trip-summary';
+export default async function Page({params}:{params:Promise<{tripId:string}>}) {
+ const {tripId}=await params,{actorId,crew}=await crewData();
+ let detail;try{detail=await crew.detailMine(actorId,tripId);}catch{notFound();}
+ return <><header className="crew-page-header"><Link className="crew-back" href="/crew">← Perjalanan saya</Link><p className="crew-eyebrow">Perjalanan ditugaskan</p><h1>{detail.trip.name}</h1></header><CrewTripSummary detail={detail}/></>;
+}
