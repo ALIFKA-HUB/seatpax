@@ -1,6 +1,6 @@
 import type {Sql} from 'postgres';
 import {DomainError,type DomainTx} from '@/modules/access/transaction';
-import type {BoardingActor,PassengerProfile} from './types';
+import type {BoardingActor,BoardingRecord,PassengerProfile} from './types';
 export function createBoardingRepository(client:Sql){return {
  client,
  async authorize(tx:DomainTx,actor:BoardingActor,tripId:string){
@@ -33,5 +33,20 @@ export function createBoardingRepository(client:Sql){return {
  },
  async stops(tx:DomainTx,tripId:string,companyId:string){return await tx<{id:string;name:string;sequence:number}[]>`select id,name,sequence from public.trip_stops where trip_id=${tripId} and company_id=${companyId} order by sequence`;},
  async capacity(tx:DomainTx,tripId:string,companyId:string){return (await tx<{capacity:number}[]>`select count(*)::int as capacity from public.trip_seats where trip_id=${tripId} and company_id=${companyId}`)[0].capacity;},
+ async lockPassenger(tx:DomainTx,tripId:string,companyId:string,ticketId:string){
+  const hints=await tx<{bookingId:string;passengerId:string;assignmentId:string}[]>`select p.booking_id as "bookingId",p.id as "passengerId",t.assignment_id as "assignmentId" from public.tickets t join public.booking_passengers p on p.id=t.booking_passenger_id where t.id=${ticketId} and t.trip_id=${tripId} and t.company_id=${companyId}`;
+  if(hints.length!==1)throw new DomainError('unavailable','Tiket tidak tersedia pada perjalanan ini.');const h=hints[0];
+  const booking=await tx`select id from public.bookings where id=${h.bookingId} and trip_id=${tripId} and company_id=${companyId} and status='CONFIRMED' for update`;
+  const assignment=await tx`select id from public.seat_assignments where id=${h.assignmentId} and booking_passenger_id=${h.passengerId} and trip_id=${tripId} and company_id=${companyId} for share`;
+  const ticket=await tx`select id from public.tickets where id=${ticketId} and assignment_id=${h.assignmentId} and booking_passenger_id=${h.passengerId} and trip_id=${tripId} and company_id=${companyId} for update`;
+  if(booking.length!==1||assignment.length!==1||ticket.length!==1)throw new DomainError('unavailable','Tiket tidak tersedia pada perjalanan ini.');
+  // Recheck the hint's passenger/booking relationship after acquiring all locks.
+  const passenger=await tx`select id from public.booking_passengers where id=${h.passengerId} and booking_id=${h.bookingId} and trip_id=${tripId} and company_id=${companyId}`;
+  if(passenger.length!==1)throw new DomainError('unavailable','Tiket tidak tersedia pada perjalanan ini.');
+ },
+ async insert(tx:DomainTx,input:{companyId:string;tripId:string;ticketId:string;stopId:string;actorId:string;source:'QR'|'MANIFEST'}):Promise<BoardingRecord>{
+  const rows=await tx<BoardingRecord[]>`insert into public.boarding_events(company_id,trip_id,ticket_id,boarding_stop_id,actor_user_id,source) values(${input.companyId},${input.tripId},${input.ticketId},${input.stopId},${input.actorId},${input.source}) returning id,ticket_id as "ticketId",trip_id as "tripId",boarding_stop_id as "stopId",actor_user_id as "actorId",source,boarded_at::text as "boardedAt"`;
+  return rows[0];
+ },
 };}
 export type BoardingRepository=ReturnType<typeof createBoardingRepository>;

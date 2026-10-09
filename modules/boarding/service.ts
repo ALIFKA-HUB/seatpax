@@ -3,6 +3,7 @@ import {resourceId} from '@/modules/fleet/template-service';
 import {createTicketRepository} from '@/modules/ticket/repository';
 import type {BoardingRepository} from './repository';
 import type {BoardingActor,ManifestView} from './types';
+import {parseBoardingInput,parseTicketToken} from './validation';
 export function createBoardingService(repo:BoardingRepository){
  async function run<T>(actor:BoardingActor,tripId:string,work:(tx:DomainTx,companyId:string,name:string,departureAt:string)=>Promise<T>):Promise<T>{
   resourceId(actor.userId);resourceId(tripId);if(actor.role!=='CREW'&&actor.role!=='ADMIN_PO')throw new DomainError('forbidden','Akses ditolak.');
@@ -18,6 +19,17 @@ export function createBoardingService(repo:BoardingRepository){
    return {tripId,companyId,tripName,departureAt,capacity,passengerCount:passengers.length,boardedCount:passengers.filter(p=>p.boarding!==null).length,stops,passengers};
   });},
   profile(actor:BoardingActor,tripId:string,ticketId:string){resourceId(ticketId);return run(actor,tripId,(tx,companyId)=>profile(tx,tripId,companyId,ticketId));},
-  resolve(actor:BoardingActor,tripId:string,token:string){if(!/^[A-Za-z0-9_-]{43}$/.test(token))throw new DomainError('validation','QR tiket tidak valid.');return run(actor,tripId,async(tx,companyId)=>{const ticket=await createTicketRepository().resolveHash(tx,token);if(!ticket)throw new DomainError('unavailable','Tiket tidak tersedia pada perjalanan ini.');return profile(tx,tripId,companyId,ticket.id);});},
+  resolve(actor:BoardingActor,tripId:string,raw:string){const token=parseTicketToken(raw);return run(actor,tripId,async(tx,companyId)=>{const ticket=await createTicketRepository().resolveHash(tx,token);if(!ticket)throw new DomainError('unavailable','Tiket tidak tersedia pada perjalanan ini.');return profile(tx,tripId,companyId,ticket.id);});},
+  async board(actor:BoardingActor,tripId:string,raw:unknown){
+   if(actor.role!=='CREW')throw new DomainError('forbidden','Boarding hanya untuk crew yang ditugaskan.');const input=parseBoardingInput(raw);
+   return run(actor,tripId,async(tx,companyId)=>{
+    await repo.lockPassenger(tx,tripId,companyId,input.ticketId);
+    const passenger=await profile(tx,tripId,companyId,input.ticketId);
+    if(passenger.fromStopId!==input.stopId)throw new DomainError('validation','Pilih stop asal penumpang untuk boarding.');
+    if(passenger.boarding)return {boarding:passenger.boarding,alreadyBoarded:true};
+    const boarding=await repo.insert(tx,{companyId,tripId,ticketId:input.ticketId,stopId:input.stopId,actorId:actor.userId,source:input.source});
+    return {boarding,alreadyBoarded:false};
+   });
+  },
  };
 }
