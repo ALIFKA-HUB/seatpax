@@ -1,5 +1,8 @@
 # Seatpax — Data Model, Database Schema & Indexing
 
+> **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack and offline operations remain subsequent work. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
+
+
 > **Implementation update — 8 October 2026:** Implemented checkout tables: bookings, booking_passengers, payments, payment_events, seat_assignments, confirmed_occupancy, tickets, payment_resolutions and booking_audit_events. Migration0006 binds hold/booker/passenger mode and occupancy anchors;0007 binds each ticket to the same passenger as its assignment. PostgreSQL constraints, RLS and revoked browser grants protect persistence; declarative Drizzle metadata mirrors the safeguards. See `../setup/CHECKOUT_PAYMENT_SETUP.md`.
 
 > **Tenant slice — D2026-10-07-01:** users/companies/memberships now follow the [approved tenant design](../superpowers/specs/2026-10-07-tenant-access-design.md): RESTRICT FKs; CHECK ties role to company nullability; partial unique tenant/global indexes replace the single UNIQUE below; default-deny browser grants/RLS. Implementation evidence: [tenant setup](../setup/TENANT_ACCESS_SETUP.md). Other domain tables below remain proposals.

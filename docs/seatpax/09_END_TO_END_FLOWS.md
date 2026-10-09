@@ -1,5 +1,8 @@
 # Seatpax — End-to-End Product Flows
 
+> **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack and offline operations remain subsequent work. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
+
+
 > **Fondasi diadopsi — D2026-10-06-02:** Retained flow mengikuti fondasi diadopsi: login akun sendiri, satu seat/passenger, bounded grace, confirmation atomik atau conflict, authorized QR read, boarding lalu snack. Hold release manual hanya sebelum initiation; refund conflict berupa pencatatan MOCK dengan audit. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
 
 > **Active release — 6 Oktober 2026:** Flow aktif: login Email OTP → search → seat hold → one-passenger checkout → Sandbox payment → ticket → manifest → boarding/snack. Flow guest claim, crew cash sale, reschedule dan trip cancellation di bawah ditunda. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).

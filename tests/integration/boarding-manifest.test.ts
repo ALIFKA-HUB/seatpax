@@ -11,6 +11,7 @@ it('reads only eligible passengers, protects tenant access and resolves without 
  await f.pending();expect((await service.manifest(crew,trip)).passengerCount).toBe(0);
  const first=await f.confirmed(0,2),second=await f.confirmed(2,3);
  const manifest=await service.manifest(crew,trip);expect(manifest).toMatchObject({capacity:2,passengerCount:2,boardedCount:0});expect(manifest.passengers.map(p=>p.seatCode)).toEqual(['01','01']);expect(manifest.passengers.map(p=>p.ticketId)).toEqual([first.ticketId,second.ticketId]);
+ expect(manifest.passengers[0]).not.toHaveProperty('plateNumber');expect(manifest.passengers[0]).not.toHaveProperty('vehicleName');
  expect(await service.profile(crew,trip,first.ticketId)).toEqual(await service.resolve(crew,trip,first.token));
  expect(JSON.stringify(manifest)).not.toMatch(/phone|email|ciphertext|token|accountId/);expect(await c`select id from public.boarding_events where trip_id=${trip}`).toHaveLength(0);
  expect((await service.manifest(admin,trip)).passengerCount).toBe(2);

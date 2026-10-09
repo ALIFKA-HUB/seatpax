@@ -1,6 +1,6 @@
 # Manifest dan boarding online
 
-Tanggal: 8 Oktober 2026. Status: scope, spec dan plan disetujui pengguna; eksekusi dimulai 9 Oktober 2026.
+Tanggal: 8 Oktober 2026. Status: scope, spec dan plan disetujui pengguna; diimplementasikan dan diverifikasi otomatis 9 Oktober 2026. Penerimaan kamera ponsel, keyboard dan viewport 390px masih pending; lihat ../../setup/MANIFEST_BOARDING_SETUP.md.
 
 ## Tujuan dan batas
 

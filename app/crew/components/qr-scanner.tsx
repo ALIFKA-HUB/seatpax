@@ -3,6 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import type {ManifestView,PassengerProfile as Profile} from '@/modules/boarding/types';
 import {createScannerController} from '@/modules/boarding/scanner-controller';
+import {applyBoardingToCurrentProfile} from '@/modules/boarding/ui-state';
 import {resolveBoardingAction} from '../boarding-actions';
 import PassengerProfile from './passenger-profile';
 import BoardingForm from './boarding-form';
@@ -15,5 +16,5 @@ export default function TicketScanner({tripId,stops}:{tripId:string;stops:Manife
   controller.current=next;await next.start();if(mounted.current&&controller.current===next)setStarting(false);
  }
  function close(){controller.current?.close();setRunning(false);setStarting(false);setMessage('Kamera ditutup.');}
- return <><p>Scan hanya membuka profil. Boarding tetap perlu dikonfirmasi.</p><video ref={video} className="boarding-camera" muted playsInline aria-label="Pratinjau kamera scanner"/><div className="boarding-camera-actions"><button onClick={()=>{void start();}} disabled={starting||running}>{starting?'Membuka kamera…':profile?'Scan tiket berikutnya':'Mulai / scan ulang'}</button><button onClick={close} disabled={!starting&&!running}>Tutup kamera</button><Link href={`/crew/trips/${tripId}/manifest`}>Cari di manifest →</Link></div><p role="status" aria-live="polite">{message}</p>{profile&&<><PassengerProfile profile={profile}/><BoardingForm key={profile.ticketId} tripId={tripId} profile={profile} stops={stops} source="QR" onBoarded={record=>setProfile({...profile,boarding:record})}/></>}</>;
+ return <><p>Scan hanya membuka profil. Boarding tetap perlu dikonfirmasi.</p><video ref={video} className="boarding-camera" muted playsInline aria-label="Pratinjau kamera scanner"/><div className="boarding-camera-actions"><button onClick={()=>{void start();}} disabled={starting||running}>{starting?'Membuka kamera…':profile?'Scan tiket berikutnya':'Mulai / scan ulang'}</button><button onClick={close} disabled={!starting&&!running}>Tutup kamera</button><Link href={`/crew/trips/${tripId}/manifest`}>Cari di manifest →</Link></div><p role="status" aria-live="polite">{message}</p>{profile&&<><PassengerProfile profile={profile}/><BoardingForm key={profile.ticketId} tripId={tripId} profile={profile} stops={stops} source="QR" onBoarded={record=>setProfile(current=>applyBoardingToCurrentProfile(current,record))}/></>}</>;
 }

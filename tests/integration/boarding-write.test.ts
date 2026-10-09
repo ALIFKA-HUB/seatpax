@@ -35,3 +35,15 @@ it('serializes board-before-revoke and rejects revoke-before-board',async()=>boa
  const other=await f.confirmed(0,3,1);await expect(createBoardingService(createBoardingRepository(c)).board(crew,trip,{...input,ticketId:other.ticketId})).rejects.toMatchObject({code:'forbidden'});expect(await c`select id from public.boarding_events where ticket_id=${other.ticketId}`).toHaveLength(0);
  expect(await c`select id from public.boarding_events where trip_id=${trip}`).toHaveLength(1);
 }),180000);
+it('denies a boarding request queued behind an in-flight revocation',async()=>boardingFixture(c,async f=>{
+ const crew={userId:f.crewId,role:'CREW' as const},trip=f.detail.trip.id,ticket=await f.confirmed(),input={ticketId:ticket.ticketId,stopId:f.detail.stops[0].id!,source:'MANIFEST' as const};
+ const writerRepo=createTripRepository(c),tripRead=writerRepo.trip;
+ let entered!:()=>void,release!:()=>void;const locked=new Promise<void>(r=>{entered=r;}),gate=new Promise<void>(r=>{release=r;});
+ writerRepo.trip=async(...args)=>{const value=await tripRead(...args);entered();await gate;return value;};
+ const revoking=createCrewService(writerRepo).setAssignment(f.a,trip,f.crewId,'REVOKED');await locked;
+ const boardRepo=createBoardingRepository(c),authorize=boardRepo.authorize;
+ let requested!:()=>void;const requesting=new Promise<void>(r=>{requested=r;});boardRepo.authorize=async(...args)=>{requested();return authorize(...args);};
+ let completed=false;const boarding=createBoardingService(boardRepo).board(crew,trip,input).then(value=>{completed=true;return {value};},error=>{completed=true;return {error};});
+ await requesting;try{await c`select 1`;expect(completed).toBe(false);}finally{release();}
+ await revoking;expect(await boarding).toMatchObject({error:{code:'forbidden'}});expect(await c`select id from public.boarding_events where ticket_id=${ticket.ticketId}`).toHaveLength(0);
+}),180000);

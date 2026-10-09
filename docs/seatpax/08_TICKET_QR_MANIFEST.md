@@ -1,6 +1,9 @@
 # Seatpax — Ticket, QR, Entitlements & Passenger Manifest
 
-> **Implementation update — 8 October 2026:** Current ticket issuance is atomic with verified payment and occupancy. QR contains a random 32-byte opaque token only; SHA256 lookup plus AES-256-GCM ciphertext, nonce, tag and key version allow stable authorized reopening. Booker-only reads; operational token resolution requires fresh tenant membership and assigned-trip crew access. OTHER uses actual passenger snapshot. Manifest/scanner/boarding/snack screens are subsequent work. See `../setup/CHECKOUT_PAYMENT_SETUP.md`.
+> **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack and offline operations remain subsequent work. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
+
+
+> **Implementation update — 8 October 2026:** Current ticket issuance is atomic with verified payment and occupancy. QR contains a random 32-byte opaque token only; SHA256 lookup plus AES-256-GCM ciphertext, nonce, tag and key version allow stable authorized reopening. Booker-only reads; operational token resolution requires fresh tenant membership and assigned-trip crew access. OTHER uses actual passenger snapshot. Manifest/scanner/boarding are implemented in the 9 October slice; snack screens remain subsequent work. See `../setup/CHECKOUT_PAYMENT_SETUP.md`.
 
 > **Fondasi diadopsi — D2026-10-06-02:** Token QR random 32 byte, unique hash untuk lookup dan ciphertext terenkripsi server untuk render ulang. Owner/tenant Admin/assigned crew tetap harus authorized; QR tidak memberi akses PII anonim. Ticket/active assignment dan boarding/snack memiliki uniqueness; resolve tidak mutate, snack membutuhkan boarding. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
 

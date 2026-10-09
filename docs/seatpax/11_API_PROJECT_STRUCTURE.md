@@ -1,5 +1,8 @@
 # Seatpax — API Boundary & Project Structure
 
+> **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack and offline operations remain subsequent work. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
+
+
 > **Implementation update — 8 October 2026:** Checkout services live in modules/booking, provider/event/confirmation/conflict services in modules/payment and QR crypto/access in modules/ticket. Server actions obtain verified actor; POST /api/payments/midtrans persists authenticated receipts and processes best effort. Bounded db:reconcile-payments recovers failed/missing callbacks. Owner routes: /checkout/[holdId], /bookings/[bookingId], /tickets and /tickets/[ticketId]. Admin conflict/review queue remains tenant scoped. See `../setup/CHECKOUT_PAYMENT_SETUP.md`.
 
 > **Fondasi diadopsi — D2026-10-06-02:** Tambahkan GET/POST /api/admin/trips/:id/crew-assignments, DELETE /api/admin/trips/:id/crew-assignments/:userId dan POST /api/admin/bookings/:id/payment-conflict/resolve (CONFIRM atau MOCK_REFUND, alasan wajib/idempotent). DELETE hold hanya sebelum initiation. Ticket token route wajib authorization; scan read-only, board/snack terpisah. Handler tipis memanggil domain service; transaction/authz mengikuti fondasi. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.

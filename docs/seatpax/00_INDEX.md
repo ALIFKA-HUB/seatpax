@@ -1,5 +1,8 @@
 # Seatpax Documentation Index
 
+> **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack and offline operations remain subsequent work. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
+
+
 > **Implementation update — 8 October 2026:** Checkout/payment implementation: read `../setup/CHECKOUT_PAYMENT_SETUP.md` together with the approved checkout spec/plan before changing initiation, provider reconciliation, conflict resolution or ticket access.
 
 Seatpax documentation is intentionally modular: **one context = one Markdown file**. Use this file as the entry point.
