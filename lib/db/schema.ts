@@ -31,8 +31,12 @@ export const users = pgTable('users', {
 }).enableRLS();
 export const companies = pgTable('companies', {
   id: uuid('id').primaryKey().defaultRandom(), name: text('name').notNull(), slug: text('slug').notNull().unique(),
-  logoUrl: text('logo_url'), status: companyStatus('status').notNull().default('ACTIVE'), refundCutoffMinutes: integer('refund_cutoff_minutes'), ...timestamps(),
-}, t => [check('company_slug_valid', sql`${t.slug} ~ '^[a-z0-9]+(-[a-z0-9]+)*$'`), check('company_cutoff_valid', sql`${t.refundCutoffMinutes} IS NULL OR ${t.refundCutoffMinutes} >= 0`), check('company_name_valid', sql`length(trim(${t.name})) > 0`)]).enableRLS();
+  logoUrl: text('logo_url'), status: companyStatus('status').notNull().default('ACTIVE'), statusRevision:integer('status_revision').notNull().default(0), refundCutoffMinutes: integer('refund_cutoff_minutes'), ...timestamps(),
+}, t => [check('company_status_revision_valid',sql`${t.statusRevision}>=0`),check('company_slug_valid', sql`${t.slug} ~ '^[a-z0-9]+(-[a-z0-9]+)*$'`), check('company_cutoff_valid', sql`${t.refundCutoffMinutes} IS NULL OR ${t.refundCutoffMinutes} >= 0`), check('company_name_valid', sql`length(trim(${t.name})) > 0`)]).enableRLS();
+export const companyStatusEvents=pgTable('company_status_events',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull().references(()=>companies.id,{onDelete:'restrict'}),actorUserId:uuid('actor_user_id').notNull().references(()=>users.id,{onDelete:'restrict'}),
+ fromStatus:companyStatus('from_status').notNull(),toStatus:companyStatus('to_status').notNull(),statusRevision:integer('status_revision').notNull(),changedAt:timestamp('changed_at',{withTimezone:true}).notNull().default(sql`clock_timestamp()`),
+},t=>[check('company_event_changed',sql`${t.fromStatus}<>${t.toStatus}`),check('company_event_revision_positive',sql`${t.statusRevision}>0`),unique('company_event_revision').on(t.companyId,t.statusRevision)]).enableRLS();
 export const memberships = pgTable('memberships', {
   id: uuid('id').primaryKey().defaultRandom(), userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'restrict' }),
   companyId: uuid('company_id').references(() => companies.id, { onDelete: 'restrict' }),
