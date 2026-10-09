@@ -33,6 +33,7 @@
 .crew-shell button:disabled { cursor:default; opacity:.6; }
 .crew-shell input,.crew-shell select { display:block; width:100%; min-width:0; min-height:48px; padding:11px 12px; border:1px solid #7D8FA8; border-radius:8px; color:#0A2144; background:white; font:inherit; }
 .crew-shell label { display:grid; gap:8px; font-weight:600; min-width:0; }
+.crew-shell .manifest-controls input,.crew-shell .manifest-controls select,.crew-shell .boarding-form select { min-height:48px; color:#0A2144; border-color:#7D8FA8; }
 .crew-shell .crew-message { color:#526078; font-size:.875rem; overflow-wrap:anywhere; }
 .crew-shell .crew-trip-list { display:grid; gap:16px; padding:0; list-style:none; }
 .crew-shell .crew-trip-card { display:flex; gap:16px; align-items:center; justify-content:space-between; color:#0A2144; }
@@ -94,6 +95,13 @@
 .crew-shell .boarding-form.crew-operation { margin:0; padding:24px 0 0; display:grid; gap:12px; border-top:1px solid #D5DFEA; }
 .crew-shell .crew-operation button { justify-self:start; }
 .crew-shell .boarding-result { display:grid; gap:4px; padding:16px; border-radius:8px; margin:0; }
+@media (hover:hover) {
+ .crew-shell .crew-primary:not(:disabled):hover { background:#0049AA; border-color:#0049AA; }
+ .crew-shell .crew-trip-card:hover { border-color:#7D8FA8; }
+}
+@media (prefers-reduced-motion:no-preference) {
+ .crew-shell .crew-button,.crew-shell button,.crew-shell .crew-trip-card { transition:background-color 150ms,border-color 150ms; }
+}
 @media (max-width:600px) {
  .crew-shell .crew-main { padding:24px 16px 48px; }
  .crew-shell .crew-topbar-inner { padding:12px 16px; }
