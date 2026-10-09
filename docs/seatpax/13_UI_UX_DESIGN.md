@@ -808,3 +808,7 @@ The user approved a shared navy/blue visual foundation using the supplied Seatpa
 ## Crew visual phase — 9 October 2026
 
 The written Crew spec and plan are approved. Dedicated responsive Crew presentation is implemented locally with the supplied Seatpax identity, 48px main controls, clear manifest/profile states and separate explicit boarding/snack actions. Domain contracts remain unchanged. See ../setup/CREW_VISUAL_SETUP.md for automated evidence, synthetic layout measurements and pending actual authenticated/phone/zoom/reduced-motion acceptance. Admin/Super Admin redesign remains a separate phase.
+
+## Admin and Super Admin visual phase — 9 October 2026
+
+Approved spec and plan implemented locally: branded role scopes, current Admin section, readable source/fleet/trip/payment screens and independent Super Admin company rows. Existing operational behavior remains authoritative. See ../setup/ADMIN_VISUAL_SETUP.md for fresh automated results, measured synthetic layouts and deferred authenticated/physical-phone/zoom/reduced-motion acceptance.
