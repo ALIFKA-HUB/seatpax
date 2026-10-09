@@ -1,6 +1,6 @@
 # Seatpax Crew visual redesign
 
-Date: 9 October 2026. Status: written specification approved by the user on 9 October 2026. The implementation plan awaits user review and execution authorization.
+Date: 9 October 2026. Status: written specification approved by the user on 9 October 2026. The implementation plan is approved and the presentation is implemented locally. See `../../setup/CREW_VISUAL_SETUP.md` for verification and deferred actual acceptance.
 
 ## Intent and authority
 

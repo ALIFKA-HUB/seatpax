@@ -804,3 +804,7 @@ Those components should receive the highest design polish.
 ## Adopted visual delivery order — 9 October 2026
 
 The user approved a shared navy/blue visual foundation using the supplied Seatpax logo, then the passenger journey, then separate Crew and Admin/Super Admin redesigns. The [passenger visual specification](../superpowers/specs/2026-10-09-passenger-visual-design.md), including its concrete tokens and screen direction, is approved; the plan is approved and passenger presentation is implemented locally. See [visual setup evidence](../setup/PASSENGER_VISUAL_SETUP.md) for automated results and deferred authenticated/phone acceptance. This order does not activate older deferred examples such as guest/group checkout, cash sale, real refund or analytics screens. Manual user testing remains deferred. The supplied raster board has been prepared into inspected horizontal/symbol PNG assets; original vector assets remain unavailable.
+
+## Crew visual phase — 9 October 2026
+
+The written Crew spec and plan are approved. Dedicated responsive Crew presentation is implemented locally with the supplied Seatpax identity, 48px main controls, clear manifest/profile states and separate explicit boarding/snack actions. Domain contracts remain unchanged. See ../setup/CREW_VISUAL_SETUP.md for automated evidence, synthetic layout measurements and pending actual authenticated/phone/zoom/reduced-motion acceptance. Admin/Super Admin redesign remains a separate phase.

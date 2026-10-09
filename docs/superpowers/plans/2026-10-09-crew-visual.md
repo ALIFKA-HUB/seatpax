@@ -1,6 +1,6 @@
 # Crew Visual Redesign Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Preserve the established inline execution method, with one focused final reviewer.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking. Preserve the established inline execution method, with one focused final reviewer.
 
 **Goal:** Give assigned Crew a coherent Seatpax interface that is comfortable on a phone for reviewing trips, scanning tickets, boarding passengers and handing over snacks.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Existing Next.js/React, TypeScript, CSS, native forms, qr-scanner and Vitest; installed Seatpax PNG assets and Geist. No new dependencies or migration.
 
-**Spec:** `../specs/2026-10-09-crew-visual-design.md`, approved by the user on 9 October 2026. This plan awaits review and execution authorization.
+**Spec:** `../specs/2026-10-09-crew-visual-design.md`, approved by the user on 9 October 2026. Plan approved and inline execution authorized on 9 October 2026. Implementation evidence: `../../setup/CREW_VISUAL_SETUP.md`.
 
 ## Global Constraints
 
@@ -49,11 +49,11 @@
 
 **Interfaces:** Consumes `Brand({compact?:boolean,href?:string})`. Produces `CrewShell({children:ReactNode})` and `.crew-shell` scope for all later tasks. The server layout retains the existing guard.
 
-- [ ] Write tests named `renders Crew navigation and a skip destination` and `isolates Crew layout from Admin CSS`. Use `renderToStaticMarkup(createElement(CrewShell,{children:'Crew content'}))`; assert named Seatpax link, `/crew`, `/account`, `href="#crew-main"`, `id="crew-main"` and child text. A source-boundary assertion verifies `await crewData()` remains and Admin CSS is not imported by the Crew layout.
-- [ ] Run `npm test -- tests/unit/crew-shell.test.ts`; expect missing-component failure before implementation.
-- [ ] Implement shell/header and scoped foundation styles. Set Brand width explicitly within Crew scope; its existing passenger styling must not be required. Add wrapping navigation, max-width 960px, 16px phone gutters, 16px type, focus treatment and 48px controls. Preserve account navigation rather than adding logout logic.
-- [ ] Run the targeted test and `npm run typecheck`; expect both exit 0.
-- [ ] Commit only Task 1 files: `feat: add dedicated Crew visual shell`.
+- [x] Write tests named `renders Crew navigation and a skip destination` and `isolates Crew layout from Admin CSS`. Use `renderToStaticMarkup(createElement(CrewShell,{children:'Crew content'}))`; assert named Seatpax link, `/crew`, `/account`, `href="#crew-main"`, `id="crew-main"` and child text. A source-boundary assertion verifies `await crewData()` remains and Admin CSS is not imported by the Crew layout.
+- [x] Run `npm test -- tests/unit/crew-shell.test.ts`; expect missing-component failure before implementation.
+- [x] Implement shell/header and scoped foundation styles. Set Brand width explicitly within Crew scope; its existing passenger styling must not be required. Add wrapping navigation, max-width 960px, 16px phone gutters, 16px type, focus treatment and 48px controls. Preserve account navigation rather than adding logout logic.
+- [x] Run the targeted test and `npm run typecheck`; expect both exit 0.
+- [x] Commit only Task 1 files: `feat: add dedicated Crew visual shell`.
 
 ## Task 2: Assigned trip cards and summary
 
@@ -61,11 +61,11 @@
 
 **Interfaces:** Consumes `TripRecord[]` from `crew.listMine(actorId)` and `TripDetail` from `crew.detailMine(actorId,tripId)`. Produces `CrewTripSummary({detail:TripDetail})`; no new data fetch.
 
-- [ ] Write tests `renders snapshot trip identity and explicit destinations`, `preserves schedule fare and layout in expandable details`, and `renders missing optional identity safely`. Build typed fixtures from existing TripDetail tests/types; assert route, vehicle/plate, WIB departure, `/scan`, `/manifest`, `<details`, schedule names, fare and labelled seat region. Use long escaped names/seat codes and `identity:null` / `layout:null` fixtures; assert no fabricated identity, malformed links or internal inventory count copy. Pin list guard/order and empty assignment copy through source assertions where server route rendering is impractical.
-- [ ] Run `npm test -- tests/unit/crew-trip-view.test.ts`; expect new presentation tests to fail.
-- [ ] Implement trip cards and CrewTripSummary. Keep list ordering and not-found handling. Schedule stays visible; Rincian perjalanan expands fare/layout snapshot details. The shared Admin TripDetail remains unchanged. Use a scroll-contained layout region with current SeatGrid markup.
-- [ ] Run the targeted tests and `npm run typecheck`; expect exit 0.
-- [ ] Commit Task 2 files: `feat: redesign Crew trip list and summary`.
+- [x] Write tests `renders snapshot trip identity and explicit destinations`, `preserves schedule fare and layout in expandable details`, and `renders missing optional identity safely`. Build typed fixtures from existing TripDetail tests/types; assert route, vehicle/plate, WIB departure, `/scan`, `/manifest`, `<details`, schedule names, fare and labelled seat region. Use long escaped names/seat codes and `identity:null` / `layout:null` fixtures; assert no fabricated identity, malformed links or internal inventory count copy. Pin list guard/order and empty assignment copy through source assertions where server route rendering is impractical.
+- [x] Run `npm test -- tests/unit/crew-trip-view.test.ts`; expect new presentation tests to fail.
+- [x] Implement trip cards and CrewTripSummary. Keep list ordering and not-found handling. Schedule stays visible; Rincian perjalanan expands fare/layout snapshot details. The shared Admin TripDetail remains unchanged. Use a scroll-contained layout region with current SeatGrid markup.
+- [x] Run the targeted tests and `npm run typecheck`; expect exit 0.
+- [x] Commit Task 2 files: `feat: redesign Crew trip list and summary`.
 
 ## Task 3: Manifest and passenger profile hierarchy
 
@@ -73,11 +73,11 @@
 
 **Interfaces:** Existing `ManifestView`, `PassengerProfile`, `filterPassengers` and `manifestCounters`; profile props and `wibTime` export are unchanged.
 
-- [ ] Write render tests `shows existing counters and operational passenger fields`, `keeps Admin manifest read-only`, `distinguishes empty manifest copy`, and `renders boarding and snack labels with original WIB times`. Assert counter values match fixture capacity/passengerCount/boardedCount; normal rows have exact Crew profile link while `readOnly:true` has no such link. Assert long text is escaped, seat and route exist, and no contact/payment fields are introduced. Preserve existing pure search/status tests; add a no-match input case if absent, asserting an empty result instead of an empty underlying manifest.
-- [ ] Run `npm test -- tests/unit/crew-manifest-view.test.ts tests/unit/crew-profile-view.test.ts`; expect new visual assertions to fail.
-- [ ] Implement semantic manifest cards/controls and strong name/seat profile hierarchy. Use existing filters and counters; distinguish underlying empty manifest from no matches. Shared markup retains readOnly semantics and neutral existing classes so Admin styling remains usable; Crew-specific treatment is scoped. Result count uses a narrow status region, never the interactive list.
-- [ ] Run targeted tests plus `tests/unit/boarding-minimum.test.ts` and typecheck; expect exit 0.
-- [ ] Commit Task 3 files: `feat: clarify Crew manifest and passenger profiles`.
+- [x] Write render tests `shows existing counters and operational passenger fields`, `keeps Admin manifest read-only`, `distinguishes empty manifest copy`, and `renders boarding and snack labels with original WIB times`. Assert counter values match fixture capacity/passengerCount/boardedCount; normal rows have exact Crew profile link while `readOnly:true` has no such link. Assert long text is escaped, seat and route exist, and no contact/payment fields are introduced. Preserve existing pure search/status tests; add a no-match input case if absent, asserting an empty result instead of an empty underlying manifest.
+- [x] Run `npm test -- tests/unit/crew-manifest-view.test.ts tests/unit/crew-profile-view.test.ts`; expect new visual assertions to fail.
+- [x] Implement semantic manifest cards/controls and strong name/seat profile hierarchy. Use existing filters and counters; distinguish underlying empty manifest from no matches. Shared markup retains readOnly semantics and neutral existing classes so Admin styling remains usable; Crew-specific treatment is scoped. Result count uses a narrow status region, never the interactive list.
+- [x] Run targeted tests plus `tests/unit/boarding-minimum.test.ts` and typecheck; expect exit 0.
+- [x] Commit Task 3 files: `feat: clarify Crew manifest and passenger profiles`.
 
 ## Task 4: Scanner, boarding and snack presentation
 
@@ -85,11 +85,11 @@
 
 **Interfaces:** Keep existing form props, source `QR|MANIFEST`, scanner controller, action calls, `onBoarded` / `onClaimed`, submission gates, mounted/current-controller checks and router refresh behavior.
 
-- [ ] Add failing render assertions for labelled camera and visible manifest fallback; unboarded profile has explicit boarding control and disabled snack; boarded profile has original time and enabled snack; claimed profile has original handover time and no second snack button. Mock existing actions/router as in snack-ui tests. Add scanner-controller/state tests only for uncovered late-result-after-close/new-profile cases; assert no resolver result triggers a mutation and late ticket IDs cannot overwrite the current profile. Existing gate error/retry and duplicate tests must remain green.
-- [ ] Run `npm test -- tests/unit/crew-profile-view.test.ts tests/unit/boarding-scanner.test.ts tests/unit/snack-ui.test.ts`; expect new presentation assertions to fail before markup changes.
-- [ ] Implement bounded camera frame, actual-state text, explicit start/close controls and inline profile sections. Style busy/recorded/error states and stop selection. Keep boarding and snack actions separate, current safe error messages, explicit user gestures and camera cleanup. Never manufacture success on scan/network failure; do not add automatic focus, scrolling, modal confirmation or new state-machine logic.
-- [ ] Run targeted tests plus `tests/unit/boarding-actions.test.ts`, `tests/unit/snack-actions.test.ts` and typecheck; expect exit 0. Inspect diff for unchanged service/action/controller contracts.
-- [ ] Commit Task 4 files: `feat: refine Crew scanner and operational actions`.
+- [x] Add failing render assertions for labelled camera and visible manifest fallback; unboarded profile has explicit boarding control and disabled snack; boarded profile has original time and enabled snack; claimed profile has original handover time and no second snack button. Mock existing actions/router as in snack-ui tests. Add scanner-controller/state tests only for uncovered late-result-after-close/new-profile cases; assert no resolver result triggers a mutation and late ticket IDs cannot overwrite the current profile. Existing gate error/retry and duplicate tests must remain green.
+- [x] Run `npm test -- tests/unit/crew-profile-view.test.ts tests/unit/boarding-scanner.test.ts tests/unit/snack-ui.test.ts`; expect new presentation assertions to fail before markup changes.
+- [x] Implement bounded camera frame, actual-state text, explicit start/close controls and inline profile sections. Style busy/recorded/error states and stop selection. Keep boarding and snack actions separate, current safe error messages, explicit user gestures and camera cleanup. Never manufacture success on scan/network failure; do not add automatic focus, scrolling, modal confirmation or new state-machine logic.
+- [x] Run targeted tests plus `tests/unit/boarding-actions.test.ts`, `tests/unit/snack-actions.test.ts` and typecheck; expect exit 0. Inspect diff for unchanged service/action/controller contracts.
+- [x] Commit Task 4 files: `feat: refine Crew scanner and operational actions`.
 
 ## Task 5: Cross-screen review, evidence and local integration
 
@@ -97,13 +97,13 @@
 
 **Interfaces:** Completed Crew shell and all four task deliverables; existing Admin readOnly manifest and passenger shell are regression boundaries.
 
-- [ ] Write structural regression assertions for `.crew-shell` scoping, wrapping long text, 48px main controls, contained snapshot scrolling, visible focus and reduced-motion conditional rules. Run `npm test -- tests/unit/crew-visual-contract.test.ts`; any assertion for missing required styling must fail before its fix. These checks prove source contracts, not measured visual behavior.
-- [ ] Inspect routes at 320px, 390px, 1280px and 1440px; measure page overflow and control sizes, inspect keyboard navigation, 200% zoom and reduced motion. Use actual authenticated routes when accessible without requesting the user's time. Otherwise use clearly labelled temporary presentation fixtures outside tracked files and record actual authenticated acceptance as pending. Check Admin readOnly rendering separately for shared manifest changes. Physical phone/camera and real boarding/snack acceptance remain deferred.
-- [ ] Request one focused whole-diff reviewer using explicit `gpt-6-luna`, medium, `fork_turns:"none"`. Provide approved spec/plan, base/head and changed files; ask for state/permission regressions, shared Admin impact and accessibility findings. Resolve actionable findings and rerun their owning checks. Report a runtime limitation if that requested reviewer setting cannot be applied.
-- [ ] Run `npm test`, `npm run typecheck`, `npm run lint`, `npm run build` sequentially; require exit 0 and record actual counts/output. No database suite/migration is needed for this presentation-only diff. Never substitute previous passenger verification for these results.
-- [ ] Write `CREW_VISUAL_SETUP.md` with commit/check evidence, real-route versus fixture results, access limitations and each deferred acceptance item. Update plan checkboxes only for work actually done; update spec/index/UI references without claiming user acceptance.
-- [ ] Commit reviewed changes and evidence with explicit file paths. Integrate locally using the established development-branch workflow, preserving user files; if merged code differs, repeat automated verification on the merged result. Refresh the existing preview only after verifying which process/worktree owns it; do not stop unrelated services.
-- [ ] Report implementation outcome, local preview, automated evidence and deferred manual checks. Admin/Super Admin redesign remains the next separate phase.
+- [x] Write structural regression assertions for `.crew-shell` scoping, wrapping long text, 48px main controls, contained snapshot scrolling, visible focus and reduced-motion conditional rules. Run `npm test -- tests/unit/crew-visual-contract.test.ts`; any assertion for missing required styling must fail before its fix. These checks prove source contracts, not measured visual behavior.
+- [ ] Complete actual authenticated/zoom/reduced-motion acceptance (deferred; synthetic layout checks passed as recorded in setup evidence). Inspect routes at 320px, 390px, 1280px and 1440px; measure page overflow and control sizes, inspect keyboard navigation, 200% zoom and reduced motion. Use actual authenticated routes when accessible without requesting the user's time. Otherwise use clearly labelled temporary presentation fixtures outside tracked files and record actual authenticated acceptance as pending. Check Admin readOnly rendering separately for shared manifest changes. Physical phone/camera and real boarding/snack acceptance remain deferred.
+- [x] Request one focused whole-diff reviewer using explicit `gpt-6-luna`, medium, `fork_turns:"none"`. Provide approved spec/plan, base/head and changed files; ask for state/permission regressions, shared Admin impact and accessibility findings. Resolve actionable findings and rerun their owning checks. Report a runtime limitation if that requested reviewer setting cannot be applied.
+- [x] Run `npm test`, `npm run typecheck`, `npm run lint`, `npm run build` sequentially; require exit 0 and record actual counts/output. No database suite/migration is needed for this presentation-only diff. Never substitute previous passenger verification for these results.
+- [x] Write `CREW_VISUAL_SETUP.md` with commit/check evidence, real-route versus fixture results, access limitations and each deferred acceptance item. Update plan checkboxes only for work actually done; update spec/index/UI references without claiming user acceptance.
+- [x] Commit reviewed changes and evidence with explicit file paths. Integrate locally using the established development-branch workflow, preserving user files; if merged code differs, repeat automated verification on the merged result. Refresh the existing preview only after verifying which process/worktree owns it; do not stop unrelated services.
+- [x] Report implementation outcome, local preview, automated evidence and deferred manual checks. Admin/Super Admin redesign remains the next separate phase.
 
 ## Plan self-review
 
