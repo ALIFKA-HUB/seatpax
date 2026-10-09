@@ -30,6 +30,10 @@
 
 ---
 
+## Execution preflight
+
+- [ ] At execution start read using-git-worktrees, inspect attached worktrees, reuse suitable managed checkout from integrated main on `codex/snack-claim`; preserve ignored env without printing. Check current dependency baseline and dirty main file hash. Keep preview tied to attached worktree.
+
 ### Task 1: Database invariant and claim service
 
 **Files:** Create `drizzle/0009_snack_claims.sql`, `modules/snack/{types,validation,repository,service}.ts`, `tests/unit/snack-validation.test.ts`, `tests/integration/snack-claim.test.ts`. Modify `drizzle/meta/_journal.json`, `lib/db/schema.ts`, `tests/integration/helpers/payment-cleanup.ts`. Reuse `tests/integration/helpers/boarding-fixture.ts`; add fixture helpers there only when shared.
@@ -78,7 +82,6 @@ expect(await snack.claim(crew,trip,{ticketId})).toEqual({claim:first.claim,alrea
 
 **Files:** Create `docs/setup/SNACK_CLAIM_SETUP.md`; update approved spec/plan status, `docs/seatpax/{00_INDEX,08_TICKET_QR_MANIFEST,09_END_TO_END_FLOWS,10_DATA_MODEL_DATABASE,11_API_PROJECT_STRUCTURE,19_DECISION_LEDGER}.md`.
 
-- [ ] At execution start read using-git-worktrees, inspect attached worktrees, reuse suitable managed checkout from integrated main on `codex/snack-claim`; preserve ignored env without printing. Check current dependency baseline and dirty main file hash. Keep preview tied to attached worktree.
 - [ ] Run full unit/DB suites serially with existing TLS CA, plus typecheck/lint/build; record exact counts, duration and any failures/reruns. Cleanup only generated fixture UUIDs.
 - [ ] Start preview. If browser surface/auth is available, human logs in and explicitly selects a demo ticket; verify before-board state, explicit snack claim and reopen timestamp, Admin read-only, keyboard/390px. No OTP automation/mass claim. Physical camera/phone acceptance remains separate if unavailable; don't broaden webhook tunnel.
 - [ ] One focused Luna medium reviewer checks whole diff/spec/plan, access/races/minimum data/UI callbacks; fix material findings with RED→GREEN regression and rerun affected checks.
@@ -86,4 +89,4 @@ expect(await snack.claim(crew,trip,{ticketId})).toEqual({claim:first.claim,alrea
 
 ## Self-review and execution handoff
 
-All spec requirements map to Tasks 1–4, and the five Review Focus cases have explicit tests. Nullable `snack` shape is consistent across read projections and UI; internal claim preserves actor/time while operational reads do not leak actor identity. No unresolved product policy or placeholder remains. Worktree preparation in Task 4's first step is a prerequisite before Task 1, not an instruction to prepare isolation after implementation. Native inline execution preference is preserved; this plan awaits user approval before any implementation.
+All spec requirements map to Tasks 1–4, and the five Review Focus cases have explicit tests. Nullable `snack` shape is consistent across read projections and UI; internal claim preserves actor/time while operational reads do not leak actor identity. No unresolved product policy or placeholder remains. Execution preflight prepares isolation before Task 1. Native inline execution preference is preserved; this plan awaits user approval before any implementation.
