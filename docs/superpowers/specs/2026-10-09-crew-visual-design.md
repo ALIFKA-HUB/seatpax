@@ -1,6 +1,6 @@
 # Seatpax Crew visual redesign
 
-Date: 9 October 2026. Status: conversational direction approved; written specification awaiting user review. No implementation plan or implementation is approved by this document alone.
+Date: 9 October 2026. Status: written specification approved by the user on 9 October 2026. The implementation plan awaits user review and execution authorization.
 
 ## Intent and authority
 
