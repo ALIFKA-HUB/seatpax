@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+.manifest-counters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin:0 0 1.5rem; }
+.manifest-counters div { border-bottom:1px solid #d6dde7; padding-bottom:1rem; }
+.manifest-counters dt { font-size:.875rem; }
+.manifest-counters dd { margin:0; font-size:1.75rem; font-weight:700; font-variant-numeric:tabular-nums; }
+.manifest-controls { display:flex; flex-wrap:wrap; gap:1rem; }
+.manifest-controls label { flex:1; min-width:12rem; }
+.manifest-controls input,.manifest-controls select,.boarding-form select { display:block; width:100%; box-sizing:border-box; min-height:44px; padding:.75rem; border:1px solid #9caabe; border-radius:6px; background:white; font:inherit; color:var(--foreground); }
+.manifest-passengers { list-style:none; padding:0; }
+.manifest-passengers li { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; border-top:1px solid #d6dde7; }
+.manifest-passengers span { display:block; overflow-wrap:anywhere; }
+.manifest-passengers a { min-height:44px; margin:0; display:flex; align-items:center; }
+.boarding-profile { padding:0 0 1.5rem; }
+.boarding-profile dl { display:grid; grid-template-columns:minmax(6rem,1fr) 2fr; gap:.75rem 1rem; }
+.boarding-profile dd { margin:0; overflow-wrap:anywhere; }
+.boarding-form { max-width:30rem; border-top:1px solid #d6dde7; padding-top:1.5rem; }
+.boarding-form button,.boarding-camera-actions button { min-height:44px; padding:.75rem 1rem; border:1px solid var(--accent); background:var(--accent); color:white; border-radius:6px; font:inherit; cursor:pointer; }
+.boarding-form button:disabled,.boarding-camera-actions button:disabled { opacity:.55; cursor:default; }
+.boarding-camera { width:100%; max-height:26rem; background:var(--foreground); border-radius:6px; }
+.boarding-camera-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.75rem; margin-top:1rem; }
+.boarding-camera-actions a { margin:0; min-height:44px; display:flex; align-items:center; }
+.boarding-form :focus-visible,.manifest-controls :focus-visible,.boarding-camera-actions :focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+.boarding-result { border-top:1px solid #d6dde7; padding-top:1.5rem; }
+@media(max-width:480px) { .manifest-counters { gap:.5rem; } .manifest-counters dt { font-size:.75rem; } .boarding-profile dl { grid-template-columns:1fr; gap:.25rem; } .boarding-profile dd { margin-bottom:.75rem; } }
+
 :root { --background: #f5f7fa; --foreground: #14243b; --accent: #005bd1; }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; line-height: 1.6; }
 .setup { max-width: 800px; margin: auto; padding: 32px 24px; }

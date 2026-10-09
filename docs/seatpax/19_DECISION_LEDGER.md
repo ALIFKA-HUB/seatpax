@@ -181,3 +181,7 @@ The user approved the written spec and plan. Adopt public published-snapshot sea
 ### D2026-10-08-01 — Execution record
 
 The user approved the written spec and plan, then authorized execution. Checkout/payment code now implements that decision; final automated evidence and the remaining real Sandbox/browser checks are recorded in `../setup/CHECKOUT_PAYMENT_SETUP.md`. Provider unknown/challenge/refund and exhausted retries remain visible for review; MOCK_REFUND records an internal simulation, with PAID retained as financial history. No real refund or traveler claim policy is added.
+
+## D2026-10-08-02 — Manifest and boarding slice (FINAL)
+
+The user approved the written spec and implementation plan and authorized local execution/integration. Active assigned CREW can resolve confirmed-ticket profiles and explicitly board at the origin trip-stop snapshot; same-tenant active ADMIN_PO has manifest read access only. Fresh membership and assignment are checked on every request, including retries. Company suspension permits these existing-ticket operations. The event is the immutable service audit, unique per ticket/trip; concurrent writes and retries retain the original actor, database timestamp and source. QR decoding is local, opaque-token-only, and does not automatically board or navigate. No snack, offline, cash, reversal, no-show, reseat or GPS policy is introduced. See `../setup/MANIFEST_BOARDING_SETUP.md` and the approved `../superpowers/specs/2026-10-08-manifest-boarding-design.md`.
