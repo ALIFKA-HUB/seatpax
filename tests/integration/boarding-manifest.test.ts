@@ -1,0 +1,24 @@
+import {it,expect,beforeAll,afterAll} from 'vitest';
+import type {Sql} from 'postgres';
+import {randomUUID} from 'node:crypto';
+import {inventoryClient} from './helpers/inventory-fixture';
+import {boardingFixture} from './helpers/boarding-fixture';
+import {createBoardingRepository} from '@/modules/boarding/repository';
+import {createBoardingService} from '@/modules/boarding/service';
+let c:Sql;beforeAll(()=>{c=inventoryClient();});afterAll(()=>c.end({timeout:5}));
+it('reads only eligible passengers, protects tenant access and resolves without boarding',async()=>boardingFixture(c,async f=>{
+ const service=createBoardingService(createBoardingRepository(c)),trip=f.detail.trip.id,crew={userId:f.crewId,role:'CREW' as const},admin={userId:f.a.actorId,role:'ADMIN_PO' as const};
+ await f.pending();expect((await service.manifest(crew,trip)).passengerCount).toBe(0);
+ const first=await f.confirmed(0,2),second=await f.confirmed(2,3);
+ const manifest=await service.manifest(crew,trip);expect(manifest).toMatchObject({capacity:2,passengerCount:2,boardedCount:0});expect(manifest.passengers.map(p=>p.seatCode)).toEqual(['01','01']);expect(manifest.passengers.map(p=>p.ticketId)).toEqual([first.ticketId,second.ticketId]);
+ expect(await service.profile(crew,trip,first.ticketId)).toEqual(await service.resolve(crew,trip,first.token));
+ expect(JSON.stringify(manifest)).not.toMatch(/phone|email|ciphertext|token|accountId/);expect(await c`select id from public.boarding_events where trip_id=${trip}`).toHaveLength(0);
+ expect((await service.manifest(admin,trip)).passengerCount).toBe(2);
+ await expect(service.manifest({userId:f.b.actorId,role:'ADMIN_PO'},trip)).rejects.toMatchObject({code:'forbidden'});
+ await expect(service.resolve(crew,randomUUID(),first.token)).rejects.toMatchObject({code:'forbidden'});
+ await expect(service.profile(crew,trip,randomUUID())).rejects.toMatchObject({code:'unavailable'});
+ await c`update public.companies set status='SUSPENDED' where id=${f.a.companyId}`;expect((await service.manifest(crew,trip)).passengerCount).toBe(2);
+ await c`update public.trip_crew_assignments set status='REVOKED',revoked_at=clock_timestamp() where trip_id=${trip}`;await expect(service.manifest(crew,trip)).rejects.toMatchObject({code:'forbidden'});
+ await c`update public.trip_crew_assignments set status='ACTIVE',revoked_at=null where trip_id=${trip}`;
+ await c`update public.memberships set status='DISABLED' where id=${f.crewMembershipId}`;await expect(service.manifest(crew,trip)).rejects.toMatchObject({code:'forbidden'});
+}),180000);
