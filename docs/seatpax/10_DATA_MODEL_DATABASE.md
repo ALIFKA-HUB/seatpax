@@ -571,3 +571,7 @@ The approved availability/hold design and plan implement public snapshot search/
 ## Adopted snack claim slice — 9 October 2026
 
 Migration 0009_snack_claims adds DB-clock snack_claims with UNIQUE(ticket_id,trip_id), composite ticket and boarding-event foreign keys, actor users FK, RLS and revoked browser grants. Boarding events receive UNIQUE(ticket_id,trip_id,company_id). The audit record is immutable through the domain service; no update/reversal endpoint exists. See ../setup/SNACK_CLAIM_SETUP.md for verification and manual acceptance limits.
+
+## Company status implementation overlay — 9 October 2026
+
+Migration0010 adds companies.status_revision integer >=0 and company_status_events with RESTRICT company/actor references, differing enum statuses, positive revision, unique(company_id,status_revision), database changed_at, RLS and revoked anon/authenticated grants. Status UPDATE and audit INSERT commit together; matching no-op creates no event. See ../setup/SUPER_ADMIN_COMPANY_SETUP.md.

@@ -158,3 +158,7 @@ The approved availability/hold design and plan implement public snapshot search/
 ## Adopted snack claim slice — 9 October 2026
 
 modules/snack owns validation, SQL repository and guarded once-only claim service. It reuses boarding authorization/passenger locks within one transaction. app/crew/snack-actions verifies the session; the action core strips forged identity fields. React displays state and explicitly submits; it owns no eligibility policy. See ../setup/SNACK_CLAIM_SETUP.md for verification and manual acceptance limits.
+
+## Super Admin company implementation overlay — 9 October 2026
+
+modules/company owns parsing, minimum SQL projection and transactional global authorization/status/audit. app/super-admin verifies the session, safely maps action errors and renders the dedicated companies page with explicit confirmation. Business policies remain in domain services; no browser or tenant-role fallback bypass exists. See ../setup/SUPER_ADMIN_COMPANY_SETUP.md.

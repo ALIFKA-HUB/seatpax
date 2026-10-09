@@ -1,6 +1,6 @@
 # Super Admin: company list and status control
 
-Date: 9 October 2026. Status: written spec approved by user on 9 October 2026; implementation plan awaits review. No implementation or migration has started.
+Date: 9 October 2026. Status: written spec and plan approved by user on 9 October 2026; implemented with automated verification. Manual acceptance remains deferred.
 
 ## Intent and scope
 
@@ -62,4 +62,4 @@ Manual acceptance remains explicitly pending: human login as the seeded Super Ad
 
 ## Self-review and next gate
 
-No unresolved product policy or placeholder remains. Existing suspension semantics are preserved; revision/audit are technical protections for the approved status controls. No company lifecycle, membership, financial or visual scope is expanded. The user approved this written spec. Implementation-plan review is the next gate before product code or migration.
+No unresolved product policy or placeholder remains. Existing suspension semantics are preserved; revision/audit are technical protections for the approved status controls. No company lifecycle, membership, financial or visual scope is expanded. The user approved the written spec and plan. Implementation evidence and pending manual acceptance are recorded in docs/setup/SUPER_ADMIN_COMPANY_SETUP.md.

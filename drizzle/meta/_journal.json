@@ -71,6 +71,13 @@
       "when": 1791508801000,
       "tag": "0009_snack_claims",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791508802000,
+      "tag": "0010_company_status_control",
+      "breakpoints": true
     }
   ]
 }
