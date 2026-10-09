@@ -59,3 +59,6 @@ Screenshots: [desktop builder](admin-visual/builder-desktop.png), [phone builder
 2. Reviewer set authenticated acceptance aside. Current-session guarded 404 and historical certificate failure leave it pending; synthetic measurements establish layout only. Cost if wrong: live role/data defects remain undetected until actual acceptance.
 
 Managed worktree is retained; local integration preserves main next-env.d.ts and .codex-remote-attachments. No push or deployment. Execution-owned preview alone may be restarted.
+## Local integration result
+
+Fast-forwarded main locally to the identical implementation/docs tree. Fresh merged-main unit run passed 69 files / 271 tests. The preserved user next-env.d.ts SHA256 remains B8B3A344484B959AF5E4E3FC1A1609DAC3CB9ECE0CDEB6C145BE29BC4C491000; .codex-remote-attachments remains untracked. Production preview restarted from the execution-owned worktree on port 3001 and its Passenger home was visibly verified. Temporary viewport override was reset. Closing the old failed dev tab was blocked by the browser URL policy on its internally generated error page; no bypass attempted.
