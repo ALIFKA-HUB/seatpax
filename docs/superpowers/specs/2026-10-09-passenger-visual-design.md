@@ -1,6 +1,6 @@
 # Seatpax visual foundation and passenger experience
 
-Date: 9 October 2026. Status: written specification approved by the user on 9 October 2026. Implementation plan review is pending; product implementation has not started.
+Date: 9 October 2026. Status: written specification approved by the user on 9 October 2026. Plan approved and passenger presentation implemented locally. Automated evidence and deferred acceptance: `../../setup/PASSENGER_VISUAL_SETUP.md`.
 
 ## Intent and authority
 

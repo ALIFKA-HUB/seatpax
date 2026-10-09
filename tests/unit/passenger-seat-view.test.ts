@@ -1,4 +1,5 @@
 import {it,expect,vi} from 'vitest';
+import {readFileSync} from 'node:fs';
 import {createElement as h} from 'react';
 import {renderToStaticMarkup as render} from 'react-dom/server';
 import SeatSelection from '@/app/trips/components/seat-selection';
@@ -17,4 +18,9 @@ it('preserves layout order, disabled seats and a named scroll region',()=>{
 it('retains login interval and disables closed-sale hold action',()=>{
  const loggedOut=render(h(SeatSelection,{initial:view,from:'from',to:'to',loggedIn:false}));expect(loggedOut).toContain('/login?next=%2Ftrips%2Ftrip-a%3Ffrom%3Dfrom%26to%3Dto');
  const closed=render(h(SeatSelection,{initial:{...view,saleOpen:false},from:'from',to:'to',loggedIn:true}));expect(closed).toContain('Penjualan interval ini sudah ditutup.');expect(closed).toMatch(/disabled=""[^>]*>Tahan kursi 10 menit/);
+});
+
+it('wraps long codes inside seat cells',()=>{
+ const css=readFileSync(new URL('../../app/passenger.css',import.meta.url),'utf8');
+ expect(css).toMatch(/\.passenger-shell \.seat-cell\{[^}]*overflow-wrap:anywhere/);
 });

@@ -1,6 +1,8 @@
 # Seatpax — Brand & Logo Direction
 
-> Status: **DESIGN BRIEF / READY FOR EXPLORATION**
+> Status: **SUPPLIED IDENTITY ADOPTED — PASSENGER RASTER ASSETS, 9 OCTOBER 2026**
+
+The user-supplied Seatpax board is the adopted identity. Inspected raster derivatives are installed at `public/brand/seatpax-horizontal.png` and `public/brand/seatpax-icon.png`; metadata uses the square mark. Navy/blue seat-ticket geometry, route curl and wordmark were retained. No original SVG bundle is available. See [visual setup evidence](../setup/PASSENGER_VISUAL_SETUP.md) for output dimensions, small-size limits and validation. The exploration brief below is historical context; it does not authorize replacing the supplied identity.
 
 ## Brand idea
 
