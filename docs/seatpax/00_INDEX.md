@@ -101,3 +101,5 @@ Numbered section headings retain the original master section numbers for traceab
 [Snack claim design](../superpowers/specs/2026-10-09-snack-claim-design.md) and [plan](../superpowers/plans/2026-10-09-snack-claim.md) were approved on 9 October 2026. Explicit once-only handover after boarding is implemented; verification and manual acceptance are recorded in [snack setup evidence](../setup/SNACK_CLAIM_SETUP.md).
 
 [Super Admin company controls](../setup/SUPER_ADMIN_COMPANY_SETUP.md) implement the approved minimum list and explicit activate/suspend slice; automated final verification and deferred manual acceptance are recorded there.
+
+[Visual foundation and passenger redesign specification](../superpowers/specs/2026-10-09-passenger-visual-design.md): the user approved the phase order and supplied-logo direction on 9 October 2026. Written specification review is pending; no implementation plan or redesigned screens are claimed yet. Crew and Admin/Super Admin redesigns follow separately.
