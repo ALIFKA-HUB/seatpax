@@ -1,3 +1,4 @@
+import {manifestPassengers} from './ui-state';
 import {DomainError,type DomainTx} from '@/modules/access/transaction';
 import {resourceId} from '@/modules/fleet/template-service';
 import {createTicketRepository} from '@/modules/ticket/repository';
@@ -16,7 +17,7 @@ export function createBoardingService(repo:BoardingRepository){
  return {
   manifest(actor:BoardingActor,tripId:string):Promise<ManifestView>{return run(actor,tripId,async(tx,companyId,tripName,departureAt)=>{
    const passengers=await repo.passengers(tx,tripId,companyId),stops=await repo.stops(tx,tripId,companyId),capacity=await repo.capacity(tx,tripId,companyId);
-   return {tripId,companyId,tripName,departureAt,capacity,passengerCount:passengers.length,boardedCount:passengers.filter(p=>p.boarding!==null).length,stops,passengers};
+   return {tripId,companyId,tripName,departureAt,capacity,passengerCount:passengers.length,boardedCount:passengers.filter(p=>p.boarding!==null).length,stops,passengers:manifestPassengers(passengers)};
   });},
   profile(actor:BoardingActor,tripId:string,ticketId:string){resourceId(ticketId);return run(actor,tripId,(tx,companyId)=>profile(tx,tripId,companyId,ticketId));},
   resolve(actor:BoardingActor,tripId:string,raw:string){const token=parseTicketToken(raw);return run(actor,tripId,async(tx,companyId)=>{const ticket=await createTicketRepository().resolveHash(tx,token);if(!ticket)throw new DomainError('unavailable','Tiket tidak tersedia pada perjalanan ini.');return profile(tx,tripId,companyId,ticket.id);});},
