@@ -1,6 +1,6 @@
 # Super Admin: company list and status control
 
-Date: 9 October 2026. Status: conversational design approved by user; written spec awaits review. This document does not authorize implementation or migration.
+Date: 9 October 2026. Status: written spec approved by user on 9 October 2026; implementation plan awaits review. No implementation or migration has started.
 
 ## Intent and scope
 
@@ -62,4 +62,4 @@ Manual acceptance remains explicitly pending: human login as the seeded Super Ad
 
 ## Self-review and next gate
 
-No unresolved product policy or placeholder remains. Existing suspension semantics are preserved; revision/audit are technical protections for the approved status controls. No company lifecycle, membership, financial or visual scope is expanded. Written-spec approval is the next gate; afterwards write and review the implementation plan before product code or migration.
+No unresolved product policy or placeholder remains. Existing suspension semantics are preserved; revision/audit are technical protections for the approved status controls. No company lifecycle, membership, financial or visual scope is expanded. The user approved this written spec. Implementation-plan review is the next gate before product code or migration.
