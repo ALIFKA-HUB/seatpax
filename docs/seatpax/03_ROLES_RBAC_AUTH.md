@@ -250,3 +250,7 @@ Prinsip:
 > Booking boleh tanpa akun; akses lintas perangkat membutuhkan login atau claim terverifikasi.
 
 ---
+
+## Super Admin company control overlay — 9 October 2026
+
+Platform controls require fresh ACTIVE global SUPER_ADMIN membership with company_id NULL, locked FOR SHARE on every read/write/no-op. Server identity never comes from browser metadata. The separate /super-admin/companies page exposes minimum PO summaries and explicit activate/suspend only, granting no tenant operational fallback. See ../setup/SUPER_ADMIN_COMPANY_SETUP.md and D2026-10-09-03.

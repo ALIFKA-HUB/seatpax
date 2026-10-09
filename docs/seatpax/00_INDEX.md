@@ -99,3 +99,5 @@ Numbered section headings retain the original master section numbers for traceab
 [Availability and seat hold setup](../setup/AVAILABILITY_HOLD_SETUP.md) records the implemented passenger search/selection and owner hold slice, database concurrency evidence, and browser limitations. Payment/booking conversion remains a subsequent slice.
 
 [Snack claim design](../superpowers/specs/2026-10-09-snack-claim-design.md) and [plan](../superpowers/plans/2026-10-09-snack-claim.md) were approved on 9 October 2026. Explicit once-only handover after boarding is implemented; verification and manual acceptance are recorded in [snack setup evidence](../setup/SNACK_CLAIM_SETUP.md).
+
+[Super Admin company controls](../setup/SUPER_ADMIN_COMPANY_SETUP.md) implement the approved minimum list and explicit activate/suspend slice; automated final verification and deferred manual acceptance are recorded there.
