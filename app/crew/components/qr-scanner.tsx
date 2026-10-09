@@ -17,5 +17,12 @@ export default function TicketScanner({tripId,stops}:{tripId:string;stops:Manife
   controller.current=next;await next.start();if(mounted.current&&controller.current===next)setStarting(false);
  }
  function close(){controller.current?.close();setRunning(false);setStarting(false);setMessage('Kamera ditutup.');}
- return <><p>Scan hanya membuka profil. Boarding tetap perlu dikonfirmasi.</p><video ref={video} className="boarding-camera" muted playsInline aria-label="Pratinjau kamera scanner"/><div className="boarding-camera-actions"><button onClick={()=>{void start();}} disabled={starting||running}>{starting?'Membuka kamera…':profile?'Scan tiket berikutnya':'Mulai / scan ulang'}</button><button onClick={close} disabled={!starting&&!running}>Tutup kamera</button><Link href={`/crew/trips/${tripId}/manifest`}>Cari di manifest →</Link></div><p role="status" aria-live="polite">{message}</p>{profile&&<><PassengerProfile profile={profile}/><BoardingForm key={profile.ticketId} tripId={tripId} profile={profile} stops={stops} source="QR" onBoarded={record=>setProfile(current=>applyBoardingToCurrentProfile(current,record))}/><SnackForm key={`snack-${profile.ticketId}`} tripId={tripId} profile={profile} onClaimed={claim=>setProfile(current=>applySnackToCurrentProfile(current,claim))}/></>}</>;
+ return <div className="crew-stack">
+  <p className="crew-muted">Scan hanya membuka profil. Boarding tetap perlu dikonfirmasi.</p>
+  <div className="crew-camera-frame"><video ref={video} className="boarding-camera" muted playsInline aria-label="Pratinjau kamera scanner"/></div>
+  <p className="crew-camera-state">{starting?'Membuka kamera…':running?'Kamera aktif. Arahkan ke QR tiket.':profile?'Scan selesai. Periksa profil di bawah.':'Kamera belum dinyalakan.'}</p>
+  <div className="boarding-camera-actions crew-actions"><button className="crew-primary" onClick={()=>{void start();}} disabled={starting||running}>{starting?'Membuka kamera…':profile?'Scan tiket berikutnya':'Mulai scan'}</button><button onClick={close} disabled={!starting&&!running}>Tutup kamera</button><Link className="crew-button" href={`/crew/trips/${tripId}/manifest`}>Cari di manifest →</Link></div>
+  <p className="crew-message" role="status" aria-live="polite">{message}</p>
+  {profile&&<><PassengerProfile profile={profile}/><BoardingForm key={profile.ticketId} tripId={tripId} profile={profile} stops={stops} source="QR" onBoarded={record=>setProfile(current=>applyBoardingToCurrentProfile(current,record))}/><SnackForm key={`snack-${profile.ticketId}`} tripId={tripId} profile={profile} onClaimed={claim=>setProfile(current=>applySnackToCurrentProfile(current,claim))}/></>}
+ </div>;
 }
