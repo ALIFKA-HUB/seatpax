@@ -1,6 +1,6 @@
 # Klaim snack setelah boarding
 
-Tanggal: 9 Oktober 2026. Status: rancangan percakapan disetujui; spec tertulis menunggu review pengguna. Belum ada kode, migration atau dependency yang ditambahkan.
+Tanggal: 9 Oktober 2026. Status: rancangan dan spec tertulis disetujui pengguna; implementation plan menunggu review. Belum ada kode, migration atau dependency yang ditambahkan.
 
 ## Tujuan dan batas
 
