@@ -7,8 +7,8 @@ export default function HomePage() {
         <p className="eyebrow">Fondasi aplikasi</p>
         <h1 id="setup-title">Seatpax</h1>
         <p className="intro">Ticketing dan operasional penumpang bus antarkota.</p>
-        <p>Masuk dengan email untuk mengakses akun Anda. Pemesanan sedang disiapkan.</p>
-        <Link href="/trips">Cari perjalanan →</Link><a href="/account">Masuk / Akun saya <span aria-hidden="true">→</span></a>
+        <p>Masuk dengan email untuk mengakses perjalanan dan tiket Anda.</p>
+        <Link href="/trips">Cari perjalanan →</Link><Link href="/tickets">Tiket saya →</Link><a href="/account">Masuk / Akun saya <span aria-hidden="true">→</span></a>
       </section>
       <section id="langkah-berikutnya" aria-labelledby="next-title" className="next-steps">
         <h2 id="next-title">Langkah berikutnya</h2>

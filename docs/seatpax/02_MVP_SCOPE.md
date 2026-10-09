@@ -1,5 +1,7 @@
 # Seatpax — MVP Scope & Product Boundary
 
+> **Implementation update — 8 October 2026:** Checkout/payment slice now implements SELF/OTHER (one passenger/seat), Sandbox Snap, durable verified events, segment occupancy, encrypted QR/My Tickets and tenant conflict administration. Real refunds, guest/group claims and boarding/snack UI remain deferred. See `../setup/CHECKOUT_PAYMENT_SETUP.md` for evidence and pending manual acceptance.
+
 ## Active release — 30-day demo, adopted 6 October 2026
 
 The user approved the reduced release package on 6 October 2026. This section is the active delivery scope for 6 October–4 November at 2–3 hours/day. The original MVP sections below remain historical/reference scope where they differ from this release. Retained domain rules still apply.

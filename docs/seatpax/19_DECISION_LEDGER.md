@@ -176,3 +176,8 @@ Availability/search, seat holds, booking, payment, passenger data, manifest/QR/b
 ## D2026-10-07-05 — Availability and seat hold (FINAL)
 
 The user approved the written spec and plan. Adopt public published-snapshot search using origin WIB date; known-trip closed detail; exact IDR interval quote; logged-in owner-only single-seat ten-minute hold; adjacent reuse and overlap protection; owner/request UUID retries without extension; effective expiry independent of cleanup; release before payment initiation; maintenance batches at most 100. Locks follow company SHARE → trip SHARE → ordered anchors UPDATE → hold, with DB clock after waits. No one-hold/user limit, Redis, payment/grace/conversion writer, confirmed booking, ticket or guest flow is added. See [approved design](../superpowers/specs/2026-10-07-availability-hold-design.md) and [implementation evidence](../setup/AVAILABILITY_HOLD_SETUP.md).
+
+
+### D2026-10-08-01 — Execution record
+
+The user approved the written spec and plan, then authorized execution. Checkout/payment code now implements that decision; final automated evidence and the remaining real Sandbox/browser checks are recorded in `../setup/CHECKOUT_PAYMENT_SETUP.md`. Provider unknown/challenge/refund and exhausted retries remain visible for review; MOCK_REFUND records an internal simulation, with PAID retained as financial history. No real refund or traveler claim policy is added.

@@ -43,6 +43,20 @@
       "when": 1791356936103,
       "tag": "0005_hold_terminal_timestamps",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791422400000,
+      "tag": "0006_checkout_payment",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791422401000,
+      "tag": "0007_ticket_assignment_identity",
+      "breakpoints": true
     }
   ]
 }

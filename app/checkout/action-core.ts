@@ -1,0 +1,15 @@
+import {z} from 'zod';
+import {DomainError} from '@/modules/access/transaction';
+import type {CheckoutInput,BookingView,InitiationActor} from '@/modules/booking/types';
+type Dependencies={getActor:()=>Promise<InitiationActor|null>;readHold:(userId:string,id:string)=>Promise<{record:{id:string;ownerId:string};fare:string}|null>;initiate:(actor:InitiationActor,input:CheckoutInput)=>Promise<BookingView>;prepare:(userId:string,id:string)=>Promise<{state:'READY';token:string}|{state:'PENDING'|'UNAVAILABLE'|'EXPIRED'}>;readBooking:(userId:string,id:string)=>Promise<BookingView|null>;paymentEnabled:boolean};
+function parseInput(raw:unknown):CheckoutInput{
+ const v=z.object({holdId:z.uuid(),requestKey:z.uuid(),mode:z.enum(['SELF','OTHER']),name:z.string().trim().min(1).max(120),phone:z.string().trim().min(8).max(24)}).safeParse(raw);
+ if(!v.success)throw new DomainError('validation','Lengkapi nama dan nomor HP penumpang.');return v.data;
+}
+export function createCheckoutActions(deps:Dependencies){
+ return {
+  async start(raw:unknown){try{const actor=await deps.getActor();if(!actor)throw new DomainError('forbidden','Masuk kembali untuk melanjutkan.');if(!deps.paymentEnabled)throw new DomainError('unavailable','Pembayaran belum tersedia untuk konfigurasi ini.');const input=parseInput(raw),hold=await deps.readHold(actor.userId,input.holdId);if(!hold||hold.record.ownerId!==actor.userId)throw new DomainError('forbidden','Hold tidak tersedia.');const booking=await deps.initiate(actor,input),result=await deps.prepare(actor.userId,booking.id);return {ok:true as const,booking,token:result.state==='READY'?result.token:null,paymentState:result.state};}catch(error){return {ok:false as const,message:error instanceof DomainError?error.message:'Hasil checkout belum dapat dipastikan. Coba lagi dengan pilihan yang sama.'};}},
+  async prepareExisting(rawId:unknown){try{const id=z.uuid().parse(rawId),actor=await deps.getActor();if(!actor)throw new DomainError('forbidden','Masuk kembali untuk melanjutkan.');const booking=await deps.readBooking(actor.userId,id);if(!booking)throw new DomainError('forbidden','Booking tidak tersedia.');if(!deps.paymentEnabled)return {ok:false as const,message:'Pembayaran belum tersedia untuk konfigurasi ini.'};const result=await deps.prepare(actor.userId,id);return {ok:true as const,booking,token:result.state==='READY'?result.token:null,paymentState:result.state};}catch(error){return {ok:false as const,message:error instanceof DomainError?error.message:'Status pembayaran belum dapat diperbarui.'};}},
+  async refresh(rawId:unknown){try{const id=z.uuid().parse(rawId),actor=await deps.getActor();if(!actor)throw new DomainError('forbidden','Masuk kembali untuk melihat booking.');const booking=await deps.readBooking(actor.userId,id);if(!booking)throw new DomainError('forbidden','Booking tidak tersedia.');return {ok:true as const,booking};}catch(error){return {ok:false as const,message:error instanceof DomainError?error.message:'Status belum dapat diperbarui.'};}}
+ };
+}
