@@ -47,3 +47,5 @@ Use the existing server database connection and migration configuration. No addi
 The production preview was started on port 3001 from the attached manifest worktree. Login and camera permissions require the human user. The implementation introduces no production deployment or background scheduler.
 
 Final targeted boarding regression: 2 files / 4 tests passed in 85.33s after review changes. Latest full units: 44 files / 191 tests passed; typecheck, lint and build passed. The same reviewer accepted the additional ticket-ID guard against a late response from the previously scanned passenger. Local integration into main is the authorized final action; no push/deploy. Physical camera, keyboard and 390px acceptance remain pending.
+
+Local integration completed on 9 October 2026 (merge 1fac720). The merged main workspace passed 44 unit files / 191 tests, typecheck, lint and production build. Existing next-env.d.ts bytes were preserved. Preview remains attached/running from the manifest worktree on port 3001. No push/deployment. Manual camera/keyboard/390px checks remain pending.
