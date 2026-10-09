@@ -35,3 +35,8 @@ Use the approved existing Drizzle journal/migration workflow rather than creatin
 
 Final explicit expired-hold regression: initial fixture timestamp update violated hold_times because independent clock_timestamp calls differed by microseconds. A single materialized database clock preserves the existing exact 10-minute invariant. Targeted suspension suite then passed2tests/33.03s; terminal expired/released holds stay terminal after activation. No production lifecycle code was changed.
 
+
+## Local integration evidence
+
+Merged locally to main as2194130. Merged checks: 50unitfiles/218tests passed3.05s; typecheck/lint/production build passed with /super-admin/companies. Original main next-env.d.ts SHA256 B8B3A344484B959AF5E4E3FC1A1609DAC3CB9ECE0CDEB6C145BE29BC4C491000 was restored and verified; user remote attachments remain intact and unstaged. Managed worktree retained. Preview restarted from the verified production build on port3001 and reported Ready. No push/deployment or authenticated/manual browser success is claimed.
+
