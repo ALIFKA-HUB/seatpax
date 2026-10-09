@@ -29,7 +29,7 @@ Stock, quantity/package configuration, offline synchronization, cash and reversa
 
 No physical camera, keyboard or 390px browser success is claimed by automated tests. Login requires the human user. In the preview, open one explicitly selected demo passenger as assigned crew, check the disabled pre-board action, record boarding, then explicitly record snack and reopen the profile. Check the original timestamp and Admin read-only state. Do not mass-claim demo passengers. Existing payment notification tunnel remains POST-only and is not a phone preview.
 
-Local integration and final verification remain pending until the full regression finishes. No push or deployment is authorized.
+Local integration completed on 9 October 2026 (merge 2cfa8b4). Merged main passed 47 unit files / 199 tests, typecheck, lint and production build. Original next-env.d.ts bytes were restored and verified unchanged. Preview remains running from the attached worktree on port 3001. No push/deployment; manual acceptance remains pending.
 Preview was restarted from the new production build on port 3001; server reported Ready. Current browser inventory contains no Seatpax tab/session, so authenticated visual/manual checks remain pending.
 
 ### Final regression and review
@@ -37,3 +37,4 @@ Preview was restarted from the new production build on port 3001; server reporte
 Full serial hosted database regression passed: 19 files / 73 tests, 703.10 seconds, zero failures, including the added QR/manual/Admin read assertions. The reviewer rechecked those assertions and reported no residual concrete coverage gap. Latest full unit suite remains 47 files / 199 tests passed; typecheck, lint and production build passed. All existing dynamic passenger/Admin/crew routes remain bundled.
 
 Execution order deviation: local projection/UI work continued while DNS was unavailable, and implementation is shipped as one feature commit after full verification instead of separate task commits. The scope and contracts are unchanged. Manual camera/keyboard/390px acceptance remains pending.
+
