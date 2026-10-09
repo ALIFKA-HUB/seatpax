@@ -123,7 +123,7 @@
 - [ ] Inspect Admin/Crew/Super Admin shells for inherited font/token regressions; verify their layouts, navigation/controls and business code are unchanged. Record any inaccessible authenticated state rather than inventing a pass. Physical phone/camera and user payment acceptance remain deferred.
 - [x] Request one focused final code reviewer with `gpt-6-luna`, medium reasoning and repository/spec/plan/diff context. Review focus: scoped CSS, faithful assets, accessibility, preserved actions/request identities, lifecycle labels and verified ticket gates. Resolve findings with regression evidence; no review-per-task fan-out.
 - [x] Write setup evidence and deferred checks. Mark only finished checkboxes, synchronize actual brand asset status and latest visual direction, and commit explicit implementation/docs files.
-- [ ] With existing local-integration authorization, merge into local main only after required verification passes. Preserve original user dirty-file bytes and attachments; run merged unit/type/lint/build verification and record results. Leave a usable local preview, no push/deploy.
+- [x] With existing local-integration authorization, merge into local main only after required verification passes. Preserve original user dirty-file bytes and attachments; run merged unit/type/lint/build verification and record results. Leave a usable local preview, no push/deploy.
 
 ## Plan Self-Review and Handoff
 

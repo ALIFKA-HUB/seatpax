@@ -67,4 +67,6 @@ Task commits: 5b74e6c brand; 69fd0b9 foundation; 2560699 entry/search; 84a80d1 s
 
 ## Integration
 
-Local main integration and merged verification recorded below after execution. User's original main `next-env.d.ts` must retain SHA256 `B8B3A344484B959AF5E4E3FC1A1609DAC3CB9ECE0CDEB6C145BE29BC4C491000`. User attachments and ignored secrets stay untouched.
+Local main fast-forwarded to `c1c5f15`. Fresh merged verification on 9 October: 57 files / 232 tests passed, typecheck/lint/build exit 0. The original main `next-env.d.ts` bytes were restored after build and the SHA256 below rechecked. Attachments remain untracked and untouched. Final documentation-only evidence commit follows; verified application source is unchanged.
+
+Production preview restarted from the verified worktree at `http://localhost:3001/`. Managed worktree retained for this active preview; no push/deployment. Exact zoom and actual authenticated/physical acceptance remain open. User's original main `next-env.d.ts` must retain SHA256 `B8B3A344484B959AF5E4E3FC1A1609DAC3CB9ECE0CDEB6C145BE29BC4C491000`. User attachments and ignored secrets stay untouched.
