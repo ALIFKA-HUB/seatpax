@@ -1,0 +1,14 @@
+import {it,expect,vi} from 'vitest';
+import {createElement} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import type {PassengerProfile} from '@/modules/boarding/types';
+import type {SnackClaim} from '@/modules/snack/types';
+import {applySnackToCurrentProfile,createSubmissionGate} from '@/modules/boarding/ui-state';
+vi.mock('next/navigation',()=>({useRouter:()=>({refresh:()=>{}})}));
+vi.mock('@/app/crew/snack-actions',()=>({claimSnackAction:vi.fn()}));
+import SnackForm from '@/app/crew/components/snack-form';
+const profile={ticketId:'t',boarding:null,snack:null} as PassengerProfile;
+it('disables handover before boarding and enables it after boarding',()=>{const before=renderToStaticMarkup(createElement(SnackForm,{tripId:'trip',profile}));expect(before).toContain('disabled');expect(before).toContain('Snack belum diserahkan');const after=renderToStaticMarkup(createElement(SnackForm,{tripId:'trip',profile:{...profile,boarding:{boardedAt:'2026-10-10T01:00:00Z'} as PassengerProfile['boarding']}}));expect(after).toContain('Serahkan snack');expect(after).not.toContain('disabled');});
+it('shows original claim time with no second submit control',()=>{const html=renderToStaticMarkup(createElement(SnackForm,{tripId:'trip',profile:{...profile,snack:{claimedAt:'2026-10-10T01:00:00Z'}}}));expect(html).toContain('Snack sudah diserahkan');expect(html).toContain('WIB');expect(html).not.toContain('<button');});
+it('ignores a late claim for another scanned ticket',()=>{const claim={ticketId:'old',claimedAt:'time'} as SnackClaim;expect(applySnackToCurrentProfile(profile,claim)).toBe(profile);expect(applySnackToCurrentProfile(null,claim)).toBeNull();expect(applySnackToCurrentProfile(profile,{...claim,ticketId:'t'})?.snack).toEqual({claimedAt:'time'});});
+it('releases submission guard after an error so explicit retry works',async()=>{const gate=createSubmissionGate();await expect(gate.run(async()=>{throw Error('network');})).rejects.toThrow();expect(await gate.run(async()=>42)).toBe(42);});

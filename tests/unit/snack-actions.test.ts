@@ -1,0 +1,7 @@
+import {it,expect,vi} from 'vitest';
+import {createSnackActions} from '@/app/crew/snack-action-core';
+import {DomainError} from '@/modules/access/transaction';
+const id='00000000-0000-4000-8000-000000000001';
+it('uses verified crew and strips forged claim identity',async()=>{const claim=vi.fn(async()=>({alreadyClaimed:false}));const actions=createSnackActions({getActor:async()=>({userId:id,role:'CREW'}),claim});expect((await actions.claim(id,{ticketId:id,actorId:'forged',claimedAt:'forged'})).ok).toBe(true);expect(claim).toHaveBeenCalledWith({userId:id,role:'CREW'},id,{ticketId:id});});
+it('does not mutate without a session or valid ticket',async()=>{const claim=vi.fn();const actions=createSnackActions({getActor:async()=>null,claim});expect((await actions.claim(id,{ticketId:id})).ok).toBe(false);expect((await actions.claim(id,{ticketId:'bad'})).ok).toBe(false);expect(claim).not.toHaveBeenCalled();});
+it('preserves pre-board guidance and hides private failures',async()=>{const claim=vi.fn().mockRejectedValueOnce(new DomainError('validation','Catat boarding dahulu.')).mockRejectedValueOnce(Error('secret'));const actions=createSnackActions({getActor:async()=>({userId:id,role:'CREW'}),claim});expect(await actions.claim(id,{ticketId:id})).toEqual({ok:false,message:'Catat boarding dahulu.'});const result=await actions.claim(id,{ticketId:id});expect(result.ok).toBe(false);expect(JSON.stringify(result)).not.toContain('secret');});
