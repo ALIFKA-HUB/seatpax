@@ -17,7 +17,7 @@ The user approved the reduced release package on 6 October 2026. This section is
 | Inventory | Segment-aware availability, 10-minute hold, conditional +1-minute grace, expiry/release, concurrency correctness |
 | Payment | Midtrans Sandbox, verified/idempotent webhook, late PAYMENT_CONFLICT, minimal admin confirmation after inventory recheck or recorded mock/manual refund resolution |
 | Ticket/operations | One QR per passenger, trip manifest, scanner/manual search, passenger trip profile, separate boarding/snack actions |
-| Crew client | PWA shell; online mutations; no offline sync |
+| Crew client | Dedicated Flutter Android/iPhone client adopted 15 October 2026; existing Crew web retained during transition; online operations, no offline sync. Mobile written spec awaits review; implementation is not yet delivered. |
 | Super Admin | Company list, activate/suspend; seeded demo companies/internal accounts; onboarding and invitations UI deferred |
 | Availability UX | Refresh/polling first; live subscriptions deferred if schedule demands |
 | Deferred operational features | Cash sale, general reschedule/reseat, trip cancellation/refund workflows and vehicle replacement on sold trips |

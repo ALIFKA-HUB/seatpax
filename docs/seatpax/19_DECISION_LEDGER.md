@@ -201,3 +201,9 @@ The user approved a shared navy/blue visual foundation using their previously su
 Crew visual refinement under D2026-10-09-04: written Crew spec and implementation plan approved; presentation implemented locally, preserving the adopted operational contracts. Evidence and deferred real acceptance: ../setup/CREW_VISUAL_SETUP.md.
 
 Admin/Super Admin visual refinement under D2026-10-09-04: written spec and plan approved; presentation implemented locally without operational-policy changes. Evidence and deferred actual acceptance: ../setup/ADMIN_VISUAL_SETUP.md.
+
+## D2026-10-15-01 — Dedicated Crew mobile client (platform decision adopted)
+
+The user approved a dedicated Crew application and explicitly requested **Android and iPhone**. Passenger, Admin PO and Super Admin remain web clients. Adopt Flutter with native camera scanning and an authenticated API adapter to existing assigned-trip, manifest, explicit boarding and separate snack services. Existing authorization, transaction and idempotency rules remain authoritative; offline synchronization and additional operational features remain deferred. Existing Crew web pages remain available during transition.
+
+Platform intent is approved; the [written technical specification](../superpowers/specs/2026-10-15-crew-mobile-design.md) awaits review, followed by an implementation plan. No mobile implementation, signed binary or physical-device acceptance is claimed. Android SDK licenses remain outstanding locally; iOS build/signing/device verification requires macOS/Xcode access. Passenger/Admin redesign feedback and city/terminal catalogue work remain separate requests.

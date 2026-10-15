@@ -1,5 +1,7 @@
 # Seatpax Documentation Index
 
+> **Platform decision — 15 October 2026:** The user adopted a dedicated Flutter Crew client for Android and iPhone. Existing web clients remain available; mobile implementation is not yet delivered. Read D2026-10-15-01 and the [mobile specification awaiting review](../superpowers/specs/2026-10-15-crew-mobile-design.md) before starting the mobile/API work.
+
 > **Implementation update — 9 October 2026:** Manifest and explicit once-only boarding are implemented for assigned active crew, with same-tenant Admin read-only access, minimum passenger data, origin-stop validation and immutable event retries. QR resolves only; snack is the subsequent slice recorded below, and offline remains deferred. See `../setup/MANIFEST_BOARDING_SETUP.md` for evidence and pending physical-camera acceptance.
 
 
