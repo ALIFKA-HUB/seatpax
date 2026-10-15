@@ -812,3 +812,7 @@ The written Crew spec and plan are approved. Dedicated responsive Crew presentat
 ## Admin and Super Admin visual phase — 9 October 2026
 
 Approved spec and plan implemented locally: branded role scopes, current Admin section, readable source/fleet/trip/payment screens and independent Super Admin company rows. Existing operational behavior remains authoritative. See ../setup/ADMIN_VISUAL_SETUP.md for fresh automated results, measured synthetic layouts and deferred authenticated/physical-phone/zoom/reduced-motion acceptance.
+
+## Admin location directory refinement — 15 October 2026
+
+The user selected the interactive Admin PO concept and requested its implementation before Crew mobile work. Apply its white sidebar, navy/bright-blue identity, Plus Jakarta Sans scoped to Admin, compact navigation and table-first **Titik naik & turun** page. Search by location/city and filter status; open Add/Edit in a native modal rather than displaying an edit form for every record. Use the supplied logo and actual authenticated-company data. Omit the concept's location-type column until a persisted type contract is separately agreed; city/terminal catalogue integration is separate work. Existing stop validation, authorization and status confirmation remain authoritative. See [delivery evidence](../setup/ADMIN_DIRECTORY_REFRESH_SETUP.md). This slice does not implement the separate passenger concept.

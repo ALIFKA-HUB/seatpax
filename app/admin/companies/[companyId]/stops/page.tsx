@@ -1,3 +1,3 @@
 import {companyData} from '../../../data';
-import MasterForm from '../../../components/master-form';
-export default async function Page({params}:{params:Promise<{companyId:string}>}){const {companyId}=await params;const {data}=await companyData(companyId);return <><header className="admin-header"><p className="eyebrow">TITIK PERJALANAN</p><h1>Daftar stop</h1><p>Kelola kota, terminal, dan titik naik/turun milik PO Anda.</p></header><div className="admin-master-list">{data.stops.length?data.stops.map(s=><section className="admin-panel" key={s.id}><h2>{s.name}</h2><MasterForm companyId={companyId} kind="stop" initial={s}/></section>):<p>Belum ada stop. Tambahkan titik naik/turun pertama di bawah.</p>}</div><section className="admin-panel"><h2>Tambah stop</h2><MasterForm companyId={companyId} kind="stop"/></section></>;}
+import StopDirectory from '../../../components/stop-directory';
+export default async function Page({params}:{params:Promise<{companyId:string}>}){const {companyId}=await params;const {data}=await companyData(companyId);return <StopDirectory companyId={companyId} stops={data.stops}/>;}
