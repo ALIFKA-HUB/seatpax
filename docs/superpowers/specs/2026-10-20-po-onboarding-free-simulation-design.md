@@ -83,13 +83,17 @@ Admin preview mempertahankan identitas actor aslinya. Setiap read/mutasi memerik
 
 Per workspace Free: 2 rute, 2 armada, 2 template, 2 Crew, 3 keberangkatan simulasi, 30 booking simulasi. Arsip/inaktif tetap dihitung; booking gagal atau expired juga dihitung sampai reset. Draft keberangkatan ikut dihitung agar tidak menjadi jalur menumpuk record.
 
+### Jeda reset — disepakati setelah klarifikasi
+
+Reset berikutnya paling cepat 60 detik setelah reset sebelumnya berhasil, per workspace. Simulasi baru langsung dapat digunakan setelah reset berhasil; yang dibatasi hanya tindakan reset berikutnya. Ini tidak menyetujui seluruh usulan teknis lain secara otomatis.
+
 ### Default tambahan yang diusulkan, belum merupakan keputusan final
 
 - Maksimum 20 titik layanan dan 2 kelas layanan per workspace Free.
 - Pertahankan batas validator saat ini: maksimal 50 stop per rute, grid 30×8/240 sel per template. Tidak menambah fitur unggahan file pada slice ini.
 - Maksimum satu hold ACTIVE milik actor per run; hold berakhir mengikuti durasi domain yang ada. Sebelum membuat hold baru, bersihkan hold expired yang relevan agar tidak menumpuk.
 - Tidak menyimpan histori setiap klik pembayaran. Maksimum satu record pembayaran per booking, hasil terminal immutable dan replay idempotent.
-- Reset sukses paling sering sekali per 60 detik per workspace; request yang ditolak tidak membuat audit baru. Receipt reset diringkas ke 20 hasil terakhir per workspace, tanpa identitas penumpang. Detail retensi ini khusus simulasi dan perlu persetujuan.
+- Usulan implementasi audit: request reset yang ditolak tidak membuat audit baru. Receipt reset diringkas ke 20 hasil terakhir per workspace, tanpa identitas penumpang. Detail retensi ini khusus simulasi dan perlu persetujuan; jeda reset 60 detik sendiri telah disepakati di atas.
 
 Angka tambahan tersebut diajukan untuk membatasi record turunan; dapat direvisi saat review. Free tidak boleh dirilis tanpa batas ini atau penggantinya yang disepakati.
 
@@ -155,7 +159,7 @@ Kriteria penerimaan untuk verifikasi nanti: pendaftaran/retry paralel menghasilk
 
 1. Tabel simulasi terpisah dengan shared master dan private Admin preview.
 2. Membership Admin DISABLED tetap mencadangkan satu perusahaan; perpindahan melalui proses terpisah yang belum dibangun.
-3. Default tambahan: 20 titik, 2 kelas, batas grid existing, satu active hold/actor/run, cooldown reset 60 detik dan 20 receipt reset terakhir.
+3. Default tambahan: 20 titik, 2 kelas, batas grid existing, satu active hold/actor/run dan 20 receipt reset terakhir. Cooldown reset 60 detik sudah disepakati setelah klarifikasi.
 4. State simulator, penanganan late simulated success, serta tidak adanya resolver/refund simulasi pada slice awal.
 
 Jika salah satu ditolak, revisi spesifikasi sebelum plan. Keputusan lain pada rancangan induk—tanggal billing Pro, perubahan benefit, verifikasi merchant dan penjualan live—tetap pekerjaan terpisah dan tidak menghambat slice Free yang terisolasi ini.

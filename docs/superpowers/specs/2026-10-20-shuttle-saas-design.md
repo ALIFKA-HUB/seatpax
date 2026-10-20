@@ -51,6 +51,8 @@ Free menggunakan simulator bawaan Seatpax tanpa keharusan membuat akun atau mema
 
 Reset menghapus booking, pembayaran simulasi dan keberangkatan simulasi pada workspace tersebut. Profil PO, titik layanan, rute, armada, template kursi dan akun Crew tetap tersimpan. Sebelum reset, tampilkan ringkasan data yang akan dihapus dan minta konfirmasi pengguna. Ini menetapkan perilaku fitur reset mendatang, bukan izin menghapus data sekarang.
 
+Jeda antar-reset yang berhasil adalah 60 detik per workspace, disepakati setelah klarifikasi. Sesudah reset berhasil, pengguna langsung dapat melakukan simulasi baru; tidak perlu menunggu 60 detik untuk memakai simulasi.
+
 Reset tidak menambah kapasitas penyimpanan master: rute/armada/template/Crew yang dipertahankan tetap dihitung pada kuotanya. Reset tidak boleh menjangkau transaksi nyata atau perusahaan lain. Daftar dependensi transaksi simulasi (termasuk tiket, hold, inventori dan event terkait), penanganan request yang sedang berjalan, audit reset dan retensi teknis perlu ditetapkan dalam spesifikasi reset sebelum implementasi agar tidak meninggalkan relasi rusak atau menghidupkan kembali transaksi yang dihapus.
 
 Kuota Pro 30 berarti kelayakan armada untuk operasi baru, bukan izin penyimpanan tanpa batas. Batas storage, record historis, stop, kursi, unggahan, dan frekuensi tindakan belum ditentukan. Harga dan kuota ini juga bukan hasil validasi biaya atau jaminan kapasitas infrastruktur.
