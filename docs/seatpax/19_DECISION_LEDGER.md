@@ -229,3 +229,15 @@ Implementation update — 20 October 2026: the user approved execution. Regional
 
 
 Fixture application update — 20 October 2026: after the user approved continuation of the concrete operation, the reviewed seven fixture companies were suspended atomically. Fresh preflight matched the approved manifest and backup; seven exact status audit events and preserved protected data were verified. The previously suspended fixture and Demo PO A/B remain unchanged. Global totals remain 5 bookings / 5 payments / 1 ticket. See [operation evidence and authorized rollback](../setup/FIXTURE_CLEANUP_SETUP.md). No test suite, retry or rollback was run.
+
+## D2026-10-20-03 — Self-service PO SaaS and direct PO ticket proceeds
+
+The user explicitly chose self-service registration and subscription payment by each PO, then approved ticket payments going directly to the respective PO's payment account. Seatpax receives its SaaS subscription fees separately. This is an adopted product direction; it does not authorize platform collection followed by payout to POs.
+
+Platform Super Admin and tenant Admin PO remain separate responsibilities. The company-scoped Admin page shown during the discussion was Demo PO A's operational workspace, not the platform administrator. Existing multi-tenant data isolation and role guards remain relevant.
+
+Implementation is not yet approved or delivered for self-service onboarding, subscription billing or per-PO payment configuration. Current ticket payment integration uses one development Sandbox merchant configuration. A written SaaS design and implementation plan must resolve onboarding/activation, expiry entitlement, payment-account connection and migration before code changes.
+
+Still unresolved: paid-first versus trial onboarding; manual renewal versus recurring/autodebit (manual was recommended but not selected); package/price/period rules; grace duration and recovery; precise restrictions for expired subscriptions; per-PO provider-account setup. Discussion recommends retaining data and protecting already-paid tickets/assigned Crew operations, with initiated valid payment fulfillment, rather than cancelling passenger obligations when SaaS access expires. Those expiry details need the written-design review.
+
+The user also wants the selected base route to be adjustable for an individual departure. Editing limits before/after publication and sold tickets, and recurring-day schedule behavior, remain design work; no implemented per-trip route override or recurring scheduler is claimed.

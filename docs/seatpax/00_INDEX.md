@@ -113,3 +113,7 @@ Numbered section headings retain the original master section numbers for traceab
 [Crew visual redesign specification](../superpowers/specs/2026-10-09-crew-visual-design.md) is approved and defines the dedicated Crew shell and phone-friendly operational screens. The [implementation plan](../superpowers/plans/2026-10-09-crew-visual.md) is approved and presentation is implemented locally. [Crew visual evidence](../setup/CREW_VISUAL_SETUP.md) records automated results, synthetic layout checks and deferred actual acceptance.
 
 [Admin PO and Super Admin visual specification](../superpowers/specs/2026-10-09-admin-visual-design.md) was approved on 9 October 2026. The [implementation plan](../superpowers/plans/2026-10-09-admin-visual.md) is approved and presentation is implemented locally, preserving existing operations and company-control contracts. [Admin visual evidence](../setup/ADMIN_VISUAL_SETUP.md) records fresh automated checks, synthetic measurements and pending actual acceptance.
+
+## SaaS restructuring discussion — 20 October 2026
+
+Read D2026-10-20-03 in `19_DECISION_LEDGER.md` before further SaaS/onboarding/payment work. Self-service PO registration/subscription payment and direct-to-PO ticket proceeds are adopted directions. The current single-Sandbox-merchant implementation has not been converted to those flows; written design and plan are still required. Do not treat the manual-renewal recommendation, trial policy, grace duration or recurring scheduling discussion as approved implementation requirements.

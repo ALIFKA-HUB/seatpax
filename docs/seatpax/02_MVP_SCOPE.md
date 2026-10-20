@@ -267,3 +267,7 @@ Dengan aturan ini, Seatpax tidak lagi menjadi kumpulan brainstorming lepas, teta
 ## Adopted availability and hold slice — 7 October 2026
 
 The approved availability/hold design and plan implement public snapshot search/quote, half-open interval availability, owner-only single-seat ten-minute holds, idempotent request keys, release and logical expiry with bounded cleanup. Company/trip guards and ordered seat×segment locks precede DB-time eligibility and occupancy checks. Snapshot inventory is now used for active holds; confirmed bookings and payment conversion remain unimplemented. RLS/browser revokes protect hold tables. See [availability design](../superpowers/specs/2026-10-07-availability-hold-design.md) and [setup evidence](../setup/AVAILABILITY_HOLD_SETUP.md).
+
+## SaaS direction update — 20 October 2026
+
+D2026-10-20-03 adopts PO self-service registration/subscription payment and ticket proceeds going directly to each PO's payment account. Seatpax subscription fees are a separate payment flow. These subsystems are pending architectural design and implementation planning; the retained 30-day demo implementation above does not provide them yet. Renewal mode, trial/activation and expiry policies remain unresolved. Existing tenant isolation, transactional ticketing and protected historical data remain the foundation.
