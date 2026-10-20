@@ -7,6 +7,15 @@ export type Snapshot=TripDetail & {companyStatus:string;companyName:string;serve
 const holdColumns='id,company_id as "companyId",trip_id as "tripId",trip_seat_id as "seatId",from_trip_stop_id as "fromStopId",to_trip_stop_id as "toStopId",from_sequence as "from",to_sequence as "to",held_by_user_id as "ownerId",request_key as "requestKey",status,created_at::text as "createdAt",base_expires_at::text as "baseExpiresAt",effective_expires_at::text as "effectiveExpiresAt",payment_initiated_at::text as "paymentInitiatedAt",released_at::text as "releasedAt",expired_at::text as "expiredAt"';
 export function createInventoryRepository(client:Sql){return {
  client,
+ async discoveryCandidates(start:string,end:string,limit:number){return await client<{tripId:string;fromStopId:string;toStopId:string}[]>`
+  select t.id as "tripId",a.id as "fromStopId",b.id as "toStopId"
+  from public.trips t join public.companies c on c.id=t.company_id
+  join lateral (select id,sequence,departure_at from public.trip_stops where trip_id=t.id order by sequence limit 1) a on true
+  join lateral (select id,sequence from public.trip_stops where trip_id=t.id order by sequence desc limit 1) b on a.sequence<b.sequence
+  where t.status='OPEN_FOR_SALE' and c.status='ACTIVE'
+  and a.departure_at>=${start}::timestamptz and a.departure_at<${end}::timestamptz
+  and clock_timestamp()<least(a.departure_at,coalesce(t.sales_close_at,a.departure_at))
+  order by a.departure_at,t.id limit ${limit}`;},
  async snapshot(tx:Sql|DomainTx,id:string):Promise<Snapshot>{
   const rows=await tx<Snapshot[]>`with clock as materialized(select clock_timestamp() as now)
    select json_build_object('id',t.id,'companyId',t.company_id,'name',t.name,'routeId',t.route_id,'vehicleId',t.vehicle_id,'serviceClassId',t.service_class_id,'departureAt',t.departure_at,'salesCloseAt',t.sales_close_at,'revision',t.revision,'status',t.status,'publishedAt',t.published_at,'identity',t.identity_snapshot) as trip,
