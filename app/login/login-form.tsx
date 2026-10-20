@@ -5,7 +5,7 @@ import { EMAIL_OTP_LENGTH, type AuthResult } from '@/modules/auth/service';
 import { initialLoginState, loginReducer } from '@/modules/auth/login-state';
 
 const networkFailure: AuthResult = { ok: false, code: 'provider_unavailable', message: 'Koneksi terputus. Coba lagi sebentar.' };
-export default function LoginForm({next="/account"}:{next?:string}) {
+export default function LoginForm({next}:{next?:string}) {
   const [state, dispatch] = useReducer(loginReducer, initialLoginState);
   const [token, setToken] = useState('');
   const [now, setNow] = useState(0);

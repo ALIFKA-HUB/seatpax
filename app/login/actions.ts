@@ -1,6 +1,7 @@
 'use server';
 import { redirect } from 'next/navigation';
-import {safeReturnPath} from '@/modules/auth/return-path';
+import {getVerifiedUser} from '@/modules/auth/identity';
+import {resolveEntryDestination} from '@/modules/auth/entry-destination';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { EMAIL_OTP_LENGTH, requestOtp, verifyEmailOtp, logoutSession, type AuthGateway } from '@/modules/auth/service';
 
@@ -15,7 +16,15 @@ function gateway(): AuthGateway {
 export async function sendOtpAction(email: string) { return requestOtp(gateway(), email); }
 export async function verifyOtpAction(input: { email: string; token: string }, next?:string) {
   const result = await verifyEmailOtp(gateway(), input, EMAIL_OTP_LENGTH);
-  if (result.ok) redirect(safeReturnPath(next));
+  if(result.ok){
+    let destination:string;
+    try{
+      const user=await getVerifiedUser();
+      if(!user)throw new Error('Unverified identity');
+      destination=await resolveEntryDestination(user.id,next);
+    }catch{return {ok:false as const,code:'provider_unavailable' as const,message:'Akun sudah diverifikasi, tetapi halaman tujuan belum dapat dimuat. Coba masuk lagi sebentar.'};}
+    redirect(destination);
+  }
   return result;
 }
 export async function logoutAction() {

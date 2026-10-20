@@ -1,0 +1,14 @@
+import {beforeEach,expect,it,vi} from 'vitest';
+import type {Membership} from '@/modules/access/service';
+const f=vi.hoisted(()=>({list:vi.fn()}));
+vi.mock('server-only',()=>({}));
+vi.mock('@/lib/db',()=>({getDatabase:()=>({})}));
+vi.mock('@/modules/access/repository',()=>({createAccessRepository:()=>({listMemberships:f.list})}));
+import {resolveEntryDestination,listEntryWorkspaces} from '@/modules/auth/entry-destination';
+const membership=(role:Membership['role'],status:Membership['status']='ACTIVE',userId='user'):Membership=>({userId,role,status,companyId:role==='SUPER_ADMIN'?null:'company'});
+beforeEach(()=>{f.list.mockReset().mockResolvedValue([]);});
+it('routes ordinary passengers and each active work role to its existing area',async()=>{expect(await resolveEntryDestination('user',undefined)).toBe('/trips');for(const [role,path] of [['ADMIN_PO','/admin'],['CREW','/crew'],['SUPER_ADMIN','/super-admin/companies']] as const){f.list.mockResolvedValue([membership(role)]);expect(await resolveEntryDestination('user',undefined)).toBe(path);}});
+it('ignores revoked or foreign memberships and deduplicates company destinations',async()=>{f.list.mockResolvedValue([membership('ADMIN_PO','DISABLED'),membership('CREW','ACTIVE','other')]);expect(await resolveEntryDestination('user',undefined)).toBe('/trips');f.list.mockResolvedValue([membership('ADMIN_PO'),{...membership('ADMIN_PO'),companyId:'other'}]);expect(await resolveEntryDestination('user',undefined)).toBe('/admin');});
+it('offers a choice for multiple work roles without granting new roles',async()=>{f.list.mockResolvedValue([membership('ADMIN_PO'),membership('CREW')]);expect(await resolveEntryDestination('user',undefined)).toBe('/workspaces');expect((await listEntryWorkspaces('user')).map(item=>item.href)).toEqual(['/admin','/crew']);});
+it('preserves explicit journey intent and rejects external or normalized escape paths',async()=>{expect(await resolveEntryDestination('user','/holds/abc?step=pay')).toBe('/holds/abc?step=pay');for(const raw of ['https://evil.test','//evil.test','/trips/../../login','/trips/\\evil','/trips/\r\nlogin'])expect(await resolveEntryDestination('user',raw)).toBe('/trips');});
+it('surfaces unavailable memberships instead of misclassifying a user',async()=>{f.list.mockRejectedValue(Error('private SQL'));await expect(resolveEntryDestination('user',undefined)).rejects.toThrow();});
