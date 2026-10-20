@@ -833,3 +833,7 @@ Each shuttle company should have its own passenger booking page within Seatpax, 
 ## Adopted SaaS platform Admin navigation — 20 October 2026
 
 Admin Seatpax/Super Admin: **Ringkasan**, **Perusahaan**, **Paket & benefit**, **Langganan & tagihan**, **Riwayat perubahan**. These cover platform/company summaries, service state, versioned plan configuration, subscription/invoice lifecycle and audited platform changes. Routes, schedules, fleet, Crew and passenger orders remain company-operational screens for Admin PO. This is approved navigation scope; the existing minimal Super Admin implementation does not deliver all these pages.
+
+## Adopted customer complaint entry points — 20 October 2026
+
+Admin PO uses **Pesanan > Daftar pesanan / Pengaduan pelanggan**, with a count of unhandled complaints on Orders. Do not add another top-level menu for this feature. Customers submit **Laporkan masalah** and reopen report history from the same booking detail. Reports link to the relevant booking/payment examination. This is approved navigation direction; complaint service, state workflow, private evidence and escalation implementation remain pending design/plan.
