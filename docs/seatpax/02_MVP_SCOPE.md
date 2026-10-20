@@ -283,3 +283,8 @@ Approved Pro vehicle quota-reduction behavior — 20 October 2026: Pro allowance
 ## Requested customer complaint flow — 20 October 2026
 
 The SaaS restructuring must design customer complaints/help, including debit-success versus booking-failure/no-ticket payment discrepancies near expiry. The flow should attach to an owned booking and interact with existing provider reconciliation/late-conflict controls. This is newly requested scope pending written design/plan; no support-case subsystem or real refund integration is delivered by the current Sandbox implementation. Routing, evidence authorization, lifecycle and resolution policies remain under review.
+<!-- Current SaaS commercial summary; detailed status is in the linked draft. -->
+
+## SaaS initial Pro fleet allowance — 20 October 2026
+
+The user approved an initial Pro allowance of **30 vehicles eligible for new operations/sales per workspace**, priced at **Rp299,000/month**. This is distinct from Free's stored-data limits; retained historical Pro vehicles do not become newly eligible automatically. Other Pro quotas remain undecided. Read the [SaaS draft awaiting review](../superpowers/specs/2026-10-20-shuttle-saas-design.md) and D2026-10-20-03; no billing/entitlement implementation is delivered by this decision.
