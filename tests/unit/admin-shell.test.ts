@@ -1,6 +1,7 @@
 import {it,expect,vi} from 'vitest';
 import {createElement as h} from 'react';
 import {renderToStaticMarkup as render} from 'react-dom/server';
+vi.mock('next/font/google',()=>({Plus_Jakarta_Sans:()=>({variable:'test-jakarta'})}));
 vi.mock('next/navigation',()=>({usePathname:()=>'/admin/companies/a/trips/t/manifest',redirect:(url:string)=>{throw Error(url);}}));
 const companies=vi.fn(async()=>[{id:'a',name:'PO <A>'}]);
 vi.mock('@/app/admin/data',()=>({adminCompanies:companies}));

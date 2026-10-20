@@ -15,8 +15,8 @@ it('renders named locally scrollable route tables',async()=>{
  const {default:Page}=await import('@/app/admin/companies/[companyId]/routes/page');const html=render(await Page({params:Promise.resolve({companyId:'a'})}));
  for(const s of ['role="region"','aria-label="Daftar rute"','tabindex="0"','Rute &lt;panjang&gt;','/admin/companies/a/routes/route'])expect(html).toContain(s);
 });
-it('keeps source edits before creation and distinguishes empty data',async()=>{
- const {default:Stops}=await import('@/app/admin/companies/[companyId]/stops/page');const html=render(await Stops({params:Promise.resolve({companyId:'a'})}));expect(html.indexOf('Stop lama')).toBeLessThan(html.indexOf('Tambah stop'));
+it('retains existing stop rows with directory creation and distinguishes empty class data',async()=>{
+ const {default:Stops}=await import('@/app/admin/companies/[companyId]/stops/page');const html=render(await Stops({params:Promise.resolve({companyId:'a'})}));expect(html).toContain('Stop lama');expect(html).toContain('Tambah titik');
  const {default:Classes}=await import('@/app/admin/companies/[companyId]/service-classes/page');const list=render(await Classes({params:Promise.resolve({companyId:'a'})}));expect(list.indexOf('Kelas lama')).toBeLessThan(list.indexOf('Tambah kelas'));
  data.classes=[];expect(render(await Classes({params:Promise.resolve({companyId:'a'})}))).toContain('Belum ada kelas');
 });

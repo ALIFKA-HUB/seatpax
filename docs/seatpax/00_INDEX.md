@@ -39,6 +39,8 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 - [UI/UX & Visual Design](13_UI_UX_DESIGN.md)
 - [Brand & Logo Direction](13A_BRAND_LOGO.md)
 
+The passenger discovery refinement was approved on 20 October 2026 and implemented locally on its feature branch: [design](../superpowers/specs/2026-10-20-passenger-discovery-design.md), [plan](../superpowers/plans/2026-10-20-passenger-discovery-refresh.md), [scope and verification](../setup/PASSENGER_DISCOVERY_REFRESH_SETUP.md). It removes the decorative bus, adds real initial discovery and popup filters, and routes verified users to their work area. Physical-device and populated/authenticated browser acceptance remain pending.
+
 ## Delivery
 
 - [Demo Data & Presentation](16_DEMO_PRESENTATION.md)
