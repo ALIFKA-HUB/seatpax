@@ -74,6 +74,18 @@ Transaksi pemilihan, pengaruh pada jadwal mendatang yang belum terjual, batas as
 
 Empat kategori role tetap ada: Admin Seatpax, Admin PO, Crew dan pelanggan. Paket Free/Pro tidak menambah role.
 
+### Satu perusahaan untuk akun Admin PO — disepakati
+
+Satu akun Admin PO hanya terhubung sebagai Admin PO pada satu perusahaan. Pengguna menolak kebutuhan undangan Admin PO lintas perusahaan untuk tahap ini. Jika email yang dimasukkan sudah menjadi Admin PO di perusahaan lain, tolak penambahan/pendaftaran tersebut dan tampilkan:
+
+**Email sudah digunakan oleh Admin PO**
+
+Email ini sudah terdaftar sebagai Admin PO di perusahaan lain. Gunakan email berbeda untuk melanjutkan.
+
+Tombol: **Ganti email**.
+
+Ini merupakan batas produk yang harus ditegakkan server-side pada implementasi nanti, bukan hanya alert frontend. Tidak memberi izin mengubah atau menghapus membership lama secara otomatis. Aturan Crew lintas perusahaan, perpindahan kepemilikan, serta status membership nonaktif belum diputuskan oleh persetujuan ini.
+
 ### Admin Seatpax — lima menu disepakati
 
 1. Ringkasan.

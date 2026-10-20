@@ -254,3 +254,6 @@ Prinsip:
 ## Super Admin company control overlay — 9 October 2026
 
 Platform controls require fresh ACTIVE global SUPER_ADMIN membership with company_id NULL, locked FOR SHARE on every read/write/no-op. Server identity never comes from browser metadata. The separate /super-admin/companies page exposes minimum PO summaries and explicit activate/suspend only, granting no tenant operational fallback. See ../setup/SUPER_ADMIN_COMPANY_SETUP.md and D2026-10-09-03.
+## SaaS Admin PO company boundary — 20 October 2026
+
+Under D2026-10-20-03, an Admin PO account may belong as Admin PO to only one company in the initial SaaS. Reject an entered email already registered as another company's Admin PO and offer “Ganti email”; exact adopted copy is in the [SaaS design](../superpowers/specs/2026-10-20-shuttle-saas-design.md). Enforce this on the server when implemented. Existing memberships must not be deleted automatically; Crew cross-company access, inactive memberships and ownership transfer remain separate unresolved policies. This is an adopted product requirement, not a delivered authorization change.
