@@ -39,7 +39,11 @@ Free tidak melakukan penagihan tiket nyata dan keberangkatan simulasinya tidak m
 
 ### Coba sebagai pelanggan — disepakati
 
-Dashboard PO menyediakan tombol **Coba sebagai pelanggan**. Admin dapat mencoba urutan pilih perjalanan → pilih kursi → pembayaran simulasi → tiket dengan label **SIMULASI** yang jelas sepanjang alur. Entry ini memberi akses preview pada simulasi workspace sendiri, bukan pemberian role pelanggan baru atau akses lintas perusahaan. Tidak boleh melakukan penagihan nyata. Detail sesi preview dan mekanisme simulator pembayaran belum diputuskan.
+Dashboard PO menyediakan tombol **Coba sebagai pelanggan**. Admin dapat mencoba urutan pilih perjalanan → pilih kursi → pembayaran simulasi → tiket dengan label **SIMULASI** yang jelas sepanjang alur. Entry ini memberi akses preview pada simulasi workspace sendiri, bukan pemberian role pelanggan baru atau akses lintas perusahaan. Tidak boleh melakukan penagihan nyata. Detail sesi preview masih memerlukan spesifikasi teknis.
+
+### Pembayaran simulasi bawaan — disepakati
+
+Free menggunakan simulator bawaan Seatpax tanpa keharusan membuat akun atau memasukkan key Midtrans. Pengguna dapat mencoba hasil **Berhasil** (tiket simulasi terbit), **Menunggu pembayaran** (booking pending), atau **Gagal/kedaluwarsa** (alur penanganan kegagalan ditampilkan). Gagal dan kedaluwarsa tidak otomatis dianggap satu status domain; pemetaan dan transisinya ditetapkan dalam spesifikasi teknis. Seluruh skenario hanya memutasi data simulasi milik workspace terkait. Pilihan hasil simulasi tidak boleh tersedia pada transaksi nyata atau menjadi bukti pembayaran nyata. Tidak ada perubahan pada adapter Midtrans live/Sandbox yang diotorisasi oleh keputusan produk ini.
 
 ### Reset simulasi Free — disepakati
 
