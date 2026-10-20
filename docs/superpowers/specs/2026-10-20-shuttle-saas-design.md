@@ -84,7 +84,9 @@ Display timezone serta titik potong publication/hold/initiation masih perlu dite
 
 Admin Seatpax dapat mengelola harga dan benefit paket. Perubahan tidak boleh diam-diam mengubah periode yang sudah dibayar. Pengguna menghendaki jeda pemberitahuan dan penerapan pada periode berlangganan berikutnya. Seluruh pelanggan Pro akhirnya mengikuti kebijakan baru; tidak ada grandfathering tanpa batas bagi pelanggan lama.
 
-Usulan mekanisme: versi paket menyimpan harga/benefit immutable dan periode berlangganan menyimpan versi yang dibeli. Publikasi versi baru, pemilihan versi invoice dan aktivasi periode harus memiliki aturan konsisten serta audit. Durasi minimum pemberitahuan dan aturan invoice yang terbit sebelum perubahan **belum disepakati**. Angka pemberitahuan 30 hari pernah direkomendasikan, belum menjadi kebijakan final.
+Perubahan harga/benefit diumumkan **minimal 30 hari sebelum berlaku**, disepakati pengguna. Periode yang sudah dibayar tetap memakai harga dan benefit yang dibeli. Setelah masa pemberitahuan, perpanjangan berikutnya menggunakan versi baru; seluruh pelanggan Pro akhirnya mengikuti kebijakan tersebut. Penyesuaian armada mengikuti aturan over-quota di bawah.
+
+Mekanisme teknis yang perlu ditulis: versi paket menyimpan harga/benefit immutable dan periode berlangganan menyimpan versi yang dibeli. Publikasi versi baru, pemilihan versi invoice dan aktivasi periode harus konsisten serta diaudit. Penanganan invoice yang sudah terbit tetapi belum dibayar, pembayaran lebih awal untuk periode mendatang, serta konflik perubahan harga saat pembayaran sedang diproses masih memerlukan kontrak teknis. Masa pemberitahuan 30 hari bukan izin mengubah hak periode yang sudah dibayar.
 
 ### Jika kuota armada turun
 
