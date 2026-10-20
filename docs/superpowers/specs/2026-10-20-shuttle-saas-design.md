@@ -37,6 +37,10 @@ Untuk Free, arsip tetap dihitung. Saat kuota habis, tersedia reset simulasi atas
 
 Free tidak melakukan penagihan tiket nyata dan keberangkatan simulasinya tidak masuk pencarian publik untuk penjualan nyata. Label simulasi perlu terlihat pada alurnya. Mekanisme pemisahan data serta pemakaian ulang master saat upgrade masih memerlukan desain; histori simulasi tidak boleh disalahartikan sebagai transaksi nyata.
 
+### Coba sebagai pelanggan — disepakati
+
+Dashboard PO menyediakan tombol **Coba sebagai pelanggan**. Admin dapat mencoba urutan pilih perjalanan → pilih kursi → pembayaran simulasi → tiket dengan label **SIMULASI** yang jelas sepanjang alur. Entry ini memberi akses preview pada simulasi workspace sendiri, bukan pemberian role pelanggan baru atau akses lintas perusahaan. Tidak boleh melakukan penagihan nyata. Detail sesi preview dan mekanisme simulator pembayaran belum diputuskan.
+
 ### Reset simulasi Free — disepakati
 
 Reset menghapus booking, pembayaran simulasi dan keberangkatan simulasi pada workspace tersebut. Profil PO, titik layanan, rute, armada, template kursi dan akun Crew tetap tersimpan. Sebelum reset, tampilkan ringkasan data yang akan dihapus dan minta konfirmasi pengguna. Ini menetapkan perilaku fitur reset mendatang, bukan izin menghapus data sekarang.
