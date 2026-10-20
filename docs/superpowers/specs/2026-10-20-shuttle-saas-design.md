@@ -76,7 +76,9 @@ Periode Pro adalah **durasi tetap 30 hari (720 jam)**, menggantikan keputusan bu
 
 Perpanjangan yang dibayar dalam grace tujuh hari menambahkan 30 hari dari waktu berakhir periode sebelumnya, bukan dari waktu pembayaran. Masa grace yang sudah dipakai menjadi bagian periode perpanjangan itu. Setelah grace habis, pembayaran terverifikasi memulai periode baru selama 30 hari dari waktu pembayaran terverifikasi; periode ketika penjualan sudah dihentikan tidak ditagihkan sebagai tunggakan. Ini disepakati pengguna setelah aturan durasi tetap 30 hari.
 
-Display timezone, tanggal penerbitan invoice, pembayaran lebih awal, serta titik potong publication/hold/initiation masih perlu ditentukan. Mekanisme invoice lama dan pembayaran yang sedang diproses tepat saat grace berakhir memerlukan kontrak teknis; persetujuan ini tidak membatalkan kewajiban tiket yang sudah ada. **Grace langganan tujuh hari berbeda dari grace pembayaran tiket yang sudah ada.**
+Invoice perpanjangan otomatis diterbitkan tujuh hari sebelum jatuh tempo. Pembayaran lebih awal menambahkan 30 hari setelah periode sekarang berakhir, sehingga sisa waktu tidak hilang. Pengingat melalui dashboard dan email pada H-7, H-3, H-1, saat jatuh tempo, serta hari ke-3 dan ke-6 grace; jadwal ini disepakati pengguna. Pengiriman harus berhenti untuk kewajiban yang sudah dibayar dan deduplikasi/retry perlu ditetapkan secara teknis.
+
+Display timezone serta titik potong publication/hold/initiation masih perlu ditentukan. Mekanisme invoice lama dan pembayaran yang sedang diproses tepat saat grace berakhir memerlukan kontrak teknis; persetujuan ini tidak membatalkan kewajiban tiket yang sudah ada. **Grace langganan tujuh hari berbeda dari grace pembayaran tiket yang sudah ada.**
 
 ## 5. Perubahan harga/benefit — disepakati dengan detail waktu terbuka
 
