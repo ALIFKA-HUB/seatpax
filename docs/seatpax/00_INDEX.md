@@ -41,6 +41,8 @@ Seatpax documentation is intentionally modular: **one context = one Markdown fil
 
 The passenger discovery refinement was approved on 20 October 2026 and implemented locally on its feature branch: [design](../superpowers/specs/2026-10-20-passenger-discovery-design.md), [plan](../superpowers/plans/2026-10-20-passenger-discovery-refresh.md), [scope and verification](../setup/PASSENGER_DISCOVERY_REFRESH_SETUP.md). It removes the decorative bus, adds real initial discovery and popup filters, and routes verified users to their work area. Physical-device and populated/authenticated browser acceptance remain pending.
 
+The user adopted real city/regency references and requested data tidying on 20 October 2026, with no real pilot PO identified yet. Read the [database audit](../analysis/2026-10-20-region-data-audit.md) and [proposed catalogue/cleanup design awaiting review](../superpowers/specs/2026-10-20-region-reference-cleanup-design.md) before any related database changes; no cleanup or region import has been applied.
+
 ## Delivery
 
 - [Demo Data & Presentation](16_DEMO_PRESENTATION.md)
