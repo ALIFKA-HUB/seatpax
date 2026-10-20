@@ -26,7 +26,7 @@ Paket melekat pada workspace PO, bukan menjadi role pengguna.
 
 | Ketentuan | Free | Pro |
 |---|---|---|
-| Harga | Gratis selamanya | Rp299.000/workspace/bulan |
+| Harga | Gratis selamanya | Rp299.000/workspace/30 hari |
 | Penggunaan | Simulasi saja | Operasional dan penjualan nyata setelah konfigurasi pembayaran PO siap |
 | Armada | 2 record tersimpan | 30 armada yang layak untuk operasi/penjualan baru |
 | Rute | 2 record tersimpan | Kuota belum diputuskan |
@@ -74,7 +74,9 @@ Pembayaran perpanjangan yang terverifikasi memulihkan layanan yang memenuhi syar
 
 Periode Pro adalah **durasi tetap 30 hari (720 jam)**, menggantikan keputusan bulan kalender sebelumnya setelah pengguna meminta durasi yang sama untuk setiap periode dan menyetujui penjelasannya. Contoh 20 Januari pukul 10.00 → 19 Februari pukul 10.00. Tanggal tagihan dapat bergeser antarbulan; tidak ada penyesuaian ke akhir bulan kalender.
 
-Perpanjangan yang dibayar dalam grace tujuh hari menambahkan 30 hari dari waktu berakhir periode sebelumnya, bukan dari waktu pembayaran. Masa grace yang sudah dipakai menjadi bagian periode perpanjangan itu. Display timezone, tanggal penerbitan invoice, pembayaran lebih awal, pembayaran setelah grace, serta titik potong publication/hold/initiation masih perlu ditentukan. **Grace langganan tujuh hari berbeda dari grace pembayaran tiket yang sudah ada.**
+Perpanjangan yang dibayar dalam grace tujuh hari menambahkan 30 hari dari waktu berakhir periode sebelumnya, bukan dari waktu pembayaran. Masa grace yang sudah dipakai menjadi bagian periode perpanjangan itu. Setelah grace habis, pembayaran terverifikasi memulai periode baru selama 30 hari dari waktu pembayaran terverifikasi; periode ketika penjualan sudah dihentikan tidak ditagihkan sebagai tunggakan. Ini disepakati pengguna setelah aturan durasi tetap 30 hari.
+
+Display timezone, tanggal penerbitan invoice, pembayaran lebih awal, serta titik potong publication/hold/initiation masih perlu ditentukan. Mekanisme invoice lama dan pembayaran yang sedang diproses tepat saat grace berakhir memerlukan kontrak teknis; persetujuan ini tidak membatalkan kewajiban tiket yang sudah ada. **Grace langganan tujuh hari berbeda dari grace pembayaran tiket yang sudah ada.**
 
 ## 5. Perubahan harga/benefit — disepakati dengan detail waktu terbuka
 
