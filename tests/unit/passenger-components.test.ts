@@ -9,6 +9,8 @@ it('keeps named navigation and marks the current route',()=>{
  const html=render(h(PassengerShell,{active:'tickets',children:'Content'}));
  expect(html).toContain('aria-current="page"');for(const path of ['/trips','/tickets','/account'])expect(html).toContain(`href="${path}"`);
  expect(html).toContain('Content');expect(render(h(PassengerShell,{focused:true,children:'Login'}))).toContain('aria-label="Seatpax"');
+ for(const label of ['Perjalanan','Pesanan saya','Akun'])expect(html).toContain(label);
+ expect(render(h(PassengerShell,{focused:true,children:'Login'}))).not.toContain('Navigasi penumpang');
 });
 it('renders semantic status, long journey data and recovery',()=>{
  const html=render(h(JourneySummary,{fromName:'Asal sangat panjang',toName:'Tujuan <b>panjang</b>',departureAt:'2026-10-09T01:00:00Z',seatCode:'01',fare:'60000'}));

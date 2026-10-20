@@ -8,6 +8,6 @@ it('provides the passenger entry instead of a development setup page',()=>{
 });
 it('renders real journey data and retains interval query parameters',()=>{
  const html=render(h(TripCard,{trip:{tripId:'a',name:'Trip A',companyName:'PO A',fromStopId:'origin',toStopId:'end',originName:'Bandung',destinationName:'Bogor',departureAt:'2026-10-09T01:00:00Z',className:'Eksekutif',fare:'60000',availableCount:0}}));
- for(const text of ['PO A','Eksekutif','Rp 60.000','0 kursi tersedia','Lihat kursi'])expect(html).toContain(text);
+ for(const text of ['PO A','Eksekutif','Rp 60.000','0 kursi tersedia','Pilih kursi'])expect(html).toContain(text);
  expect(html).toContain('/trips/a?from=origin&amp;to=end');
 });
