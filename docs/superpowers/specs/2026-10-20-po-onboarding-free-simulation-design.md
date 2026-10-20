@@ -1,6 +1,8 @@
 # Pendaftaran PO dan Free simulasi
 
-Tanggal: 20 Oktober 2026. **Status: spesifikasi teknis usulan, menunggu review pengguna. Tidak memberi izin implementasi atau operasi penghapusan.**
+Tanggal: 20 Oktober 2026. **Status: spesifikasi teknis disetujui pengguna setelah klarifikasi jeda reset. Plan implementasi menunggu review; tidak ada operasi penghapusan yang diotorisasi oleh persetujuan spec ini.**
+
+Pengguna menjawab “cocok” terhadap pertanyaan review keseluruhan spec. Mekanisme dan default pada dokumen ini, termasuk bagian yang semula ditandai usulan, menjadi baseline desain untuk [plan implementasi](../plans/2026-10-20-po-onboarding-free-simulation.md). Usulan alternatif yang tidak direkomendasikan pada tabel tetap hanya pembanding, bukan pekerjaan implementasi.
 
 ## 1. Tujuan
 

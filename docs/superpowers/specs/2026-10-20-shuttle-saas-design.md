@@ -4,7 +4,7 @@ Tanggal: 20 Oktober 2026. **Status: draft untuk review pengguna; belum menjadi k
 
 Dokumen ini merangkum keputusan D2026-10-20-03 beserta penyempurnaannya. Bagian “disepakati” adalah keputusan produk; bagian “usulan” dan “belum diputuskan” tidak memberi izin implementasi. Rancangan ini mencakup beberapa subsistem, sehingga perlu dipecah menjadi spesifikasi teknis dan plan per bagian.
 
-Spesifikasi teknis bagian pertama sudah disusun untuk review: [pendaftaran PO dan Free simulasi](2026-10-20-po-onboarding-free-simulation-design.md). Mekanisme dan default tambahan di dokumen itu belum disepakati sampai review pengguna; tidak mengubah status keputusan terbuka subsistem lain.
+Spesifikasi teknis bagian pertama telah disetujui pengguna: [pendaftaran PO dan Free simulasi](2026-10-20-po-onboarding-free-simulation-design.md). Mekanisme dan default tambahan di dokumen itu menjadi baseline slice Free; tidak mengubah status keputusan terbuka subsistem lain. [Plan implementasi](../plans/2026-10-20-po-onboarding-free-simulation.md) menunggu review.
 
 ## 1. Tujuan dan batas produk — disepakati
 
