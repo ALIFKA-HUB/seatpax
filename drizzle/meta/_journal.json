@@ -78,6 +78,13 @@
       "when": 1791508802000,
       "tag": "0010_company_status_control",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792466840127,
+      "tag": "0011_region_reference",
+      "breakpoints": true
     }
   ]
 }

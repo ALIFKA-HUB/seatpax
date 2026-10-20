@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { pgSchema, pgTable, pgEnum, uuid, text, timestamp, integer, bigint, jsonb, check, index, uniqueIndex, unique, foreignKey } from 'drizzle-orm/pg-core';
+import { pgSchema, pgTable, pgEnum, uuid, text, timestamp, integer, bigint, jsonb, check, index, uniqueIndex, unique, foreignKey, boolean, date } from 'drizzle-orm/pg-core';
 
 const authUsers = pgSchema('auth').table('users', { id: uuid('id').primaryKey() });
 export const holdStatus=pgEnum('hold_status',['ACTIVE','RELEASED','EXPIRED','CONVERTED']);
@@ -120,9 +120,22 @@ export const vehicles = pgTable('vehicles', {
 ]).enableRLS();
 
 export const templateStatus=pgEnum('template_status',['ACTIVE','INACTIVE']);
+export const regionImportState=pgEnum('region_import_state',['FETCHING','SUCCEEDED','FAILED']);
+export const regionImportRuns=pgTable('region_import_runs',{
+ id:uuid('id').primaryKey().defaultRandom(),provider:text('provider').notNull(),state:regionImportState('state').notNull(),sourceUrls:text('source_urls').array().notNull(),
+ upstreamDate:date('upstream_date'),retrievedAt:timestamp('retrieved_at',{withTimezone:true}).notNull(),finishedAt:timestamp('finished_at',{withTimezone:true}),digest:text('digest'),
+ provinceCount:integer('province_count').notNull().default(0),regencyCount:integer('regency_count').notNull().default(0),failureCode:text('failure_code'),
+},t=>[index('region_runs_provider_date').on(t.provider,t.upstreamDate),check('region_counts_valid',sql`${t.provinceCount}>=0 AND ${t.regencyCount}>=0`),check('region_digest_valid',sql`${t.digest} IS NULL OR ${t.digest} ~ '^[a-f0-9]{64}$'`)]).enableRLS();
+export const regionProvinces=pgTable('region_provinces',{
+ id:uuid('id').primaryKey().defaultRandom(),provider:text('provider').notNull(),code:text('code').notNull(),name:text('name').notNull(),active:boolean('active').notNull(),lastSeenRunId:uuid('last_seen_run_id').notNull().references(()=>regionImportRuns.id,{onDelete:'restrict'}),
+},t=>[unique('region_province_code').on(t.provider,t.code),unique('region_province_provider_id').on(t.provider,t.id),index('region_province_run').on(t.lastSeenRunId)]).enableRLS();
+export const regionRegencies=pgTable('region_regencies',{
+ id:uuid('id').primaryKey().defaultRandom(),provider:text('provider').notNull(),code:text('code').notNull(),name:text('name').notNull(),provinceId:uuid('province_id').notNull(),active:boolean('active').notNull(),lastSeenRunId:uuid('last_seen_run_id').notNull().references(()=>regionImportRuns.id,{onDelete:'restrict'}),
+},t=>[unique('region_regency_code').on(t.provider,t.code),foreignKey({columns:[t.provider,t.provinceId],foreignColumns:[regionProvinces.provider,regionProvinces.id]}).onDelete('restrict'),index('region_regency_province').on(t.provinceId),index('region_regency_run').on(t.lastSeenRunId)]).enableRLS();
 export const stops=pgTable('stops',{
   id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull().references(()=>companies.id,{onDelete:'restrict'}),name:text('name').notNull(),city:text('city').notNull(),address:text('address'),status:templateStatus('status').notNull().default('ACTIVE'),...timestamps(),
-},t=>[unique('stops_tenant_key').on(t.id,t.companyId)]).enableRLS();
+  regionRegencyId:uuid('region_regency_id').references(()=>regionRegencies.id,{onDelete:'restrict'}),
+},t=>[unique('stops_tenant_key').on(t.id,t.companyId),index('stops_region_regency').on(t.regionRegencyId)]).enableRLS();
 export const routes=pgTable('routes',{
   id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull().references(()=>companies.id,{onDelete:'restrict'}),name:text('name').notNull(),code:text('code'),status:templateStatus('status').notNull().default('ACTIVE'),revision:integer('revision').notNull().default(1),...timestamps(),
 },t=>[unique('routes_tenant_key').on(t.id,t.companyId),check('route_revision_positive',sql`${t.revision}>0`)]).enableRLS();
