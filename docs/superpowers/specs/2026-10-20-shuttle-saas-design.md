@@ -14,6 +14,12 @@ Belum ada PO pilot nyata atau lokasi layanan terverifikasi. Demo PO A/B tetap da
 
 ## 2. Paket awal — disepakati
 
+### Pendaftaran awal PO — disepakati
+
+Form awal berisi nama perusahaan/shuttle, nama penanggung jawab, nomor WhatsApp dan kota/kabupaten dari referensi yang tersedia. Email diambil dari akun yang sedang login. Setelah pendaftaran berhasil, pengguna masuk dashboard Free simulasi dengan panduan penyiapan berurutan: titik layanan → rute → armada → jadwal. Urutan panduan ini tidak mengubah dependensi teknis domain yang sudah berlaku.
+
+Verifikasi untuk penjualan tiket nyata dibahas terpisah pada upgrade Pro; pengisian form awal tidak berarti perusahaan sudah diverifikasi atau boleh menerima pembayaran nyata. Batas satu perusahaan per akun Admin PO tetap berlaku. Validasi field, privasi nomor kontak, kegagalan/retry pembuatan workspace dan detail verifikasi upgrade memerlukan spesifikasi teknis.
+
 Paket melekat pada workspace PO, bukan menjadi role pengguna.
 
 | Ketentuan | Free | Pro |
@@ -132,7 +138,7 @@ Tidak ada schema/migration final dalam dokumen ini. Review `SEATPAX_SPEC_REVIEW.
 
 | Bagian | Yang harus diputuskan sebelum plan implementasinya |
 |---|---|
-| Free/onboarding | Batas workspace per pendaftar, anti-abuse, batas data sekunder, pemisahan simulasi, reset dan retensi |
+| Free/onboarding | Enforcement batas satu perusahaan Admin PO, anti-abuse, batas data sekunder, pemisahan simulasi, reset dan retensi |
 | Pro/billing | Kuota selain armada, kalender bulanan, invoice/perpanjangan, pajak dan penanganan pembayaran langganan gagal |
 | Versi paket | Jeda pemberitahuan, periode efektif, invoice yang sudah terbit/dibayar, perubahan harga |
 | Entitlement | Titik potong penjualan dan transaksi kuota; jadwal belum terjual; penukaran armada |
