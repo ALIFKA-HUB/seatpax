@@ -271,3 +271,5 @@ The approved availability/hold design and plan implement public snapshot search/
 ## SaaS direction update — 20 October 2026
 
 D2026-10-20-03 adopts PO self-service registration/subscription payment and ticket proceeds going directly to each PO's payment account. Seatpax subscription fees are a separate payment flow. These subsystems are pending architectural design and implementation planning; the retained 30-day demo implementation above does not provide them yet. Renewal mode, trial/activation and expiry policies remain unresolved. Existing tenant isolation, transactional ticketing and protected historical data remain the foundation.
+
+Permanent Free clarification — 20 October 2026: PO onboarding should offer a permanent simulation-only Free plan with bounded setup data/usage, replacing the 14-day trial proposal. Exact quotas and simulation retention/reset policies are unresolved. This is product direction only; live ticket sales require the paid path and ready per-PO payment configuration in the future design.

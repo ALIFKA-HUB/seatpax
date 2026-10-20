@@ -158,3 +158,5 @@ MidtransPaymentProvider
 ## SaaS payment ownership — adopted direction, 20 October 2026
 
 Ticket payments are intended to go directly to the respective PO's payment account; Seatpax collects SaaS subscription fees separately. Platform collection followed by PO payouts is not the adopted approach. Current Sandbox ticket implementation uses one environment-level merchant, so per-tenant merchant resolution/verification and independent SaaS billing require a reviewed design/plan before implementation. Provider connection/activation, renewal mode, trial, package rules and expiry entitlements are still unresolved. See D2026-10-20-03.
+
+Free plan clarification — 20 October 2026: the adopted Free experience is permanent and simulation-only, with setup/usage quotas yet to be decided. Free simulation must not initiate real ticket charges or enter live public inventory. The earlier 14-day trial duration is superseded; simulation storage/reset policy and paid billing behavior await design review.
