@@ -825,3 +825,7 @@ Adopt the approved passenger preview with **no decorative bus illustration**. Ke
 ## Regional stop selection — 20 October 2026
 
 Admin Add/Edit point uses province selection and searchable exact city/regency names with codes. Kota and Kabupaten stay distinct. New points require an active catalogue reference; legacy points show **Wilayah belum dipetakan** and keep existing city text until deliberately mapped. Retired mappings permit unrelated edits and require an active replacement to change region. Missing catalogue explains retry/synchronization without removing the directory. Passenger search offers configured snapshot points participating in sale-open intervals, never every reference city. See [delivery and pending device acceptance](../setup/REGION_REFERENCE_SETUP.md).
+
+## Adopted tenant booking portal — 20 October 2026
+
+Each shuttle company should have its own passenger booking page within Seatpax, using a path such as `/po/{company-slug}` with PO identity, company-bound search/journeys, booking and payment context. Free simulation is excluded from live public discovery. Custom company domains are deferred. This is approved design direction, not delivered UI or tenant-routing implementation.
