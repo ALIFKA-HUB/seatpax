@@ -1,6 +1,6 @@
 # Real regional reference data and safe database tidying
 
-Status: written design awaiting user review. User-approved intent: use real Indonesian city/regency references and tidy existing data. User confirmed no actual PO or verified terminal/pool locations are available yet. This is an architectural data change under the brainstorming workflow; this document is a reviewable proposal, not evidence of implementation.
+Status: the user requested implementation planning on 20 October 2026 after this written design was presented. [Package A](../plans/2026-10-20-region-reference.md) and [Package B](../plans/2026-10-20-fixture-cleanup.md) await plan review. User-approved intent: use real Indonesian city/regency references and tidy existing data. User confirmed no actual PO or verified terminal/pool locations are available yet. No implementation or hosted write is claimed.
 
 ## Outcome
 
@@ -57,4 +57,4 @@ Source-stop status or catalogue refresh must not rewrite a published snapshot. T
 
 ## Approval handoff
 
-Review this written design before writing an implementation plan. The user has approved the outcome; approval of the concrete schema/suspension design is not inferred from that earlier request. No database changes have been made in this preparation.
+The user requested the implementation plans after the written design and scope summary were presented. Review Package A/B before execution; the actual fixture-status dry-run still requires its explicit operation approval before application. No database changes have been made in this preparation.
