@@ -5,7 +5,7 @@ export type RouteRow={id:string;name:string;code:string|null;status:'ACTIVE'|'IN
 export type OrderedStop={id:string;stopId:string;name:string;sequence:number;arrivalOffsetMin:number|null;departureOffsetMin:number|null;status:'ACTIVE'|'INACTIVE'};
 export function createRouteRepository(client:Sql){return {
   run<T>(ctx:Context,fn:(tx:DomainTx)=>Promise<T>){return withAdminTransaction(client,ctx,fn);},
-  async listStops(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select s.id,s.name,s.city,s.address,s.status,s.region_regency_id as "regionRegencyId",r.province_id as "regionProvinceId" from public.stops s left join public.region_regencies r on r.id=s.region_regency_id where s.company_id=${companyId} order by s.name`;},
+  async listStops(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select id,name,city,address,status,region_regency_id as "regionRegencyId" from public.stops where company_id=${companyId} order by name`;},
   async listClasses(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select id,name,code,status from public.service_classes where company_id=${companyId} order by name`;},
   async listRoutes(tx:DomainTx,companyId:string):Promise<RouteRow[]>{return await tx<RouteRow[]>`select id,name,code,status,revision from public.routes where company_id=${companyId} order by name`;},
   async route(tx:DomainTx,ctx:Context,id:string,lock=false):Promise<RouteRow>{
