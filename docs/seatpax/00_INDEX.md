@@ -116,4 +116,6 @@ Numbered section headings retain the original master section numbers for traceab
 
 ## SaaS restructuring discussion — 20 October 2026
 
+First technical slice: [PO onboarding and Free simulation specification awaiting review](../superpowers/specs/2026-10-20-po-onboarding-free-simulation-design.md). It consolidates the approved form, single-company Admin boundary, quotas, customer preview, built-in payment simulator and confirmed reset. Separate simulation tables and secondary limits are technical proposals for review, not delivered functionality or an approved implementation plan.
+
 Read D2026-10-20-03 in `19_DECISION_LEDGER.md` and the [consolidated SaaS draft for review](../superpowers/specs/2026-10-20-shuttle-saas-design.md) before SaaS/onboarding/payment work. Adopted product decisions now include permanent bounded simulation-only Free, manually paid monthly Pro at Rp299,000 with 30 operationally eligible vehicles, seven-day grace, direct-to-PO ticket proceeds, and delayed mandatory benefit changes. The earlier 14-day trial was superseded. Exact billing/notice rules and other technical policies remain open in the draft. The current single-Sandbox-merchant implementation has not been converted; specifications and plans per subsystem still require review before implementation.

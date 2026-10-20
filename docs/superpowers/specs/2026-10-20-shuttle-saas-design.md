@@ -4,6 +4,8 @@ Tanggal: 20 Oktober 2026. **Status: draft untuk review pengguna; belum menjadi k
 
 Dokumen ini merangkum keputusan D2026-10-20-03 beserta penyempurnaannya. Bagian “disepakati” adalah keputusan produk; bagian “usulan” dan “belum diputuskan” tidak memberi izin implementasi. Rancangan ini mencakup beberapa subsistem, sehingga perlu dipecah menjadi spesifikasi teknis dan plan per bagian.
 
+Spesifikasi teknis bagian pertama sudah disusun untuk review: [pendaftaran PO dan Free simulasi](2026-10-20-po-onboarding-free-simulation-design.md). Mekanisme dan default tambahan di dokumen itu belum disepakati sampai review pengguna; tidak mengubah status keputusan terbuka subsistem lain.
+
 ## 1. Tujuan dan batas produk — disepakati
 
 Seatpax menyediakan perangkat penjualan dan operasional untuk perusahaan shuttle antarkota. Banyak PO dapat berlangganan, masing-masing memiliki workspace, data, inventori kursi, dan portal pelanggan sendiri. Sasaran awal adalah PO yang seluruh pemesanan tiketnya ditangani Seatpax. Integrasi distribusi OTA atau sinkronisasi penjualan platform lain berada di luar lingkup awal.
