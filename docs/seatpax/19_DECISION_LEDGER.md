@@ -243,3 +243,5 @@ Still unresolved: paid-first versus trial onboarding; manual renewal versus recu
 The user also wants the selected base route to be adjustable for an individual departure. Editing limits before/after publication and sold tickets, and recurring-day schedule behavior, remain design work; no implemented per-trip route override or recurring scheduler is claimed.
 
 Self-service onboarding refinement: the user chose a free trial for newly registered POs. Trial duration, start trigger, feature/usage limits and eligibility/abuse controls are not yet decided. This supersedes the paid-first-versus-trial open question above; trial and billing implementation still require the written SaaS design/plan.
+
+Trial duration refinement: the user agreed to the recommended 14-day free trial. Start trigger, trial feature/usage limits, live ticket-sale eligibility, renewal mode and grace duration remain unresolved; no billing/trial code has been implemented.
