@@ -829,3 +829,7 @@ Admin Add/Edit point uses province selection and searchable exact city/regency n
 ## Adopted tenant booking portal — 20 October 2026
 
 Each shuttle company should have its own passenger booking page within Seatpax, using a path such as `/po/{company-slug}` with PO identity, company-bound search/journeys, booking and payment context. Free simulation is excluded from live public discovery. Custom company domains are deferred. This is approved design direction, not delivered UI or tenant-routing implementation.
+
+## Adopted SaaS platform Admin navigation — 20 October 2026
+
+Admin Seatpax/Super Admin: **Ringkasan**, **Perusahaan**, **Paket & benefit**, **Langganan & tagihan**, **Riwayat perubahan**. These cover platform/company summaries, service state, versioned plan configuration, subscription/invoice lifecycle and audited platform changes. Routes, schedules, fleet, Crew and passenger orders remain company-operational screens for Admin PO. This is approved navigation scope; the existing minimal Super Admin implementation does not deliver all these pages.
