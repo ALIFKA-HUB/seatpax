@@ -72,7 +72,9 @@ Pelanggan tetap dapat mengakses tiketnya. Crew yang masih berwenang dan ditugask
 
 Pembayaran perpanjangan yang terverifikasi memulihkan layanan yang memenuhi syarat lain. Pembayaran tersebut tidak otomatis membatalkan suspend manual, masalah merchant, atau pembatasan armada. Status langganan harus dibedakan dari status perusahaan dan keanggotaan.
 
-Periode Pro mengikuti **bulan kalender dari tanggal mulai berlangganan**, disepakati pengguna setelah contoh 20 Oktober → 20 November. Jika tanggal yang sama tidak tersedia pada bulan berikutnya, gunakan hari terakhir bulan tersebut; bukan durasi tetap 30 hari. Jam/timezone boundary, pelestarian anchor setelah bulan pendek, tanggal invoice, pembayaran lebih awal/terlambat, serta titik potong publication/hold/initiation masih perlu ditentukan. **Grace langganan tujuh hari berbeda dari grace pembayaran tiket yang sudah ada.**
+Periode Pro adalah **durasi tetap 30 hari (720 jam)**, menggantikan keputusan bulan kalender sebelumnya setelah pengguna meminta durasi yang sama untuk setiap periode dan menyetujui penjelasannya. Contoh 20 Januari pukul 10.00 → 19 Februari pukul 10.00. Tanggal tagihan dapat bergeser antarbulan; tidak ada penyesuaian ke akhir bulan kalender.
+
+Perpanjangan yang dibayar dalam grace tujuh hari menambahkan 30 hari dari waktu berakhir periode sebelumnya, bukan dari waktu pembayaran. Masa grace yang sudah dipakai menjadi bagian periode perpanjangan itu. Display timezone, tanggal penerbitan invoice, pembayaran lebih awal, pembayaran setelah grace, serta titik potong publication/hold/initiation masih perlu ditentukan. **Grace langganan tujuh hari berbeda dari grace pembayaran tiket yang sudah ada.**
 
 ## 5. Perubahan harga/benefit — disepakati dengan detail waktu terbuka
 
