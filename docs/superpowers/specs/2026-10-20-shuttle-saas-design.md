@@ -165,8 +165,8 @@ Tidak ada schema/migration final dalam dokumen ini. Review `SEATPAX_SPEC_REVIEW.
 | Bagian | Yang harus diputuskan sebelum plan implementasinya |
 |---|---|
 | Free/onboarding | Enforcement batas satu perusahaan Admin PO, anti-abuse, batas data sekunder, pemisahan simulasi, dependensi/concurrency reset dan retensi |
-| Pro/billing | Kuota selain armada, kalender bulanan, invoice/perpanjangan, pajak dan penanganan pembayaran langganan gagal |
-| Versi paket | Jeda pemberitahuan, periode efektif, invoice yang sudah terbit/dibayar, perubahan harga |
+| Pro/billing | Kuota selain armada, pajak produksi dan rincian transaksi; periode tetap 30 hari, grace, anchor renewal serta jadwal invoice sudah disepakati |
+| Versi paket | Detail cutover invoice/attempt dan prepaid period; pemberitahuan minimal 30 hari sudah disepakati |
 | Entitlement | Titik potong penjualan dan transaksi kuota; jadwal belum terjual; penukaran armada |
 | Merchant PO | Cara koneksi/verifikasi, rahasia/rotasi, routing webhook dan pembayaran historis |
 | Portal | Slug lifecycle, sesi/return URL, navigasi akun lintas PO dengan ownership tetap aman |
