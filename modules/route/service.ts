@@ -9,8 +9,17 @@ export function createRouteService(repo:RouteRepository){return {
   async list(ctx:Context){return repo.run(ctx,async tx=>({routes:await repo.listRoutes(tx,ctx.companyId),stops:await repo.listStops(tx,ctx.companyId),classes:await repo.listClasses(tx,ctx.companyId)}));},
   async detail(ctx:Context,routeId:string){id(routeId);return repo.run(ctx,async tx=>({route:await repo.route(tx,ctx,routeId),stops:await repo.orderedStops(tx,ctx,routeId),choices:await repo.listStops(tx,ctx.companyId),classes:await repo.listClasses(tx,ctx.companyId)}));},
   async saveStop(ctx:Context,input:unknown,stopId?:string){const v=parseStop(input);if(stopId)id(stopId);return repo.run(ctx,async tx=>{
-    if(stopId){const rows=await tx`update public.stops set name=${v.name},city=${v.city},address=${v.address},status=${v.status},updated_at=now() where id=${stopId} and company_id=${ctx.companyId} returning id`;if(!rows.length)throw new DomainError('forbidden','Stop tidak tersedia.');return rows[0].id as string;}
-    const rows=await tx`insert into public.stops(company_id,name,city,address,status) values(${ctx.companyId},${v.name},${v.city},${v.address},${v.status}) returning id`;return rows[0].id as string;
+    const current=stopId?(await tx`select city,region_regency_id from public.stops where id=${stopId} and company_id=${ctx.companyId} for update`)[0]:null;
+    if(stopId&&!current)throw new DomainError('forbidden','Stop tidak tersedia.');
+    let city:string=current?.city??'';
+    if(v.regionRegencyId){
+      const selected=await tx`select r.name,r.active,p.active as province_active from public.region_regencies r join public.region_provinces p on p.id=r.province_id and p.provider=r.provider where r.id=${v.regionRegencyId} and r.provider='emsifa-v2' for share of r,p`;
+      if(!selected.length)throw new DomainError('validation','Pilih kota/kabupaten yang tersedia.');
+      if(!selected[0].active||!selected[0].province_active){if(current?.region_regency_id!==v.regionRegencyId)throw new DomainError('validation','Wilayah tidak aktif. Pilih pengganti yang aktif.');}
+      else city=selected[0].name;
+    }else if(!current||current.region_regency_id)throw new DomainError('validation','Pilih provinsi dan kota/kabupaten.');
+    if(stopId){const rows=await tx`update public.stops set name=${v.name},city=${city},region_regency_id=${v.regionRegencyId},address=${v.address},status=${v.status},updated_at=now() where id=${stopId} and company_id=${ctx.companyId} returning id`;return rows[0].id as string;}
+    const rows=await tx`insert into public.stops(company_id,name,city,region_regency_id,address,status) values(${ctx.companyId},${v.name},${city},${v.regionRegencyId},${v.address},${v.status}) returning id`;return rows[0].id as string;
   });},
   async saveClass(ctx:Context,input:unknown,classId?:string){const v=parseClass(input);if(classId)id(classId);return repo.run(ctx,async tx=>{
     const duplicate=await tx`select id from public.service_classes where company_id=${ctx.companyId} and code=${v.code} and (${classId??null}::uuid is null or id<>${classId??null}::uuid)`;if(duplicate.length)throw new DomainError('validation','Kode kelas sudah dipakai.');

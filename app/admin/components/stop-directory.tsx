@@ -3,9 +3,10 @@
 import {useId,useRef,useState} from 'react';
 import {MagnifyingGlass,MapPin,PencilSimple,Plus,X} from '@phosphor-icons/react/ssr';
 import type {MasterRow} from '@/modules/route/repository';
+import type {RegionOptions} from '@/modules/regions/types';
 import MasterForm from './master-form';
 
-export default function StopDirectory({companyId,stops}:{companyId:string;stops:MasterRow[]}) {
+export default function StopDirectory({companyId,stops,regionOptions}:{companyId:string;stops:MasterRow[];regionOptions:RegionOptions}) {
  const prefix=useId(),dialog=useRef<HTMLDialogElement>(null);
  const [query,setQuery]=useState(''),[status,setStatus]=useState('ALL');
  const [editing,setEditing]=useState<MasterRow>(),[formKey,setFormKey]=useState(0);
@@ -29,6 +30,6 @@ export default function StopDirectory({companyId,stops}:{companyId:string;stops:
    {visible.length?<div className="stop-table-scroll" role="region" aria-label="Tabel lokasi" tabIndex={0}><table className="stop-table"><thead><tr><th scope="col">Lokasi</th><th scope="col">Kota / kabupaten</th><th scope="col">Status</th><th scope="col"><span className="stop-sr-only">Aksi</span></th></tr></thead><tbody>{visible.map(stop=><tr key={stop.id}><td><strong>{stop.name}</strong><small>{stop.address||'Alamat belum ditambahkan'}</small></td><td>{stop.city||'—'}</td><td><span className={`stop-status-badge${stop.status==='ACTIVE'?' is-active':''}`}>{stop.status==='ACTIVE'?'Aktif':'Nonaktif'}</span></td><td><button type="button" className="stop-edit" aria-label={`Edit ${stop.name}`} onClick={()=>openForm(stop)}><PencilSimple size={20} aria-hidden="true"/></button></td></tr>)}</tbody></table></div>:<div className="stop-empty"><MapPin size={32} aria-hidden="true"/><h2>{stops.length?'Tidak ada titik yang cocok':'Mulai dari titik pertama'}</h2><p>{stops.length?'Coba nama lokasi, kota, atau status lainnya.':'Tambahkan terminal, pool, atau lokasi naik dan turun yang dilayani PO Anda.'}</p>{stops.length?<button type="button" onClick={()=>{setQuery('');setStatus('ALL');}}>Reset pencarian</button>:<button type="button" className="admin-primary" onClick={()=>openForm()}>Tambah titik</button>}</div>}
    <div className="stop-footer" role="status">Menampilkan {visible.length} dari {stops.length} titik</div>
   </section>
-  <dialog ref={dialog} className="stop-dialog" aria-labelledby={prefix+'title'} onCancel={event=>{if(pending)event.preventDefault();}}><div className="stop-dialog-header"><div><p>Lokasi PO</p><h2 id={prefix+'title'}>{editing?'Edit titik':'Tambah titik'}</h2></div><button type="button" className="stop-close" aria-label="Tutup formulir" disabled={pending} onClick={closeForm}><X size={22} aria-hidden="true"/></button></div><p className="stop-dialog-description">Isi detail lokasi agar mudah ditemukan saat menyusun rute perjalanan.</p><MasterForm key={formKey} companyId={companyId} kind="stop" initial={editing} onSaved={saved} onPendingChange={setPending} onCancel={closeForm}/></dialog>
+  <dialog ref={dialog} className="stop-dialog" aria-labelledby={prefix+'title'} onCancel={event=>{if(pending)event.preventDefault();}}><div className="stop-dialog-header"><div><p>Lokasi PO</p><h2 id={prefix+'title'}>{editing?'Edit titik':'Tambah titik'}</h2></div><button type="button" className="stop-close" aria-label="Tutup formulir" disabled={pending} onClick={closeForm}><X size={22} aria-hidden="true"/></button></div><p className="stop-dialog-description">Isi detail lokasi agar mudah ditemukan saat menyusun rute perjalanan.</p><MasterForm key={formKey} companyId={companyId} kind="stop" initial={editing} regionOptions={regionOptions} onSaved={saved} onPendingChange={setPending} onCancel={closeForm}/></dialog>
  </div>;
 }

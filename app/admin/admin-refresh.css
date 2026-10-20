@@ -77,3 +77,5 @@
 @media(max-width:420px){.admin-shell .admin-sidebar{grid-template-columns:1fr}.admin-shell .admin-company{max-width:100%}.admin-shell .admin-main{padding:24px 16px}.admin-shell .admin-breadcrumb{margin:-24px -16px 24px;padding:12px 16px;font-size:11px;gap:10px}.admin-shell .stop-page-heading{flex-direction:column;gap:16px}.admin-shell .stop-page-heading button{width:100%}.admin-shell .stop-dialog{padding:20px;border-radius:18px}.admin-shell .stop-dialog-header h2{font-size:24px}}
 
 @media(max-width:760px){.admin-shell .stop-search input,.admin-shell .stop-dialog .admin-form input,.admin-shell .stop-dialog .admin-form select{font-size:16px}}
+
+.region-guidance{grid-column:1/-1;margin:0;color:var(--admin-muted,#526785);font-size:.875rem;line-height:1.6}.admin-fields label{min-width:0}.admin-fields input[list]{width:100%;min-width:0}

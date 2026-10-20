@@ -2,7 +2,7 @@ import {z} from 'zod';
 const name=z.string().trim().min(1).max(120);
 const code=z.string().trim().min(1).max(32).regex(/^[a-z0-9]+(-[a-z0-9]+)*$/);
 const status=z.enum(['ACTIVE','INACTIVE']);
-export const stopSchema=z.object({name,city:name,address:z.string().trim().max(500).nullable(),status});
+export const stopSchema=z.object({name,regionRegencyId:z.uuid().nullable(),address:z.string().trim().max(500).nullable(),status});
 export const classSchema=z.object({name,code,status});
 const offset=z.number().int().min(0).max(10080).nullable();
 export const routeSchema=z.object({name,code:code.nullable(),stops:z.array(z.object({stopId:z.uuid(),arrivalOffsetMin:offset,departureOffsetMin:offset})).min(2).max(50)}).superRefine((value,ctx)=>{

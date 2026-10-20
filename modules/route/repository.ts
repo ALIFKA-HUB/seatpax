@@ -1,11 +1,11 @@
 import type {Sql} from 'postgres';
 import {withAdminTransaction,type Context,type DomainTx,DomainError} from '@/modules/access/transaction';
-export type MasterRow={id:string;name:string;status:'ACTIVE'|'INACTIVE';city?:string;address?:string|null;code?:string};
+export type MasterRow={id:string;name:string;status:'ACTIVE'|'INACTIVE';city?:string;address?:string|null;code?:string;regionRegencyId?:string|null;regionProvinceId?:string|null};
 export type RouteRow={id:string;name:string;code:string|null;status:'ACTIVE'|'INACTIVE';revision:number};
 export type OrderedStop={id:string;stopId:string;name:string;sequence:number;arrivalOffsetMin:number|null;departureOffsetMin:number|null;status:'ACTIVE'|'INACTIVE'};
 export function createRouteRepository(client:Sql){return {
   run<T>(ctx:Context,fn:(tx:DomainTx)=>Promise<T>){return withAdminTransaction(client,ctx,fn);},
-  async listStops(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select id,name,city,address,status from public.stops where company_id=${companyId} order by name`;},
+  async listStops(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select s.id,s.name,s.city,s.address,s.status,s.region_regency_id as "regionRegencyId",r.province_id as "regionProvinceId" from public.stops s left join public.region_regencies r on r.id=s.region_regency_id where s.company_id=${companyId} order by s.name`;},
   async listClasses(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select id,name,code,status from public.service_classes where company_id=${companyId} order by name`;},
   async listRoutes(tx:DomainTx,companyId:string):Promise<RouteRow[]>{return await tx<RouteRow[]>`select id,name,code,status,revision from public.routes where company_id=${companyId} order by name`;},
   async route(tx:DomainTx,ctx:Context,id:string,lock=false):Promise<RouteRow>{
