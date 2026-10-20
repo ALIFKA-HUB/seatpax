@@ -35,7 +35,13 @@ Paket melekat pada workspace PO, bukan menjadi role pengguna.
 
 Untuk Free, arsip tetap dihitung. Saat kuota habis, tersedia reset simulasi atas permintaan dan konfirmasi pengguna, atau upgrade. Angka kuota adalah batas per workspace dan harus ditegakkan di server, termasuk ketika request bersamaan.
 
-Free tidak melakukan penagihan tiket nyata dan keberangkatan simulasinya tidak masuk pencarian publik untuk penjualan nyata. Label simulasi perlu terlihat pada alurnya. Mekanisme pemisahan data, reset, serta pemakaian ulang master saat upgrade masih memerlukan desain; histori simulasi tidak boleh disalahartikan sebagai transaksi nyata.
+Free tidak melakukan penagihan tiket nyata dan keberangkatan simulasinya tidak masuk pencarian publik untuk penjualan nyata. Label simulasi perlu terlihat pada alurnya. Mekanisme pemisahan data serta pemakaian ulang master saat upgrade masih memerlukan desain; histori simulasi tidak boleh disalahartikan sebagai transaksi nyata.
+
+### Reset simulasi Free — disepakati
+
+Reset menghapus booking, pembayaran simulasi dan keberangkatan simulasi pada workspace tersebut. Profil PO, titik layanan, rute, armada, template kursi dan akun Crew tetap tersimpan. Sebelum reset, tampilkan ringkasan data yang akan dihapus dan minta konfirmasi pengguna. Ini menetapkan perilaku fitur reset mendatang, bukan izin menghapus data sekarang.
+
+Reset tidak menambah kapasitas penyimpanan master: rute/armada/template/Crew yang dipertahankan tetap dihitung pada kuotanya. Reset tidak boleh menjangkau transaksi nyata atau perusahaan lain. Daftar dependensi transaksi simulasi (termasuk tiket, hold, inventori dan event terkait), penanganan request yang sedang berjalan, audit reset dan retensi teknis perlu ditetapkan dalam spesifikasi reset sebelum implementasi agar tidak meninggalkan relasi rusak atau menghidupkan kembali transaksi yang dihapus.
 
 Kuota Pro 30 berarti kelayakan armada untuk operasi baru, bukan izin penyimpanan tanpa batas. Batas storage, record historis, stop, kursi, unggahan, dan frekuensi tindakan belum ditentukan. Harga dan kuota ini juga bukan hasil validasi biaya atau jaminan kapasitas infrastruktur.
 
@@ -138,7 +144,7 @@ Tidak ada schema/migration final dalam dokumen ini. Review `SEATPAX_SPEC_REVIEW.
 
 | Bagian | Yang harus diputuskan sebelum plan implementasinya |
 |---|---|
-| Free/onboarding | Enforcement batas satu perusahaan Admin PO, anti-abuse, batas data sekunder, pemisahan simulasi, reset dan retensi |
+| Free/onboarding | Enforcement batas satu perusahaan Admin PO, anti-abuse, batas data sekunder, pemisahan simulasi, dependensi/concurrency reset dan retensi |
 | Pro/billing | Kuota selain armada, kalender bulanan, invoice/perpanjangan, pajak dan penanganan pembayaran langganan gagal |
 | Versi paket | Jeda pemberitahuan, periode efektif, invoice yang sudah terbit/dibayar, perubahan harga |
 | Entitlement | Titik potong penjualan dan transaksi kuota; jadwal belum terjual; penukaran armada |
