@@ -67,3 +67,6 @@ This is a community static API. Its provider describes the source chain in https
 ## Execution follow-up
 
 20 October 2026: regional migration/import applied; operational before/after counts and digests identical across 32 public domain tables (stop reference field excluded from digest because it is newly introduced and all 20 values remain NULL). Fixture dry-run still matches audited statuses/revisions and transaction counts; bound backup/manifest saved. No fixture status change applied. See [regional evidence](../setup/REGION_REFERENCE_SETUP.md) and [concrete cleanup review](../setup/FIXTURE_CLEANUP_SETUP.md).
+
+
+Application follow-up — 20 October 2026: the approved seven-company suspension succeeded. Exactly seven new status events match the authorized actor/revisions; the original suspended fixture remains revision 0. All 30 other operational table counts/digests and the scoped protected digest remain identical. Demo PO A/B remain active; booking/payment/ticket totals remain 5/5/1. Full receipt/backup references are in [cleanup delivery](../setup/FIXTURE_CLEANUP_SETUP.md).

@@ -1,12 +1,12 @@
 # Fixture cleanup — concrete operation review
 
-Date: 20 October 2026. **Prepared only; no company status changes applied.**
+Date: 20 October 2026. **Applied to development after user approval.**
 
 The approved design requires approval of this concrete dry-run because suspending companies changes access and sales eligibility. Preparation used SELECTs only, then saved and fsynced the manifest and complete original company records under ignored `.seatpax/fixture-cleanup/`.
 
-## Proposed operation
+## Approved baseline and applied operation
 
-All targets are named `Trip fixture`, with slug `trip-<full UUID>`. All currently have revision 0. Exactly these IDs are accepted by the command:
+All targets are named `Trip fixture`, with slug `trip-<full UUID>`. Before apply, all had revision 0. Exactly these IDs are accepted by the command:
 
 | Company ID | Current | Proposed |
 | --- | --- | --- |
@@ -33,7 +33,7 @@ Worktree root: `C:/Users/ASUS/.codex/worktrees/day3-email-otp/SeatPax`.
 
 The earlier preliminary manifest/backup are superseded and are not approved artifacts. Nothing from `.seatpax` is committed.
 
-## After explicit operation approval only
+## Applied command (do not repeat for testing)
 
 ```powershell
 node_modules/.bin/tsx scripts/apply-fixture-cleanup.ts --manifest .seatpax/fixture-cleanup/d37d854376e0c1ee481d9d3ddb37a52e79d94417f603a0b79a152294ad658fb9.manifest.json --digest d37d854376e0c1ee481d9d3ddb37a52e79d94417f603a0b79a152294ad658fb9
@@ -55,6 +55,22 @@ On success, the command fsyncs `<manifest-digest>.receipt.json` with the result 
 
 ## Review and verification
 
-Fresh GPT-6 Luna / medium review identified missing backup binding and an unfinished rollback handoff. Backup payload SHA256 is now part of the fingerprinted manifest, exact saved rows are validated at apply, and this document plus persisted receipt define rollback. Typecheck/lint/build are recorded in the regional delivery document. No tests or live apply/retry/rollback were run; these acceptance checks remain pending.
+Fresh GPT-6 Luna / medium review identified missing backup binding and an unfinished rollback handoff. Backup payload SHA256 is now part of the fingerprinted manifest, exact saved rows are validated at apply, and this document plus persisted receipt define rollback. Typecheck/lint/build are recorded in the regional delivery document. The approved live apply succeeded and was verified with read-only queries below. No tests, retry or rollback were run; those acceptance checks remain pending.
 
 Ruling: manifest adds `backupDigest` to the planned interface to bind the restorable artifact durably; old preliminary manifests are rejected. Cost: pre-fix files must be regenerated/reviewed. Ruling: tests remain deferred under developer instruction; behavior under concurrency has not been demonstrated by a test suite.
+
+
+## Application evidence — 20 October 2026, 14:06:59 WIB
+
+The user approved continuation after the concrete seven-company operation and preserved records were presented. Fresh preflight matched the reviewed manifest, bound backup, all original status revisions and protected digest; live/payment-extended holds were zero. The prepared apply command exited 0.
+
+- Seven ACTIVE fixture companies became SUSPENDED at revision 1.
+- The pre-suspended fixture stayed SUSPENDED at revision 0, without a new event.
+- Exactly seven new status audit events match the existing Super Admin actor, source/target statuses and revisions.
+- The complete protected target-row digest is unchanged.
+- All 30 other operational table counts/digests are identical before/after; only `companies` and `company_status_events` changed.
+- Demo PO A/B remain ACTIVE at revision 0.
+- Development booking/payment/ticket totals remain 5 / 5 / 1. Published snapshot and ticket table digests are unchanged.
+- The fsynced receipt is stored alongside the reviewed artifacts as `d37d854376e0c1ee481d9d3ddb37a52e79d94417f603a0b79a152294ad658fb9.receipt.json` and lists exactly seven rollback-eligible IDs at expected revision 1.
+
+These are operation verification SELECTs, not a test suite. No identity, membership, operational point, transaction or ticket was deleted. Rollback remains available only when requested, through the authorized transition procedure above.

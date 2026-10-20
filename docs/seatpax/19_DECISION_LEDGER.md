@@ -226,3 +226,6 @@ Planning update: the user requested plans after the written design and sequence 
 
 
 Implementation update — 20 October 2026: the user approved execution. Regional catalogue, reference-aware stops and eligible passenger location reads are implemented on `codex/region-reference-cleanup`. Development migration/import succeeded with 38 provinces and 514 regencies; all 32 protected operational table digests/counts remain unchanged. Legacy mappings remain NULL. See [delivery evidence](../setup/REGION_REFERENCE_SETUP.md). Fixture maintenance code and bound backup/manifest are prepared, but the seven suspension transitions still require the adopted concrete operation approval. See [exact targets and rollback](../setup/FIXTURE_CLEANUP_SETUP.md). Tests remain deferred; no cleanup apply is claimed.
+
+
+Fixture application update — 20 October 2026: after the user approved continuation of the concrete operation, the reviewed seven fixture companies were suspended atomically. Fresh preflight matched the approved manifest and backup; seven exact status audit events and preserved protected data were verified. The previously suspended fixture and Demo PO A/B remain unchanged. Global totals remain 5 bookings / 5 payments / 1 ticket. See [operation evidence and authorized rollback](../setup/FIXTURE_CLEANUP_SETUP.md). No test suite, retry or rollback was run.

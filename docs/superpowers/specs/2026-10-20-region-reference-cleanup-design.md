@@ -1,6 +1,6 @@
 # Real regional reference data and safe database tidying
 
-> Execution update: the user approved execution. Regional catalogue is delivered/applied; fixture cleanup code and backup are prepared only. See ../../setup/REGION_REFERENCE_SETUP.md and ../../setup/FIXTURE_CLEANUP_SETUP.md.
+> Execution update: the user approved execution. Regional catalogue is delivered/applied; fixture suspension was subsequently approved, applied and verified. See ../../setup/REGION_REFERENCE_SETUP.md and ../../setup/FIXTURE_CLEANUP_SETUP.md.
 
 Status: the user requested implementation planning on 20 October 2026 after this written design was presented. [Package A](../plans/2026-10-20-region-reference.md) and [Package B](../plans/2026-10-20-fixture-cleanup.md) await plan review. User-approved intent: use real Indonesian city/regency references and tidy existing data. User confirmed no actual PO or verified terminal/pool locations are available yet. No implementation or hosted write is claimed.
 
