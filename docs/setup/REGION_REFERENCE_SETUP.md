@@ -49,4 +49,4 @@ Fresh reviewer (GPT-6 Luna, medium) found no critical/important defects before m
 - The custom Drizzle migration snapshot was regenerated from current schema with the installed Drizzle API, retaining generated IDs; this prevents subsequent generation from treating current tables as missing. No independent migration history was introduced.
 - Stop directory reads do not join reference tables. If the catalogue read fails, the directory remains available and the editor explains catalogue unavailability.
 
-Fixture status cleanup is a separate pending operation: see [the concrete review and backup](FIXTURE_CLEANUP_SETUP.md).
+Fixture status cleanup was subsequently approved, applied and verified: see [the concrete review, backup and operation evidence](FIXTURE_CLEANUP_SETUP.md).
