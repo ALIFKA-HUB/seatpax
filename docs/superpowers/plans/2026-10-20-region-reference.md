@@ -1,5 +1,7 @@
 # Regional Reference Implementation Plan
 
+> Execution update: Package A implemented and applied to development on 20 October 2026. See ../../setup/REGION_REFERENCE_SETUP.md for results and deferred tests.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Supply actual Indonesian province/city references to Admin and remove obsolete locations from passenger search choices.

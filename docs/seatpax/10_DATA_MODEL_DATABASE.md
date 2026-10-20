@@ -575,3 +575,8 @@ Migration 0009_snack_claims adds DB-clock snack_claims with UNIQUE(ticket_id,tri
 ## Company status implementation overlay — 9 October 2026
 
 Migration0010 adds companies.status_revision integer >=0 and company_status_events with RESTRICT company/actor references, differing enum statuses, positive revision, unique(company_id,status_revision), database changed_at, RLS and revoked anon/authenticated grants. Status UPDATE and audit INSERT commit together; matching no-op creates no event. See ../setup/SUPER_ADMIN_COMPANY_SETUP.md.
+
+
+## Regional references — delivered 20 October 2026
+
+Shared `region_import_runs`, `region_provinces` and `region_regencies` use provider/code identity, stable UUIDs, parent/run FKs, RLS and revoked browser grants. `stops.region_regency_id` is nullable and indexed with delete restriction. Complete validated imports promote atomically under a provider advisory lock; retired references remain stored but unavailable for new selection. Existing city text and published snapshots are retained. See [schema/import evidence](../setup/REGION_REFERENCE_SETUP.md).

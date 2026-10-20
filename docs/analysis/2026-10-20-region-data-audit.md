@@ -62,3 +62,8 @@ This is a community static API. Its provider describes the source chain in https
 ## Next artifact
 
 [Proposed reference-data and non-destructive cleanup design](../superpowers/specs/2026-10-20-region-reference-cleanup-design.md). Implementation and writes are not claimed by this audit.
+
+
+## Execution follow-up
+
+20 October 2026: regional migration/import applied; operational before/after counts and digests identical across 32 public domain tables (stop reference field excluded from digest because it is newly introduced and all 20 values remain NULL). Fixture dry-run still matches audited statuses/revisions and transaction counts; bound backup/manifest saved. No fixture status change applied. See [regional evidence](../setup/REGION_REFERENCE_SETUP.md) and [concrete cleanup review](../setup/FIXTURE_CLEANUP_SETUP.md).
