@@ -1,5 +1,7 @@
 # Seatpax — MVP Scope & Product Boundary
 
+> **Arah proyek terbaru — 21 Oktober 2026:** Seatpax digunakan hanya untuk satu perusahaan shuttle. Keputusan D2026-10-21-01 menggantikan arah SaaS untuk lingkup proyek saat ini. Pendaftaran PO mandiri, paket Free/Pro, kuota dan billing langganan serta pengelolaan banyak perusahaan ditunda. Pembayaran tiket dan operasional perusahaan tetap menjadi fokus. Fondasi company/access dan kode cabang SaaS disimpan; tidak ada penghapusan database atau perubahan akses otomatis melalui keputusan dokumentasi ini.
+
 > **Implementation update — 8 October 2026:** Checkout/payment slice now implements SELF/OTHER (one passenger/seat), Sandbox Snap, durable verified events, segment occupancy, encrypted QR/My Tickets and tenant conflict administration. Real refunds, guest/group claims and boarding/snack UI remain deferred. See `../setup/CHECKOUT_PAYMENT_SETUP.md` for evidence and pending manual acceptance.
 
 ## Active release — 30-day demo, adopted 6 October 2026

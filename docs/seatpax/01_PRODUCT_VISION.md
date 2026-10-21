@@ -1,5 +1,7 @@
 # Seatpax — Product Vision & Positioning
 
+> **Arah proyek terbaru — 21 Oktober 2026:** Seatpax digunakan hanya untuk satu perusahaan shuttle. Keputusan D2026-10-21-01 menggantikan arah SaaS untuk lingkup proyek saat ini. Pendaftaran PO mandiri, paket Free/Pro, kuota dan billing langganan serta pengelolaan banyak perusahaan ditunda. Pembayaran tiket dan operasional perusahaan tetap menjadi fokus. Fondasi company/access dan kode cabang SaaS disimpan; tidak ada penghapusan database atau perubahan akses otomatis melalui keputusan dokumentasi ini.
+
 > **Active release — 6 Oktober 2026:** Release 30 hari mempertahankan inti multi-stop inventory dan passenger operations. Guest booking dan fitur operasional yang lebih luas pada bagian lama di bawah adalah arah MVP asli, bukan target release aktif. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
 
 
