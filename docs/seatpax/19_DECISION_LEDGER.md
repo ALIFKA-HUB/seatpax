@@ -328,3 +328,7 @@ The user requested a navbar that merges into the page at the top and animates to
 Visual feedback refinement: the user found the initial transition insufficiently visible. Increase to 450ms with a stronger shadow and desktop/tablet 0.98 scale / 4px downward transform while floating. Keep the 32px threshold, inverse top transition, reduced-motion behavior and phone layout. This supersedes the initial duration for the current visual implementation.
 
 Navbar indicator refinement: the user requested an underline. Adopt a short blue 2px line directly below current-page labels and on pointer hover, retaining transparent backgrounds. This supersedes the earlier no-underline requirement, without changing links, permissions or header scroll behavior. Phone labels use the same current-page indicator.
+
+## D2026-10-21-06 - Booking explanation as animated route
+
+The user accepted a dashed path with different upward/downward curves between the four booking steps, reviewed an interactive desktop/phone preview, and accepted applying it to the actual page. Single 4.2-second viewport-triggered playback, sequential icon activation, static reduced-motion fallback and readable no-JavaScript content are presentation requirements. Tablet uses a vertical path to preserve reading order. Booking/payment state and authorization are unchanged.

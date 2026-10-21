@@ -46,10 +46,28 @@
 .sp-landing .lp-network-empty h3 {font-size:16px; margin:0 0 6px; font-weight:650}
 .sp-landing .lp-network-empty p {color:var(--sp-muted); font-size:13px; margin:0; line-height:1.7}
 .sp-landing .lp-booking {margin:0 38px}
-.lp-booking-flow {display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px; list-style:none; margin:36px 0 0; padding:0}
+.lp-route {position:relative; margin-top:52px}
+.lp-booking-flow {display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px; list-style:none; margin:0; padding:0}
 .sp-landing .lp-booking-flow li {position:relative; min-width:0; padding:0}
-.lp-booking-flow li:not(:last-child)::after {content:''; position:absolute; top:28px; left:76px; right:0; height:1px; background:var(--sp-border)}
-.lp-flow-icon {display:grid; place-items:center; width:58px; height:58px; margin-bottom:22px; border-radius:50%; color:var(--sp-primary); background:#eaf3ff; box-shadow:0 0 0 6px #f7faff}
+.lp-booking-flow li:not(:last-child)::after {content:''; position:absolute; top:28px; left:76px; right:0; border-top:2px dashed var(--sp-border)}
+.lp-flow-icon {position:relative; z-index:1; display:grid; place-items:center; width:58px; height:58px; margin-bottom:22px; border-radius:50%; color:var(--sp-primary); background:#eaf3ff; box-shadow:0 0 0 6px #f7faff}
+.lp-route-lines {position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none}
+.lp-route-track,.lp-route-trace {fill:none; stroke-width:2; stroke-linecap:round; stroke-dasharray:5 8}
+.lp-route-track {stroke:var(--sp-border)}
+.lp-route-trace {stroke:var(--sp-primary)}
+.lp-route-reveal {fill:none; stroke:#fff; stroke-width:8; stroke-dasharray:1; stroke-dashoffset:0}
+.lp-route[data-route-ready=true] .lp-booking-flow li::after {display:none}
+.lp-route[data-route-motion=static] .lp-flow-icon {background:var(--sp-primary); color:#fff}
+.lp-route-traveller {position:absolute; top:0; left:0; width:12px; height:12px; border:3px solid #fff; border-radius:50%; background:var(--sp-primary); opacity:0; pointer-events:none}
+@media(prefers-reduced-motion:no-preference) {
+  .lp-route[data-route-motion=pending] .lp-route-reveal {stroke-dashoffset:1}
+  .lp-route[data-route-motion=playing] .lp-route-reveal {animation:lp-route-draw 4.2s linear both}
+  .lp-route[data-route-motion=playing] .lp-route-traveller {animation:lp-route-travel 4.2s linear both}
+  .lp-route[data-route-motion=playing] .lp-flow-icon {animation:lp-route-arrive .45s ease-out var(--route-delay,0s) both}
+}
+@keyframes lp-route-draw {from {stroke-dashoffset:1} to {stroke-dashoffset:0}}
+@keyframes lp-route-travel {0% {offset-distance:0%; opacity:1} 99% {opacity:1} 100% {offset-distance:100%; opacity:0}}
+@keyframes lp-route-arrive {0% {transform:scale(1); background:#eaf3ff; color:var(--sp-primary)} 50% {transform:scale(1.1); background:var(--sp-primary); color:#fff} 100% {transform:scale(1); background:var(--sp-primary); color:#fff}}
 .sp-landing .lp-booking-flow h3 {font-size:15px; margin:0 0 9px; font-weight:700}
 .sp-landing .lp-booking-flow p {font-size:13px; line-height:1.8; max-width:220px; margin:0; color:var(--sp-muted)}
 .sp-landing .lp-experience {display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:72px; padding:28px; background:var(--lp-tint); border-radius:28px}
@@ -90,8 +108,6 @@
   .lp-search-fields label:nth-of-type(3) {grid-column:1/3}
   .lp-search-fields .lp-button {grid-column:3}
   .sp-landing .lp-network,.sp-landing .lp-booking,.sp-landing .lp-help {margin-inline:20px}
-  .lp-booking-flow {grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px 40px}
-  .lp-booking-flow li:nth-child(2)::after {display:none}
   .sp-landing .lp-experience {gap:30px; padding:22px}
   .lp-experience-photo {height:480px}
   .lp-experience-copy {padding-right:0}
@@ -123,9 +139,10 @@
   .lp-empty-icon {width:44px; height:44px; border-radius:14px}
   .sp-landing .lp-network-empty h3 {font-size:14px}
   .sp-landing .lp-network-empty p {font-size:12px}
-  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:24px; margin-top:28px}
+  .lp-route {margin-top:28px}
+  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:24px}
   .sp-landing .lp-booking-flow li {padding-left:72px; min-height:62px}
-  .lp-booking-flow li:not(:last-child)::after {top:62px; bottom:-18px; left:25px; right:auto; width:1px; height:auto}
+  .lp-booking-flow li:not(:last-child)::after {top:62px; bottom:-18px; left:25px; right:auto; border-top:0; border-left:2px dashed var(--sp-border)}
   .lp-flow-icon {position:absolute; top:0; left:0; width:50px; height:50px; margin:0; box-shadow:none}
   .sp-landing .lp-booking-flow h3 {font-size:14px; margin-bottom:5px}
   .sp-landing .lp-booking-flow p {max-width:none; font-size:13px; line-height:1.7}
@@ -140,6 +157,14 @@
   .lp-search-skeleton {grid-template-columns:minmax(0,1fr); gap:15px}
   .lp-search-skeleton>span {height:74px}
   .sp-landing .sp-footer {padding:22px 20px; font-size:11px}
+}
+@media(min-width:768px) and (max-width:1023px) {
+  .lp-route {margin-top:32px}
+  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:28px}
+  .sp-landing .lp-booking-flow li {padding-left:86px; min-height:68px}
+  .lp-flow-icon {position:absolute; top:0; left:0; margin:0}
+  .lp-booking-flow li:not(:last-child)::after {top:68px; bottom:-22px; left:29px; right:auto; border-top:0; border-left:2px dashed var(--sp-border)}
+  .sp-landing .lp-booking-flow p {max-width:460px}
 }
 @media(max-width:639px) {
   .sp-landing .sp-header nav {display:grid; gap:4px; background:#fff}

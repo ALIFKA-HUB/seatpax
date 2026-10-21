@@ -5,6 +5,7 @@ import Link from 'next/link';
 import {Armchair, Ticket, MapPin, Clock, MagnifyingGlass, CreditCard, ArrowRight} from '@phosphor-icons/react/ssr';
 import PassengerShell from './components/passenger-shell';
 import JourneyPlanner, {PlannerSkeleton} from './landing/journey-planner';
+import BookingRoute from './landing/booking-route';
 import './landing/landing.css';
 
 export const dynamic = 'force-dynamic';
@@ -36,12 +37,12 @@ export default function Home() {
 
       <section className="lp-booking" aria-labelledby="booking-title">
         <div className="lp-section-title"><h2 id="booking-title">Dari rencana menjadi perjalanan.</h2><p>Pemesanan yang bisa Anda atur sendiri, dari awal sampai siap berangkat.</p></div>
-        <ol className="lp-booking-flow">
+        <BookingRoute><ol className="lp-booking-flow">
           {bookingFlow.map(({Icon, title, copy}) => <li key={title}>
             <span className="lp-flow-icon"><Icon size={27} weight="light" aria-hidden="true"/></span>
             <h3>{title}</h3><p>{copy}</p>
           </li>)}
-        </ol>
+        </ol></BookingRoute>
       </section>
 
       <section className="lp-experience" aria-labelledby="experience-title">
