@@ -1,12 +1,12 @@
 import {it,expect,vi} from 'vitest';
 import {createElement as h} from 'react';
 import {renderToStaticMarkup as render} from 'react-dom/server';
+import Shell from '@/app/admin/components/admin-shell';
 vi.mock('next/font/google',()=>({Plus_Jakarta_Sans:()=>({variable:'test-jakarta'})}));
 vi.mock('next/navigation',()=>({usePathname:()=>'/admin/companies/a/trips/t/manifest',redirect:(url:string)=>{throw Error(url);}}));
 const companies=vi.fn(async()=>[{id:'a',name:'PO <A>'}]);
 vi.mock('@/app/admin/data',()=>({adminCompanies:companies}));
 it('renders company context brand skip target and account',async()=>{
- const {default:Shell}=await import('@/app/admin/components/admin-shell');
  const html=render(h(Shell,{companyId:'a',companyName:'PO <A>',children:'Isi'}));
  for(const text of ['href="/admin"','PO &lt;A&gt;','href="#admin-main"','id="admin-main"','href="/account"','Isi','aria-current="page"'])expect(html).toContain(text);
  for(const section of ['trips','routes','stops','service-classes','seat-templates','vehicles','payment-conflicts'])expect(html).toContain(`/admin/companies/a/${section}`);

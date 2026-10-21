@@ -1,5 +1,9 @@
 # Seatpax passenger landing delivery
 
+## Verification follow-up
+
+The user explicitly requested verification after the white photo implementation. See [21 October verification evidence](LANDING_VERIFICATION_2026_10_21.md) for passing quality commands, desktop/tablet/phone browser emulation, test fixture repairs and Computer Use helper failure/fallback. The earlier testing deferral statements below describe previous delivery status; physical-device and populated real-schedule acceptance remain pending.
+
 ## White photo revision, 21 October 2026
 
 User approved the two-reference adaptation (D2026-10-21-03). Current source replaces the compact split hero with a wide road photograph and contrast scrim, concise copy, lightly overlapping desktop search, an explicitly empty route showcase, four-part booking explanation, supporting photo/benefits and FAQ. Background and semantic colors are locked light/white even under system dark preference. Actual logo/nav/query contracts remain; no dependencies or backend changes. Search location options still use the existing actual service. Showcase wording describes what is displayed, not whether inventory exists. No route examples or fabricated fares/reviews were added.
