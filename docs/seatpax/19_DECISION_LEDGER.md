@@ -324,3 +324,5 @@ The user approved the white floating desktop/navbar phone preview with the final
 ## D2026-10-21-05 - Navbar scroll transition approved
 
 The user requested a navbar that merges into the page at the top and animates to the current floating presentation on scroll, then accepted the proposed 250-300ms and 24-40px range. Implementation uses a 32px marker and 300ms reveal/reverse of shadow/outline, with stable layout geometry. Text-only active navigation, white brand surface, phone navigation and focused flows remain. Reduced-motion preference uses an immediate state change. No business/auth/database change.
+
+Visual feedback refinement: the user found the initial transition insufficiently visible. Increase to 450ms with a stronger shadow and desktop/tablet 0.98 scale / 4px downward transform while floating. Keep the 32px threshold, inverse top transition, reduced-motion behavior and phone layout. This supersedes the initial duration for the current visual implementation.

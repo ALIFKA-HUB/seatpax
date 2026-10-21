@@ -13,3 +13,7 @@
 Reduced motion disables the transition and transform while keeping the floating state functional. Unavailable IntersectionObserver leaves a usable static flat header. Observer disconnects on unmount. Normal availability reads remain the previously reported separate limitation.
 
 Evidence is recorded under the scroll follow-up in docs/setup/PASSENGER_NAVBAR_SETUP.md. This slice did not rerun the unit suite or production build; claims are limited to fresh lint, typecheck, rendered motion checks and source review.
+
+## Visibility refinement
+
+User reported insufficient visible change. Applied a 450ms transition, stronger shadow and inner navbar transform translateY(4px) scale(.98) above640px with no-preference motion. Marker/mobile/reduced-motion remain unchanged. Fresh browser probe verified transform values and complete opacity reversal at1440/768, stable hero document position, reduced-motion0s and phone static layout. Only CSS changed; no new unit/build claim.
