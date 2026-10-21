@@ -1,5 +1,9 @@
 # Passenger floating navbar delivery
 
+## Underline refinement
+
+User requested an underline after the text-only version. Current main links add a 2px blue line below the label on current-page state and hover-capable pointer hover, without colored backgrounds. Absolute label pseudo-elements preserve link dimensions; transform reveal takes180ms and is instant under reduced motion. Desktop and phone use the same rule. Source/diff checked; no new automated/browser test run is claimed for this small CSS change. Earlier no-underline evidence below is historical where superseded.
+
 ## Scroll transition follow-up
 
 Latest stronger-transition refinement: 450ms, 98% scale and 4px downward movement of the desktop/tablet inner navbar, with a more visible shadow. Browser probe confirmed both transform values, an intermediate opacity around0.162, opacity0 ->1 ->0 and 0.45s duration at1440/768. Hero document position stayed fixed; final probe page-height deltas were0. An initial strict full-page-height check differed3px while async source content resolved, so the geometry assertion specifically measures hero position rather than attributing all asynchronous page changes to the navbar. Reduced motion stayed0s and phone390 remained static without horizontal overflow. No new JS/dependency or business change. Prior 300ms evidence below is historical.

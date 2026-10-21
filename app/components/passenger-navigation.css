@@ -1,4 +1,4 @@
-/* Header layer 20, existing fixed phone navigation 30. No active nav fills. */
+/* Header layer 20, phone navigation 30. Active links use text + underline, no fill. */
 .passenger-shell:not(.sp-focused) .sp-header{position:sticky;top:16px;z-index:20;width:calc(100% - 64px);max-width:1216px;margin:16px auto 0;background:transparent;border:0;border-radius:20px}
 .passenger-shell{position:relative}
 .sp-header-marker{position:absolute;top:32px;left:0;width:1px;height:1px;pointer-events:none}
@@ -17,6 +17,11 @@
 .passenger-shell:not(.sp-focused) .sp-header nav{display:flex;flex-wrap:nowrap;gap:8px;width:auto;background:#fff}
 .passenger-shell:not(.sp-focused) .sp-header nav a{display:flex;align-items:center;gap:8px;white-space:nowrap;min-height:44px;font-size:13px;color:var(--sp-ink);text-decoration:none;background:transparent;border:0;box-shadow:none}
 .passenger-shell:not(.sp-focused) .sp-header nav a[aria-current=page],.passenger-shell:not(.sp-focused) .sp-header nav a:hover{color:var(--sp-primary);background:transparent;border:0;box-shadow:none;text-decoration:none}
+.passenger-shell:not(.sp-focused) .sp-header nav a>span{position:relative}
+.passenger-shell:not(.sp-focused) .sp-header nav a>span::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:2px;border-radius:999px;background:currentColor;transform:scaleX(0);transform-origin:center}
+.passenger-shell:not(.sp-focused) .sp-header nav a[aria-current=page]>span::after{transform:scaleX(1)}
+@media(hover:hover){.passenger-shell:not(.sp-focused) .sp-header nav a:hover>span::after{transform:scaleX(1)}}
+@media(prefers-reduced-motion:no-preference){.passenger-shell:not(.sp-focused) .sp-header nav a>span::after{transition:transform 180ms cubic-bezier(.22,1,.36,1)}}
 .passenger-shell:not(.sp-focused) .sp-header nav .sp-account-mobile{display:none}
 .passenger-shell:not(.sp-focused) .sp-header nav a svg{display:none}
 .sp-header-account{justify-self:end;position:relative;min-width:74px}
