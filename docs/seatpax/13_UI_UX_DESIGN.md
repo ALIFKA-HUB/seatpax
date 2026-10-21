@@ -837,3 +837,8 @@ Admin Seatpax/Super Admin: **Ringkasan**, **Perusahaan**, **Paket & benefit**, *
 ## Adopted customer complaint entry points — 20 October 2026
 
 Admin PO uses **Pesanan > Daftar pesanan / Pengaduan pelanggan**, with a count of unhandled complaints on Orders. Do not add another top-level menu for this feature. Customers submit **Laporkan masalah** and reopen report history from the same booking detail. Reports link to the relevant booking/payment examination. This is approved navigation direction; complaint service, state workflow, private evidence and escalation implementation remain pending design/plan.
+
+
+## Latest landing direction — 21 October 2026
+
+The user approved the concrete Seatpax single-company passenger landing direction and then requested implementation. Preserve actual brand assets and Perjalanan/Pesanan saya/Akun navigation. Compact split hero “Antarkota, lebih nyaman.”, no bus illustration, and above-fold origin/destination/date search feed the existing `/trips` contract. Use blue/navy, restrained shapes, mobile stacked controls and existing phone bottom navigation. Show configured available stop data, honest empty/unavailable states, digital booking/ticket explanations and FAQ. No invented fares, fleet amenities, reviews, customer counts, contact details or live routes. Existing backend single-company scoping remains the separate unresolved audit item; UI delivery does not claim to resolve it. [Landing delivery](../setup/SINGLE_COMPANY_LANDING_SETUP.md).
