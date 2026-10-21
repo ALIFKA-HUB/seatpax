@@ -1,5 +1,11 @@
 # Passenger floating navbar delivery
 
+## Scroll transition follow-up
+
+User approved flat-at-top -> floating-on-scroll behavior. Small client PassengerHeader uses an IntersectionObserver at a 32px marker, disconnected on cleanup. A pseudo-element reveals the existing shadow/outline via opacity and a 2px transform over 300ms, reversed at the top; geometry and white content surface remain constant. Phones keep the prior flat static header and bottom navigation. Focused flows have no marker. Reduced motion has zero transition duration. Without IntersectionObserver the header stays usable and flat.
+
+Fresh lint/typecheck exited 0. Browser checks at 1440/768 measured opacity0 at top, intermediate opacity0.237 during transition, opacity1 after scroll100 and opacity0 after return. Duration measured0.3s; hero document position and page height were unchanged. Reduced motion measured0s and immediate opacity1; phone390 kept no pseudo surface, static header and no horizontal overflow. Fresh GPT-6 Luna medium source review found no concrete finding. Artifacts: navbar-motion.* and navbar-top/navbar-floating screenshots in the ignored verification directory. Unit suite and production build were not rerun for this small follow-up; previous results below belong to b119467. Existing availability timeout remains separate.
+
 21 October 2026, branch codex/seatpax-landing, base b82ff17. User accepted the desktop/phone preview and specifically requested text-only blue active main links.
 
 ## Implementation

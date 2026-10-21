@@ -320,3 +320,7 @@ The user supplied two travel landing references and accepted their concrete Seat
 ## D2026-10-21-04 - Floating passenger navigation approved
 
 The user approved the white floating desktop/navbar phone preview with the final correction that Perjalanan and Pesanan saya use blue active text only, no colored selection background. Apply this to shared passenger navigation. Preserve logo/destinations and phone bottom navigation. Offer guest Masuk and signed-in account disclosure with existing profile/account destination and logout, using existing auth/session services for presentation only. No role/profile feature changes, schema changes or new auth endpoint. Verification may continue for this UI slice under the user's ongoing plan/execute/verify instruction; physical-device and real authenticated-session acceptance must be stated separately.
+
+## D2026-10-21-05 - Navbar scroll transition approved
+
+The user requested a navbar that merges into the page at the top and animates to the current floating presentation on scroll, then accepted the proposed 250-300ms and 24-40px range. Implementation uses a 32px marker and 300ms reveal/reverse of shadow/outline, with stable layout geometry. Text-only active navigation, white brand surface, phone navigation and focused flows remain. Reduced-motion preference uses an immediate state change. No business/auth/database change.
