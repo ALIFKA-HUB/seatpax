@@ -1,75 +1,148 @@
-/* Seatpax-native responsive landing. Blue/navy palette preserved; no imported design system.
-   Layers reuse PassengerShell: header/navigation 20, skip link 30. Motion is feedback only. */
-.passenger-shell.sp-landing{--lp-surface:#fcfdff;--lp-tint:#edf4ff;--lp-photo-caption:#526078;background:var(--lp-surface);font-family:var(--font-passenger-jakarta),Arial,sans-serif}
-.sp-landing .sp-header{background:var(--lp-surface)}
-.sp-landing .sp-header-inner{max-width:1240px;padding:8px 28px;min-height:72px}
-.sp-landing .sp-brand{width:150px}
-.sp-landing .sp-header nav{flex-wrap:nowrap;gap:12px}
-.sp-landing .sp-header nav a{font-size:13px;white-space:nowrap}
-.sp-landing .passenger{max-width:1240px;padding:28px 28px 48px}
-.lp-content{display:grid;gap:72px}
-.sp-landing .lp-hero{display:grid;grid-template-columns:1fr 1.12fr;align-items:center;gap:48px;min-height:280px}
-.lp-hero-copy{padding:14px 0}
-.sp-landing .lp-eyebrow{font-size:11px;font-weight:750;letter-spacing:.13em;color:var(--sp-primary);margin:0 0 20px}
-.sp-landing .lp-hero h1{font-size:clamp(40px,4.5vw,64px);letter-spacing:-.055em;line-height:1.08;font-weight:750;margin:0 0 22px}
-.sp-landing .lp-hero-intro{max-width:385px;font-size:16px;line-height:1.7;color:var(--sp-muted);margin:0}
-.lp-hero-photo,.lp-experience-photo{position:relative;margin:0;min-width:0}
-.lp-hero-photo{height:290px;isolation:isolate}
-.lp-hero-photo img{object-fit:cover;border-radius:18px;object-position:50% 57%}
-.lp-hero-photo figcaption,.lp-experience-photo figcaption{position:absolute;top:100%;right:0;margin-top:5px;color:var(--lp-photo-caption);font-size:10px}
-.sp-landing .lp-search-panel{padding:25px 28px;background:var(--lp-surface);border:1px solid var(--sp-border);border-radius:16px;box-shadow:0 10px 32px #0a214408;margin-top:-44px;position:relative}
-.sp-landing .lp-search-panel h2{font-size:20px;margin:0 0 20px}
-.lp-search-fields{display:grid;grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr) minmax(150px,.8fr) auto;gap:14px;align-items:end}
-.lp-search-fields label{display:grid;gap:9px;min-width:0;font-size:12px;font-weight:650}
-.lp-search-fields label>span{display:flex;align-items:center;gap:7px}
-.lp-search-fields label>span svg{color:var(--sp-muted)}
-.lp-search-fields input,.lp-search-fields select{width:100%;min-width:0;min-height:48px;padding:12px 10px;border:1px solid var(--sp-control);border-radius:9px;background:var(--lp-surface);color:var(--sp-ink);font:inherit;font-size:13px;line-height:1.3;color-scheme:light}
-.lp-search-fields .lp-swap{display:grid;place-items:center;width:36px;min-height:48px;padding:0;border:0;background:transparent;color:var(--sp-primary);cursor:pointer;border-radius:8px}
-.sp-landing .lp-button{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:48px;padding:12px 22px;border:1px solid var(--sp-primary);border-radius:9px;white-space:nowrap;background:var(--sp-primary);color:#fcfdff;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
-.sp-landing .lp-button:hover{background:var(--sp-hover)}
-.sp-landing .lp-button:disabled{opacity:.65;cursor:wait}
-.sp-landing .lp-form-error{font-size:13px;color:var(--sp-danger);margin:12px 0 0}
-.sp-landing .lp-search-note{font-size:12px;color:var(--sp-muted);margin:14px 0 0}
-.sp-landing .lp-section-title h2,.sp-landing .lp-experience h2,.sp-landing .lp-practical h2{font-size:clamp(25px,2.7vw,34px);line-height:1.25;letter-spacing:-.04em;margin:0 0 12px;font-weight:700}
-.sp-landing .lp-section-title>p,.sp-landing .lp-experience-copy>p,.sp-landing .lp-practical>div>p{color:var(--sp-muted);font-size:14px;line-height:1.7;max-width:530px}
-.lp-points{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}
-.lp-point{display:flex;align-items:center;gap:16px;padding:22px;border:1px solid var(--sp-border);border-radius:12px;min-width:0;background:var(--lp-tint)}
-.lp-point>svg:first-child{flex:none;color:var(--sp-primary)}
-.sp-landing .lp-point h3{font-size:16px;margin:0 0 5px}
-.sp-landing .lp-point p{color:var(--sp-muted);font-size:12px;margin:0}
-.lp-network-empty{display:flex;align-items:center;gap:22px;border-radius:14px;background:var(--lp-tint);padding:28px;margin-top:24px}
-.lp-network-empty>svg{color:var(--sp-primary);flex:none}
-.sp-landing .lp-network-empty h3{font-size:17px;margin:0 0 6px}
-.sp-landing .lp-network-empty p{color:var(--sp-muted);font-size:13px;margin:0}
-.sp-landing .lp-text-link{display:inline-flex;gap:10px;align-items:center;font-size:13px;min-height:44px;margin-top:14px}
-.sp-landing .lp-experience{display:grid;grid-template-columns:.9fr 1fr;align-items:center;gap:72px}
-.lp-experience-photo{height:420px}
-.lp-experience-photo img{object-fit:cover;object-position:center 58%;border-radius:16px}
-.lp-experience-copy>p{margin-bottom:28px}
-.lp-benefit{display:flex;align-items:flex-start;gap:18px;margin-top:23px}
-.lp-benefit>svg{flex:none;color:var(--sp-primary);margin-top:3px}
-.sp-landing .lp-benefit h3{font-size:15px;margin:0 0 5px;font-weight:700}
-.sp-landing .lp-benefit p{color:var(--sp-muted);font-size:13px;line-height:1.7;margin:0;max-width:350px}
-.sp-landing .lp-practical{padding:30px;border-radius:16px;border:1px solid var(--sp-border);background:var(--lp-tint)}
-.lp-practical-links{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:24px}
-.lp-practical-links>a{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:65px;padding:18px 0;border-top:1px solid var(--sp-border)}
-.lp-practical-links>a>span{display:flex;align-items:center;gap:16px;min-width:0}
-.lp-practical-links>a>span>span{display:grid;gap:6px}
-.lp-practical-links>a>span>svg{flex:none}
-.lp-practical-links strong{font-size:15px}
-.lp-practical-links small{font-size:12px;color:var(--sp-muted);font-weight:400}
-.sp-landing .lp-help{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
-.lp-faq details{border-bottom:1px solid var(--sp-border);padding:18px 0}
-.lp-faq details:first-child{padding-top:0}
-.lp-faq summary{cursor:pointer;font-size:14px;font-weight:650;min-height:36px;padding:4px 24px 4px 0;line-height:1.7}
-.sp-landing .lp-faq details>p{color:var(--sp-muted);font-size:13px;line-height:1.8;margin:12px 0 0;max-width:560px}
-.lp-photo-credits{display:flex;justify-content:space-between;gap:24px;align-items:center}
-.sp-landing .lp-photo-credits p{font-size:10px;color:var(--sp-muted);margin:0}
-.lp-back-top{display:inline-flex;gap:8px;align-items:center;font-size:11px;white-space:nowrap;min-height:44px}
-.sp-landing .sp-footer{max-width:1184px;font-size:12px}
-.lp-search-skeleton{display:grid;grid-template-columns:1fr 1fr 1fr 160px;gap:16px}
-.lp-search-skeleton>span{height:48px;border-radius:9px;background:var(--lp-tint)}
-@media(prefers-reduced-motion:no-preference){.lp-button,.lp-swap{transition:background-color .15s,transform .15s}.lp-button:active,.lp-swap:active{transform:translateY(1px)}}
-@media(min-width:768px) and (max-width:1023px){.lp-search-fields{grid-template-columns:1fr 36px 1fr}.lp-search-fields label:nth-of-type(3){grid-column:1/3}.lp-search-fields .lp-button{grid-column:3}.sp-landing .lp-hero{gap:28px}.lp-hero-photo{height:260px}.sp-landing .lp-experience{gap:32px}.lp-experience-photo{height:380px}.sp-landing .lp-help{gap:32px}}
-@media(max-width:767px){.sp-landing .sp-header-inner{padding:6px 20px;min-height:60px;justify-content:flex-start}.sp-landing .sp-brand{width:125px}.sp-landing .passenger{padding:22px 20px 32px}.lp-content{gap:40px}.sp-landing .lp-hero{grid-template-columns:1fr;gap:16px;min-height:0}.lp-hero-copy{padding:0}.sp-landing .lp-eyebrow{font-size:9px;margin-bottom:12px}.sp-landing .lp-hero h1{font-size:38px;line-height:1.06;margin-bottom:12px;max-width:330px}.sp-landing .lp-hero-intro{font-size:13px;line-height:1.6;max-width:340px}.lp-hero-photo{height:90px}.lp-hero-photo img{border-radius:12px;object-position:50% 58%}.lp-hero-photo figcaption{font-size:9px}.sp-landing .lp-search-panel{margin-top:-12px;padding:18px 16px;box-shadow:none;border-radius:14px}.sp-landing .lp-search-panel h2{font-size:18px;margin-bottom:16px}.lp-search-fields{grid-template-columns:1fr;gap:12px}.lp-search-fields label{font-size:11px;gap:6px}.lp-search-fields input,.lp-search-fields select{min-height:44px;font-size:13px;padding:10px}.lp-search-fields .lp-swap{display:none}.lp-search-fields .lp-button{width:100%;min-height:46px;justify-content:space-between;margin-top:4px}.sp-landing .lp-search-note{font-size:11px;line-height:1.6}.sp-landing .lp-section-title h2,.sp-landing .lp-experience h2,.sp-landing .lp-practical h2{font-size:26px}.sp-landing .lp-section-title>p,.sp-landing .lp-experience-copy>p,.sp-landing .lp-practical>div>p{font-size:13px}.lp-points{grid-template-columns:1fr;gap:12px;margin-top:20px}.lp-point{padding:18px}.lp-network-empty{padding:22px 18px;align-items:flex-start;gap:16px}.sp-landing .lp-network-empty h3{font-size:15px}.sp-landing .lp-network-empty p{font-size:12px}.sp-landing .lp-experience{grid-template-columns:1fr;gap:30px}.lp-experience-photo{height:200px}.lp-experience-photo img{object-position:50% 63%}.lp-benefit{gap:16px;margin-top:20px}.sp-landing .lp-practical{padding:22px 18px}.lp-practical-links{grid-template-columns:1fr;gap:0;margin-top:18px}.lp-practical-links strong{font-size:14px}.sp-landing .lp-help{grid-template-columns:1fr;gap:24px}.lp-faq summary{font-size:13px;min-height:44px}.lp-photo-credits{align-items:flex-start;flex-direction:column;gap:12px}.lp-search-skeleton{grid-template-columns:1fr;gap:12px}.lp-search-skeleton>span{height:44px}.sp-landing .sp-footer{padding:20px;font-size:11px}}
-@media(prefers-color-scheme:dark){.passenger-shell.sp-landing{--sp-ink:#e9f0fc;--sp-primary:#82b5ff;--sp-hover:#bdd7ff;--sp-canvas:#101e32;--sp-muted:#b2c0d5;--sp-border:#354760;--sp-control:#6c809d;--sp-danger:#ffb4b4;--lp-surface:#101e32;--lp-tint:#172a45;--lp-photo-caption:#b2c0d5}.sp-landing .sp-brand{background:#fcfdff;border-radius:10px;padding:4px}.sp-landing .sp-header nav{background:var(--lp-surface)}.sp-landing .sp-header nav a{color:var(--sp-muted)}.sp-landing .sp-header nav a[aria-current=page]{background:var(--lp-tint);color:var(--sp-primary)}.sp-landing .lp-button{background:#005bd1;border-color:#005bd1;color:#fcfdff}.sp-landing .lp-button:hover{background:#0049aa}.lp-search-fields input,.lp-search-fields select{color-scheme:dark}.sp-landing .sp-footer{color:var(--sp-muted)}}
+/* White is an explicit brand choice, including under system dark mode.
+   Radius scale: photos 28px, panel 24px, controls 12px, icon enclosures round.
+   Layers: hero scrim 0, copy 1; search uses document order, shell nav retains 30. */
+.passenger-shell.sp-landing {
+  --sp-ink:#0a2144; --sp-primary:#005bd1; --sp-hover:#0049aa;
+  --sp-canvas:#fff; --sp-muted:#526078; --sp-border:#dce5ef;
+  --sp-control:#8b9bb0; --sp-danger:#b91c1c;
+  --lp-surface:#fff; --lp-tint:#f4f8fe;
+  color-scheme:light; background:#fff;
+  font-family:var(--font-passenger-jakarta),sans-serif;
+}
+.sp-landing .sp-header {background:#fff; border:0}
+.sp-landing .sp-header-inner {max-width:1280px; padding:10px 32px; min-height:76px}
+.sp-landing .sp-brand {width:150px}
+.sp-landing .sp-header nav {flex-wrap:nowrap; gap:8px; background:#fff}
+.sp-landing .sp-header nav a {font-size:13px; white-space:nowrap; color:var(--sp-ink)}
+.sp-landing .sp-header nav a:hover {color:var(--sp-primary); text-decoration:none}
+.sp-landing .passenger {max-width:1280px; padding:14px 32px 40px}
+.lp-content {display:grid; gap:88px}
+.sp-landing .lp-hero {position:relative; isolation:isolate; min-height:410px; display:flex; align-items:center; border-radius:28px; overflow:hidden; background:#49564b}
+.lp-hero>img {object-fit:cover; object-position:50% 56%; z-index:-2}
+.lp-hero::before {content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(12 19 15 / .86), rgb(12 19 15 / .66) 42%, rgb(12 19 15 / .08))}
+.lp-hero-copy {padding:46px 56px 72px; max-width:620px; color:#fff}
+.sp-landing .lp-eyebrow {font-size:11px; font-weight:650; letter-spacing:.14em; margin:0 0 20px; color:#fff}
+.sp-landing .lp-hero h1 {font-size:clamp(44px,5.2vw,66px); letter-spacing:-.055em; line-height:1.06; font-weight:750; margin:0 0 20px; color:#fff}
+.sp-landing .lp-hero-intro {font-size:15px; line-height:1.7; max-width:360px; color:#fff; margin:0}
+.sp-landing .lp-search-panel {position:relative; margin:-144px 38px 0; padding:26px 28px; background:#fff; border-radius:24px; border:6px solid #f5f8fc; box-shadow:0 18px 48px -18px #163d7129}
+.sp-landing .lp-search-panel h2 {font-size:20px; letter-spacing:-.03em; margin:0 0 20px; font-weight:700}
+.lp-search-fields {display:grid; grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr) minmax(160px,.85fr) auto; gap:14px; align-items:end}
+.lp-search-fields label {display:grid; gap:9px; min-width:0; font-size:12px; font-weight:650}
+.lp-search-fields label>span {display:flex; align-items:center; gap:7px}
+.lp-search-fields label>span svg {color:var(--sp-muted)}
+.sp-landing .lp-search-fields input,.sp-landing .lp-search-fields select {width:100%; min-width:0; min-height:50px; padding:12px; border:1px solid var(--sp-control); border-radius:12px; background:#fff; color:var(--sp-ink); font:inherit; font-size:13px; line-height:1.4; color-scheme:light; text-overflow:ellipsis}
+.sp-landing .lp-search-fields .lp-swap {display:grid; place-items:center; width:36px; min-height:50px; padding:0; border:0; background:transparent; color:var(--sp-primary); border-radius:12px}
+.sp-landing .lp-button {display:inline-flex; align-items:center; justify-content:center; gap:14px; min-height:50px; padding:8px 10px 8px 20px; border:0; border-radius:999px; white-space:nowrap; background:var(--sp-primary); color:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer}
+.sp-landing .lp-button:hover:not(:disabled) {background:var(--sp-hover); color:#fff}
+.sp-landing .lp-button:disabled {background:#e8edf4; color:var(--sp-muted); cursor:wait}
+.lp-button-arrow,.lp-link-arrow {display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:rgb(255 255 255 / .16); flex:none}
+.sp-landing .lp-form-error {font-size:13px; line-height:1.6; color:var(--sp-danger); margin:12px 0 0}
+.sp-landing .lp-search-note {font-size:12px; line-height:1.6; color:var(--sp-muted); margin:14px 0 0}
+.sp-landing .lp-section-title h2,.sp-landing .lp-experience h2 {font-size:clamp(27px,3vw,38px); line-height:1.2; letter-spacing:-.045em; margin:0 0 14px; font-weight:700}
+.sp-landing .lp-section-title>p,.sp-landing .lp-experience-copy>p {color:var(--sp-muted); font-size:14px; line-height:1.8; max-width:520px; margin:0}
+.sp-landing .lp-network {margin:0 38px}
+.lp-network-empty {display:flex; align-items:center; gap:22px; border-radius:20px; background:var(--lp-tint); padding:30px 32px; margin-top:26px}
+.lp-empty-icon {display:grid; place-items:center; width:58px; height:58px; flex:none; background:#fff; border-radius:18px; color:var(--sp-primary); box-shadow:0 6px 16px #163d710a}
+.sp-landing .lp-network-empty h3 {font-size:16px; margin:0 0 6px; font-weight:650}
+.sp-landing .lp-network-empty p {color:var(--sp-muted); font-size:13px; margin:0; line-height:1.7}
+.sp-landing .lp-booking {margin:0 38px}
+.lp-booking-flow {display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px; list-style:none; margin:36px 0 0; padding:0}
+.sp-landing .lp-booking-flow li {position:relative; min-width:0; padding:0}
+.lp-booking-flow li:not(:last-child)::after {content:''; position:absolute; top:28px; left:76px; right:0; height:1px; background:var(--sp-border)}
+.lp-flow-icon {display:grid; place-items:center; width:58px; height:58px; margin-bottom:22px; border-radius:50%; color:var(--sp-primary); background:#eaf3ff; box-shadow:0 0 0 6px #f7faff}
+.sp-landing .lp-booking-flow h3 {font-size:15px; margin:0 0 9px; font-weight:700}
+.sp-landing .lp-booking-flow p {font-size:13px; line-height:1.8; max-width:220px; margin:0; color:var(--sp-muted)}
+.sp-landing .lp-experience {display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:72px; padding:28px; background:var(--lp-tint); border-radius:28px}
+.lp-experience-photo {position:relative; margin:0; height:470px; min-width:0}
+.lp-experience-photo img {object-fit:cover; object-position:50% 58%; border-radius:22px}
+.lp-experience-photo figcaption {position:absolute; top:100%; margin-top:6px; font-size:10px; color:var(--sp-muted)}
+.lp-experience-copy {padding:26px 20px 26px 0; min-width:0}
+.sp-landing .lp-experience h2 {font-size:clamp(25px,2.6vw,34px)}
+.lp-benefit {display:flex; align-items:flex-start; gap:16px; margin-top:25px}
+.lp-benefit>svg {flex:none; color:var(--sp-primary); margin-top:2px}
+.sp-landing .lp-benefit h3 {font-size:14px; margin:0 0 6px; font-weight:700}
+.sp-landing .lp-benefit p {color:var(--sp-muted); font-size:13px; line-height:1.7; margin:0; max-width:340px}
+.sp-landing .lp-text-link {display:inline-flex; gap:14px; align-items:center; min-height:44px; font-size:13px; margin-top:24px}
+.lp-link-arrow {background:#e2edfc}
+.sp-landing .lp-help {display:grid; grid-template-columns:.8fr 1.2fr; gap:72px; margin:0 38px}
+.sp-landing .lp-faq details {border-bottom:1px solid var(--sp-border); padding:17px 0; margin:0}
+.sp-landing .lp-faq details:first-child {padding-top:0}
+.sp-landing .lp-faq summary {cursor:pointer; font-size:14px; font-weight:650; min-height:44px; padding:9px 20px 9px 0; line-height:1.7}
+.sp-landing .lp-faq details>p {color:var(--sp-muted); font-size:13px; line-height:1.8; margin:12px 0 0}
+.lp-photo-credits {padding:0 38px}
+.sp-landing .lp-photo-credits p {font-size:10px; line-height:1.8; color:var(--sp-muted); margin:0}
+.sp-landing .sp-footer {max-width:1216px; background:#fff; font-size:12px; color:var(--sp-muted)}
+.lp-search-skeleton {display:grid; grid-template-columns:1fr 1fr 1fr 170px; gap:16px}
+.lp-search-skeleton>span {height:74px; border-radius:12px; background:var(--lp-tint)}
+@media(prefers-reduced-motion:no-preference) {
+  .sp-landing .lp-button,.sp-landing .lp-swap,.lp-button-arrow,.lp-link-arrow {transition:transform .25s cubic-bezier(.22,1,.36,1)}
+  .sp-landing .lp-button:active,.sp-landing .lp-swap:active {transform:scale(.98)}
+  .lp-button:hover:not(:disabled) .lp-button-arrow,.lp-text-link:hover .lp-link-arrow {transform:translateX(2px)}
+}
+@media(min-width:768px) and (max-width:1023px) {
+  .sp-landing .sp-header-inner {padding-inline:24px}
+  .sp-landing .passenger {padding-inline:24px}
+  .lp-content {gap:64px}
+  .sp-landing .lp-hero {min-height:370px}
+  .lp-hero-copy {padding:36px 36px 64px}
+  .sp-landing .lp-search-panel {margin:-112px 20px 0; padding:24px}
+  .lp-search-fields {grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr)}
+  .lp-search-fields label:nth-of-type(3) {grid-column:1/3}
+  .lp-search-fields .lp-button {grid-column:3}
+  .sp-landing .lp-network,.sp-landing .lp-booking,.sp-landing .lp-help {margin-inline:20px}
+  .lp-booking-flow {grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px 40px}
+  .lp-booking-flow li:nth-child(2)::after {display:none}
+  .sp-landing .lp-experience {gap:30px; padding:22px}
+  .lp-experience-photo {height:480px}
+  .lp-experience-copy {padding-right:0}
+  .sp-landing .lp-help {gap:32px}
+}
+@media(max-width:767px) {
+  .sp-landing .sp-header-inner {padding:8px 20px; min-height:64px}
+  .sp-landing .sp-brand {width:132px}
+  .sp-landing .passenger {padding:8px 16px 28px}
+  .lp-content {gap:40px}
+  .sp-landing .lp-hero {min-height:250px; border-radius:20px}
+  .lp-hero-copy {padding:26px 24px; width:100%; max-width:420px}
+  .sp-landing .lp-eyebrow {font-size:9px; margin-bottom:14px}
+  .sp-landing .lp-hero h1 {font-size:40px; line-height:1.08; margin-bottom:14px}
+  .sp-landing .lp-hero-intro {font-size:13px; max-width:290px; line-height:1.6}
+  .lp-hero::before {background:linear-gradient(90deg, rgb(12 19 15 / .88), rgb(12 19 15 / .68))}
+  .sp-landing .lp-search-panel {margin:0; padding:20px 16px; border:0; border-radius:20px; box-shadow:0 8px 32px #163d7114}
+  .sp-landing .lp-search-panel h2 {font-size:20px; margin-bottom:18px}
+  .lp-search-fields {grid-template-columns:minmax(0,1fr); gap:15px}
+  .lp-search-fields label {font-size:12px; gap:7px}
+  .sp-landing .lp-search-fields input,.sp-landing .lp-search-fields select {min-height:48px; font-size:16px}
+  .sp-landing .lp-search-fields .lp-swap {display:none}
+  .sp-landing .lp-search-fields .lp-button {width:100%; min-height:50px; justify-content:space-between; font-size:14px; margin-top:2px}
+  .sp-landing .lp-search-note {font-size:12px}
+  .sp-landing .lp-network,.sp-landing .lp-booking,.sp-landing .lp-help {margin-inline:4px}
+  .sp-landing .lp-section-title h2,.sp-landing .lp-experience h2 {font-size:27px}
+  .sp-landing .lp-section-title>p,.sp-landing .lp-experience-copy>p {font-size:13px; line-height:1.7}
+  .lp-network-empty {padding:22px 18px; align-items:flex-start; gap:14px; margin-top:22px; border-radius:16px}
+  .lp-empty-icon {width:44px; height:44px; border-radius:14px}
+  .sp-landing .lp-network-empty h3 {font-size:14px}
+  .sp-landing .lp-network-empty p {font-size:12px}
+  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:24px; margin-top:28px}
+  .sp-landing .lp-booking-flow li {padding-left:72px; min-height:62px}
+  .lp-booking-flow li:not(:last-child)::after {top:62px; bottom:-18px; left:25px; right:auto; width:1px; height:auto}
+  .lp-flow-icon {position:absolute; top:0; left:0; width:50px; height:50px; margin:0; box-shadow:none}
+  .sp-landing .lp-booking-flow h3 {font-size:14px; margin-bottom:5px}
+  .sp-landing .lp-booking-flow p {max-width:none; font-size:13px; line-height:1.7}
+  .sp-landing .lp-experience {grid-template-columns:minmax(0,1fr); gap:32px; padding:16px; border-radius:22px}
+  .lp-experience-photo {height:240px}
+  .lp-experience-photo img {border-radius:16px; object-position:50% 64%}
+  .lp-experience-copy {padding:6px 6px 12px}
+  .lp-benefit {margin-top:23px; gap:14px}
+  .sp-landing .lp-help {grid-template-columns:minmax(0,1fr); gap:26px}
+  .sp-landing .lp-faq summary {font-size:13px; min-height:44px}
+  .lp-photo-credits {padding:0 4px}
+  .lp-search-skeleton {grid-template-columns:minmax(0,1fr); gap:15px}
+  .lp-search-skeleton>span {height:74px}
+  .sp-landing .sp-footer {padding:22px 20px; font-size:11px}
+}
+@media(max-width:639px) {
+  .sp-landing .sp-header nav {display:grid; gap:4px; background:#fff}
+  .sp-landing .sp-header nav a {font-size:11px; color:var(--sp-muted)}
+  .sp-landing .sp-header nav a[aria-current=page] {color:var(--sp-primary); background:#edf4ff}
+}

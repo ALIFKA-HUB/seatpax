@@ -1,5 +1,13 @@
 # Seatpax passenger landing delivery
 
+## White photo revision, 21 October 2026
+
+User approved the two-reference adaptation (D2026-10-21-03). Current source replaces the compact split hero with a wide road photograph and contrast scrim, concise copy, lightly overlapping desktop search, an explicitly empty route showcase, four-part booking explanation, supporting photo/benefits and FAQ. Background and semantic colors are locked light/white even under system dark preference. Actual logo/nav/query contracts remain; no dependencies or backend changes. Search location options still use the existing actual service. Showcase wording describes what is displayed, not whether inventory exists. No route examples or fabricated fares/reviews were added.
+
+CSS explicitly defines desktop, tablet and phone layouts. A fresh GPT-6 Luna medium source reviewer requested removal of the phone panel's negative top margin; phone margin is now zero. Other reviewed areas had no high-confidence important source finding. This is source review, not rendered acceptance or proof of visual contrast/fit. Tests, build, lint, typecheck, Lighthouse and browser/device checks were not run because user deferred testing. Source changes are on the landing branch; no merge or push performed.
+
+The earlier delivery notes below describe the previous composition and are historical where this revision differs (notably system dark palette and populated point showcase).
+
 Date:21October2026. Branch:`codex/seatpax-landing`, base main689836f. Implementation commit:f9ee916.
 Worktree:`C:/Users/ASUS/.codex/worktrees/seatpax-landing/SeatPax`.
 

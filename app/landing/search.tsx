@@ -12,7 +12,7 @@ export default function LandingSearch({locations,date}:{locations:Point[];date:s
  <button className="lp-swap" type="button" aria-label="Tukar asal dan tujuan" onClick={()=>{setFrom(to);setTo(from);setError('');}}><ArrowsLeftRight size={18} aria-hidden="true"/></button>
  <label htmlFor="landing-to"><span><MapPin size={16} aria-hidden="true"/>Ke</span><select id="landing-to" name="to" value={to} onChange={e=>{setTo(e.target.value);setError('');}} aria-describedby={error?'landing-search-error':undefined}><option value="">Semua tujuan</option>{locations.map(p=><option key={p.id} value={p.id}>{p.city} - {p.name}</option>)}</select></label>
  <label htmlFor="landing-date"><span><CalendarBlank size={16} aria-hidden="true"/>Tanggal berangkat</span><input id="landing-date" name="date" type="date" min={date} defaultValue={date} required/></label>
- <button className="lp-button" type="submit" disabled={pending} aria-busy={pending}>{pending?'Mencari…':'Cari perjalanan'}<ArrowRight size={19} aria-hidden="true"/></button></div>
+ <button className="lp-button" type="submit" disabled={pending} aria-busy={pending}>{pending?'Mencari…':'Cari perjalanan'}<span className="lp-button-arrow"><ArrowRight size={19} aria-hidden="true"/></span></button></div>
  {error&&<p className="lp-form-error" id="landing-search-error" role="alert">{error}</p>}
  </form>;
 }
