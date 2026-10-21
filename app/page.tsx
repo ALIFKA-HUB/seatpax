@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 };
 
 const bookingFlow = [
-  {Icon: MagnifyingGlass, title: 'Cari perjalanan', copy: 'Tentukan asal, tujuan, dan tanggal keberangkatan.'},
-  {Icon: Armchair, title: 'Pilih kursi', copy: 'Lihat susunan kursi dan pilih yang tersedia.'},
-  {Icon: CreditCard, title: 'Selesaikan pembayaran', copy: 'Ikuti petunjuk pembayaran pada pesanan Anda.'},
-  {Icon: Ticket, title: 'Buka tiket', copy: 'Setelah dikonfirmasi, tiket dan QR siap dibuka.'},
+  {Icon: MagnifyingGlass, title: 'Cari perjalanan', copy: 'Tentukan asal, tujuan, dan tanggal.'},
+  {Icon: Armchair, title: 'Pilih kursi', copy: 'Pilih kursi yang masih tersedia.'},
+  {Icon: CreditCard, title: 'Bayar pesanan', copy: 'Selesaikan pembayaran pesanan Anda.'},
+  {Icon: Ticket, title: 'Buka tiket', copy: 'Buka tiket dan QR setelah dikonfirmasi.'},
 ];
 
 export default function Home() {

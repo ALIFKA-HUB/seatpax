@@ -16,7 +16,7 @@
 .sp-landing .sp-header nav a {font-size:13px; white-space:nowrap; color:var(--sp-ink)}
 .sp-landing .sp-header nav a:hover {color:var(--sp-primary); text-decoration:none}
 .sp-landing .passenger {max-width:1280px; padding:14px 32px 40px}
-.lp-content {display:grid; gap:88px}
+.lp-content {display:grid; gap:80px}
 .sp-landing .lp-hero {position:relative; isolation:isolate; min-height:410px; display:flex; align-items:center; border-radius:28px; overflow:hidden; background:#49564b}
 .lp-hero>img {object-fit:cover; object-position:50% 56%; z-index:-2}
 .lp-hero::before {content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(12 19 15 / .86), rgb(12 19 15 / .66) 42%, rgb(12 19 15 / .08))}
@@ -46,11 +46,11 @@
 .sp-landing .lp-network-empty h3 {font-size:16px; margin:0 0 6px; font-weight:650}
 .sp-landing .lp-network-empty p {color:var(--sp-muted); font-size:13px; margin:0; line-height:1.7}
 .sp-landing .lp-booking {margin:0 38px}
-.lp-route {position:relative; margin-top:52px}
+.lp-route {position:relative; margin-top:44px}
 .lp-booking-flow {display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px; list-style:none; margin:0; padding:0}
 .sp-landing .lp-booking-flow li {position:relative; min-width:0; padding:0}
 .lp-booking-flow li:not(:last-child)::after {content:''; position:absolute; top:28px; left:76px; right:0; border-top:2px dashed var(--sp-border)}
-.lp-flow-icon {position:relative; z-index:1; display:grid; place-items:center; width:58px; height:58px; margin-bottom:22px; border-radius:50%; color:var(--sp-primary); background:#eaf3ff; box-shadow:0 0 0 6px #f7faff}
+.lp-flow-icon {position:relative; z-index:1; display:grid; place-items:center; width:58px; height:58px; margin-bottom:22px; border-radius:50%; color:var(--sp-primary); background:#eaf3ff; box-shadow:0 0 0 3px #f7faff}
 .lp-route-lines {position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none}
 .lp-route-track,.lp-route-trace {fill:none; stroke-width:2; stroke-linecap:round; stroke-dasharray:5 8}
 .lp-route-track {stroke:var(--sp-border)}
@@ -70,6 +70,12 @@
 @keyframes lp-route-arrive {0% {transform:scale(1); background:#eaf3ff; color:var(--sp-primary)} 50% {transform:scale(1.1); background:var(--sp-primary); color:#fff} 100% {transform:scale(1); background:var(--sp-primary); color:#fff}}
 .sp-landing .lp-booking-flow h3 {font-size:15px; margin:0 0 9px; font-weight:700}
 .sp-landing .lp-booking-flow p {font-size:13px; line-height:1.8; max-width:220px; margin:0; color:var(--sp-muted)}
+@media(min-width:1024px) {
+  .sp-landing .lp-booking-flow li {text-align:center}
+  .lp-flow-icon {margin-inline:auto}
+  .sp-landing .lp-booking-flow p {max-width:25ch; margin-inline:auto; text-wrap:pretty}
+  .lp-booking-flow li:not(:last-child)::after {left:calc(50% + 40px); right:auto; width:calc(100% - 50px)}
+}
 .sp-landing .lp-experience {display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:72px; padding:28px; background:var(--lp-tint); border-radius:28px}
 .lp-experience-photo {position:relative; margin:0; height:470px; min-width:0}
 .lp-experience-photo img {object-fit:cover; object-position:50% 58%; border-radius:22px}

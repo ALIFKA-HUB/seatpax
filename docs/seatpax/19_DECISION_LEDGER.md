@@ -332,3 +332,5 @@ Navbar indicator refinement: the user requested an underline. Adopt a short blue
 ## D2026-10-21-06 - Booking explanation as animated route
 
 The user accepted a dashed path with different upward/downward curves between the four booking steps, reviewed an interactive desktop/phone preview, and accepted applying it to the actual page. Single 4.2-second viewport-triggered playback, sequential icon activation, static reduced-motion fallback and readable no-JavaScript content are presentation requirements. Tablet uses a vertical path to preserve reading order. Booking/payment state and authorization are unchanged.
+
+Composition refinement: the user approved balanced desktop columns, concise descriptions, **Bayar pesanan**, thinner icon halos and a softer navbar shadow. Preserve the animated route, phone/tablet vertical alignment, navigation and existing booking behavior.

@@ -3,7 +3,7 @@
 .passenger-shell{position:relative}
 .sp-header-marker{position:absolute;top:32px;left:0;width:1px;height:1px;pointer-events:none}
 .passenger-shell:not(.sp-focused) .sp-header-inner{position:relative;isolation:isolate;max-width:none;min-height:72px;display:grid;grid-template-columns:1fr auto 1fr;gap:20px;padding:10px 24px;border-radius:20px;background:#fff;box-shadow:none}
-.passenger-shell:not(.sp-focused) .sp-header-inner::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:0 12px 34px #143f7529,0 0 0 1px #dce5ef;opacity:0;pointer-events:none}
+.passenger-shell:not(.sp-focused) .sp-header-inner::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:0 8px 24px #143f7517,0 0 0 1px #e4ebf3;opacity:0;pointer-events:none}
 .passenger-shell:not(.sp-focused) .sp-header[data-floating=true] .sp-header-inner::before{opacity:1}
 @media(prefers-reduced-motion:no-preference){
  .passenger-shell:not(.sp-focused) .sp-header-inner::before{transform:translateY(-2px);transition:opacity 450ms cubic-bezier(.22,1,.36,1),transform 450ms cubic-bezier(.22,1,.36,1)}

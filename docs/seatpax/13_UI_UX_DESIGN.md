@@ -860,3 +860,7 @@ Latest navigation indicator revision: user requested an underline. Main links no
 ### Approved booking route motion — 21 October 2026
 
 Apply the accepted interactive preview to the landing booking explanation: a dashed blue route with distinct upward/downward curves, a travelling point, and four sequential icon activations. Preserve the existing labels and copy. Play once for 4.2 seconds when the section becomes visible; stop with all steps readable. Desktop is horizontal; tablet and phone use one vertical route for continuous reading order. Reduced motion shows a static completed route, and server-rendered content/fallback connectors remain usable without JavaScript. This explains the process and never indicates the state of an actual booking. Use the existing Phosphor icons and brand colors; no animation dependency.
+
+### Booking composition refinement
+
+The user approved centering each desktop step's icon, title and description within equal-width columns, balancing both outer icon margins. Keep tablet/phone vertical content left aligned. Shorten the third title to **Bayar pesanan** and descriptions to concise text; reduce the icon halo from 6px to 3px and heading-to-route spacing from 52px to 44px. Desktop section spacing becomes 80px; existing tablet/phone spacing remains. Soften navbar shadow to 0 8px 24px with lower blue-tinted opacity while preserving its 450ms scroll transition and underline.
