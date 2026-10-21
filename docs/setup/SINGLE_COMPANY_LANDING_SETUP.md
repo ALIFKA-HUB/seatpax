@@ -1,5 +1,9 @@
 # Seatpax passenger landing delivery
 
+## Passenger navbar follow-up
+
+The approved floating white/text-only active navigation is implemented in the shared passenger shell. See [navbar delivery and evidence](PASSENGER_NAVBAR_SETUP.md), including current live availability timeout and boundaries of the rendered verification.
+
 ## Verification follow-up
 
 The user explicitly requested verification after the white photo implementation. See [21 October verification evidence](LANDING_VERIFICATION_2026_10_21.md) for passing quality commands, desktop/tablet/phone browser emulation, test fixture repairs and Computer Use helper failure/fallback. The earlier testing deferral statements below describe previous delivery status; physical-device and populated real-schedule acceptance remain pending.
