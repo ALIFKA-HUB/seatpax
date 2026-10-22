@@ -334,3 +334,5 @@ Navbar indicator refinement: the user requested an underline. Adopt a short blue
 The user accepted a dashed path with different upward/downward curves between the four booking steps, reviewed an interactive desktop/phone preview, and accepted applying it to the actual page. Single 4.2-second viewport-triggered playback, sequential icon activation, static reduced-motion fallback and readable no-JavaScript content are presentation requirements. Tablet uses a vertical path to preserve reading order. Booking/payment state and authorization are unchanged.
 
 Composition refinement: the user approved balanced desktop columns, concise descriptions, **Bayar pesanan**, thinner icon halos and a softer navbar shadow. Preserve the animated route, phone/tablet vertical alignment, navigation and existing booking behavior.
+
+Arrival refinement (22 October): the user requested extra vertical breathing room, a circle arrival effect synchronized to the travelling point, and local motion per icon. Adopt a single arrival ring and two subtle glyph motion cycles, then settle; preserve reduced-motion and route/reading order.

@@ -864,3 +864,7 @@ Apply the accepted interactive preview to the landing booking explanation: a das
 ### Booking composition refinement
 
 The user approved centering each desktop step's icon, title and description within equal-width columns, balancing both outer icon margins. Keep tablet/phone vertical content left aligned. Shorten the third title to **Bayar pesanan** and descriptions to concise text; reduce the icon halo from 6px to 3px and heading-to-route spacing from 52px to 44px. Desktop section spacing becomes 80px; existing tablet/phone spacing remains. Soften navbar shadow to 0 8px 24px with lower blue-tinted opacity while preserving its 450ms scroll transition and underline.
+
+### Route arrival and breathing refinement — 22 October 2026
+
+The user requested more space above/below the animation, a visible arrival response on each circle, and local icon motion. Increase route padding and desktop icon-to-title spacing; increase vertical step gaps on smaller screens. An expanding ring runs for 800ms at each measured route arrival. Each activated glyph then makes two restrained 1.8-second in-place motions and settles, keeping the circle/path anchors stable. All motion remains disabled under reduced-motion preference. The main route still plays once for 4.2 seconds.

@@ -18,3 +18,9 @@ The first browser probe reached server-rendered content before hydration; it did
 Applied the user's approved five refinements: centered desktop steps, shorter copy, 3px icon halo, 44px heading-to-route gap / 80px desktop section rhythm and softer navbar shadow. Updated the existing passenger-entry expectation for the approved label **Bayar pesanan**; no new tests added and no suite run for this follow-up.
 
 Fresh headless Chrome checks at 1440/1024/768/390/320px found no horizontal overflow and retained measured route geometry. Desktop outer icon gaps matched exactly (84.25px at 1440; 72.25px at 1024); desktop descriptions measured at most two lines. Desktop screenshot inspected. Evidence: ignored booking-balance-browser.json and booking-balance-*.png in the existing verification cache. Physical-device acceptance remains pending.
+
+## Arrival motion refinement — 22 October 2026
+
+Added vertical breathing room, an 800ms arrival ring synchronized with each measured route delay, and two 1.8s glyph motion cycles after activation. Only glyphs move locally; path anchors stay fixed. Motion settles after these cycles.
+
+Fresh installed-Chrome checks at 1440/768/390/320px confirmed route playback, sequential ring delays (0 to 4.2s), the correct two-cycle icon animation, and no horizontal overflow. Reduced-motion checks confirmed animation-name none for both ring and glyph. git diff --check passed. No suite/build rerun for this CSS-only follow-up; physical-device acceptance remains pending.
