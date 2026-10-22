@@ -888,3 +888,7 @@ Latest targeted clearance request: add more space specifically between the booki
 ### Approved passenger footer — 22 October 2026
 
 The user reviewed and accepted the white desktop/phone footer preview. Use the actual logo, tagline **Perjalanan antarkota, lebih nyaman.**, and a concise description; two navigation groups: Jelajahi (/trips, /tickets, /account) and Panduan (/#booking-title, /#help-title). Copyright and a short brand closing line sit below a subtle divider. Three columns on desktop/tablet, brand above two link columns on phones, then stacked bottom text. Use existing brand/font tokens and 44px link targets. Preserve focused login/checkout's minimal footer. No fabricated contact/social links, app downloads, legal destinations or new product routes.
+
+## Landing versus booking workspace — 22 October 2026
+
+Approved direction D2026-10-22-01 separates the marketing landing `/` from public search/seat browsing in `/trips`. Login is required to continue an owned booking/hold, with return to the valid previous intent. Email OTP remains one entry for existing/new passengers. The landing may feature a small set of real eligible trips linking into the booking area while retaining context; no mock routes/fares are permitted. Current landing composition and selected-seat return behavior have not yet been revised. Layout, featured selection and empty-state treatment need a bounded design before code changes.

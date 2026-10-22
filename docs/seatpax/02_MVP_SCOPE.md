@@ -290,3 +290,7 @@ The SaaS restructuring must design customer complaints/help, including debit-suc
 ## SaaS initial Pro fleet allowance — 20 October 2026
 
 The user approved an initial Pro allowance of **30 vehicles eligible for new operations/sales per workspace**, priced at **Rp299,000/month**. This is distinct from Free's stored-data limits; retained historical Pro vehicles do not become newly eligible automatically. Other Pro quotas remain undecided. Read the [SaaS draft awaiting review](../superpowers/specs/2026-10-20-shuttle-saas-design.md) and D2026-10-20-03; no billing/entitlement implementation is delivered by this decision.
+
+## Public browsing and booking entry — 22 October 2026
+
+D2026-10-22-01 keeps public journey search/detail/seat browsing and requires verified identity when continuing booking/creating an owned hold. Separate marketing `/` from the booking workspace `/trips`; preserve valid journey/seat intent through login without promising availability or creating a hold automatically. Existing single-seat inventory/payment/authorization rules remain unchanged. A unified Email OTP entry serves new and existing passengers. This does not add guest checkout, group booking or a separate registration subsystem.

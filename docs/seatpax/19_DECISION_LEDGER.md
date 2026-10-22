@@ -346,3 +346,11 @@ Spacing/control refinement: the user explicitly removed the pause button and req
 ## Passenger footer approval — 22 October 2026
 
 The user approved the interactive desktop/phone footer preview and authorized implementation. Shared non-focused passenger pages receive actual branding, Jelajahi and Panduan groups with existing destinations, and a copyright strip. Focused authentication/checkout retains its minimal footer. No changes to navigation authority, booking flows or company identity.
+
+## D2026-10-22-01 - Separate marketing landing from passenger booking
+
+The user agreed to distinct responsibilities: `/` introduces Seatpax and may feature a small set of actual available trips; `/trips` is the public journey search/catalogue and entry to seat selection. Browsing and inspecting seats do not require login. Verified login is required when continuing a booking/creating an owned hold, before payment/ticket access. Retain the existing unified Email OTP entry for existing/new passenger accounts; no separate registration form is introduced by this decision.
+
+A featured-trip action must preserve its relevant trip/interval context; authentication returns to the valid booking intent instead of forcing a fresh search. Remembered seat intent is not a reservation: availability, price, sales cutoff and hold ownership remain revalidated by the server. Do not auto-create a hold solely because authentication succeeded. Existing safe return-path validation and internal staff destinations stay authoritative.
+
+This is approved product direction, not a claim that the landing has already been reorganized or that seat intent survives login today. The current `/trips` and trip detail are already public, and the existing seat screen gates hold creation with login. Separating landing composition, optional real featured journeys and preservation of selected-seat intent remain follow-up design/implementation work. No fictitious route/fare inventory is authorized; exact featured selection and empty treatment remain to be specified.
