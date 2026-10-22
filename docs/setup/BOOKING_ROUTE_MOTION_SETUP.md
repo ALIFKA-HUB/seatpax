@@ -38,3 +38,5 @@ Fresh TypeScript check exit 0. Installed-Chrome checks at desktop 1440 and phone
 Removed pause control/state and its empty row as explicitly requested. Reduced desktop heading/route/icon/text/section gaps and smaller-screen step gaps, retaining centered desktop / left-aligned vertical phone/tablet compositions and the continuous motion/reduced-motion fallback.
 
 Fresh TypeScript check exit 0. Actual Chrome at 1440/768/390/320px: no pause button in section, measured route paths remain, no horizontal overflow. Desktop route margin 40px, padding 8px and icon-to-title gap 26px; tablet/phone route margins 32/28px. Smaller-screen title shares the icon row by design. Desktop screenshot visually inspected. No full suite/build or physical-device check claimed.
+
+Desktop route-band spacing: increase internal top clearance by 16px and icon-to-title clearance by 18px following the user's feedback about the line being too close above/below. Other section and mobile spacing unchanged. CSS diff inspected and git diff --check passed; browser/full tests not rerun for this two-rule refinement.

@@ -878,3 +878,5 @@ The user clarified that each circle should rise/settle on route arrival and then
 ### Booking spacing and controls refinement — 22 October 2026
 
 At the user's explicit request, remove the visible Jeda animasi/Lanjutkan animasi control and its reserved row. Retain the requested continuous circle/icon motion and system reduced-motion fallback. Compact the section: desktop route top margin 40px, route padding 8px top/bottom, icon-to-title gap 26px, desktop page section gap 72px; phone route margin 28px and vertical step gap 32px; tablet margin 32px and step gap 34px. Keep balanced desktop outer margins and existing content. This supersedes previous pause-control and larger-spacing directions.
+
+Route-band clarification: the user wants more clearance specifically above and below the curved desktop route. Retain section spacing and removal of the pause control; increase desktop route top padding from 8px to 24px and icon-to-title margin from 26px to 44px. Tablet/phone vertical layout remains unchanged.
