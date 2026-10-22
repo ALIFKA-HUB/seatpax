@@ -336,3 +336,5 @@ The user accepted a dashed path with different upward/downward curves between th
 Composition refinement: the user approved balanced desktop columns, concise descriptions, **Bayar pesanan**, thinner icon halos and a softer navbar shadow. Preserve the animated route, phone/tablet vertical alignment, navigation and existing booking behavior.
 
 Arrival refinement (22 October): the user requested extra vertical breathing room, a circle arrival effect synchronized to the travelling point, and local motion per icon. Adopt a single arrival ring and two subtle glyph motion cycles, then settle; preserve reduced-motion and route/reading order.
+
+Circle-motion clarification: the user meant the whole circle plus icon, with small up/down/left/right movement. Replace glyph-only motion with 1-3px circle translation, retaining arrival feedback and reduced-motion behavior.

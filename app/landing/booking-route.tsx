@@ -23,8 +23,10 @@ export default function BookingRoute({children}: {children: ReactNode}) {
       if (disposed || !field || !field.clientWidth) return;
       const box = field.getBoundingClientRect();
       const points = steps.map(step => {
-        const icon = step.querySelector('.lp-flow-icon')!.getBoundingClientRect();
-        return {x: icon.left - box.left + icon.width / 2, y: icon.top - box.top + icon.height / 2};
+        const icon = step.querySelector<HTMLElement>('.lp-flow-icon')!;
+        const item = step.getBoundingClientRect();
+        // Use layout coordinates so a font/resize measurement cannot bake in the idle translation.
+        return {x: item.left - box.left + icon.offsetLeft + icon.offsetWidth / 2, y: item.top - box.top + icon.offsetTop + icon.offsetHeight / 2};
       });
       const vertical = Math.abs(points[1].y - points[0].y) > 30;
       const bends = vertical ? [[-20, -12], [24, 18], [-10, 20]] : [[-48, -30], [34, 42], [-32, 26]];

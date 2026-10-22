@@ -24,3 +24,5 @@ Fresh headless Chrome checks at 1440/1024/768/390/320px found no horizontal over
 Added vertical breathing room, an 800ms arrival ring synchronized with each measured route delay, and two 1.8s glyph motion cycles after activation. Only glyphs move locally; path anchors stay fixed. Motion settles after these cycles.
 
 Fresh installed-Chrome checks at 1440/768/390/320px confirmed route playback, sequential ring delays (0 to 4.2s), the correct two-cycle icon animation, and no horizontal overflow. Reduced-motion checks confirmed animation-name none for both ring and glyph. git diff --check passed. No suite/build rerun for this CSS-only follow-up; physical-device acceptance remains pending.
+
+Circle-motion correction: movement now applies to the entire circle (1-3px in both axes), with no independent glyph movement. Path geometry uses layout offsets to avoid incorporating transient translation. Fresh Chrome check measured circle translate 0.86px/-2.43px with arrival+idle animations, glyph animation none, and no horizontal overflow. Reduced motion: circle/glyph animation none and translate none. No full suite/build rerun.

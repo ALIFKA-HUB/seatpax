@@ -868,3 +868,5 @@ The user approved centering each desktop step's icon, title and description with
 ### Route arrival and breathing refinement — 22 October 2026
 
 The user requested more space above/below the animation, a visible arrival response on each circle, and local icon motion. Increase route padding and desktop icon-to-title spacing; increase vertical step gaps on smaller screens. An expanding ring runs for 800ms at each measured route arrival. Each activated glyph then makes two restrained 1.8-second in-place motions and settles, keeping the circle/path anchors stable. All motion remains disabled under reduced-motion preference. The main route still plays once for 4.2 seconds.
+
+Clarification (22 October): local movement applies to the entire circle and its icon together, gently translating 1-3px in all four directions after arrival, for two cycles. The glyph has no separate animation. Layout-coordinate path measurement excludes this translation so responsive/font remeasurement keeps route anchors stable. This supersedes the glyph-only motion above.
