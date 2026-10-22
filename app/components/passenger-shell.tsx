@@ -3,6 +3,7 @@ import type {ReactNode} from 'react';
 import Brand from './brand';
 import PassengerAccountMenu from './passenger-account-menu';
 import PassengerHeader from './passenger-header';
+import PassengerFooter from './passenger-footer';
 import {MapTrifold,Ticket,UserCircle} from '@phosphor-icons/react/ssr';
 import '../passenger.css';
 import './passenger-navigation.css';
@@ -12,6 +13,6 @@ export default function PassengerShell({children,active,focused=false,landing=fa
   <a className="sp-skip" href="#passenger-content">Langsung ke konten</a>
   <PassengerHeader animated={!focused}><Brand/>{!focused&&<><nav aria-label="Navigasi penumpang">{links.map(([key,path,label,Icon])=><Link className={key==='account'?'sp-account-mobile':undefined} key={key} href={path} aria-current={active===key?'page':undefined}><Icon size={21} aria-hidden="true"/><span>{label}</span></Link>)}</nav><div className="sp-header-account"><PassengerAccountMenu/></div></>}</PassengerHeader>
   <main id="passenger-content" className="passenger">{children}</main>
-  <footer className="sp-footer"><span>Seatpax</span><span>Perjalanan antarkota, lebih teratur.</span></footer>
+  {focused?<footer className="sp-footer"><span>Seatpax</span><span>Perjalanan antarkota, lebih teratur.</span></footer>:<PassengerFooter/>}
  </div>;
 }

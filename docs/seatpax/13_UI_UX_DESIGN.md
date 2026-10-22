@@ -884,3 +884,7 @@ Route-band clarification: the user wants more clearance specifically above and b
 Optical route-band balance: measured subtitle text bounds, SVG curve envelope, circle bounds and step-title text bounds. Before refinement, visible clearances were approximately 67.6px above / 45px below at 1440px. Desktop route margin becomes 28px (padding remains 24px); icon-to-title margin becomes 55px. Different CSS values yield approximately 55.6px / 56px clearances at both 1440px and 1024px, rather than equating padding values. Vertical layouts remain unchanged.
 
 Latest targeted clearance request: add more space specifically between the booking subtitle and desktop route. Desktop route top margin increases from 28px to 48px; retain lower title spacing and phone/tablet layout. This supersedes equal upper/lower optical clearance as the target.
+
+### Approved passenger footer — 22 October 2026
+
+The user reviewed and accepted the white desktop/phone footer preview. Use the actual logo, tagline **Perjalanan antarkota, lebih nyaman.**, and a concise description; two navigation groups: Jelajahi (/trips, /tickets, /account) and Panduan (/#booking-title, /#help-title). Copyright and a short brand closing line sit below a subtle divider. Three columns on desktop/tablet, brand above two link columns on phones, then stacked bottom text. Use existing brand/font tokens and 44px link targets. Preserve focused login/checkout's minimal footer. No fabricated contact/social links, app downloads, legal destinations or new product routes.

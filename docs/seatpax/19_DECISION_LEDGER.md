@@ -342,3 +342,7 @@ Circle-motion clarification: the user meant the whole circle plus icon, with sma
 Continuous-motion clarification: the user requested arrival lift/settle followed by ongoing, smooth, subtle vertical circle motion plus separate arrival/idle glyph animation. Replace the finite two-cycle behavior with continuous small loops, with a local pause/resume control and reduced-motion static fallback.
 
 Spacing/control refinement: the user explicitly removed the pause button and requested tighter, more consistent spacing. Remove the control row/state, reduce route/label/section gaps and preserve continuous subtle motion plus reduced-motion preference. This supersedes the visible pause control adopted in the previous refinement.
+
+## Passenger footer approval — 22 October 2026
+
+The user approved the interactive desktop/phone footer preview and authorized implementation. Shared non-focused passenger pages receive actual branding, Jelajahi and Panduan groups with existing destinations, and a copyright strip. Focused authentication/checkout retains its minimal footer. No changes to navigation authority, booking flows or company identity.
