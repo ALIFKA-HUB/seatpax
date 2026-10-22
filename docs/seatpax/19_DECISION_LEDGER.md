@@ -340,3 +340,5 @@ Arrival refinement (22 October): the user requested extra vertical breathing roo
 Circle-motion clarification: the user meant the whole circle plus icon, with small up/down/left/right movement. Replace glyph-only motion with 1-3px circle translation, retaining arrival feedback and reduced-motion behavior.
 
 Continuous-motion clarification: the user requested arrival lift/settle followed by ongoing, smooth, subtle vertical circle motion plus separate arrival/idle glyph animation. Replace the finite two-cycle behavior with continuous small loops, with a local pause/resume control and reduced-motion static fallback.
+
+Spacing/control refinement: the user explicitly removed the pause button and requested tighter, more consistent spacing. Remove the control row/state, reduce route/label/section gaps and preserve continuous subtle motion plus reduced-motion preference. This supersedes the visible pause control adopted in the previous refinement.

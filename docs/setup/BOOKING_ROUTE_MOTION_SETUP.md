@@ -32,3 +32,9 @@ Circle-motion correction: movement now applies to the entire circle (1-3px in bo
 Supersedes finite movement: each circle rises/settles on arrival, then continuously floats vertically by 3px over 3.6s. Each glyph gives a 700ms scale response on arrival, then a separate 4.8s rotation loop of +/-2 degrees. A local pause/resume button freezes all animations without resetting progress. Reduced motion remains static and hides this control.
 
 Fresh TypeScript check exit 0. Installed-Chrome checks at desktop 1440 and phone 390px confirmed finite arrival plus infinite circle/glyph loops, sequential arrival delays, no horizontal overflow, working pause/resume controls and paused states for circle/glyph/route reveal. Reduced-motion circle/glyph animation names none and pause control hidden. No full suite/build or physical-device acceptance claimed.
+
+## Compact spacing and removed pause control — 22 October 2026
+
+Removed pause control/state and its empty row as explicitly requested. Reduced desktop heading/route/icon/text/section gaps and smaller-screen step gaps, retaining centered desktop / left-aligned vertical phone/tablet compositions and the continuous motion/reduced-motion fallback.
+
+Fresh TypeScript check exit 0. Actual Chrome at 1440/768/390/320px: no pause button in section, measured route paths remain, no horizontal overflow. Desktop route margin 40px, padding 8px and icon-to-title gap 26px; tablet/phone route margins 32/28px. Smaller-screen title shares the icon row by design. Desktop screenshot visually inspected. No full suite/build or physical-device check claimed.

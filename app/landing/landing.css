@@ -16,7 +16,7 @@
 .sp-landing .sp-header nav a {font-size:13px; white-space:nowrap; color:var(--sp-ink)}
 .sp-landing .sp-header nav a:hover {color:var(--sp-primary); text-decoration:none}
 .sp-landing .passenger {max-width:1280px; padding:14px 32px 40px}
-.lp-content {display:grid; gap:80px}
+.lp-content {display:grid; gap:72px}
 .sp-landing .lp-hero {position:relative; isolation:isolate; min-height:410px; display:flex; align-items:center; border-radius:28px; overflow:hidden; background:#49564b}
 .lp-hero>img {object-fit:cover; object-position:50% 56%; z-index:-2}
 .lp-hero::before {content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(12 19 15 / .86), rgb(12 19 15 / .66) 42%, rgb(12 19 15 / .08))}
@@ -46,11 +46,11 @@
 .sp-landing .lp-network-empty h3 {font-size:16px; margin:0 0 6px; font-weight:650}
 .sp-landing .lp-network-empty p {color:var(--sp-muted); font-size:13px; margin:0; line-height:1.7}
 .sp-landing .lp-booking {margin:0 38px}
-.lp-route {position:relative; margin-top:56px; padding-block:16px 24px}
+.lp-route {position:relative; margin-top:40px; padding-block:8px}
 .lp-booking-flow {display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px; list-style:none; margin:0; padding:0}
 .sp-landing .lp-booking-flow li {position:relative; min-width:0; padding:0}
 .lp-booking-flow li:not(:last-child)::after {content:''; position:absolute; top:28px; left:76px; right:0; border-top:2px dashed var(--sp-border)}
-.lp-flow-icon {position:relative; z-index:1; display:grid; place-items:center; width:58px; height:58px; margin-bottom:38px; border-radius:50%; color:var(--sp-primary); background:#eaf3ff; box-shadow:0 0 0 3px #f7faff}
+.lp-flow-icon {position:relative; z-index:1; display:grid; place-items:center; width:58px; height:58px; margin-bottom:26px; border-radius:50%; color:var(--sp-primary); background:#eaf3ff; box-shadow:0 0 0 3px #f7faff}
 .lp-flow-icon::after {content:''; position:absolute; inset:-5px; border:2px solid var(--sp-primary); border-radius:50%; opacity:0; pointer-events:none}
 .lp-route-lines {position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none}
 .lp-route-track,.lp-route-trace {fill:none; stroke-width:2; stroke-linecap:round; stroke-dasharray:5 8}
@@ -60,9 +60,6 @@
 .lp-route[data-route-ready=true] .lp-booking-flow li::after {display:none}
 .lp-route[data-route-motion=static] .lp-flow-icon {background:var(--sp-primary); color:#fff}
 .lp-route-traveller {position:absolute; top:0; left:0; width:12px; height:12px; border:3px solid #fff; border-radius:50%; background:var(--sp-primary); opacity:0; pointer-events:none}
-.lp-route-controls {display:flex; justify-content:flex-end; margin-top:16px; min-height:44px}
-.sp-landing .lp-motion-toggle {visibility:hidden; min-height:44px; padding:8px 4px; border:0; border-radius:6px; background:transparent; color:var(--sp-muted); font:inherit; font-size:12px; cursor:pointer}
-.sp-landing .lp-motion-toggle:hover {color:var(--sp-primary); background:transparent; text-decoration:underline}
 @media(prefers-reduced-motion:no-preference) {
   .lp-route[data-route-motion=pending] .lp-route-reveal {stroke-dashoffset:1}
   .lp-route[data-route-motion=playing] .lp-route-reveal {animation:lp-route-draw 4.2s linear both}
@@ -70,8 +67,6 @@
   .lp-route[data-route-motion=playing] .lp-flow-icon {animation:lp-route-arrive .7s cubic-bezier(.22,1,.36,1) var(--route-delay,0s) both,lp-route-idle 3.6s ease-in-out calc(var(--route-delay,0s) + .7s) infinite both}
   .lp-route[data-route-motion=playing] .lp-flow-icon::after {animation:lp-route-ripple .8s ease-out var(--route-delay,0s) both}
   .lp-route[data-route-motion=playing] .lp-flow-icon>svg {animation:lp-icon-arrive .7s cubic-bezier(.22,1,.36,1) var(--route-delay,0s) both,lp-icon-idle 4.8s ease-in-out calc(var(--route-delay,0s) + .7s) infinite both}
-  .sp-landing .lp-route[data-route-motion=playing] .lp-motion-toggle {visibility:visible}
-  .lp-route[data-route-paused=true] .lp-flow-icon,.lp-route[data-route-paused=true] .lp-flow-icon::after,.lp-route[data-route-paused=true] .lp-flow-icon>svg,.lp-route[data-route-paused=true] .lp-route-reveal,.lp-route[data-route-paused=true] .lp-route-traveller {animation-play-state:paused}
 }
 @keyframes lp-route-draw {from {stroke-dashoffset:1} to {stroke-dashoffset:0}}
 @keyframes lp-route-travel {0% {offset-distance:0%; opacity:1} 99% {opacity:1} 100% {offset-distance:100%; opacity:0}}
@@ -157,10 +152,10 @@
   .lp-empty-icon {width:44px; height:44px; border-radius:14px}
   .sp-landing .lp-network-empty h3 {font-size:14px}
   .sp-landing .lp-network-empty p {font-size:12px}
-  .lp-route {margin-top:36px; padding-block:12px 16px}
-  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:38px}
+  .lp-route {margin-top:28px; padding-block:8px}
+  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:32px}
   .sp-landing .lp-booking-flow li {padding-left:72px; min-height:62px}
-  .lp-booking-flow li:not(:last-child)::after {top:62px; bottom:-32px; left:25px; right:auto; border-top:0; border-left:2px dashed var(--sp-border)}
+  .lp-booking-flow li:not(:last-child)::after {top:62px; bottom:-26px; left:25px; right:auto; border-top:0; border-left:2px dashed var(--sp-border)}
   .lp-flow-icon {position:absolute; top:0; left:0; width:50px; height:50px; margin:0; box-shadow:none}
   .sp-landing .lp-booking-flow h3 {font-size:14px; margin-bottom:5px}
   .sp-landing .lp-booking-flow p {max-width:none; font-size:13px; line-height:1.7}
@@ -177,11 +172,11 @@
   .sp-landing .sp-footer {padding:22px 20px; font-size:11px}
 }
 @media(min-width:768px) and (max-width:1023px) {
-  .lp-route {margin-top:40px}
-  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:40px}
+  .lp-route {margin-top:32px}
+  .lp-booking-flow {grid-template-columns:minmax(0,1fr); gap:34px}
   .sp-landing .lp-booking-flow li {padding-left:86px; min-height:68px}
   .lp-flow-icon {position:absolute; top:0; left:0; margin:0}
-  .lp-booking-flow li:not(:last-child)::after {top:68px; bottom:-34px; left:29px; right:auto; border-top:0; border-left:2px dashed var(--sp-border)}
+  .lp-booking-flow li:not(:last-child)::after {top:68px; bottom:-28px; left:29px; right:auto; border-top:0; border-left:2px dashed var(--sp-border)}
   .sp-landing .lp-booking-flow p {max-width:460px}
 }
 @media(max-width:639px) {

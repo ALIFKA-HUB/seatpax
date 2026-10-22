@@ -874,3 +874,7 @@ Clarification (22 October): local movement applies to the entire circle and its 
 ### Continuous circle and glyph motion — 22 October 2026
 
 The user clarified that each circle should rise/settle on route arrival and then float vertically forever with small displacement, with a separate subtle icon response and continuing icon motion. Use a 700ms arrival lift (5px) and icon scale response, then a smooth 3.6s circle loop (3px vertical range) and 4.8s icon loop (2-degree rotation). Each starts only at its measured arrival delay. This supersedes the two-cycle settlement. Provide a small Jeda animasi/Lanjutkan animasi control that pauses/resumes all route, ring, circle and glyph animation in place. Reduced motion stays static and hides the control.
+
+### Booking spacing and controls refinement — 22 October 2026
+
+At the user's explicit request, remove the visible Jeda animasi/Lanjutkan animasi control and its reserved row. Retain the requested continuous circle/icon motion and system reduced-motion fallback. Compact the section: desktop route top margin 40px, route padding 8px top/bottom, icon-to-title gap 26px, desktop page section gap 72px; phone route margin 28px and vertical step gap 32px; tablet margin 32px and step gap 34px. Keep balanced desktop outer margins and existing content. This supersedes previous pause-control and larger-spacing directions.
