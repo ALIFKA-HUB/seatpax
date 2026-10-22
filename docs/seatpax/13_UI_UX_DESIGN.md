@@ -882,3 +882,5 @@ At the user's explicit request, remove the visible Jeda animasi/Lanjutkan animas
 Route-band clarification: the user wants more clearance specifically above and below the curved desktop route. Retain section spacing and removal of the pause control; increase desktop route top padding from 8px to 24px and icon-to-title margin from 26px to 44px. Tablet/phone vertical layout remains unchanged.
 
 Optical route-band balance: measured subtitle text bounds, SVG curve envelope, circle bounds and step-title text bounds. Before refinement, visible clearances were approximately 67.6px above / 45px below at 1440px. Desktop route margin becomes 28px (padding remains 24px); icon-to-title margin becomes 55px. Different CSS values yield approximately 55.6px / 56px clearances at both 1440px and 1024px, rather than equating padding values. Vertical layouts remain unchanged.
+
+Latest targeted clearance request: add more space specifically between the booking subtitle and desktop route. Desktop route top margin increases from 28px to 48px; retain lower title spacing and phone/tablet layout. This supersedes equal upper/lower optical clearance as the target.
