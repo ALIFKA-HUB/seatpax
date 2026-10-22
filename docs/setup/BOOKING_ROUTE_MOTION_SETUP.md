@@ -26,3 +26,9 @@ Added vertical breathing room, an 800ms arrival ring synchronized with each meas
 Fresh installed-Chrome checks at 1440/768/390/320px confirmed route playback, sequential ring delays (0 to 4.2s), the correct two-cycle icon animation, and no horizontal overflow. Reduced-motion checks confirmed animation-name none for both ring and glyph. git diff --check passed. No suite/build rerun for this CSS-only follow-up; physical-device acceptance remains pending.
 
 Circle-motion correction: movement now applies to the entire circle (1-3px in both axes), with no independent glyph movement. Path geometry uses layout offsets to avoid incorporating transient translation. Fresh Chrome check measured circle translate 0.86px/-2.43px with arrival+idle animations, glyph animation none, and no horizontal overflow. Reduced motion: circle/glyph animation none and translate none. No full suite/build rerun.
+
+## Continuous circle/glyph refinement — 22 October 2026
+
+Supersedes finite movement: each circle rises/settles on arrival, then continuously floats vertically by 3px over 3.6s. Each glyph gives a 700ms scale response on arrival, then a separate 4.8s rotation loop of +/-2 degrees. A local pause/resume button freezes all animations without resetting progress. Reduced motion remains static and hides this control.
+
+Fresh TypeScript check exit 0. Installed-Chrome checks at desktop 1440 and phone 390px confirmed finite arrival plus infinite circle/glyph loops, sequential arrival delays, no horizontal overflow, working pause/resume controls and paused states for circle/glyph/route reveal. Reduced-motion circle/glyph animation names none and pause control hidden. No full suite/build or physical-device acceptance claimed.

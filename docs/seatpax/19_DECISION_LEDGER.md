@@ -338,3 +338,5 @@ Composition refinement: the user approved balanced desktop columns, concise desc
 Arrival refinement (22 October): the user requested extra vertical breathing room, a circle arrival effect synchronized to the travelling point, and local motion per icon. Adopt a single arrival ring and two subtle glyph motion cycles, then settle; preserve reduced-motion and route/reading order.
 
 Circle-motion clarification: the user meant the whole circle plus icon, with small up/down/left/right movement. Replace glyph-only motion with 1-3px circle translation, retaining arrival feedback and reduced-motion behavior.
+
+Continuous-motion clarification: the user requested arrival lift/settle followed by ongoing, smooth, subtle vertical circle motion plus separate arrival/idle glyph animation. Replace the finite two-cycle behavior with continuous small loops, with a local pause/resume control and reduced-motion static fallback.

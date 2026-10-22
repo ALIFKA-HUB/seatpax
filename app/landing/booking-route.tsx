@@ -1,11 +1,12 @@
 'use client';
 
-import {useEffect, useId, useRef, type ReactNode} from 'react';
+import {useEffect, useId, useRef, useState, type ReactNode} from 'react';
 
 /** Decorative explanation only; this does not represent an actual booking's state. */
 export default function BookingRoute({children}: {children: ReactNode}) {
   const root = useRef<HTMLDivElement>(null);
   const maskId = useId();
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const field = root.current;
@@ -73,7 +74,7 @@ export default function BookingRoute({children}: {children: ReactNode}) {
     };
   }, []);
 
-  return <div className="lp-route" ref={root}>
+  return <div className="lp-route" ref={root} data-route-paused={paused}>
     <svg className="lp-route-lines" aria-hidden="true" focusable="false">
       <defs><mask id={maskId} maskUnits="userSpaceOnUse" x="-100" y="-100" width="3000" height="3000">
         <path className="lp-route-reveal" pathLength="1"/>
@@ -83,5 +84,8 @@ export default function BookingRoute({children}: {children: ReactNode}) {
     </svg>
     <span className="lp-route-traveller" aria-hidden="true"/>
     {children}
+    <div className="lp-route-controls"><button className="lp-motion-toggle" type="button" onClick={() => setPaused(value => !value)}>
+      {paused ? 'Lanjutkan animasi' : 'Jeda animasi'}
+    </button></div>
   </div>;
 }

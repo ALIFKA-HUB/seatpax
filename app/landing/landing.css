@@ -60,18 +60,26 @@
 .lp-route[data-route-ready=true] .lp-booking-flow li::after {display:none}
 .lp-route[data-route-motion=static] .lp-flow-icon {background:var(--sp-primary); color:#fff}
 .lp-route-traveller {position:absolute; top:0; left:0; width:12px; height:12px; border:3px solid #fff; border-radius:50%; background:var(--sp-primary); opacity:0; pointer-events:none}
+.lp-route-controls {display:flex; justify-content:flex-end; margin-top:16px; min-height:44px}
+.sp-landing .lp-motion-toggle {visibility:hidden; min-height:44px; padding:8px 4px; border:0; border-radius:6px; background:transparent; color:var(--sp-muted); font:inherit; font-size:12px; cursor:pointer}
+.sp-landing .lp-motion-toggle:hover {color:var(--sp-primary); background:transparent; text-decoration:underline}
 @media(prefers-reduced-motion:no-preference) {
   .lp-route[data-route-motion=pending] .lp-route-reveal {stroke-dashoffset:1}
   .lp-route[data-route-motion=playing] .lp-route-reveal {animation:lp-route-draw 4.2s linear both}
   .lp-route[data-route-motion=playing] .lp-route-traveller {animation:lp-route-travel 4.2s linear both}
-  .lp-route[data-route-motion=playing] .lp-flow-icon {animation:lp-route-arrive .45s ease-out var(--route-delay,0s) both,lp-route-idle 1.8s ease-in-out calc(var(--route-delay,0s) + .45s) 2 both}
+  .lp-route[data-route-motion=playing] .lp-flow-icon {animation:lp-route-arrive .7s cubic-bezier(.22,1,.36,1) var(--route-delay,0s) both,lp-route-idle 3.6s ease-in-out calc(var(--route-delay,0s) + .7s) infinite both}
   .lp-route[data-route-motion=playing] .lp-flow-icon::after {animation:lp-route-ripple .8s ease-out var(--route-delay,0s) both}
+  .lp-route[data-route-motion=playing] .lp-flow-icon>svg {animation:lp-icon-arrive .7s cubic-bezier(.22,1,.36,1) var(--route-delay,0s) both,lp-icon-idle 4.8s ease-in-out calc(var(--route-delay,0s) + .7s) infinite both}
+  .sp-landing .lp-route[data-route-motion=playing] .lp-motion-toggle {visibility:visible}
+  .lp-route[data-route-paused=true] .lp-flow-icon,.lp-route[data-route-paused=true] .lp-flow-icon::after,.lp-route[data-route-paused=true] .lp-flow-icon>svg,.lp-route[data-route-paused=true] .lp-route-reveal,.lp-route[data-route-paused=true] .lp-route-traveller {animation-play-state:paused}
 }
 @keyframes lp-route-draw {from {stroke-dashoffset:1} to {stroke-dashoffset:0}}
 @keyframes lp-route-travel {0% {offset-distance:0%; opacity:1} 99% {opacity:1} 100% {offset-distance:100%; opacity:0}}
-@keyframes lp-route-arrive {0% {transform:scale(1); background:#eaf3ff; color:var(--sp-primary)} 50% {transform:scale(1.1); background:var(--sp-primary); color:#fff} 100% {transform:scale(1); background:var(--sp-primary); color:#fff}}
+@keyframes lp-route-arrive {0% {transform:translateY(0) scale(1); background:#eaf3ff; color:var(--sp-primary)} 45% {transform:translateY(-5px) scale(1.04); background:var(--sp-primary); color:#fff} 100% {transform:translateY(0) scale(1); background:var(--sp-primary); color:#fff}}
 @keyframes lp-route-ripple {0% {transform:scale(.9); opacity:0} 20% {opacity:.45} 100% {transform:scale(1.55); opacity:0}}
-@keyframes lp-route-idle {0%,100% {translate:0 0} 25% {translate:2px -3px} 50% {translate:-2px -1px} 75% {translate:1px 2px}}
+@keyframes lp-route-idle {0%,100% {translate:0 0} 50% {translate:0 -3px}}
+@keyframes lp-icon-arrive {0%,100% {transform:scale(1)} 45% {transform:scale(1.12)}}
+@keyframes lp-icon-idle {0%,100% {rotate:0deg} 25% {rotate:-2deg} 75% {rotate:2deg}}
 .sp-landing .lp-booking-flow h3 {font-size:15px; margin:0 0 9px; font-weight:700}
 .sp-landing .lp-booking-flow p {font-size:13px; line-height:1.8; max-width:220px; margin:0; color:var(--sp-muted)}
 @media(min-width:1024px) {
