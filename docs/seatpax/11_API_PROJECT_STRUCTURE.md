@@ -162,3 +162,7 @@ modules/snack owns validation, SQL repository and guarded once-only claim servic
 ## Super Admin company implementation overlay — 9 October 2026
 
 modules/company owns parsing, minimum SQL projection and transactional global authorization/status/audit. app/super-admin verifies the session, safely maps action errors and renders the dedicated companies page with explicit confirmation. Business policies remain in domain services; no browser or tenant-role fallback bypass exists. See ../setup/SUPER_ADMIN_COMPANY_SETUP.md.
+
+## Public availability read resilience — 22 October 2026
+
+Public availability reads use a separate reusable read pool with an 8-second queue/work deadline; a deadline discards that read pool so subsequent requests can reconnect. Holds and payment writes retain the existing separate transaction pool. Existing queries, sale eligibility and error states remain. See [investigation and verification](../setup/PASSENGER_LOADING_RECOVERY_2026_10_22.md). The observed underlying database network interruptions remain an environmental limitation; this bounds waiting rather than claiming to fix external connectivity.
