@@ -78,9 +78,9 @@
 .sp-landing .lp-booking-flow h3 {font-size:15px; margin:0 0 9px; font-weight:700}
 .sp-landing .lp-booking-flow p {font-size:13px; line-height:1.8; max-width:220px; margin:0; color:var(--sp-muted)}
 @media(min-width:1024px) {
-  .lp-route {padding-top:24px}
+  .lp-route {margin-top:28px; padding-top:24px}
   .sp-landing .lp-booking-flow li {text-align:center}
-  .lp-flow-icon {margin-inline:auto; margin-bottom:44px}
+  .lp-flow-icon {margin-inline:auto; margin-bottom:55px}
   .sp-landing .lp-booking-flow p {max-width:25ch; margin-inline:auto; text-wrap:pretty}
   .lp-booking-flow li:not(:last-child)::after {left:calc(50% + 40px); right:auto; width:calc(100% - 50px)}
 }
