@@ -6,6 +6,7 @@ import {Armchair, Ticket, MapPin, Clock, MagnifyingGlass, CreditCard, ArrowRight
 import PassengerShell from './components/passenger-shell';
 import JourneyPlanner, {PlannerSkeleton} from './landing/journey-planner';
 import BookingRoute from './landing/booking-route';
+import BookingMotion from './landing/booking-motion';
 import './landing/landing.css';
 
 export const dynamic = 'force-dynamic';
@@ -35,6 +36,17 @@ export default function Home() {
 
       <Suspense fallback={<PlannerSkeleton/>}><JourneyPlanner/></Suspense>
 
+      <section className="lp-seat-feature" aria-labelledby="seat-feature-title">
+        <div className="lp-feature-copy">
+          <p className="lp-feature-eyebrow">PILIHAN DI TANGAN ANDA</p>
+          <h2 id="seat-feature-title">Pilih tempat<br/>nyaman Anda.</h2>
+          <p>Lihat susunan kursi sebelum memesan. Pilih yang masih tersedia, lalu lanjutkan perjalanan sesuai rencana Anda.</p>
+          <p>Setelah pembayaran dikonfirmasi, kursi pilihan Anda tercantum di tiket digital.</p>
+          <Link className="lp-text-link" href="/trips">Lihat perjalanan<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
+        </div>
+        <BookingMotion kind="seat"/>
+      </section>
+
       <section className="lp-booking" aria-labelledby="booking-title">
         <div className="lp-section-title"><h2 id="booking-title">Dari rencana menjadi perjalanan.</h2><p>Pemesanan yang bisa Anda atur sendiri, dari awal sampai siap berangkat.</p></div>
         <BookingRoute><ol className="lp-booking-flow">
@@ -57,6 +69,17 @@ export default function Home() {
           <div className="lp-benefit"><Clock size={25} weight="light" aria-hidden="true"/><div><h3>Jadwal dan armada jelas</h3><p>Lihat jam keberangkatan, armada, dan kelas layanan sebelum memesan.</p></div></div>
           <div className="lp-benefit"><Ticket size={25} weight="light" aria-hidden="true"/><div><h3>Tiket mudah dibuka kembali</h3><p>Tiket dan QR yang sudah dikonfirmasi tersimpan di Pesanan saya.</p></div></div>
           <Link className="lp-text-link" href="/tickets">Pesanan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
+        </div>
+      </section>
+
+      <section className="lp-checkout-feature" aria-labelledby="checkout-feature-title">
+        <BookingMotion kind="deck"/>
+        <div className="lp-feature-copy">
+          <p className="lp-feature-eyebrow">DARI PESAN HINGGA BERANGKAT</p>
+          <h2 id="checkout-feature-title">Satu alur.<br/>Siap berangkat.</h2>
+          <p>Pilih kursi, selesaikan pembayaran, lalu buka tiket di Pesanan saya. Semua bisa Anda ikuti dari satu tempat.</p>
+          <p>Tekan kartu untuk melihat langkah berikutnya.</p>
+          <Link className="lp-text-link" href="/tickets">Buka Pesanan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
         </div>
       </section>
 

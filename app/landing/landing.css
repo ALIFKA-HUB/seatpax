@@ -17,6 +17,25 @@
 .sp-landing .sp-header nav a:hover {color:var(--sp-primary); text-decoration:none}
 .sp-landing .passenger {max-width:1280px; padding:14px 32px 40px}
 .lp-content {display:grid; gap:72px}
+.lp-seat-feature,.lp-checkout-feature {display:grid; align-items:center; gap:56px; margin:0 38px; min-width:0}
+.lp-seat-feature {grid-template-columns:.9fr 1.1fr}
+.lp-checkout-feature {grid-template-columns:minmax(0,1.65fr) minmax(0,.85fr)}
+.lp-feature-copy {min-width:0; max-width:410px}
+.sp-landing .lp-feature-eyebrow {font-size:11px; letter-spacing:.11em; font-weight:650; color:var(--sp-primary); margin:0 0 18px}
+.sp-landing .lp-feature-copy h2 {font-size:clamp(30px,3.1vw,42px); line-height:1.16; letter-spacing:-.045em; margin:0 0 22px; font-weight:700}
+.sp-landing .lp-feature-copy>p:not(.lp-feature-eyebrow) {font-size:14px; line-height:1.8; color:var(--sp-muted); margin:0 0 16px}
+@media(max-width:1149px) {
+  .lp-checkout-feature {grid-template-columns:minmax(0,1fr); gap:28px}
+  .lp-checkout-feature .lp-feature-copy {grid-row:1; max-width:560px}
+}
+@media(min-width:768px) and (max-width:1023px) {
+  .lp-seat-feature,.lp-checkout-feature {margin-inline:20px; gap:30px}
+}
+@media(max-width:767px) {
+  .lp-seat-feature,.lp-checkout-feature {grid-template-columns:minmax(0,1fr); gap:20px; margin-inline:4px}
+  .sp-landing .lp-feature-copy h2 {font-size:30px; margin-bottom:18px}
+  .sp-landing .lp-feature-copy>p:not(.lp-feature-eyebrow) {font-size:13px}
+}
 .sp-landing .lp-hero {position:relative; isolation:isolate; min-height:410px; display:flex; align-items:center; border-radius:28px; overflow:hidden; background:#49564b}
 .lp-hero>img {object-fit:cover; object-position:50% 56%; z-index:-2}
 .lp-hero::before {content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(12 19 15 / .86), rgb(12 19 15 / .66) 42%, rgb(12 19 15 / .08))}

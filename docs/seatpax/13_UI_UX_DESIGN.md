@@ -892,3 +892,9 @@ The user reviewed and accepted the white desktop/phone footer preview. Use the a
 ## Landing versus booking workspace — 22 October 2026
 
 Approved direction D2026-10-22-01 separates the marketing landing `/` from public search/seat browsing in `/trips`. Login is required to continue an owned booking/hold, with return to the valid previous intent. Email OTP remains one entry for existing/new passengers. The landing may feature a small set of real eligible trips linking into the booking area while retaining context; no mock routes/fares are permitted. Current landing composition and selected-seat return behavior have not yet been revised. Layout, featured selection and empty-state treatment need a bounded design before code changes.
+
+## Approved booking illustrations - 23 October 2026
+
+The user approved the seat-to-ticket morph and interactive three-card choreography, then requested implementation. Preserve the photographic hero, current search/showcase, existing four-circle route animation, preparation section, FAQ and footer. Add the seat illustration after the showcase and choreography after the static preparation section. The third route-to-ticket study is excluded; it does not replace the old route animation.
+
+The selected blue seat surface grows into white ticket paper with one continuous numeral. The second illustration advances to payment on the first click, then to ticket and a seat/payment/ticket spread on the second. Keep continuous side arcs, depth changes only with separated cards, responsive final stacking, keyboard/touch controls, static reduced-motion/no-JavaScript fallback and hidden/offscreen pause. No fake journey/fare or actual payment state is shown. See `../superpowers/specs/2026-10-23-landing-booking-motion.md` and its implementation plan. Landing/booking separation and selected-seat login return remain separate work.
