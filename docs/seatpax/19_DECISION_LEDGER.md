@@ -358,3 +358,7 @@ This is approved product direction, not a claim that the landing has already bee
 ## D2026-10-23-01 - Two landing booking illustrations
 
 The user approved the first two interactive studies and requested implementation with "oke. sikat". Add the accepted continuous blue-seat/white-ticket morph and two-click, side-arc card choreography to the actual landing. Preserve the hero and existing route animation. The third study is expressly excluded. A static preparation section separates the new visual sections; responsive final cards spread horizontally where readable and vertically on narrow screens. Reduced motion, no-JavaScript content, keyboard/touch operation and visibility-aware playback are required. This is decorative marketing content, not booking, payment, inventory, authentication or real journey data. Scope and evidence are recorded in the related design/plan/setup documents.
+
+## D2026-10-23-02 - Temporary demo trips in landing showcase
+
+The user asked "buatin dummy trip dulu buat ngisi temukan perjalanan anda". This authorizes clearly labelled static demo cards in the landing showcase, replacing its previous empty treatment for presentation. Local illustrative routes, times and fares do not represent actual inventory and expose no booking/checkout action. The actual catalogue remains available through `/trips`. No database fixture restoration, live sales publication, real trip creation or payment change is part of this bounded request.

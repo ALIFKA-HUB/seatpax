@@ -7,6 +7,7 @@ import PassengerShell from './components/passenger-shell';
 import JourneyPlanner, {PlannerSkeleton} from './landing/journey-planner';
 import BookingRoute from './landing/booking-route';
 import BookingMotion from './landing/booking-motion';
+import FeaturedTrips from './landing/featured-trips';
 import './landing/landing.css';
 
 export const dynamic = 'force-dynamic';
@@ -35,6 +36,7 @@ export default function Home() {
       </section>
 
       <Suspense fallback={<PlannerSkeleton/>}><JourneyPlanner/></Suspense>
+      <FeaturedTrips/>
 
       <section className="lp-seat-feature" aria-labelledby="seat-feature-title">
         <div className="lp-feature-copy">

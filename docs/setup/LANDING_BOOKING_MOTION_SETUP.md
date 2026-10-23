@@ -28,3 +28,11 @@ Browser screenshots are task-local inspection outputs, not repository assets. Th
 ## Limits
 
 No automated test suite was added or run, following the developer instruction. This slice does not claim production-build, Lighthouse, physical Android/iPhone/Safari, authenticated booking/payment acceptance, or a measured FPS guarantee. Hidden-document pause is implemented and source-reviewed; the recorded runtime pause sample specifically covers offscreen visibility. The local feature branch has not been merged or pushed by this delivery. The pre-existing generated `next-env.d.ts` modification remains outside the commit.
+
+## Follow-up: temporary demo journey showcase
+
+The user subsequently requested dummy trips to fill the journey showcase (D2026-10-23-02). Three static cards now show clearly labelled example Cianjur/Bandung, Bandung/Jakarta and Bogor/Bandung journeys, times and fares. They are not database inventory, cannot be checked out and do not restore suspended fixtures. The separate catalogue action links to `/trips`.
+
+`FeaturedTrips` renders synchronously after the planner's Suspense boundary, so actual location loading cannot delay or duplicate the demo cards. The search skeleton and async planner now render only the search panel. The four existing planner test cases were adjusted to this separation; no test cases were added and the suite was not run.
+
+Fresh typecheck passed. Scoped ESLint covers the changed page/planner/showcase. Local Chromium inspection showed three cards and one section heading, `/trips` as the catalogue destination, no page errors and no horizontal overflow at 1440px, 768px, 390px and 320px. This supersedes the earlier intentionally empty showcase for the current landing preview only.
