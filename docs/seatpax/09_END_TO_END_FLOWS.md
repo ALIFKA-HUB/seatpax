@@ -169,3 +169,8 @@ Reschedule    Full Refund
 ## Adopted snack claim slice — 9 October 2026
 
 QR or manual manifest opens the passenger profile → explicit boarding → separate explicit snack handover. Before boarding the snack action is disabled. Successful handover shows its original WIB time; retry does not create another claim. See ../setup/SNACK_CLAIM_SETUP.md for verification and manual acceptance limits.
+
+
+## Guest complaint flow - 25 October 2026
+
+Landing Bantuan/floating Buat pengaduan -> /pengaduan -> form -> receipt code and email job -> /pengaduan/cek by code. A related owned booking may prefill its reference; a guest reference does not prove ownership. Staff checks completeness and priority. MENUNGGU -> DIPROSES -> SELESAI; MENUNGGU/DIPROSES -> PERLU_DILENGKAPI -> email-secret supplementation -> MENUNGGU. Completion includes an outcome and email job. This is form-based reporting, not live chat. Local history max20 stores codes only; public tracking excludes private report/contact/evidence fields.

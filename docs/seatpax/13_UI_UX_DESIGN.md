@@ -920,3 +920,8 @@ Landing section anchors use blue text and underline for the current section. Des
 ### Landing navigation correction - 25 October 2026
 
 The user clarified that the search panel must remain attached to the hero as before, and navbar entries from Beranda through Pilih kursi should be combined. This supersedes the standalone search screen above: place the planner inside the hero frame with responsive overlap, retain its stable cari-perjalanan anchor, and remove the redundant hero CTA. Keep five landing links: Beranda, Cara pesan, Persiapan, Pemesanan and Bantuan. Hero/search, featured trips and the seat illustration all map to the Beranda active state; their content remains in order. Other section frames and booking/account access remain unchanged.
+
+
+## Simple complaint entry and workspace - 25 October 2026
+
+Keep existing landing tabs, hero/search and accepted motion. Extend Bantuan with Buat pengaduan/Pengaduan saya. A static lower-right document/report button labelled Buat pengaduan stays clear of phone navigation; hide it on complaint and focused auth/checkout/staff pages. /pengaduan offers two distinct actions and browser-local history. Forms show labels, optional booking reference/evidence limits and inline errors, never reporter-selected priority. White/blue existing Seatpax styling continues. /helpdesk is a separate task-focused workspace in the same app; company admin monitoring sits under Pesanan > Pengaduan pelanggan with an unresolved count. No chat icon, typing indicator or online status.

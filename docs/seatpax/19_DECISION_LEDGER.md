@@ -378,3 +378,10 @@ The user requested each landing section occupy its own screen with navbar naviga
 ### Landing navigation correction - 25 October 2026
 
 The user clarified that the search panel must remain attached to the hero as before, and navbar entries from Beranda through Pilih kursi should be combined. This supersedes the standalone search screen above: place the planner inside the hero frame with responsive overlap, retain its stable cari-perjalanan anchor, and remove the redundant hero CTA. Keep five landing links: Beranda, Cara pesan, Persiapan, Pemesanan and Bantuan. Hero/search, featured trips and the seat illustration all map to the Beranda active state; their content remains in order. Other section frames and booking/account access remain unchanged.
+
+
+## D2026-10-25-03 - Simple single-company Helpdesk
+
+The user chose a Helpdesk module inside Seatpax, approved the written design with lanjut and the implementation plan with sikat. Guest form submission and complaint-code tracking require no login/OTP. Browser history remembers submitted/looked-up codes. One HELPDESK staff role decides LOW/MEDIUM/HIGH priority, requests missing information and completes reports. Receipt email includes the complaint ID; request/completion events also enqueue emails. Supplementation requires the separate email capability, not the public code. Public tracking excludes personal contacts, original description, private files and booking details. Existing Bantuan/floating entry accesses it; no new landing tab or standalone application. Earlier complaint navigation stays under admin Pesanan. No live chat or automated financial action.
+
+The user confirmed that email sender and private Storage credentials are not yet available and instructed continuation. Provider integration code is delivered but real inbox delivery/upload acceptance remains pending. Setup and actual verification are recorded separately.

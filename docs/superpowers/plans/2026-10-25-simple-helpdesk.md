@@ -150,3 +150,10 @@ For each task, run the explicitly named unit files with `node node_modules/vites
 ## Self-review
 
 Spec coverage: guest flow Tasks2/4/5; permissions6; privacy2/4; files4; history5; lifecycle2/6; email3; navigation7; documentation7. Signatures are shared through Task1/2 interfaces. All five Review Focus conditions have owning focused checks. No application code, credentials, bucket or database has been changed by writing this plan.
+
+
+## Execution status - local implementation delivered
+
+Tasks1-7 application changes are implemented in this worktree. Focused checks were consolidated into six Helpdesk unit files plus three existing access/entry unit files, and tests/integration/helpdesk-workflow.test.ts instead of creating each originally suggested test filename. See docs/setup/HELPDESK_SETUP.md for actual commands/results and browser evidence. Public deployment limiter was corrected after independent review: fail closed unless trusted ingress identity is configured; loopback development remains usable. JSON serialization regression was reproduced with the runtime Drizzle adapter and fixed.
+
+User explicitly deferred email/Storage configuration; their live provider checks and authenticated/physical device acceptance remain pending, not checked off as successful. The checklist above is the original intended task sequence; the setup record is the actual verification ledger. No real staff account was assigned automatically, and no external email was sent.

@@ -166,3 +166,8 @@ modules/company owns parsing, minimum SQL projection and transactional global au
 ## Public availability read resilience — 22 October 2026
 
 Public availability reads use a separate reusable read pool with an 8-second queue/work deadline; a deadline discards that read pool so subsequent requests can reconnect. Holds and payment writes retain the existing separate transaction pool. Existing queries, sale eligibility and error states remain. See [investigation and verification](../setup/PASSENGER_LOADING_RECOVERY_2026_10_22.md). The observed underlying database network interruptions remain an environmental limitation; this bounds waiting rather than claiming to fix external connectivity.
+
+
+## Helpdesk boundary - 25 October 2026
+
+Business rules live in modules/helpdesk. Public route handlers: POST /api/pengaduan (multipart submission), /api/pengaduan/cek (minimal public lookup), /api/pengaduan/permintaan (capability-scoped request text), /api/pengaduan/lengkapi (multipart supplementation). Private staff evidence: GET /api/helpdesk/attachments/[id]. Staff actions adapt fresh verified HELPDESK context; admin monitoring/membership management retains tenant.admin guards. Public routes do not accept company or staff identity from clients. Email transport/recovery and private storage are focused adapters, not new standalone services.

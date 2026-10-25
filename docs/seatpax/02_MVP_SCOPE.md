@@ -294,3 +294,8 @@ The user approved an initial Pro allowance of **30 vehicles eligible for new ope
 ## Public browsing and booking entry — 22 October 2026
 
 D2026-10-22-01 keeps public journey search/detail/seat browsing and requires verified identity when continuing booking/creating an owned hold. Separate marketing `/` from the booking workspace `/trips`; preserve valid journey/seat intent through login without promising availability or creating a hold automatically. Existing single-seat inventory/payment/authorization rules remain unchanged. A unified Email OTP entry serves new and existing passengers. This does not add guest checkout, group booking or a separate registration subsystem.
+
+
+## Adopted simple complaint module - 25 October 2026
+
+The user approved the simple Helpdesk design and plan for ujikom, inside Seatpax rather than a separate application. Guest reporters submit and track by opaque complaint code without login/OTP. One new HELPDESK role handles completeness, staff-only LOW/MEDIUM/HIGH priorities and completion. Browser-local history, separate email supplementation capability and receipt/request/completion notification jobs are included. No live chat, assignments, escalation or automated financial resolution. This supersedes the earlier pending SaaS-oriented complaint sketch for this bounded module. Real mail/storage acceptance awaits credentials; see HELPDESK_SETUP.md.

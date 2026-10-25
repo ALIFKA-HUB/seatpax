@@ -580,3 +580,8 @@ Migration0010 adds companies.status_revision integer >=0 and company_status_even
 ## Regional references — delivered 20 October 2026
 
 Shared `region_import_runs`, `region_provinces` and `region_regencies` use provider/code identity, stable UUIDs, parent/run FKs, RLS and revoked browser grants. `stops.region_regency_id` is nullable and indexed with delete restriction. Complete validated imports promote atomically under a provider advisory lock; retired references remain stored but unavailable for new selection. Existing city text and published snapshots are retained. See [schema/import evidence](../setup/REGION_REFERENCE_SETUP.md).
+
+
+## Helpdesk persistence - migration0012
+
+Add HELPDESK to membership_role and the company-role constraint without replacing old memberships. Add helpdesk_cases, helpdesk_events, helpdesk_grants, helpdesk_attachments, helpdesk_mail_jobs and helpdesk_rate_limits. Cases have random tracking code, idempotent request key/payload digest, private report data and minimal public request/outcome fields. Immutable events carry case revision, actor and time; grants have capability digests and consume/revoke timestamps. Email jobs are event-unique and durable. Evidence objects remain in private Storage with metadata in PostgreSQL. All tables enable RLS and deny direct browser-role access; guarded server modules own operations. No booking/inventory/payment table behavior changes. See setup evidence for development migration status.

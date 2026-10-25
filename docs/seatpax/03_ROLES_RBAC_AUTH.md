@@ -257,3 +257,8 @@ Platform controls require fresh ACTIVE global SUPER_ADMIN membership with compan
 ## SaaS Admin PO company boundary — 20 October 2026
 
 Under D2026-10-20-03, an Admin PO account may belong as Admin PO to only one company in the initial SaaS. Reject an entered email already registered as another company's Admin PO and offer “Ganti email”; exact adopted copy is in the [SaaS design](../superpowers/specs/2026-10-20-shuttle-saas-design.md). Enforce this on the server when implemented. Existing memberships must not be deleted automatically; Crew cross-company access, inactive memberships and ownership transfer remain separate unresolved policies. This is an adopted product requirement, not a delivered authorization change.
+
+
+## HELPDESK role addition - 25 October 2026
+
+Add one static company-scoped role HELPDESK for the adopted simple complaint module, in addition to the existing roles. It grants helpdesk.read and helpdesk.write only, not tenant.admin, crew operations or company.manage. ADMIN_PO may monitor through helpdesk.read and manage activation/deactivation of Helpdesk memberships for already registered verified accounts. ADMIN_PO alone cannot handle/complete complaints. Fresh active company membership is checked in server transactions, with case revision/row locks for changes. Guest complaint submit/lookup and email capability supplementation do not create passenger/staff accounts or change booking login rules. A global SUPER_ADMIN role alone grants no company Helpdesk access.

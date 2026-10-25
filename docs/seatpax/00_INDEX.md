@@ -123,3 +123,8 @@ Next billing slice: [Pro 30-day Sandbox billing draft awaiting review](../superp
 First technical slice: [approved PO onboarding and Free simulation specification](../superpowers/specs/2026-10-20-po-onboarding-free-simulation-design.md) and [implementation plan awaiting review](../superpowers/plans/2026-10-20-po-onboarding-free-simulation.md). The user approved the full spec after reset-cooldown clarification, including separate simulation tables, secondary limits and private preview. It is not delivered functionality; plan review/execution-method selection still precede implementation.
 
 Read D2026-10-20-03 in `19_DECISION_LEDGER.md` and the [consolidated SaaS draft for review](../superpowers/specs/2026-10-20-shuttle-saas-design.md) before SaaS/onboarding/payment work. Adopted product decisions now include permanent bounded simulation-only Free, manually paid monthly Pro at Rp299,000 with 30 operationally eligible vehicles, seven-day grace, direct-to-PO ticket proceeds, and delayed mandatory benefit changes. The earlier 14-day trial was superseded. Exact billing/notice rules and other technical policies remain open in the draft. The current single-Sandbox-merchant implementation has not been converted; specifications and plans per subsystem still require review before implementation.
+
+
+## Simple Helpdesk module - 25 October 2026
+
+Approved single-company complaint module: [design](../superpowers/specs/2026-10-25-simple-helpdesk-design.md), [plan](../superpowers/plans/2026-10-25-simple-helpdesk.md), [setup/evidence](../setup/HELPDESK_SETUP.md). Guest submission and code lookup are distinct from booking tickets; one HELPDESK role handles reports. Email/private Storage provider acceptance is pending configuration.
