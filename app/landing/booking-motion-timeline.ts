@@ -74,8 +74,8 @@ export function mountBookingMotion(root: HTMLElement, kind: MotionKind, onChange
   const field = root.querySelector<HTMLElement>('.lpm-field')!;
   const parts = Object.fromEntries(Array.from(root.querySelectorAll<HTMLElement>('[data-part]'), e => [e.dataset.part!, e]));
   const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let animations: Animation[] = [], time=0, limit=DURATION, playing=false, disposed=false, visible=false, started=false, resume=false, frame=0, measuredWidth=0, lastState='';
-  const supported = typeof field.animate === 'function';
+  let animations: Animation[] = [], time=0, limit=DURATION, playing=false, disposed=false, visible=false, canAutoStart=false, started=false, resume=false, frame=0, measuredWidth=0, lastState='';
+  const supported = typeof field.animate === 'function' && typeof IntersectionObserver !== 'undefined';
   const phase = () => kind === 'seat'
     ? time < 1120 ? 'Pilih kursi Anda.' : time < 2240 ? 'Kursi 03 dipilih.' : time < 2960 ? 'Pilihan Anda diteruskan.' : time < 5440 ? 'Setelah pembayaran dikonfirmasi.' : 'Tiket siap di Pesanan saya.'
     : time >= DURATION ? 'Pilih kursi, bayar, lalu buka tiket.' : time >= 6880 ? 'Tiga langkah, satu perjalanan.' : time >= 5840 ? 'Tiket siap dibuka.' : time >= 4400 ? 'Tekan kartu lagi untuk membuka tiket.' : time >= 3440 ? 'Selesaikan pembayaran.' : 'Tekan kartu untuk melihat pembayaran.';
@@ -109,25 +109,20 @@ export function mountBookingMotion(root: HTMLElement, kind: MotionKind, onChange
   function rebuild() {const active=playing;pause();build();if(active)run();}
   function presence() {
     if(!visible||document.hidden){if(playing){pause();resume=true;}return;}
-    if(resume)run();else if(kind==='seat'&&!started&&!preference.matches){started=true;limit=DURATION;run();}
-  }
-  function toggle() {
-    if(!supported||preference.matches)return;
-    if(playing){pause();resume=false;return;}
-    if(time>=DURATION)seek(0);started=true;limit=DURATION;run();
+    if(resume)run();else if(kind==='seat'&&!started&&canAutoStart&&!preference.matches){started=true;limit=DURATION;run();}
   }
   function advance() {
-    if(playing||disposed||!supported||preference.matches)return;
+    if(kind!=='deck'||playing||disposed||!supported||preference.matches)return;
     if(time>=DURATION)seek(0);
     if(time<2200)seek(2200);
     limit=time<4400?4400:DURATION;started=true;run();
   }
-  function restart() {pause();resume=false;seek(0);}
+  function restart() {if(kind!=='deck')return;pause();resume=false;seek(0);}
   const onPreference=()=>{pause();resume=false;if(preference.matches){started=true;seek(DURATION);}else notify();};
-  if(!supported){time=DURATION;notify();return {toggle,advance,restart,dispose:()=>{disposed=true;}};}
+  if(!supported){time=DURATION;notify();return {advance,restart,dispose:()=>{disposed=true;}};}
   build();
-  const intersection=typeof IntersectionObserver==='undefined'?null:new IntersectionObserver(entries=>{visible=entries.some(e=>e.isIntersecting);presence();},{threshold:.15});
-  if(intersection)intersection.observe(field);else {visible=true;presence();}
+  const intersection=new IntersectionObserver(entries=>{visible=entries.some(e=>e.isIntersecting);canAutoStart=entries.some(e=>e.intersectionRatio>=.35);presence();},{threshold:kind==='seat'?[0,.35]:0});
+  intersection.observe(field);
   const resize=typeof ResizeObserver==='undefined'?null:new ResizeObserver(()=>{if(field.clientWidth!==measuredWidth)rebuild();});
   resize?.observe(field);
   const onResize=()=>{if(field.clientWidth!==measuredWidth)rebuild();};
@@ -135,5 +130,5 @@ export function mountBookingMotion(root: HTMLElement, kind: MotionKind, onChange
   document.addEventListener('visibilitychange',presence);preference.addEventListener('change',onPreference);
   document.fonts.addEventListener('loadingdone',rebuild);
   document.fonts.ready.then(()=>{if(!disposed)rebuild();});
-  return {toggle,advance,restart,dispose:()=>{disposed=true;cancelAnimationFrame(frame);animations.forEach(a=>a.cancel());intersection?.disconnect();resize?.disconnect();window.removeEventListener('resize',onResize);document.removeEventListener('visibilitychange',presence);preference.removeEventListener('change',onPreference);document.fonts.removeEventListener('loadingdone',rebuild);delete root.dataset.motionReady;}};
+  return {advance,restart,dispose:()=>{disposed=true;cancelAnimationFrame(frame);animations.forEach(a=>a.cancel());intersection.disconnect();resize?.disconnect();window.removeEventListener('resize',onResize);document.removeEventListener('visibilitychange',presence);preference.removeEventListener('change',onPreference);document.fonts.removeEventListener('loadingdone',rebuild);delete root.dataset.motionReady;}};
 }

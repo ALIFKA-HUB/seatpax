@@ -902,3 +902,7 @@ The selected blue seat surface grows into white ticket paper with one continuous
 ### Demo journey showcase requested - 23 October 2026
 
 The user explicitly requested dummy trips to fill **Temukan perjalanan Anda**, superseding the intentionally empty landing showcase for this preview. Show three clearly labelled presentation examples: Cianjur/Bandung, Bandung/Jakarta and Bogor/Bandung, with example times/durations/fares. These are local display fixtures, not sale-open inventory or trip IDs. They cannot be booked; a separate **Cari perjalanan** link leads to the actual `/trips` catalogue. Keep them independent of the asynchronous location lookup so the demo showcase appears immediately. No database seed, payment or search contract change is included.
+
+### Seat illustration plays once in view - 25 October 2026
+
+For the seat-to-ticket illustration specifically, remove pause, continue and replay controls and their reserved spacing. Start automatically once at least 35% of the illustration field is visible, pause/resume in place if temporarily offscreen or the tab is hidden, and retain the final ticket on subsequent scroll visits. Width/font remeasurement must retain progress and the once-started flag. No IntersectionObserver/native animation API or reduced-motion preference uses the static final fallback. A new page visit may play again. The second, interactive card choreography remains unchanged.

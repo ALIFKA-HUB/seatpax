@@ -362,3 +362,7 @@ The user approved the first two interactive studies and requested implementation
 ## D2026-10-23-02 - Temporary demo trips in landing showcase
 
 The user asked "buatin dummy trip dulu buat ngisi temukan perjalanan anda". This authorizes clearly labelled static demo cards in the landing showcase, replacing its previous empty treatment for presentation. Local illustrative routes, times and fares do not represent actual inventory and expose no booking/checkout action. The actual catalogue remains available through `/trips`. No database fixture restoration, live sales publication, real trip creation or payment change is part of this bounded request.
+
+## D2026-10-25-01 - Seat illustration automatic one-time playback
+
+The user supplied a screenshot of the seat/ticket illustration and requested no replay option, one playback and activation when at its section. Remove all manual playback controls for this illustration and start once at 35% field visibility per mounted page visit. Preserve progress when offscreen/hidden and after geometry changes; completed playback stays settled on return. Keep reduced-motion/static fallbacks. This supersedes the first illustration's pause/replay controls only; the second illustration's two-click interaction and controls remain.

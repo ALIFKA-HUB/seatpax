@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import {useEffect, useRef, useState} from 'react';
-import {Armchair, ArrowCounterClockwise, Check, CreditCard, Cursor, Pause, Play, Scan, Ticket} from '@phosphor-icons/react';
+import {Armchair, ArrowCounterClockwise, Check, CreditCard, Cursor, Scan, Ticket} from '@phosphor-icons/react';
 import {mountBookingMotion, type BookingMotionState, type MotionKind} from './booking-motion-timeline';
 import './booking-motion.css';
 
@@ -87,10 +87,8 @@ export default function BookingMotion({kind}: {kind: MotionKind}) {
     </div>
     <div className="lpm-caption">
       <p className="lpm-phase" aria-live="polite" aria-atomic="true">{state.phase}</p>
-      {!state.static && <div className="lpm-controls">
-        {kind === 'seat'
-          ? <button type="button" className="lpm-action" onClick={() => controller.current?.toggle()}>{state.playing ? <Pause size={15}/> : state.finished ? <ArrowCounterClockwise size={15}/> : <Play size={15}/>}<span>{state.playing ? 'Jeda ilustrasi' : state.finished ? 'Putar ulang' : 'Lanjutkan'}</span></button>
-          : <><button type="button" className="lpm-action" aria-disabled={state.playing} onClick={advance}><span>{state.playing ? 'Sedang menampilkan' : action}</span></button><button type="button" className="lpm-restart" aria-label="Ulangi ilustrasi pemesanan dari awal" onClick={() => controller.current?.restart()}><ArrowCounterClockwise size={17}/></button></>}
+      {kind === 'deck' && !state.static && <div className="lpm-controls">
+        <button type="button" className="lpm-action" aria-disabled={state.playing} onClick={advance}><span>{state.playing ? 'Sedang menampilkan' : action}</span></button><button type="button" className="lpm-restart" aria-label="Ulangi ilustrasi pemesanan dari awal" onClick={() => controller.current?.restart()}><ArrowCounterClockwise size={17}/></button>
       </div>}
       <span className="lpm-illustration-note">Ilustrasi pemesanan, bukan pesanan aktif.</span>
     </div>

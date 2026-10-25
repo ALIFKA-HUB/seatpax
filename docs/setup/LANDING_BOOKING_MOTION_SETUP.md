@@ -36,3 +36,9 @@ The user subsequently requested dummy trips to fill the journey showcase (D2026-
 `FeaturedTrips` renders synchronously after the planner's Suspense boundary, so actual location loading cannot delay or duplicate the demo cards. The search skeleton and async planner now render only the search panel. The four existing planner test cases were adjusted to this separation; no test cases were added and the suite was not run.
 
 Fresh typecheck passed. Scoped ESLint covers the changed page/planner/showcase. Local Chromium inspection showed three cards and one section heading, `/trips` as the catalogue destination, no page errors and no horizontal overflow at 1440px, 768px, 390px and 320px. This supersedes the earlier intentionally empty showcase for the current landing preview only.
+
+## Follow-up: seat illustration plays once, 25 October 2026
+
+At the user's request, the first illustration now has no manual pause/continue/replay controls or reserved control row. It starts once at 35% field visibility and remains at the final ticket when returning to the section. Offscreen/tab pausing still preserves unfinished progress. No intersection/native animation support and reduced motion retain static final content. The card choreography keeps its existing interaction.
+
+Local Chromium inspection recorded the first animation clock at 0ms before scrolling, approximately 1200ms after entering, and 8000ms on completion, on a subsequent scroll visit and after resizing to phone width. The first illustration had zero buttons and zero running animations after completion; the second retained its control group. No page errors were observed. Typecheck passed; no automated test suite was added or run.
