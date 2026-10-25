@@ -368,3 +368,8 @@ The user asked "buatin dummy trip dulu buat ngisi temukan perjalanan anda". This
 The user supplied a screenshot of the seat/ticket illustration and requested no replay option, one playback and activation when at its section. Remove all manual playback controls for this illustration and start once at 35% field visibility per mounted page visit. Preserve progress when offscreen/hidden and after geometry changes; completed playback stays settled on return. Keep reduced-motion/static fallbacks. This supersedes the first illustration's pause/replay controls only; the second illustration's two-click interaction and controls remain.
 
 Caption refinement: the user removed **Tiket siap di Pesanan saya.** and **Ilustrasi pemesanan, bukan pesanan aktif.** below the first illustration. Remove that entire caption block; the existing in-card subtitle reveals with the ticket stub. No extra external subtitle is introduced, and the accessible illustration description remains.
+
+
+## D2026-10-25-02 - Landing sections occupy separate screens
+
+The user requested each landing section occupy its own screen with navbar navigation and confirmed with yup. Retain one scrollable document with eight stable section anchors. Separate the original hero and search planner. Use viewport minimum heights with content expansion rather than fixed-height clipping or forced snapping. Preserve branding, photos, accepted animations, labelled demo trips and booking/authentication contracts. This changes landing navigation only. See `../setup/LANDING_SECTION_NAVIGATION_SETUP.md` for verification.

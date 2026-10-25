@@ -908,3 +908,10 @@ The user explicitly requested dummy trips to fill **Temukan perjalanan Anda**, s
 For the seat-to-ticket illustration specifically, remove pause, continue and replay controls and their reserved spacing. Start automatically once at least 35% of the illustration field is visible, pause/resume in place if temporarily offscreen or the tab is hidden, and retain the final ticket on subsequent scroll visits. Width/font remeasurement must retain progress and the once-started flag. No IntersectionObserver/native animation API or reduced-motion preference uses the static final fallback. A new page visit may play again. The second, interactive card choreography remains unchanged.
 
 Caption refinement: remove the first illustration's external phase text and illustrative-order note, together with their wrapper/spacing. Its existing **Tiket siap dibuka. / Di Pesanan saya** copy remains inside the animated ticket stub and reveals with it. Do not add another subtitle outside the illustration. The image's accessible description remains.
+
+
+## Landing section screens - 25 October 2026
+
+The approved landing remains one scrollable document with eight minimum-viewport-height sections: Beranda, Cari jadwal, Perjalanan, Pilih kursi, Cara pesan, Persiapan, Pemesanan and Bantuan. Hero photography stands alone on the initial screen; search no longer overlaps it. Sections grow with their content, including phones and short screens. Do not clip content or force scroll snapping.
+
+Landing section anchors use blue text and underline for the current section. Desktop exposes links and an order utility; compact layouts use a native menu with section links and Pesanan saya. Account access remains available. Booking-route navigation stays unchanged. Native smooth scrolling respects reduced motion. Preserve approved illustration behavior. Footer and credits close the page without full-screen padding.

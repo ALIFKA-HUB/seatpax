@@ -26,18 +26,22 @@ const bookingFlow = [
 export default function Home() {
   return <PassengerShell landing>
     <div className="lp-content">
+      <div className="lp-screen lp-screen--hero" id="beranda" data-landing-section>
       <section className="lp-hero" aria-labelledby="landing-title">
         <Image src="/landing/forest-road.jpg" alt="Ilustrasi jalan berkelok di antara pepohonan" fill sizes="(max-width: 1240px) 100vw, 1200px" priority/>
         <div className="lp-hero-copy">
           <p className="lp-eyebrow">SHUTTLE ANTARKOTA</p>
           <h1 id="landing-title">Antarkota,<br/>lebih nyaman.</h1>
           <p className="lp-hero-intro">Cari jadwal, pilih kursi, dan pesan perjalanan Anda bersama Seatpax.</p>
+          <a className="lp-button lp-hero-action" href="#cari-perjalanan">Cari perjalanan<span className="lp-button-arrow"><ArrowRight size={18} aria-hidden="true"/></span></a>
         </div>
       </section>
+      </div>
 
-      <Suspense fallback={<PlannerSkeleton/>}><JourneyPlanner/></Suspense>
-      <FeaturedTrips/>
+      <div className="lp-screen lp-screen--search" id="cari-perjalanan" data-landing-section><Suspense fallback={<PlannerSkeleton/>}><JourneyPlanner/></Suspense></div>
+      <div className="lp-screen" id="pilihan-perjalanan" data-landing-section><FeaturedTrips/></div>
 
+      <div className="lp-screen" id="pilih-kursi" data-landing-section>
       <section className="lp-seat-feature" aria-labelledby="seat-feature-title">
         <div className="lp-feature-copy">
           <p className="lp-feature-eyebrow">PILIHAN DI TANGAN ANDA</p>
@@ -48,7 +52,9 @@ export default function Home() {
         </div>
         <BookingMotion kind="seat"/>
       </section>
+      </div>
 
+      <div className="lp-screen" id="cara-memesan" data-landing-section>
       <section className="lp-booking" aria-labelledby="booking-title">
         <div className="lp-section-title"><h2 id="booking-title">Dari rencana menjadi perjalanan.</h2><p>Pemesanan yang bisa Anda atur sendiri, dari awal sampai siap berangkat.</p></div>
         <BookingRoute><ol className="lp-booking-flow">
@@ -58,7 +64,9 @@ export default function Home() {
           </li>)}
         </ol></BookingRoute>
       </section>
+      </div>
 
+      <div className="lp-screen" id="persiapan" data-landing-section>
       <section className="lp-experience" aria-labelledby="experience-title">
         <figure className="lp-experience-photo">
           <Image src="/landing/morning-road.jpg" alt="Ilustrasi jalan di tengah hutan berkabut" fill sizes="(max-width: 767px) 100vw, 45vw"/>
@@ -73,7 +81,9 @@ export default function Home() {
           <Link className="lp-text-link" href="/tickets">Pesanan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
         </div>
       </section>
+      </div>
 
+      <div className="lp-screen" id="alur-pemesanan" data-landing-section>
       <section className="lp-checkout-feature" aria-labelledby="checkout-feature-title">
         <BookingMotion kind="deck"/>
         <div className="lp-feature-copy">
@@ -84,7 +94,9 @@ export default function Home() {
           <Link className="lp-text-link" href="/tickets">Buka Pesanan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
         </div>
       </section>
+      </div>
 
+      <div className="lp-screen" id="bantuan" data-landing-section>
       <section className="lp-help" aria-labelledby="help-title">
         <div className="lp-section-title"><h2 id="help-title">Sebelum Anda berangkat</h2><p>Beberapa hal yang mungkin ingin Anda ketahui.</p></div>
         <div className="lp-faq">
@@ -94,6 +106,7 @@ export default function Home() {
           <details><summary>Apa yang diperiksa sebelum keberangkatan?</summary><p>Periksa tanggal, jam, titik naik, dan nama penumpang pada tiket. Siapkan QR untuk ditunjukkan kepada petugas saat naik.</p></details>
         </div>
       </section>
+      </div>
 
       <div className="lp-photo-credits"><p>Foto ilustrasi: <a href="https://unsplash.com/photos/aerial-view-of-road-in-the-middle-of-green-trees--97jc08hg8Y" target="_blank" rel="noreferrer">CHUTTERSNAP</a> dan <a href="https://unsplash.com/photos/an-empty-road-in-the-middle-of-a-forest-4jUOijefE1g" target="_blank" rel="noreferrer">Gamma</a> / Unsplash.</p></div>
     </div>
