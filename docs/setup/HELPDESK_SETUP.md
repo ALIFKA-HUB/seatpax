@@ -95,3 +95,9 @@ Lighthouse on local dev /pengaduan/cek: accessibility100; performance45 (develop
 Lighthouse /pengaduan/buat: accessibility100, no failed automated accessibility audits on either page. Manual keyboard/screen-reader/physical-device acceptance is still separate.
 
 Hover regression: generic passenger button hover overrode the Helpdesk primary background, leaving white text on pale blue (contrast1.07). Shared Helpdesk hover now takes precedence and keeps a dark-blue surface; real Chrome contrast is8.29 for both create/check actions. tests/browser/helpdesk-hover.mjs reproduced red then passed; scoped ESLint and diff checks pass.
+
+## Live private Storage setup - 25 October 2026
+
+User supplied the server storage key locally. Copied that one setting from the main checkout's ignored .env.local into the active landing worktree, without exposing its value. Existing setup-helpdesk-storage script created/updated seatpax-helpdesk successfully. Verified via the live Storage API: public=false, 5242880-byte limit, JPEG/PNG/WebP/PDF MIME allowlist; server uploaded a tiny test PNG and downloaded identical bytes; anonymous direct download and public-object URL access both failed as expected. Removed the exact temporary test object afterward. No customer case or email was created. The secret remains outside Git.
+
+This supersedes the earlier missing-Storage-credential/bucket status. Actual authenticated Helpdesk attachment-download UI and complete reporter-to-staff browser acceptance still remain separate; provider storage connectivity/privacy is now verified. Email sender/inbox acceptance remains pending.
