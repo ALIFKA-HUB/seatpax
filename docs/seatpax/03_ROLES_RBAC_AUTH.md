@@ -262,3 +262,8 @@ Under D2026-10-20-03, an Admin PO account may belong as Admin PO to only one com
 ## HELPDESK role addition - 25 October 2026
 
 Add one static company-scoped role HELPDESK for the adopted simple complaint module, in addition to the existing roles. It grants helpdesk.read and helpdesk.write only, not tenant.admin, crew operations or company.manage. ADMIN_PO may monitor through helpdesk.read and manage activation/deactivation of Helpdesk memberships for already registered verified accounts. ADMIN_PO alone cannot handle/complete complaints. Fresh active company membership is checked in server transactions, with case revision/row locks for changes. Guest complaint submit/lookup and email capability supplementation do not create passenger/staff accounts or change booking login rules. A global SUPER_ADMIN role alone grants no company Helpdesk access.
+
+
+## Local quick-login testing - 26 October 2026
+
+The user requested temporary OTP-free testing. Only NODE_ENV=development + DEV_QUICK_LOGIN=true + the fixed development Supabase project + loopback hostname enables /login preset selection. Server action additionally requires exact same-origin Origin. Fixed preset IDs select existing confirmed test identities; no arbitrary email input, no automatic role changes on login. The privileged token hash is generated and consumed only on the server without sending mail, producing a normal verified Supabase session. All server-side access/membership checks, expiry/logout and existing OTP production entry remain. Production ignores the flag. Dedicated Helpdesk fixture in Demo PO A is separate from customer/admin fixtures. Local testers may reopen /login to switch preset accounts.

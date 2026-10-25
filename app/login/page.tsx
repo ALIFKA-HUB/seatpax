@@ -1,3 +1,6 @@
+import {headers} from 'next/headers';
+import DevLoginForm from './dev-login-form';
+import {quickLoginAccounts,quickLoginEnabled} from '@/modules/auth/dev-login-policy';
 import {redirect} from 'next/navigation';
 import {getVerifiedUser} from '@/modules/auth/identity';
 import LoginForm from './login-form';
@@ -9,6 +12,8 @@ import PassengerShell from '../components/passenger-shell';
 export const dynamic='force-dynamic';
 export default async function LoginPage({searchParams}:{searchParams:Promise<{next?:string}>}){
  const next=validatedReturnPath((await searchParams).next)??undefined;
+ const request=await headers();
+ if(quickLoginEnabled(process.env,request.get('host')??''))return <PassengerShell focused><div className="auth-shell"><section className="auth-card"><p className="eyebrow">Testing lokal</p><h1>Pilih akun testing</h1><p className="auth-intro">Langsung masuk sesuai role tanpa menunggu kode email.</p><DevLoginForm accounts={quickLoginAccounts} next={next}/><p className="auth-note">Mode development. Akses setiap akun tetap mengikuti role yang terdaftar.</p></section></div></PassengerShell>;
  const user=await getVerifiedUser();
  if(user){
   let destination:string;

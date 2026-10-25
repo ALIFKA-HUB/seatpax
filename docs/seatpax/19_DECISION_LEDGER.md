@@ -400,3 +400,8 @@ User requested an icon-only chat-shaped complaint entry, stable section navigati
 ## D2026-10-25-06 - Complaint create/check layout redesign
 
 User requested redesign of /pengaduan/buat and /pengaduan/cek using Dribbble references. Put the form first with semantic field groups and secondary guidance; put tracking/history in a primary/secondary layout, stacked on phones. Preserve URLs, primary navigation labels, input names/order, optional evidence limits, public-data restrictions and existing backend lifecycle. This is a visual/task-layout change only.
+
+
+## D2026-10-26-01 - Local OTP-free testing entry
+
+User asked to temporarily disable OTP and list role emails after accepting a local test-account selector. Enable explicit local-development-only preset login, retaining real Supabase sessions and fresh database role authorization. Never disable email verification globally or expose this entry in production/public-host pages. Provision one dedicated confirmed development Helpdesk account in Demo PO A; do not grant Helpdesk capabilities to all admins or existing customers. See docs/setup/LOCAL_QUICK_LOGIN_SETUP.md.
