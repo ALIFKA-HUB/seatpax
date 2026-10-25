@@ -114,3 +114,6 @@ body:has(.sp-complaints) {background:#fff}
 
 .sp-complaints .hd-grid {align-items:start}
 .sp-complaints .hd-form label {align-content:start}
+
+/* Keep primary action contrast above the generic passenger button hover. */
+.passenger-shell .hd-primary:hover:not(:disabled) {background:var(--sp-hover,#0049aa);color:#fff;text-decoration:none}

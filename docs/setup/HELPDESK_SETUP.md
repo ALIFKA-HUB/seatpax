@@ -93,3 +93,5 @@ Verification: TypeScript and scoped ESLint pass. Six targeted Helpdesk validatio
 Lighthouse on local dev /pengaduan/cek: accessibility100; performance45 (development-mode tooling and unoptimized assets, not a production benchmark). No production speed claim. Physical devices/Safari and real email/Storage acceptance remain pending as before.
 
 Lighthouse /pengaduan/buat: accessibility100, no failed automated accessibility audits on either page. Manual keyboard/screen-reader/physical-device acceptance is still separate.
+
+Hover regression: generic passenger button hover overrode the Helpdesk primary background, leaving white text on pale blue (contrast1.07). Shared Helpdesk hover now takes precedence and keeps a dark-blue surface; real Chrome contrast is8.29 for both create/check actions. tests/browser/helpdesk-hover.mjs reproduced red then passed; scoped ESLint and diff checks pass.
