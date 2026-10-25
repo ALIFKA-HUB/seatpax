@@ -1,6 +1,6 @@
 # Simple Seatpax Helpdesk Design
 
-Status: proposed written design, awaiting user approval. No application implementation authorized by this document alone.
+Status: approved for implementation planning by the user saying lanjut after the written-design handoff. Application implementation follows plan review.
 
 ## Intent and boundaries
 
