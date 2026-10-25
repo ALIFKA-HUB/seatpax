@@ -23,5 +23,5 @@ export async function requireAccess(permission:Permission, companyId?:string):Pr
     result = authorize(actor, await repository.listMemberships(actor.id), permission, companyId);
   } catch { throw new AccessError('unavailable'); }
   if (!result.ok) throw new AccessError(result.reason);
-  return {userId:actor.id,companyId:permission==='tenant.admin'?companyId!:null};
+  return {userId:actor.id,companyId:permission!=='company.manage'?companyId!:null};
 }

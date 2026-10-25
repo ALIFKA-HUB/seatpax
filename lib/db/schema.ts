@@ -24,7 +24,7 @@ export const seatHoldAuditEvents=pgTable('seat_hold_audit_events',{
 const timestamps = () => ({ createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow() });
 export const companyStatus = pgEnum('company_status', ['ACTIVE', 'SUSPENDED']);
 export const membershipStatus = pgEnum('membership_status', ['ACTIVE', 'DISABLED']);
-export const membershipRole = pgEnum('membership_role', ['ADMIN_PO', 'CREW', 'SUPER_ADMIN']);
+export const membershipRole = pgEnum('membership_role', ['ADMIN_PO', 'CREW', 'SUPER_ADMIN', 'HELPDESK']);
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().references(() => authUsers.id, { onDelete: 'restrict' }),
   name: text('name'), phone: text('phone'), avatarUrl: text('avatar_url'), email: text('email'), ...timestamps(),
@@ -42,7 +42,7 @@ export const memberships = pgTable('memberships', {
   companyId: uuid('company_id').references(() => companies.id, { onDelete: 'restrict' }),
   role: membershipRole('role').notNull(), status: membershipStatus('status').notNull().default('ACTIVE'), ...timestamps(),
 }, t => [
-  check('membership_company_role', sql`(${t.role} = 'SUPER_ADMIN' AND ${t.companyId} IS NULL) OR (${t.role} IN ('ADMIN_PO','CREW') AND ${t.companyId} IS NOT NULL)`),
+  check('membership_company_role', sql`(${t.role} = 'SUPER_ADMIN' AND ${t.companyId} IS NULL) OR (${t.role}::text IN ('ADMIN_PO','CREW','HELPDESK') AND ${t.companyId} IS NOT NULL)`),
   uniqueIndex('membership_tenant_unique').on(t.userId, t.companyId, t.role).where(sql`${t.companyId} IS NOT NULL`),
   uniqueIndex('membership_global_unique').on(t.userId, t.role).where(sql`${t.companyId} IS NULL`),
   unique('membership_trip_identity').on(t.id,t.userId,t.companyId,t.role),
@@ -190,3 +190,13 @@ export const bookingAuditEvents=pgTable('booking_audit_events',{
 export const snackClaims=pgTable('snack_claims',{
  id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull(),tripId:uuid('trip_id').notNull(),ticketId:uuid('ticket_id').notNull(),actorUserId:uuid('actor_user_id').notNull().references(()=>users.id,{onDelete:'restrict'}),claimedAt:timestamp('claimed_at',{withTimezone:true}).notNull().default(sql`clock_timestamp()`),
 },t=>[unique('snack_once').on(t.ticketId,t.tripId),foreignKey({name:'snack_ticket_identity',columns:[t.ticketId,t.tripId,t.companyId],foreignColumns:[tickets.id,tickets.tripId,tickets.companyId]}).onDelete('restrict'),foreignKey({name:'snack_boarding_identity',columns:[t.ticketId,t.tripId,t.companyId],foreignColumns:[boardingEvents.ticketId,boardingEvents.tripId,boardingEvents.companyId]}).onDelete('restrict')]).enableRLS();
+
+// Helpdesk tables are server-only domain data. SQL migration owns their check constraints.
+export const helpdeskCases=pgTable('helpdesk_cases',{
+ id:uuid('id').primaryKey().defaultRandom(),companyId:uuid('company_id').notNull().references(()=>companies.id),code:text('code').notNull().unique(),requestKey:uuid('request_key').notNull().unique(),payloadHash:text('payload_hash').notNull(),name:text('name').notNull(),email:text('email').notNull(),category:text('category').notNull(),title:text('title').notNull(),description:text('description').notNull(),bookingReference:text('booking_reference'),status:text('status').notNull().default('MENUNGGU'),priority:text('priority'),revision:integer('revision').notNull().default(0),publicRequest:text('public_request'),publicOutcome:text('public_outcome'),...timestamps(),
+}).enableRLS();
+export const helpdeskEvents=pgTable('helpdesk_events',{id:uuid('id').primaryKey().defaultRandom(),caseId:uuid('case_id').notNull().references(()=>helpdeskCases.id),companyId:uuid('company_id').notNull(),revision:integer('revision').notNull(),kind:text('kind').notNull(),actorId:uuid('actor_id').references(()=>users.id),note:text('note'),requestKey:uuid('request_key').unique(),payloadHash:text('payload_hash'),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow()}).enableRLS();
+export const helpdeskGrants=pgTable('helpdesk_grants',{id:uuid('id').primaryKey(),caseId:uuid('case_id').notNull().references(()=>helpdeskCases.id),eventId:uuid('event_id').notNull().references(()=>helpdeskEvents.id),digest:text('digest').notNull(),consumedAt:timestamp('consumed_at',{withTimezone:true}),revokedAt:timestamp('revoked_at',{withTimezone:true})}).enableRLS();
+export const helpdeskAttachments=pgTable('helpdesk_attachments',{id:uuid('id').primaryKey().defaultRandom(),caseId:uuid('case_id').notNull().references(()=>helpdeskCases.id),eventId:uuid('event_id').notNull().references(()=>helpdeskEvents.id),path:text('path').notNull().unique(),name:text('name').notNull(),mime:text('mime').notNull(),size:integer('size').notNull()}).enableRLS();
+export const helpdeskMailJobs=pgTable('helpdesk_mail_jobs',{id:uuid('id').primaryKey().defaultRandom(),eventId:uuid('event_id').notNull().unique().references(()=>helpdeskEvents.id),caseId:uuid('case_id').notNull().references(()=>helpdeskCases.id),payload:jsonb('payload').notNull(),state:text('state').notNull().default('QUEUED'),attempts:integer('attempts').notNull().default(0),nextAttemptAt:timestamp('next_attempt_at',{withTimezone:true}).notNull().defaultNow(),firstAttemptAt:timestamp('first_attempt_at',{withTimezone:true}),leaseUntil:timestamp('lease_until',{withTimezone:true}),providerId:text('provider_id'),errorCode:text('error_code'),createdAt:timestamp('created_at',{withTimezone:true}).notNull().defaultNow()}).enableRLS();
+export const helpdeskRateLimits=pgTable('helpdesk_rate_limits',{key:text('key').notNull(),windowStart:bigint('window_start',{mode:'number'}).notNull(),count:integer('count').notNull()}).enableRLS();

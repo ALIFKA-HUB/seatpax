@@ -1,0 +1,10 @@
+import {config} from 'dotenv';
+import {createClient} from '@supabase/supabase-js';
+config({path:'.env.local',quiet:true});
+const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;
+if(!url||!key)throw new Error('Server storage configuration missing');
+const storage=createClient(url,key,{auth:{persistSession:false}}).storage;
+const options={public:false,fileSizeLimit:5242880,allowedMimeTypes:['image/png','image/jpeg','image/webp','application/pdf']};
+const {data}=await storage.getBucket('seatpax-helpdesk');
+const {error}=data?await storage.updateBucket('seatpax-helpdesk',options):await storage.createBucket('seatpax-helpdesk',options);
+if(error){console.error('Private helpdesk bucket setup failed.');process.exitCode=1;}else console.log('Private helpdesk bucket ready.');

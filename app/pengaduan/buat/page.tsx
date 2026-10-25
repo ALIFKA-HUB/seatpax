@@ -1,0 +1,2 @@
+import ComplaintForm from '../components/complaint-form';
+export default async function CreateComplaint({searchParams}:{searchParams:Promise<{pesanan?:string}>}){const params=await searchParams;return <><header className="hd-heading"><h1>Buat pengaduan</h1><p>Isi informasi yang jelas agar petugas dapat memeriksa kendala Anda. Tingkat prioritas akan ditentukan petugas.</p></header><ComplaintForm bookingReference={(params.pesanan||'').slice(0,120)}/></>;}

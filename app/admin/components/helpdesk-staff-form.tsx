@@ -1,0 +1,4 @@
+'use client';
+import {useState,useTransition} from 'react';
+import {manageHelpdeskStaff} from '../helpdesk-actions';
+export default function HelpdeskStaffForm(){const [message,setMessage]=useState(''),[busy,start]=useTransition();return <form className="hd-panel hd-form" onSubmit={e=>{e.preventDefault();const f=new FormData(e.currentTarget);start(async()=>{const r=await manageHelpdeskStaff(f);setMessage(r.message);});}}><h2>Akses Petugas Helpdesk</h2><p>Petugas harus sudah pernah masuk dan memverifikasi email di Seatpax.</p><label>Email akun<input name="email" type="email" required maxLength={254}/></label><label>Status akses<select name="status"><option value="ACTIVE">Aktif</option><option value="DISABLED">Nonaktif</option></select></label><button className="hd-primary" disabled={busy}>Simpan akses</button>{message&&<p role="status">{message}</p>}</form>;}

@@ -14,7 +14,10 @@
     "db:reconcile-payments": "tsx scripts/reconcile-payments.ts",
     "db:migrate": "tsx scripts/migrate-db.ts",
     "db:seed": "tsx scripts/seed-dev.ts",
-    "db:test": "vitest run --config vitest.integration.config.ts"
+    "db:test": "vitest run --config vitest.integration.config.ts",
+    "db:send-helpdesk-mail": "tsx scripts/send-helpdesk-mail.ts",
+    "helpdesk:storage": "tsx scripts/setup-helpdesk-storage.ts",
+    "helpdesk:cleanup-storage": "tsx scripts/cleanup-helpdesk-storage.ts"
   },
   "engines": {
     "node": ">=26.0.0"

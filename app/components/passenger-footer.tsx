@@ -20,6 +20,7 @@ export default function PassengerFooter() {
         <h2>Panduan</h2>
         <Link href="/#booking-title">Cara memesan</Link>
         <Link href="/#help-title">Pertanyaan umum</Link>
+        <Link href="/pengaduan">Pusat pengaduan</Link>
       </nav>
     </div>
     <div className="sp-footer-bottom">

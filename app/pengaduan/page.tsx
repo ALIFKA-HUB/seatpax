@@ -1,0 +1,4 @@
+import Link from 'next/link';
+import {FilePlus,ClipboardText,ArrowRight} from '@phosphor-icons/react/ssr';
+import ComplaintHistory from './components/complaint-history';
+export default function ComplaintCentre(){return <><header className="hd-heading"><p className="hd-kicker">Bantuan Seatpax</p><h1>Ada kendala?<br/>Sampaikan kepada kami.</h1><p>Laporkan masalah pembayaran, pelayanan perjalanan, atau aplikasi. Simpan nomor pengaduan untuk memantau penanganannya.</p></header><div className="hd-choices"><Link href="/pengaduan/buat"><FilePlus size={30}/><h2>Buat pengaduan</h2><p>Ceritakan kendala dan sertakan bukti jika diperlukan.</p><span>Isi form laporan <ArrowRight/></span></Link><Link href="/pengaduan/cek"><ClipboardText size={30}/><h2>Cek pengaduan</h2><p>Gunakan nomor tiket pengaduan untuk melihat status dan hasil penanganan.</p><span>Lihat status laporan <ArrowRight/></span></Link></div><ComplaintHistory/></>;}

@@ -1,0 +1,10 @@
+import {describe,it,expect} from 'vitest';
+import {submissionSchema,transition,publicCase} from '@/modules/helpdesk/validation';
+import {newCode,grantToken,verifyGrant} from '@/modules/helpdesk/capabilities';
+const input={requestKey:'00000000-0000-4000-8000-000000000001',name:'Pelapor Uji',email:'pelapor@example.com',category:'BUG',title:'Tombol gagal bekerja',description:'Tombol tidak merespons saat ditekan.'};
+describe('Helpdesk boundary',()=>{
+ it('validates guest input and rejects injected priority/company',()=>{expect(submissionSchema.safeParse(input).success).toBe(true);expect(submissionSchema.safeParse({...input,priority:'HIGH'}).success).toBe(false);expect(submissionSchema.safeParse({...input,companyId:'x'}).success).toBe(false);expect(submissionSchema.safeParse({...input,description:'x'}).success).toBe(false)});
+ it('allows only deliberate lifecycle transitions',()=>{expect(transition('MENUNGGU','DIPROSES','MEDIUM','')).toBe('DIPROSES');expect(()=>transition('MENUNGGU','DIPROSES',null,'')).toThrow();expect(()=>transition('MENUNGGU','SELESAI','LOW','Selesai ditangani')).toThrow();expect(()=>transition('DIPROSES','PERLU_DILENGKAPI','LOW','')).toThrow();expect(transition('PERLU_DILENGKAPI','MENUNGGU',null,'Informasi tambahan lengkap')).toBe('MENUNGGU');expect(()=>transition('SELESAI','MENUNGGU','LOW','Ulang laporan')).toThrow()});
+ it('projects no private fields',()=>{const value=publicCase({code:'abc',title:'Judul',category:'BUG',status:'MENUNGGU',priority:null,created_at:'now',updated_at:'now',public_request:null,public_outcome:null,email:'secret',description:'private',booking_reference:'private'});expect(JSON.stringify(value)).not.toMatch(/secret|private|email|description|booking/)});
+ it('separates unpredictable tracking and edit grants',()=>{expect(new Set(Array.from({length:100},newCode)).size).toBe(100);const t=grantToken('a','b','s'.repeat(32));expect(verifyGrant(t,'a','b','s'.repeat(32))).toBe(true);expect(verifyGrant(t,'a','other','s'.repeat(32))).toBe(false);expect(verifyGrant(newCode(),'a','b','s'.repeat(32))).toBe(false)});
+});

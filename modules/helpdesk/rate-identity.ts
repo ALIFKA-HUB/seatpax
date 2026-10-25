@@ -1,0 +1,2 @@
+import {isIP} from 'node:net';
+export function clientIdentity(request:Request,trustProxy:boolean,development:boolean){if(trustProxy){const ip=request.headers.get('x-real-ip');if(ip&&isIP(ip))return ip;throw new Error('trusted_client_identity_missing');}const host=new URL(request.url).hostname;if(development&&['localhost','127.0.0.1','[::1]'].includes(host))return 'local-development';throw new Error('trusted_client_identity_missing');}

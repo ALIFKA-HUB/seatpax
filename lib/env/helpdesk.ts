@@ -1,0 +1,2 @@
+import {z} from 'zod';
+export function helpdeskConfig(){const company=z.uuid().safeParse(process.env.HELPDESK_COMPANY_ID);const secret=process.env.HELPDESK_LINK_SECRET;const origin=process.env.HELPDESK_PUBLIC_ORIGIN||process.env.NEXT_PUBLIC_APP_URL;if(!company.success||!secret||secret.length<32||!origin)throw new Error('Pusat pengaduan belum dikonfigurasi.');const url=new URL(origin);if(!['http:','https:'].includes(url.protocol)||url.username||url.password)throw new Error('Konfigurasi pengaduan tidak valid.');return {companyId:company.data,secret,origin:url.origin};}
