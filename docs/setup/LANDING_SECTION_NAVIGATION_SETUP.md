@@ -20,3 +20,10 @@ Eight permanent viewport-minimum section frames and native anchors. Hero stands 
 Screenshots in the task visualization directory: section-hero-final-1440.png, section-search-final.png and section-menu-mobile.png.
 
 Physical phone/tablet and Safari acceptance remain pending. No production build or test suite was run for this layout refinement. No merge or push.
+
+
+## Follow-up correction
+
+User requested restoring the hero/search composition and consolidating the first four menu entries. Search is now inside the hero frame with an 80px desktop/tablet overlap and 56px phone overlap. Five navbar entries remain; featured trips and seat illustration resolve to the Beranda active link. The cari-perjalanan anchor remains for existing links.
+
+Fresh no-emit TypeScript and scoped ESLint passed. Chrome inspections at widths 1440, 1024, 390 and 320 confirmed no horizontal overflow, five section links and restored overlap. Scrolling to featured trips or seat illustration selects Beranda; scrolling to Cara pesan selects its own entry. Desktop and phone screenshots were inspected: hero-search-restored-1440.png and hero-search-restored-390.png. Earlier eight-link and standalone-search measurements above describe the superseded version.

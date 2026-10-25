@@ -373,3 +373,8 @@ Caption refinement: the user removed **Tiket siap di Pesanan saya.** and **Ilust
 ## D2026-10-25-02 - Landing sections occupy separate screens
 
 The user requested each landing section occupy its own screen with navbar navigation and confirmed with yup. Retain one scrollable document with eight stable section anchors. Separate the original hero and search planner. Use viewport minimum heights with content expansion rather than fixed-height clipping or forced snapping. Preserve branding, photos, accepted animations, labelled demo trips and booking/authentication contracts. This changes landing navigation only. See `../setup/LANDING_SECTION_NAVIGATION_SETUP.md` for verification.
+
+
+### Landing navigation correction - 25 October 2026
+
+The user clarified that the search panel must remain attached to the hero as before, and navbar entries from Beranda through Pilih kursi should be combined. This supersedes the standalone search screen above: place the planner inside the hero frame with responsive overlap, retain its stable cari-perjalanan anchor, and remove the redundant hero CTA. Keep five landing links: Beranda, Cara pesan, Persiapan, Pemesanan and Bantuan. Hero/search, featured trips and the seat illustration all map to the Beranda active state; their content remains in order. Other section frames and booking/account access remain unchanged.

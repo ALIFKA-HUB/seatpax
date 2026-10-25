@@ -33,12 +33,10 @@ export default function Home() {
           <p className="lp-eyebrow">SHUTTLE ANTARKOTA</p>
           <h1 id="landing-title">Antarkota,<br/>lebih nyaman.</h1>
           <p className="lp-hero-intro">Cari jadwal, pilih kursi, dan pesan perjalanan Anda bersama Seatpax.</p>
-          <a className="lp-button lp-hero-action" href="#cari-perjalanan">Cari perjalanan<span className="lp-button-arrow"><ArrowRight size={18} aria-hidden="true"/></span></a>
         </div>
       </section>
+      <div className="lp-hero-planner" id="cari-perjalanan"><Suspense fallback={<PlannerSkeleton/>}><JourneyPlanner/></Suspense></div>
       </div>
-
-      <div className="lp-screen lp-screen--search" id="cari-perjalanan" data-landing-section><Suspense fallback={<PlannerSkeleton/>}><JourneyPlanner/></Suspense></div>
       <div className="lp-screen" id="pilihan-perjalanan" data-landing-section><FeaturedTrips/></div>
 
       <div className="lp-screen" id="pilih-kursi" data-landing-section>

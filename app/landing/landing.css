@@ -283,3 +283,18 @@ html:has(.sp-landing) {scroll-behavior:smooth}
   .passenger-shell.sp-landing .lp-section-menu {padding:8px}
 }
 @media(prefers-reduced-motion:reduce) {html:has(.sp-landing) {scroll-behavior:auto}}
+
+/* Hero and search are one composition; early discovery sections share Beranda. */
+.sp-landing .lp-screen--hero {justify-content:flex-start}
+.sp-landing .lp-screen--hero>.lp-hero {min-height:clamp(380px,calc(100dvh - 300px),640px)}
+.sp-landing .lp-hero-copy {padding-bottom:112px}
+.sp-landing .lp-hero-planner {position:relative;z-index:1;margin:-80px 38px 0;scroll-margin-top:var(--lp-nav-offset)}
+.sp-landing .lp-hero-planner .lp-search-panel {margin:0;padding:30px 32px}
+.sp-landing .lp-hero-planner .lp-search-panel h2 {font-size:26px;margin-bottom:24px}
+@media(max-width:767px) {
+ .sp-landing .lp-screen--hero>.lp-hero {min-height:360px}
+ .sp-landing .lp-hero-copy {padding-bottom:92px}
+ .sp-landing .lp-hero-planner {margin:-56px 12px 0}
+ .sp-landing .lp-hero-planner .lp-search-panel {padding:24px 18px}
+ .sp-landing .lp-hero-planner .lp-search-panel h2 {font-size:23px}
+}

@@ -6,9 +6,6 @@ import {List, X} from '@phosphor-icons/react';
 
 const sections = [
   ['beranda', 'Beranda'],
-  ['cari-perjalanan', 'Cari jadwal'],
-  ['pilihan-perjalanan', 'Perjalanan'],
-  ['pilih-kursi', 'Pilih kursi'],
   ['cara-memesan', 'Cara pesan'],
   ['persiapan', 'Persiapan'],
   ['alur-pemesanan', 'Pemesanan'],
@@ -25,7 +22,7 @@ export default function SectionNavigation() {
         .map(section => ({id: section.id, bounds: section.getBoundingClientRect()}))
         .filter(section => section.bounds.bottom > 104 && section.bounds.top < innerHeight * .55)
         .sort((a, b) => a.bounds.top - b.bounds.top);
-      if (visible[0]) setActive(visible[0].id);
+      if (visible[0]) setActive(['pilihan-perjalanan', 'pilih-kursi'].includes(visible[0].id) ? 'beranda' : visible[0].id);
     }, {rootMargin: '-104px 0px -45% 0px', threshold: [0, .2, .5, .8]});
     document.querySelectorAll('[data-landing-section]').forEach(section => observer?.observe(section));
     const outside = (event: PointerEvent) => {

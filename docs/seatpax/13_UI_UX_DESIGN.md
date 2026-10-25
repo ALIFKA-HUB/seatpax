@@ -915,3 +915,8 @@ Caption refinement: remove the first illustration's external phase text and illu
 The approved landing remains one scrollable document with eight minimum-viewport-height sections: Beranda, Cari jadwal, Perjalanan, Pilih kursi, Cara pesan, Persiapan, Pemesanan and Bantuan. Hero photography stands alone on the initial screen; search no longer overlaps it. Sections grow with their content, including phones and short screens. Do not clip content or force scroll snapping.
 
 Landing section anchors use blue text and underline for the current section. Desktop exposes links and an order utility; compact layouts use a native menu with section links and Pesanan saya. Account access remains available. Booking-route navigation stays unchanged. Native smooth scrolling respects reduced motion. Preserve approved illustration behavior. Footer and credits close the page without full-screen padding.
+
+
+### Landing navigation correction - 25 October 2026
+
+The user clarified that the search panel must remain attached to the hero as before, and navbar entries from Beranda through Pilih kursi should be combined. This supersedes the standalone search screen above: place the planner inside the hero frame with responsive overlap, retain its stable cari-perjalanan anchor, and remove the redundant hero CTA. Keep five landing links: Beranda, Cara pesan, Persiapan, Pemesanan and Bantuan. Hero/search, featured trips and the seat illustration all map to the Beranda active state; their content remains in order. Other section frames and booking/account access remain unchanged.
