@@ -85,12 +85,12 @@ export default function BookingMotion({kind}: {kind: MotionKind}) {
       <div className="lpm-shadow" aria-hidden="true"/>
       {kind === 'seat' ? <SeatIllustration/> : <DeckIllustration advance={advance} action={action} busy={state.playing}/>}
     </div>
-    <div className="lpm-caption">
+    {kind === 'deck' && <div className="lpm-caption">
       <p className="lpm-phase" aria-live="polite" aria-atomic="true">{state.phase}</p>
-      {kind === 'deck' && !state.static && <div className="lpm-controls">
+      {!state.static && <div className="lpm-controls">
         <button type="button" className="lpm-action" aria-disabled={state.playing} onClick={advance}><span>{state.playing ? 'Sedang menampilkan' : action}</span></button><button type="button" className="lpm-restart" aria-label="Ulangi ilustrasi pemesanan dari awal" onClick={() => controller.current?.restart()}><ArrowCounterClockwise size={17}/></button>
       </div>}
       <span className="lpm-illustration-note">Ilustrasi pemesanan, bukan pesanan aktif.</span>
-    </div>
+    </div>}
   </div>;
 }
