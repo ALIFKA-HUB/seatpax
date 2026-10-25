@@ -80,3 +80,16 @@ Complaint portal now has its own white shell and two primary navigation links. D
 Fresh TypeScript no-emit, scoped ESLint and diff check passed. Headless Chrome inspected widths320,390,768,1024,1440,1920: no horizontal overflow; computed page/header background both rgb(255,255,255). Both main choices end at y472 desktop and y732 on390x950, visible early. Active form/tracking links verified; active background transparent, desktop header72px. Name/email inputs both49px after alignment fix. Phone320x650 uses in-header links instead of fixed passenger bottom nav. Regular /trips navigation and client-side return to landing verified unchanged. No page errors observed.
 
 Screenshots: helpdesk-refresh-centre-1440.png, helpdesk-refresh-centre-390.png, helpdesk-refresh-form-1440.png, helpdesk-refresh-track-390.png in the task visualization directory. No new test suite or email/Storage provider operations were run for this UI-only refinement. Real inbox/private storage and physical device checks remain pending as previously recorded.
+
+
+## Create/check task-page redesign - 25 October 2026
+
+Updated only public task layouts: compact full-width page headings, main form left/guide right, semantic fieldsets, native evidence input, lookup/result left/history right. Mobile stacks main task first. Preserved input names/order, validation, reference prefill, request idempotency, endpoint payloads and private/public distinctions. Existing white/blue shell and centre/supplement/staff pages remain outside the new workspace styles.
+
+Dribbble sources: Support form by Romeo Martinez (https://dribbble.com/shots/25495056-Support-form, full source image inspected); Contact & support by Jordan Hughes (https://dribbble.com/shots/24828756-Contact-support-Untitled-UI, minimal support direction). Adapted field/upload grouping rather than copying the modal or adding chat. No new repository dependency.
+
+Verification: TypeScript and scoped ESLint pass. Six targeted Helpdesk validation/history/evidence unit tests pass. Real Chrome layout at320/390/768/1024/1440px passes for both pages, no horizontal overflow. Browser check in tests/browser/helpdesk-layout.mjs also checks preserved field names/order, inline lookup failure, public result/completeness request, browser history and booking-reference prefill. API responses in this UI check are intercepted fixtures, not real report writes or email deliveries. Desktop/phone screenshots inspected and sidebar padding corrected. Browser checks wait for hydration before interacting.
+
+Lighthouse on local dev /pengaduan/cek: accessibility100; performance45 (development-mode tooling and unoptimized assets, not a production benchmark). No production speed claim. Physical devices/Safari and real email/Storage acceptance remain pending as before.
+
+Lighthouse /pengaduan/buat: accessibility100, no failed automated accessibility audits on either page. Manual keyboard/screen-reader/physical-device acceptance is still separate.

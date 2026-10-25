@@ -395,3 +395,8 @@ User requested the complaint navbar match its page background, use Buat pengadua
 ## D2026-10-25-05 - Landing floating entry and card-loop correction
 
 User requested an icon-only chat-shaped complaint entry, stable section navigation during smooth scroll, and automatic looping for the second card illustration. Desktop retains side-by-side final cards; mobile only rotates the stack. A card click accelerates the loop. External replay/illustration captions are removed. The chat-shaped entry still opens the form; this does not introduce live chat or change Helpdesk workflows. The first seat-to-ticket illustration remains once-only.
+
+
+## D2026-10-25-06 - Complaint create/check layout redesign
+
+User requested redesign of /pengaduan/buat and /pengaduan/cek using Dribbble references. Put the form first with semantic field groups and secondary guidance; put tracking/history in a primary/secondary layout, stacked on phones. Preserve URLs, primary navigation labels, input names/order, optional evidence limits, public-data restrictions and existing backend lifecycle. This is a visual/task-layout change only.
