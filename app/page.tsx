@@ -88,7 +88,7 @@ export default function Home() {
           <p className="lp-feature-eyebrow">DARI PESAN HINGGA BERANGKAT</p>
           <h2 id="checkout-feature-title">Satu alur.<br/>Siap berangkat.</h2>
           <p>Pilih kursi, selesaikan pembayaran, lalu buka tiket di Pesanan saya. Semua bisa Anda ikuti dari satu tempat.</p>
-          <p>Tekan kartu untuk melihat langkah berikutnya.</p>
+          <p>Alur berputar otomatis. Tekan kartu untuk mempercepat.</p>
           <Link className="lp-text-link" href="/tickets">Buka Pesanan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
         </div>
       </section>

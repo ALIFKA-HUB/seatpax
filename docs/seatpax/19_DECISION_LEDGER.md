@@ -390,3 +390,8 @@ The user confirmed that email sender and private Storage credentials are not yet
 ## D2026-10-25-04 - Complaint-specific public navigation and white UI
 
 User requested the complaint navbar match its page background, use Buat pengaduan and Cek pengaduan rather than trip/order tabs, and improve the layout using Dribbble references. Apply an explicit public complaint shell mode, uniform white, one navigation row (two rows on phones), blue text/underline active states, a return-to-Seatpax utility, compact centre choices/history and responsive guided form layouts. Remove the duplicate secondary nav. Existing report fields, lifecycle, authentication, storage/email limitations and other passenger navigation remain unchanged.
+
+
+## D2026-10-25-05 - Landing floating entry and card-loop correction
+
+User requested an icon-only chat-shaped complaint entry, stable section navigation during smooth scroll, and automatic looping for the second card illustration. Desktop retains side-by-side final cards; mobile only rotates the stack. A card click accelerates the loop. External replay/illustration captions are removed. The chat-shaped entry still opens the form; this does not introduce live chat or change Helpdesk workflows. The first seat-to-ticket illustration remains once-only.

@@ -934,3 +934,10 @@ User requested matching navbar/page backgrounds and complaint-specific navigatio
 Use compact editorial split on the centre: restrained heading/explanation left, two stacked actionable cards right, browser history below. Forms and tracking use guidance beside the primary work area on desktop, stacked below768px. The phone header places both complaint links directly under its brand/return row, with no passenger bottom navigation. Preserve all form fields and backend contracts.
 
 References: https://dribbble.com/shots/20166754-Support-Ticket-Booking-Platform (clear form/history hierarchy, image inspected) and https://dribbble.com/shots/25419112-Support-documentation-Untitled-UI (simple support-page direction). These are visual references, not an imported component system or copied assets. Existing Seatpax blue, Plus Jakarta Sans and Phosphor remain. Design variance5, motion2, density4; only small hover/press feedback, reduced-motion aware.
+
+
+### Landing interaction correction - 25 October 2026
+
+The floating complaint entry is now an icon-only circular chat-bubble glyph with accessible Buat pengaduan naming, still linking to the complaint form (no chat functionality). This supersedes the visible label/document glyph. Clicked landing navigation retains its blue text/underline throughout native smooth scrolling; ordinary scrolling selects the section under the header.
+
+The second booking illustration loops automatically in view. Desktop shuffles then spreads seat/payment/ticket horizontally, returns to its stack and repeats; clicking a card accelerates the current loop. Phone only rotates the front card, never expands into a vertical or horizontal spread. Device mode uses viewport width, not the narrower desktop illustration column. Remove external phase/replay/note controls. Retain offscreen/hidden pause, reduced-motion static fallback, and the first illustration's once-only behavior.

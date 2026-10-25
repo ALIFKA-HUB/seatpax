@@ -44,10 +44,10 @@ function seatTimeline(field: HTMLElement, p: Parts, animate: Animate) {
 
 type CardPose = {x: number; y: number; z: number; angle: number; scale: number};
 function deckTimeline(field: HTMLElement, p: Parts, animate: Animate) {
-  const narrow = field.clientWidth < 640, w = p.seat.offsetWidth, h = p.seat.offsetHeight;
+  const narrow = window.matchMedia('(max-width: 767px)').matches, w = p.seat.offsetWidth;
   const q = narrow ? .68 : .88, side = (w * q + 26) / 2, rest = narrow ? 38 : 82;
   const finalScale = narrow ? 1 : Math.min(.94, (field.clientWidth - 64) / (3 * w + 36));
-  const stride = w * finalScale + 18, vertical = h + 18;
+  const stride = w * finalScale + 18;
   const initial: CardPose[] = [{x:0,y:0,z:30,angle:0,scale:1}, {x:rest,y:5,z:-10,angle:5,scale:.9}, {x:-rest,y:9,z:-50,angle:-5,scale:.88}];
   const first: CardPose[] = [{x:-rest,y:0,z:-35,angle:-5,scale:.9}, {x:0,y:0,z:30,angle:0,scale:1}, initial[2]];
   const second: CardPose[] = [{x:-rest,y:0,z:-65,angle:-5,scale:.88}, {x:-rest*.45,y:0,z:-10,angle:-2,scale:.92}, {x:0,y:0,z:30,angle:0,scale:1}];
@@ -55,26 +55,32 @@ function deckTimeline(field: HTMLElement, p: Parts, animate: Animate) {
     const wave = Math.sin(Math.PI * s);
     return {x: lerp(a.x,b.x,s) + (peak-(a.x+b.x)/2)*wave, y:lerp(a.y,b.y,s)+lift*wave, z:lerp(a.z,b.z,ease((s-.44)/.12)), angle:lerp(a.angle,b.angle,s)-(a.angle+b.angle)/2*wave+1.7*Math.sin(2*Math.PI*s), scale:lerp(a.scale,b.scale,s)+(q-(a.scale+b.scale)/2)*wave};
   }
-  // Only the intentional narrow-screen spread changes the field's layout height.
-  animate(field, samples.map(t => ({offset:t, height:`${narrow ? 370+(3*h+84-370)*ease((t-.815)/.185) : 410}px`})));
-  [p.seat,p.payment,p.ticket].forEach((card,index) => animate(card, samples.map(t => {
+  [p.seat,p.payment,p.ticket].forEach((card,index) => animate(card, samples.map(offset => {
+    const t = Math.min(1, offset / .8);
     let pose = t < .55
       ? index === 2 ? initial[2] : arc(initial[index],first[index],ease((t-.275)/.215),index===0?-side:side,index===0?14:-18)
       : arc(first[index],second[index],ease((t-.55)/.235),index===2?side:-side,index===2?-18:12);
-    const u=clamp((t-(.815+index*.008))/(.185-index*.008)), s=ease(u);
-    pose={x:lerp(pose.x,narrow?0:(index-1)*stride,s),y:lerp(pose.y,narrow?(index-1)*vertical:0,s)-Math.sin(Math.PI*u)*4,z:lerp(pose.z,0,ease((u-.65)/.35)),angle:lerp(pose.angle,0,s)+(index-1)*2*Math.sin(Math.PI*u),scale:lerp(pose.scale,finalScale,s)};
+    const u=narrow?0:clamp((t-(.815+index*.008))/(.185-index*.008)), s=ease(u);
+    pose={x:lerp(pose.x,narrow?0:(index-1)*stride,s),y:lerp(pose.y,0,s)-Math.sin(Math.PI*u)*4,z:lerp(pose.z,0,ease((u-.65)/.35)),angle:lerp(pose.angle,0,s)+(index-1)*2*Math.sin(Math.PI*u),scale:lerp(pose.scale,finalScale,s)};
+    const back = ease((offset - .88) / .12);
+    if (narrow && offset >= .8) {
+      pose = arc(second[index], initial[index], ease((offset-.8)/.2), index===0?side:-side, index===0?-18:12);
+    } else if (!narrow) {
+      pose = {x:lerp(pose.x,initial[index].x,back),y:lerp(pose.y,initial[index].y,back),z:lerp(pose.z,initial[index].z,back),angle:lerp(pose.angle,initial[index].angle,back),scale:lerp(pose.scale,initial[index].scale,back)};
+    }
     // Do not add opacity to these 3D planes: it flattens the card group.
-    return {offset:t,transform:`translate(-50%,-50%) translate3d(${pose.x}px,${pose.y}px,${pose.z}px) rotateZ(${pose.angle}deg) scale(${pose.scale})`};
+    return {offset,transform:`translate(-50%,-50%) translate3d(${pose.x}px,${pose.y}px,${pose.z}px) rotateZ(${pose.angle}deg) scale(${pose.scale})`};
   })));
-  animate(p.check, samples.map(t => {const u=ease((t-.475)/.05);return {offset:t,opacity:u,transform:`scale(${.9+.1*u})`};}));
-  animate(p.ring, samples.map(t => ({offset:t,opacity:.55*ease((t-.47)/.04)*(1-ease((t-.51)/.08)),transform:`scale(${.9+.4*ease((t-.47)/.12)})`})));
+  animate(p.check, samples.map(t => {const u=ease((t/.8-.475)/.05)*(1-ease((t-.88)/.12));return {offset:t,opacity:u,transform:`scale(${.9+.1*u})`};}));
+  animate(p.ring, samples.map(offset => {const t=offset/.8;return {offset,opacity:.55*ease((t-.47)/.04)*(1-ease((t-.51)/.08)),transform:`scale(${.9+.4*ease((t-.47)/.12)})`};}));
 }
 
 export function mountBookingMotion(root: HTMLElement, kind: MotionKind, onChange: (state: BookingMotionState) => void) {
   const field = root.querySelector<HTMLElement>('.lpm-field')!;
   const parts = Object.fromEntries(Array.from(root.querySelectorAll<HTMLElement>('[data-part]'), e => [e.dataset.part!, e]));
   const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let animations: Animation[] = [], time=0, limit=DURATION, playing=false, disposed=false, visible=false, canAutoStart=false, started=false, resume=false, frame=0, measuredWidth=0, lastState='';
+  const duration = kind === 'deck' ? 12000 : DURATION;
+  let animations: Animation[] = [], time=0, limit=duration, playing=false, disposed=false, visible=false, canAutoStart=false, started=false, resume=false, frame=0, measuredWidth=0, lastState='';
   const supported = typeof field.animate === 'function' && typeof IntersectionObserver !== 'undefined';
   const phase = () => kind === 'seat'
     ? time < 1120 ? 'Pilih kursi Anda.' : time < 2240 ? 'Kursi 03 dipilih.' : time < 2960 ? 'Pilihan Anda diteruskan.' : time < 5440 ? 'Setelah pembayaran dikonfirmasi.' : 'Tiket siap di Pesanan saya.'
@@ -83,7 +89,7 @@ export function mountBookingMotion(root: HTMLElement, kind: MotionKind, onChange
     const state: BookingMotionState = {playing, step:time>=DURATION?2:time>=4400?1:0, finished:time>=DURATION, static:!supported||preference.matches, phase:phase()};
     const key=JSON.stringify(state);if(key!==lastState&&!disposed){lastState=key;onChange(state);}
   }
-  function seek(value: number) {time=Math.max(0,Math.min(DURATION,value));animations.forEach(a=>{a.pause();a.currentTime=time;});notify();}
+  function seek(value: number) {time=Math.max(0,Math.min(duration,value));animations.forEach(a=>{a.pause();a.currentTime=time;});notify();}
   function pause() {
     if(playing)time=Math.max(0,Math.min(limit,Number(animations[0]?.currentTime)||0));
     playing=false;cancelAnimationFrame(frame);animations.forEach(a=>a.pause());notify();
@@ -92,9 +98,9 @@ export function mountBookingMotion(root: HTMLElement, kind: MotionKind, onChange
     if(disposed||!animations.length||preference.matches)return;
     if(!visible||document.hidden){resume=true;return;}
     playing=true;resume=false;
-    const rate=kind==='deck'?1.6:1,origin=Number(document.timeline.currentTime)-time/rate;
+    const rate=1,origin=Number(document.timeline.currentTime)-time/rate;
     animations.forEach(a=>{a.playbackRate=rate;a.play();a.startTime=origin;});notify();
-    const tick=()=>{if(!playing||disposed)return;time=Number(animations[0].currentTime)||0;if(time>=limit){playing=false;seek(limit);return;}notify();frame=requestAnimationFrame(tick);};
+    const tick=()=>{if(!playing||disposed)return;time=Number(animations[0].currentTime)||0;if(time>=limit){playing=false;if(kind==='deck'){seek(0);run();}else seek(limit);return;}notify();frame=requestAnimationFrame(tick);};
     frame=requestAnimationFrame(tick);
   }
   function build() {
@@ -102,26 +108,25 @@ export function mountBookingMotion(root: HTMLElement, kind: MotionKind, onChange
     animations.forEach(a=>a.cancel());animations=[];delete root.dataset.motionReady;
     measuredWidth=field.clientWidth;
     root.dataset.motionReady='true';
-    const animate: Animate=(element,frames)=>{const a=element.animate(frames,{duration:DURATION,fill:'both',easing:'linear'});a.pause();animations.push(a);};
+    const animate: Animate=(element,frames)=>{const a=element.animate(frames,{duration,fill:'both',easing:'linear'});a.pause();animations.push(a);};
     if(kind==='seat')seatTimeline(field,parts,animate);else deckTimeline(field,parts,animate);
-    seek(preference.matches?DURATION:time);
+    seek(preference.matches?duration:time);
   }
   function rebuild() {const active=playing;pause();build();if(active)run();}
   function presence() {
     if(!visible||document.hidden){if(playing){pause();resume=true;}return;}
-    if(resume)run();else if(kind==='seat'&&!started&&canAutoStart&&!preference.matches){started=true;limit=DURATION;run();}
+    if(resume)run();else if(!started&&canAutoStart&&!preference.matches){started=true;limit=duration;run();}
   }
   function advance() {
-    if(kind!=='deck'||playing||disposed||!supported||preference.matches)return;
-    if(time>=DURATION)seek(0);
-    if(time<2200)seek(2200);
-    limit=time<4400?4400:DURATION;started=true;run();
+    if(kind!=='deck'||disposed||!supported||preference.matches)return;
+    if(!playing){started=true;limit=duration;run();}
+    animations.forEach(a=>a.updatePlaybackRate(2.5));
   }
   function restart() {if(kind!=='deck')return;pause();resume=false;seek(0);}
-  const onPreference=()=>{pause();resume=false;if(preference.matches){started=true;seek(DURATION);}else notify();};
-  if(!supported){time=DURATION;notify();return {advance,restart,dispose:()=>{disposed=true;}};}
+  const onPreference=()=>{pause();resume=false;if(preference.matches){started=true;seek(duration);}else notify();};
+  if(!supported){time=duration;notify();return {advance,restart,dispose:()=>{disposed=true;}};}
   build();
-  const intersection=new IntersectionObserver(entries=>{visible=entries.some(e=>e.isIntersecting);canAutoStart=entries.some(e=>e.intersectionRatio>=.35);presence();},{threshold:kind==='seat'?[0,.35]:0});
+  const intersection=new IntersectionObserver(entries=>{visible=entries.some(e=>e.isIntersecting);canAutoStart=entries.some(e=>e.intersectionRatio>=.35);presence();},{threshold:[0,.35]});
   intersection.observe(field);
   const resize=typeof ResizeObserver==='undefined'?null:new ResizeObserver(()=>{if(field.clientWidth!==measuredWidth)rebuild();});
   resize?.observe(field);

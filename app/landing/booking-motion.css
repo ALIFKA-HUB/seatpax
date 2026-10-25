@@ -69,16 +69,7 @@
 .lpm-root[data-motion-ready=true] .lpm-deck {position:absolute; inset:0; display:block; min-height:0}
 .lpm-root[data-motion-ready=true] .lpm-card {position:absolute; top:50%; left:50%; width:min(58%,220px); margin:0; transform:translate(-50%,-50%); will-change:transform}
 .lpm-root[data-motion-ready=true] .lpm-card-hit {display:block}
-.lpm-caption {display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; padding:8px 12px 0; min-height:102px}
-.sp-landing .lpm-phase {font-size:12px; font-weight:600; color:#0755b7; margin:0; min-height:20px; line-height:1.6}
-.lpm-controls {display:flex; align-items:center; justify-content:center; gap:6px}
-.sp-landing .lpm-controls button {display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:44px; margin:0; padding:8px 12px; border:1px solid transparent; border-radius:10px; background:transparent; color:var(--sp-primary); font:inherit; font-size:12px; font-weight:600; cursor:pointer}
-.sp-landing .lpm-controls button:hover {background:#eef5ff}
-.lpm-controls button[aria-disabled=true],.lpm-card-hit[aria-disabled=true] {cursor:default}
-.sp-landing .lpm-controls .lpm-restart {width:44px; padding:0}
-.lpm-controls button:focus-visible,.lpm-card-hit:focus-visible {outline:3px solid var(--lpm-blue); outline-offset:3px}
-.lpm-card-hit:focus-visible {outline-offset:-4px}
-.lpm-illustration-note {font-size:11px; color:var(--lpm-muted)}
+.lpm-card-hit:focus-visible {outline:3px solid var(--lpm-blue);outline-offset:-4px}
 @container(max-width:639px) {
   .lpm-field {height:370px; perspective:850px}
   .lpm-map {width:min(70%,290px); padding:17px; border-radius:20px}
@@ -92,7 +83,6 @@
   .lpm-stub {padding:17px 20px; gap:12px}
   .lpm-stub>svg {width:32px; height:32px}
   .lpm-stub strong {font-size:11px}
-  .lpm-deck-field:not([style]) {height:auto; min-height:370px}
   .lpm-deck {grid-template-columns:minmax(0,1fr); padding-block:24px}
   .lpm-root[data-motion-ready=true] .lpm-deck {padding:0}
   .lpm-card {width:min(80%,220px)}
@@ -100,4 +90,10 @@
 @media(prefers-reduced-motion:reduce) {
   .lpm-root [style] {will-change:auto}
   .lpm-card-hit {display:none!important}
+}
+
+@media(max-width:767px) {
+  .lpm-root:not([data-motion-ready=true]) .lpm-deck {display:block; padding:0}
+  .lpm-root:not([data-motion-ready=true]) .lpm-card:not(.lpm-card-ticket) {display:none}
+  .lpm-root:not([data-motion-ready=true]) .lpm-card-ticket {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
 }

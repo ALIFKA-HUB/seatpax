@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import {useEffect, useRef, useState} from 'react';
-import {Armchair, ArrowCounterClockwise, Check, CreditCard, Cursor, Scan, Ticket} from '@phosphor-icons/react';
+import {Armchair, Check, CreditCard, Cursor, Scan, Ticket} from '@phosphor-icons/react';
 import {mountBookingMotion, type BookingMotionState, type MotionKind} from './booking-motion-timeline';
 import './booking-motion.css';
 
@@ -77,20 +77,14 @@ export default function BookingMotion({kind}: {kind: MotionKind}) {
     return () => {controller.current = null; motion.dispose();};
   }, [kind]);
 
-  const action = state.finished ? 'Ulangi alur' : state.step === 0 ? 'Lihat pembayaran' : 'Lihat tiket';
+  const action = 'Percepat animasi langkah berikutnya';
   const advance = () => controller.current?.advance();
 
   return <div className="lpm-root" data-kind={kind} ref={root}>
-    <div className={`lpm-field lpm-${kind}-field`} role={kind === 'seat' ? 'img' : 'group'} aria-label={kind === 'seat' ? 'Ilustrasi kursi 03 dipilih dan berubah menjadi tiket setelah pembayaran dikonfirmasi' : 'Ilustrasi tiga langkah pemesanan. Tekan kartu atau tombol untuk melanjutkan.'}>
+    <div className={`lpm-field lpm-${kind}-field`} role={kind === 'seat' ? 'img' : 'group'} aria-label={kind === 'seat' ? 'Ilustrasi kursi 03 dipilih dan berubah menjadi tiket setelah pembayaran dikonfirmasi' : 'Ilustrasi tiga langkah pemesanan. Berputar otomatis. Tekan kartu untuk mempercepat.'}>
       <div className="lpm-shadow" aria-hidden="true"/>
-      {kind === 'seat' ? <SeatIllustration/> : <DeckIllustration advance={advance} action={action} busy={state.playing}/>}
+      {kind === 'seat' ? <SeatIllustration/> : <DeckIllustration advance={advance} action={action} busy={state.static}/>}
     </div>
-    {kind === 'deck' && <div className="lpm-caption">
-      <p className="lpm-phase" aria-live="polite" aria-atomic="true">{state.phase}</p>
-      {!state.static && <div className="lpm-controls">
-        <button type="button" className="lpm-action" aria-disabled={state.playing} onClick={advance}><span>{state.playing ? 'Sedang menampilkan' : action}</span></button><button type="button" className="lpm-restart" aria-label="Ulangi ilustrasi pemesanan dari awal" onClick={() => controller.current?.restart()}><ArrowCounterClockwise size={17}/></button>
-      </div>}
-      <span className="lpm-illustration-note">Ilustrasi pemesanan, bukan pesanan aktif.</span>
-    </div>}
+
   </div>;
 }
