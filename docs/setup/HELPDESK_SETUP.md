@@ -71,3 +71,12 @@ See final execution evidence appended after verification. Physical mobile, authe
 - Final real-provider upload/download/email-inbox checks and authenticated staff browser/physical-device acceptance remain pending. Domain staff authorization/lifecycle is covered by database checks. No production build, merge or push is claimed.
 
 Temporary browser fixtures and their generated staff identity are cleaned after inspection; screenshots retain only example report content. Local development rate counters used by QA are reset so the user can try the form.
+
+
+## Public UI refinement evidence
+
+Complaint portal now has its own white shell and two primary navigation links. Duplicate subnav removed; homepage/logo and Ke Seatpax return work. Centre uses headline/choices split with history underneath; form/tracker guidance collapses below768px. No business-layer/API/database changes were needed.
+
+Fresh TypeScript no-emit, scoped ESLint and diff check passed. Headless Chrome inspected widths320,390,768,1024,1440,1920: no horizontal overflow; computed page/header background both rgb(255,255,255). Both main choices end at y472 desktop and y732 on390x950, visible early. Active form/tracking links verified; active background transparent, desktop header72px. Name/email inputs both49px after alignment fix. Phone320x650 uses in-header links instead of fixed passenger bottom nav. Regular /trips navigation and client-side return to landing verified unchanged. No page errors observed.
+
+Screenshots: helpdesk-refresh-centre-1440.png, helpdesk-refresh-centre-390.png, helpdesk-refresh-form-1440.png, helpdesk-refresh-track-390.png in the task visualization directory. No new test suite or email/Storage provider operations were run for this UI-only refinement. Real inbox/private storage and physical device checks remain pending as previously recorded.

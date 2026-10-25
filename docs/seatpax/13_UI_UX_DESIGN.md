@@ -925,3 +925,12 @@ The user clarified that the search panel must remain attached to the hero as bef
 ## Simple complaint entry and workspace - 25 October 2026
 
 Keep existing landing tabs, hero/search and accepted motion. Extend Bantuan with Buat pengaduan/Pengaduan saya. A static lower-right document/report button labelled Buat pengaduan stays clear of phone navigation; hide it on complaint and focused auth/checkout/staff pages. /pengaduan offers two distinct actions and browser-local history. Forms show labels, optional booking reference/evidence limits and inline errors, never reporter-selected priority. White/blue existing Seatpax styling continues. /helpdesk is a separate task-focused workspace in the same app; company admin monitoring sits under Pesanan > Pengaduan pelanggan with an unresolved count. No chat icon, typing indicator or online status.
+
+
+### Public complaint portal refinement - 25 October 2026
+
+User requested matching navbar/page backgrounds and complaint-specific navigation. /pengaduan and child pages now use white surfaces, an explicit PassengerShell complaints mode and only Buat pengaduan / Cek pengaduan primary links. The duplicate content subnav is removed. Logo returns to the complaint centre; the quiet Ke Seatpax utility returns to the landing. Account/booking navigation remains on normal passenger routes. Active state remains blue text/underline with no fill.
+
+Use compact editorial split on the centre: restrained heading/explanation left, two stacked actionable cards right, browser history below. Forms and tracking use guidance beside the primary work area on desktop, stacked below768px. The phone header places both complaint links directly under its brand/return row, with no passenger bottom navigation. Preserve all form fields and backend contracts.
+
+References: https://dribbble.com/shots/20166754-Support-Ticket-Booking-Platform (clear form/history hierarchy, image inspected) and https://dribbble.com/shots/25419112-Support-documentation-Untitled-UI (simple support-page direction). These are visual references, not an imported component system or copied assets. Existing Seatpax blue, Plus Jakarta Sans and Phosphor remain. Design variance5, motion2, density4; only small hover/press feedback, reduced-motion aware.
