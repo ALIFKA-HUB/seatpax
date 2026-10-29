@@ -29,6 +29,16 @@ it('reports retry queued only when an eligible company job was updated',async()=
  await expect(noOp.staff.retryMail(ctx,'44444444-4444-4444-8444-444444444444')).resolves.toBe(false);
 });
 
+it('returns at most 25 complaint rows and only reports another page when a 26th row exists',async()=>{
+ const rows=Array.from({length:25},(_,index)=>({id:String(index)}));
+ const exact=staffWith([[{role:'HELPDESK'}],rows,[{count:80}]]);
+ await expect(exact.staff.list(ctx,{page:2})).resolves.toMatchObject({rows,hasMore:false,count:80});
+ expect(exact.queries[1]).toContain('limit 26');
+ expect(exact.queries[1]).toContain('order by created_at desc,id desc');
+ const extra=staffWith([[{role:'HELPDESK'}],[...rows,{id:'extra'}],[{count:81}]]);
+ await expect(extra.staff.list(ctx,{page:2})).resolves.toMatchObject({rows,hasMore:true,count:81});
+});
+
 it('returns authorized bounded dashboard projections and fixed status counts',async()=>{
  const rows=[[{role:'HELPDESK'}],[{status:'MENUNGGU',count:3},{status:'DIPROSES',count:1}],[{id:'q'}],[{id:'r'}],[{id:'e'}]];
  const {staff,queries}=staffWith(rows);
