@@ -952,3 +952,7 @@ References researched: https://dribbble.com/shots/25495056-Support-form (Romeo M
 ### Preparation section refinement - 29 October 2026
 
 The user requested redesign of the landing Persiapan section. Retain its #persiapan navigation anchor, existing photo/credit and /tickets destination. Present the heading and introduction above a balanced photo and three-item preparation list. White canvas, Seatpax blue icon enclosures, navy type, restrained separators and a clear Pesanan saya action replace the oversized tinted container. At phone widths, stack heading, photo and list, with a full-width action. No new motion or booking behavior is added.
+
+### Approved preparation preview - 29 October 2026
+
+The user rejected the earlier preparation redesign and requires a visual preview before source changes. After viewing two standalone options, they selected Panduan interaktif (opsi 1). This supersedes the previous preparation composition: heading, native exclusive accordion and /tickets action on the left; existing road photo on the right. Preserve white/blue/navy, #persiapan, accessible keyboard operation and mobile stacking. See the focused implementation plan for verification.

@@ -66,23 +66,28 @@ export default function Home() {
 
       <div className="lp-screen" id="persiapan" data-landing-section>
       <section className="lp-experience" aria-labelledby="experience-title">
-        <header className="lp-experience-heading">
-          <div><p className="lp-feature-eyebrow">SEBELUM BERANGKAT</p><h2 id="experience-title">Persiapan sederhana.<br/>Perjalanan lebih nyaman.</h2></div>
-          <p>Kenali titik naik, periksa jadwal, dan siapkan tiket. Semua detail perjalanan ada dalam jangkauan Anda.</p>
-        </header>
-        <div className="lp-experience-body">
-          <figure className="lp-experience-photo">
-            <Image src="/landing/morning-road.jpg" alt="Ilustrasi jalan di tengah hutan berkabut" fill sizes="(max-width: 767px) 100vw, (max-width: 1023px) 45vw, 540px"/>
-          </figure>
-          <div className="lp-experience-copy">
-            <ul className="lp-preparation-list">
-              <li className="lp-benefit"><span className="lp-benefit-icon"><MapPin size={25} weight="regular" aria-hidden="true"/></span><div><h3>Kenali titik naik Anda</h3><p>Periksa lokasi keberangkatan dan tujuan pada detail perjalanan.</p></div></li>
-              <li className="lp-benefit"><span className="lp-benefit-icon"><Clock size={25} weight="regular" aria-hidden="true"/></span><div><h3>Pastikan jadwal keberangkatan</h3><p>Lihat jam berangkat, armada, dan kelas layanan sebelum memesan.</p></div></li>
-              <li className="lp-benefit"><span className="lp-benefit-icon"><Ticket size={25} weight="regular" aria-hidden="true"/></span><div><h3>Siapkan tiket digital</h3><p>Tiket dan QR tersedia di Pesanan saya setelah pembayaran dikonfirmasi.</p></div></li>
-            </ul>
-            <div className="lp-preparation-footer"><p>Sudah punya pesanan?<br/><strong>Detailnya tersimpan di sini.</strong></p><Link className="lp-button" href="/tickets">Pesanan saya<span className="lp-button-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link></div>
+        <div className="lp-experience-copy">
+          <h2 id="experience-title">Sebelum berangkat,<br/><em>semua sudah siap.</em></h2>
+          <p>Periksa detail perjalanan Anda. Berangkat pun jadi lebih tenang.</p>
+          <div className="lp-preparation-guide">
+            <details name="preparation-guide" open>
+              <summary><MapPin size={20} weight="regular" aria-hidden="true"/><span>Tahu harus naik di mana</span></summary>
+              <p>Temukan titik naik dan turun pada detail perjalanan. Pastikan lokasi keberangkatan sudah sesuai.</p>
+            </details>
+            <details name="preparation-guide">
+              <summary><Clock size={20} weight="regular" aria-hidden="true"/><span>Waktunya sudah sesuai</span></summary>
+              <p>Periksa tanggal, jam keberangkatan, armada, dan kelas layanan sebelum berangkat.</p>
+            </details>
+            <details name="preparation-guide">
+              <summary><Ticket size={20} weight="regular" aria-hidden="true"/><span>Tiket tinggal ditunjukkan</span></summary>
+              <p>Setelah pembayaran dikonfirmasi, buka tiket dan QR melalui Pesanan saya.</p>
+            </details>
           </div>
+          <Link className="lp-button lp-preparation-cta" href="/tickets">Buka pesanan saya<ArrowRight size={18} aria-hidden="true"/></Link>
         </div>
+        <figure className="lp-experience-photo">
+          <Image src="/landing/morning-road.jpg" alt="Jalan berkelok di antara pepohonan berkabut" fill sizes="(max-width: 767px) 100vw, (max-width: 1023px) 45vw, 540px"/>
+        </figure>
       </section>
       </div>
 
