@@ -1,6 +1,29 @@
 # Flow acceptance inventory — 29 October 2026
 
-## Current attempt
+## Latest Helpdesk attempt — actual Windows browser, 29 October
+
+The later Computer Use session reached the real application and supersedes the Helpdesk blockage below for the specific steps recorded here. It is **partial lifecycle acceptance**, not a full end-to-end pass.
+
+Preconditions: the main checkout at `da433dd` was served on `http://localhost:3001`; the browser already had an authorized Helpdesk session. Testing used exactly one labelled simulation report and the previously user-approved test recipient. No booking, payment or unrelated report was changed.
+
+The submission failure shown by the user was local configuration: the main checkout lacked four Helpdesk settings already present in the implementation worktree, and the server lacked the trusted database CA at startup. The missing settings were copied into ignored `.env.local`, with `HELPDESK_PUBLIC_ORIGIN=http://localhost:3001`; existing provider keys and the supplementation secret were preserved. The server restarted with `NODE_EXTRA_CA_CERTS` pointing to the existing local certificate. TLS verification was not disabled. `npm run db:check` then reported `Database connection OK`. No source change was necessary for this failure.
+
+| Step | Expected / actually observed | Result |
+| --- | --- | --- |
+| Required form fields | Empty submission invokes required-field validation. | Observed through Chrome UI. |
+| Guest submission | One clearly labelled simulated report is accepted and its complaint code is shown. | Observed for `Uji alur Helpdesk setelah perbaikan konfigurasi`, created at 23:35:31 WIB. No attachment or booking reference. Bearer lookup code is omitted from this public repository. |
+| Public lookup and local history | Tracking displays the new report with initial waiting status, unset staff priority and browser-local recent code. | Observed through the real lookup UI; reporter contact data was absent. |
+| Receipt notification | Persistence/provider acceptance remains distinct from inbox delivery. | Read-only query scoped to this case returned `ACCEPTED`, with no error code. User inbox confirmation is pending. |
+| Staff dashboard and detail | New report appears in waiting queue and recent list; authorized detail displays the report and staff controls. | Observed through Chrome UI. |
+| Staff priority | Set Rendah and save; the selector and case summary retain the saved priority. | Observed; history adds `Prioritas diperbarui`. |
+| Start processing | Save the processing action with an explicitly simulated public note. | Observed: `Sedang diproses`; history adds `Mulai diproses` at 23:45:14 WIB. |
+| Request information | Staff requests additional simulation context with a required explanation. | Observed: `Perlu dilengkapi`; history adds `Meminta kelengkapan` at 23:46:49 WIB. The new email initially displays `Sedang dikirim`; final provider/inbox outcome is not established here. |
+
+Next prerequisite: the reporter opens the actual supplementation link from the received email. Do not retrieve or manufacture the editing capability from the database to substitute for inbox acceptance. Supplement submission, consumed-link replay, reprocessing, completion, completion inbox delivery and attachment UI remain unaccepted in this attempt. The existing authenticated session establishes only the tested staff actions, not fresh login or negative role authorization coverage.
+
+No application source was edited for this browser run. This record does not establish physical-phone, Safari, attachment-download, duplicate-submit or whole-product acceptance. The historical attempt and other untested areas below are retained for traceability.
+
+## Earlier blocked attempt
 
 P02 and P10 are **blocked, not passed**. Computer Use initialized and returned a Chrome window. A read-only observation succeeded, but the active page changed between observations, indicating concurrent browser use. A separate-tab click returned `coordinate input geometry is unavailable`; no Seatpax page was reached, no report or email was created, and no product flow was exercised. Stopped browser input to avoid disrupting the other session. The earlier attempt separately stopped because its helper could not determine the browser URL safely; see [flow audit](../analysis/2026-10-29-computer-use-flow-audit.md). Neither tool issue establishes an application defect. Served worktree/revision and port 3001 were not established in this attempt.
 
