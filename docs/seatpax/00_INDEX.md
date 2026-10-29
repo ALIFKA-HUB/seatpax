@@ -1,5 +1,9 @@
 # Seatpax Documentation Index
 
+## Current audit and approval queue — 29 October 2026
+
+The user requests preservation of existing product behavior, UI-focused forward work, explicit task goals/criteria and commit/push after each approved verified task. See [task approval roadmap](../superpowers/plans/2026-10-29-project-stabilization-roadmap.md), [source findings](../analysis/2026-10-29-source-bug-audit.md) and [blocked Computer Use evidence](../analysis/2026-10-29-computer-use-flow-audit.md). The Helpdesk dashboard is still an approved visual preview, not application implementation; its [written design](../superpowers/specs/2026-10-27-helpdesk-workspace-refresh-design.md) awaits confirmation. This queue does not activate deferred SaaS or mobile implementation.
+
 > **Arah proyek terbaru — 21 Oktober 2026:** Seatpax digunakan hanya untuk satu perusahaan shuttle. Keputusan D2026-10-21-01 menggantikan arah SaaS untuk lingkup proyek saat ini. Pendaftaran PO mandiri, paket Free/Pro, kuota dan billing langganan serta pengelolaan banyak perusahaan ditunda. Pembayaran tiket dan operasional perusahaan tetap menjadi fokus. Fondasi company/access dan kode cabang SaaS disimpan; tidak ada penghapusan database atau perubahan akses otomatis melalui keputusan dokumentasi ini.
 
 > **Platform decision — 15 October 2026:** The user adopted a dedicated Flutter Crew client for Android and iPhone. Existing web clients remain available; mobile implementation is not yet delivered. Read D2026-10-15-01 and the [mobile specification awaiting review](../superpowers/specs/2026-10-15-crew-mobile-design.md) before starting the mobile/API work.

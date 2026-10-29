@@ -9,6 +9,14 @@ Read `docs/seatpax/00_INDEX.md` first. Use its task map to select relevant Seatp
 - Delegate when useful for an authorized task; this preference does not start any work or require subagents for every small task.
 - These instructions record the requested settings; they do not change the primary chat's actual model selection. If the runtime cannot apply a requested model/effort, state the limitation instead of silently substituting another setting.
 
+## Task approval and publishing preference — 29 October 2026
+
+- Keep existing product behavior unless the user explicitly approves a change; current forward planning focuses on UI and separately identified bug fixes.
+- Every planned task must state its goal, scope, dependencies and checkable completion criteria. Record approval by task ID before implementing a pending task.
+- After an approved task is implemented and its checks pass, create meaningful commits and push its approved branch without asking again for the same publishing permission. Verify the remote ref and report the result. Do not push failed/incomplete work as completed.
+- Review unpublished historical commits before the initial baseline sync. Approval to push one task does not silently authorize unrelated/deferred SaaS branches, secret files or unrelated local changes. Never force-push or fabricate commits/timestamps for contribution counts.
+- The user specifically requested GPT-6.1 Terra (`gpt-6.1-terra`), medium reasoning, for the Computer Use flow-testing worker in the 29 October audit. This explicit exception supersedes the general Luna setting for that worker; other subagents retain the general preference above.
+
 ## Specification rules
 
 - Use `02_MVP_SCOPE.md` for scope and `19_DECISION_LEDGER.md` for final product decisions.
