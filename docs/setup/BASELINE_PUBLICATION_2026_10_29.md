@@ -21,4 +21,6 @@ User approved P01 after the 29 October roadmap handoff. Scope: review and publis
 
 ## Publication record
 
-Pending build completion and non-force push/ref verification. No production deployment is included.
+P01 completed. Baseline/documentation commit `0467f9123872f0ff84e668b92dc1bac761da69e3` was pushed to `origin/codex/seatpax-landing`; local main was fast-forwarded to the identical tracked tree. Main typecheck and diff checks passed, then `origin/main` was pushed without force. `git ls-remote --heads origin main codex/seatpax-landing` confirmed both refs at that baseline SHA. This follow-up documentation commit records the verified publication and is published by the same procedure. No production deployment, database migration, fixture reset or SaaS branch integration was performed.
+
+Remaining main-checkout edits: pre-existing `next-env.d.ts` and untracked `.codex-remote-attachments/`. They remain outside the published commits. Computer Use flow verification remains blocked as recorded separately; P01 does not close product acceptance or approve later tasks.

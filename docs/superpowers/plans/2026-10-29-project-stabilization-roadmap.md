@@ -58,6 +58,8 @@ GitHub commit contribution eligibility depends on a linked author email and defa
 
 ### P01 — Reconcile branch history and publish the existing baseline
 
+Status: **complete, 29 October 2026**. User ACC received. Baseline `0467f91` pushed to landing/main and remote SHA equality verified. See `docs/setup/BASELINE_PUBLICATION_2026_10_29.md` for tests, build workaround and excluded local edits. P02-P11 remain pending independent approval.
+
 **Goal:** Make GitHub reflect the actual approved application without losing existing history.
 
 **Scope/files:** Git graph/status/remotes, tracked tree/history secret review, `README.md`, existing setup evidence. No SaaS branch integration.
