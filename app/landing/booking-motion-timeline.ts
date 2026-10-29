@@ -20,13 +20,15 @@ function seatTimeline(field: HTMLElement, p: Parts, animate: Animate) {
   const type = getComputedStyle(p.destination), initialScale = parseFloat(getComputedStyle(target).fontSize) / parseFloat(type.fontSize);
   Object.assign(p.number.style, {width: `${destination.width}px`, height: `${destination.height}px`, fontSize: type.fontSize, fontWeight: type.fontWeight, letterSpacing: type.letterSpacing, lineHeight: type.lineHeight});
   Object.assign(p.surface.style, {width: `${paper.width}px`, height: `${paper.height}px`});
+  const blue = getComputedStyle(target).backgroundColor.match(/\d+/g)!.slice(0,3).map(Number);
+  const line = getComputedStyle(p.surface).borderTopColor.match(/\d+/g)!.slice(0,3).map(Number);
   const path = (u: number) => {const v = 1 - u; return [v ** 3 * tx + 3 * v * v * u * tx + 3 * v * u * u * (px - 25) + u ** 3 * px, v ** 3 * ty + 3 * v * v * u * (ty - 60) + 3 * v * u * u * (py - 24) + u ** 3 * py];};
 
   animate(p.surface, samples.map(t => {
     const u = ease((t - .195) / .275), g = ease((t - .25) / .22), c = ease((t - .29) / .18), [x, y] = path(u);
     const sx = lerp(seat.width / paper.width, 1, g), sy = lerp(seat.height / paper.height, 1, g);
     const radius = lerp(11, 20, g), bottom = lerp(11, 0, g);
-    return {offset: t, transform: `translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${-2 * (1 - u)}deg) scale(${sx},${sy})`, opacity: ease((t - .18) / .015), backgroundColor: rgb([0,100,244], [255,255,255], c), borderColor: rgb([0,100,244], [203,220,242], c), borderRadius: `${radius / sx}px ${radius / sx}px ${bottom / sx}px ${bottom / sx}px / ${radius / sy}px ${radius / sy}px ${bottom / sy}px ${bottom / sy}px`};
+    return {offset: t, transform: `translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${-2 * (1 - u)}deg) scale(${sx},${sy})`, opacity: ease((t - .18) / .015), backgroundColor: rgb(blue, [255,255,255], c), borderColor: rgb(blue, line, c), borderRadius: `${radius / sx}px ${radius / sx}px ${bottom / sx}px ${bottom / sx}px / ${radius / sy}px ${radius / sy}px ${bottom / sy}px ${bottom / sy}px`};
   }));
   animate(p.number, samples.map(t => {
     const u = ease((t - .195) / .275), g = ease((t - .25) / .22), [x, y] = path(u), scale = lerp(initialScale, 1, g);

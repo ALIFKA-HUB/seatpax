@@ -956,3 +956,7 @@ The user requested redesign of the landing Persiapan section. Retain its #persia
 ### Approved preparation preview - 29 October 2026
 
 The user rejected the earlier preparation redesign and requires a visual preview before source changes. After viewing two standalone options, they selected Panduan interaktif (opsi 1). This supersedes the previous preparation composition: heading, native exclusive accordion and /tickets action on the left; existing road photo on the right. Preserve white/blue/navy, #persiapan, accessible keyboard operation and mobile stacking. See the focused implementation plan for verification.
+
+### Landing stabilization - 29 October 2026
+
+User approved LP-FIX-01/02/03: intrinsic static illustration height, mobile complaint entry docked in document flow, shared 1216px outer grid, and content-height short sections replace the earlier forced viewport rhythm. Unify illustration tokens, section heading scale, link arrows and FAQ indicators. Preserve previously approved hero, preparation layout and booking behavior. Verification: docs/setup/LANDING_UIUX_STABILIZATION_2026_10_29.md.

@@ -99,14 +99,14 @@ export default function Home() {
           <h2 id="checkout-feature-title">Satu alur.<br/>Siap berangkat.</h2>
           <p>Pilih kursi, selesaikan pembayaran, lalu buka tiket di Pesanan saya. Semua bisa Anda ikuti dari satu tempat.</p>
           <p>Alur berputar otomatis. Tekan kartu untuk mempercepat.</p>
-          <Link className="lp-text-link" href="/tickets">Buka Pesanan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
+          <Link className="lp-text-link" href="/tickets">Buka pesanan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
         </div>
       </section>
       </div>
 
       <div className="lp-screen" id="bantuan" data-landing-section>
       <section className="lp-help" aria-labelledby="help-title">
-        <div className="lp-section-title"><h2 id="help-title">Sebelum Anda berangkat</h2><p>Beberapa hal yang mungkin ingin Anda ketahui.</p><Link className="lp-text-link" href="/pengaduan/buat">Buat pengaduan<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link><br/><Link className="lp-text-link" href="/pengaduan/cek#riwayat">Pengaduan saya</Link></div>
+        <div className="lp-section-title"><h2 id="help-title">Sebelum Anda berangkat</h2><p>Beberapa hal yang mungkin ingin Anda ketahui.</p><div className="lp-help-actions"><Link className="lp-text-link" href="/pengaduan/buat">Buat pengaduan<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link><Link className="lp-text-link" href="/pengaduan/cek#riwayat">Pengaduan saya<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link></div></div>
         <div className="lp-faq">
           <details><summary>Bagaimana cara memesan perjalanan?</summary><p>Pilih asal, tujuan, dan tanggal. Buka jadwal yang sesuai, pilih kursi yang tersedia, lalu masuk dengan email untuk melanjutkan pemesanan.</p></details>
           <details><summary>Bisa memesan untuk orang lain?</summary><p>Bisa. Saat mengisi data penumpang, pilih pemesanan untuk orang lain dan isi nama serta nomor telepon penumpang yang akan berangkat.</p></details>

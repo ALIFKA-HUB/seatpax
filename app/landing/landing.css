@@ -15,14 +15,14 @@
 .sp-landing .sp-header nav {flex-wrap:nowrap; gap:8px; background:#fff}
 .sp-landing .sp-header nav a {font-size:13px; white-space:nowrap; color:var(--sp-ink)}
 .sp-landing .sp-header nav a:hover {color:var(--sp-primary); text-decoration:none}
-.sp-landing .passenger {max-width:1280px; padding:14px 32px 40px}
+.passenger-shell.sp-landing .passenger {width:calc(100% - 64px); max-width:1216px; padding:0}
 .lp-content {display:grid; gap:72px}
 .lp-seat-feature,.lp-checkout-feature {display:grid; align-items:center; gap:56px; margin:0 38px; min-width:0}
 .lp-seat-feature {grid-template-columns:.9fr 1.1fr}
 .lp-checkout-feature {grid-template-columns:minmax(0,1.65fr) minmax(0,.85fr)}
 .lp-feature-copy {min-width:0; max-width:410px}
 .sp-landing .lp-feature-eyebrow {font-size:11px; letter-spacing:.11em; font-weight:650; color:var(--sp-primary); margin:0 0 18px}
-.sp-landing .lp-feature-copy h2 {font-size:clamp(30px,3.1vw,42px); line-height:1.16; letter-spacing:-.045em; margin:0 0 22px; font-weight:700}
+.sp-landing .lp-feature-copy h2 {font-size:clamp(28px,3vw,38px); line-height:1.16; letter-spacing:-.045em; margin:0 0 22px; font-weight:700}
 .sp-landing .lp-feature-copy>p:not(.lp-feature-eyebrow) {font-size:14px; line-height:1.8; color:var(--sp-muted); margin:0 0 16px}
 @media(max-width:1149px) {
   .lp-checkout-feature {grid-template-columns:minmax(0,1fr); gap:28px}
@@ -57,7 +57,7 @@
 .lp-button-arrow,.lp-link-arrow {display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:rgb(255 255 255 / .16); flex:none}
 .sp-landing .lp-form-error {font-size:13px; line-height:1.6; color:var(--sp-danger); margin:12px 0 0}
 .sp-landing .lp-search-note {font-size:12px; line-height:1.6; color:var(--sp-muted); margin:14px 0 0}
-.sp-landing .lp-section-title h2,.sp-landing .lp-experience h2 {font-size:clamp(27px,3vw,38px); line-height:1.2; letter-spacing:-.045em; margin:0 0 14px; font-weight:700}
+.sp-landing .lp-section-title h2,.sp-landing .lp-experience h2 {font-size:clamp(28px,3vw,38px); line-height:1.2; letter-spacing:-.045em; margin:0 0 14px; font-weight:700}
 .sp-landing .lp-section-title>p,.sp-landing .lp-experience-copy>p {color:var(--sp-muted); font-size:14px; line-height:1.8; max-width:520px; margin:0}
 .sp-landing .lp-network {margin:0 38px}
 .lp-featured-heading {display:flex; justify-content:space-between; align-items:center; gap:24px}
@@ -127,7 +127,7 @@
 }
 .sp-landing .lp-experience {display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.04fr); align-items:stretch; gap:52px; padding:0; background:var(--lp-surface); border-radius:0}
 .lp-experience-copy {min-width:0; padding-top:4px}
-.sp-landing .lp-experience h2 {font-size:clamp(28px,3vw,38px); line-height:1.18; letter-spacing:-.045em; margin:0 0 18px; font-weight:750}
+.sp-landing .lp-experience h2 {font-size:clamp(28px,3vw,38px); line-height:1.18; letter-spacing:-.045em; margin:0 0 18px; font-weight:700}
 .lp-experience h2 em {font-style:normal; color:var(--sp-primary)}
 .sp-landing .lp-experience-copy>p {max-width:34ch; margin-bottom:24px}
 .lp-experience-photo {position:relative; width:100%; min-width:0; min-height:440px; aspect-ratio:4/5; margin:0; overflow:hidden; border-radius:100px 24px 24px 24px; background:var(--lp-tint)}
@@ -148,7 +148,12 @@
 .sp-landing .lp-help {display:grid; grid-template-columns:.8fr 1.2fr; gap:72px; margin:0 38px}
 .sp-landing .lp-faq details {border-bottom:1px solid var(--sp-border); padding:17px 0; margin:0}
 .sp-landing .lp-faq details:first-child {padding-top:0}
-.sp-landing .lp-faq summary {cursor:pointer; font-size:14px; font-weight:650; min-height:44px; padding:9px 20px 9px 0; line-height:1.7}
+.sp-landing .lp-faq summary {display:flex; align-items:center; justify-content:space-between; gap:16px; list-style:none; cursor:pointer; font-size:14px; font-weight:650; min-height:44px; padding:9px 20px 9px 0; line-height:1.7}
+.lp-faq summary::-webkit-details-marker {display:none}
+.lp-faq summary::after {content:"+"; color:var(--sp-muted); font-size:21px; font-weight:400; flex:none}
+.lp-faq details[open] summary::after {content:"−"; color:var(--sp-primary)}
+.lp-help-actions {display:flex; flex-wrap:wrap; gap:8px 24px; margin-top:24px}
+.sp-landing .lp-help-actions .lp-text-link {margin-top:0}
 .sp-landing .lp-faq details>p {color:var(--sp-muted); font-size:13px; line-height:1.8; margin:12px 0 0}
 .lp-photo-credits {padding:0 38px}
 .sp-landing .lp-photo-credits p {font-size:10px; line-height:1.8; color:var(--sp-muted); margin:0}
@@ -162,7 +167,7 @@
 }
 @media(min-width:768px) and (max-width:1023px) {
   .sp-landing .sp-header-inner {padding-inline:24px}
-  .sp-landing .passenger {padding-inline:24px}
+  .passenger-shell.sp-landing .passenger {padding-inline:0}
   .lp-content {gap:64px}
   .sp-landing .lp-hero {min-height:370px}
   .lp-hero-copy {padding:36px 36px 64px}
@@ -178,7 +183,7 @@
 @media(max-width:767px) {
   .sp-landing .sp-header-inner {padding:8px 20px; min-height:64px}
   .sp-landing .sp-brand {width:132px}
-  .sp-landing .passenger {padding:8px 16px 28px}
+  .passenger-shell.sp-landing .passenger {padding:0}
   .lp-content {gap:40px}
   .sp-landing .lp-hero {min-height:250px; border-radius:20px}
   .lp-hero-copy {padding:26px 24px; width:100%; max-width:420px}
@@ -236,7 +241,7 @@ html:has(.sp-landing) {scroll-behavior:smooth}
 .passenger-shell.sp-landing {--lp-header-flow:88px; --lp-nav-offset:104px; padding-bottom:0}
 .passenger-shell.sp-landing .passenger {padding-top:0; padding-bottom:0}
 .sp-landing .lp-content {gap:0}
-.sp-landing .lp-screen {display:flex; flex-direction:column; justify-content:center; min-width:0; min-height:calc(100vh - var(--lp-nav-offset)); min-height:calc(100dvh - var(--lp-nav-offset)); padding:48px 38px; scroll-margin-top:var(--lp-nav-offset)}
+.sp-landing .lp-screen {display:flex; flex-direction:column; justify-content:center; min-width:0; min-height:0; padding:56px 38px; scroll-margin-top:var(--lp-nav-offset)}
 .sp-landing .lp-screen>section {width:100%; margin-inline:0}
 .sp-landing .lp-screen [id] {scroll-margin-top:var(--lp-nav-offset)}
 .sp-landing .lp-screen--hero {min-height:calc(100vh - var(--lp-header-flow)); min-height:calc(100dvh - var(--lp-header-flow)); padding:16px 0 24px}
@@ -282,6 +287,7 @@ html:has(.sp-landing) {scroll-behavior:smooth}
   .sp-landing .lp-hero-copy {padding:30px 24px}
 }
 @media(max-width:639px) {
+  .passenger-shell.sp-landing .passenger {width:calc(100% - 24px)}
   .passenger-shell.sp-landing {--lp-header-flow:72px; --lp-nav-offset:88px}
   .passenger-shell.sp-landing:not(.sp-focused) .sp-header {position:sticky; top:8px; width:calc(100% - 24px); margin:8px auto 0; border-radius:18px}
   .passenger-shell.sp-landing:not(.sp-focused) .sp-header-inner {display:grid; grid-template-columns:auto minmax(0,1fr) auto; min-height:64px; padding:8px 12px; gap:8px; border-radius:18px; border:1px solid #edf1f7}

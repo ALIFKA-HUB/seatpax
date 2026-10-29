@@ -13,7 +13,7 @@ export default function FeaturedTrips() {
   return <section className="lp-network" aria-labelledby="network-title" aria-describedby="network-demo-note">
     <div className="lp-featured-heading">
       <div className="lp-section-title"><h2 id="network-title">Temukan perjalanan Anda</h2><p>Pilihan perjalanan antarkota bersama Seatpax.</p></div>
-      <Link className="lp-text-link" href="/trips">Cari perjalanan<ArrowRight size={18} aria-hidden="true"/></Link>
+      <Link className="lp-text-link" href="/trips">Cari perjalanan<span className="lp-link-arrow"><ArrowRight size={18} aria-hidden="true"/></span></Link>
     </div>
     <p className="lp-demo-note" id="network-demo-note"><span>Data demo</span>Contoh tampilan. Rute, jadwal, dan tarif di bawah belum bisa dipesan.</p>
     <ul className="lp-featured-trips" aria-label="Contoh perjalanan">
