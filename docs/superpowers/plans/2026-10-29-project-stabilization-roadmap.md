@@ -1,6 +1,6 @@
 # Seatpax UI and Stabilization Roadmap
 
-> **For agentic workers:** Use superpowers:executing-plans or superpowers:subagent-driven-development for each approved implementation package. This is a task approval backlog, not blanket implementation authorization. Read each linked design and create a focused implementation plan before substantial UI work.
+> **For agentic workers:** Use superpowers:executing-plans or superpowers:subagent-driven-development for each approved implementation package. The user authorized autonomous completion of P02–P11 on 29 October with “lanjut aja sampai selesai … pecah jadi beberapa agent”. Read each linked design and create a focused implementation plan before substantial UI work.
 
 **Goal:** Finish the existing single-company Seatpax experience through UI refinement, reproducible flow testing and separately approved bug fixes.
 
@@ -12,15 +12,15 @@
 
 ## Global constraints
 
-- User instruction on 29 October: preserve existing product behavior; desired changes are UI. Bug fixes require a clearly identified separate approved task.
+- User instruction on 29 October: preserve existing product behavior; desired changes are UI. The audited P03 bug fixes are included in this authorization; preserve product policies.
 - Keep original Seatpax logo, white/blue/navy/blue-grey palette. Responsive desktop/tablet/phone; preview before application implementation for material design changes.
 - No active SaaS scope, subscription billing, marketplace, extra staff roles, live chat, automated refund or destructive fixture cleanup.
 - Flutter Crew is an earlier adopted future direction, not delivered and not automatically activated by this roadmap. Keep current Crew web usable; mobile implementation is outside this UI-only batch.
 - Keep login testing shortcuts development-only. Do not weaken actual server authorization or private complaint evidence access.
 - Do not copy fake preview data, dates, abbreviated complaint IDs or static counts into runtime pages.
-- Task ACC authorizes its stated scope, verification, meaningful commits and push once checks pass. Approval of this roadmap alone is not approval of every implementation task.
+- Task ACC authorizes its stated scope, verification, meaningful commits and push once checks pass. The subsequent explicit autonomous instruction authorizes this batch, its checks, commits, pushes and integration; incomplete external acceptance stays visible.
 
-## Current evidence, 29 October 2026
+## Initial audit evidence, 29 October 2026 (historical baseline)
 
 - Analysis/runtime baseline: `codex/seatpax-landing`, HEAD `6b84705` before audit documents. Main checkout HEAD `689836f`.
 - Successful `git fetch origin`: local main is 175 commits ahead of origin/main (`08a3075`); landing is a descendant of main with another 36 commits. These are separate local/remote/integration states, not 211 new features.
@@ -32,6 +32,14 @@
 - Computer Use worker requested and spawned with GPT-6.1 Terra, medium. Tool stopped before first browser navigation because it could not reliably determine the browser URL for policy enforcement. All intended UI flows remain UNTESTED in this audit. Do not bypass that stop or substitute an automated browser result as Computer Use evidence.
 - Fresh verification on the landing worktree: `npm run typecheck` passed; focused tests 4 files / 9 assertions passed; parent `npm test` completed with 82 files / 312 tests passed in 135.63 seconds, exit 0. `git diff --check` passed. No fresh build, full lint, hosted integration or browser/device acceptance is claimed. Generated `next-env.d.ts` remains a separately tracked pre-existing workspace change.
 - Earlier 26 October session: real test report created, public status and authenticated Helpdesk listing/details observed; Resend accepted receipt and user confirmed inbox. Full supplementation/completion and private download were not accepted; IDM expiry intercepted download. This is historical limited evidence.
+
+## Autonomous delivery outcomes — 29 October 2026
+
+- P02: attempted again by GPT-6.1 Terra, medium; Computer Use blocked by unavailable coordinate geometry. No real flow pass claimed. See `docs/setup/FLOW_ACCEPTANCE_2026_10_29.md`.
+- P03–P06: implemented retry feedback, bounded dashboard reads, page normalization, monitoring-context links and the approved Helpdesk shell/dashboard/list/detail design. See `docs/setup/HELPDESK_DOMAIN_2026_10_29.md` and `docs/setup/HELPDESK_UI_REFRESH_SETUP.md` for checks and limits.
+- P07–P09: bounded responsive/source audit completed; actual public routes checked at five widths. No confirmed customer/admin/Crew CSS defect justified a runtime change. Authenticated setup, physical phone/camera and full interaction criteria remain pending, so these packages are not fully accepted. See `docs/setup/RESPONSIVE_AUDIT_2026_10_29.md`.
+- P10: fresh provider/inbox/private-download and complete booking/complaint lifecycle acceptance remain pending. Unit tests and historical receipts do not replace these checks.
+- P11: non-secret CI checks and a demo checklist added. Hosted CI and final verification results are recorded in the delivery report; deployment is outside this task.
 
 ## Review focus
 
@@ -58,7 +66,7 @@ GitHub commit contribution eligibility depends on a linked author email and defa
 
 ### P01 — Reconcile branch history and publish the existing baseline
 
-Status: **complete, 29 October 2026**. User ACC received. Baseline `0467f91` pushed to landing/main and remote SHA equality verified. See `docs/setup/BASELINE_PUBLICATION_2026_10_29.md` for tests, build workaround and excluded local edits. P02-P11 remain pending independent approval.
+Status: **complete, 29 October 2026**. User ACC received. Baseline publication was finalized at `249eec3` on landing/main and remote SHA equality verified. See `docs/setup/BASELINE_PUBLICATION_2026_10_29.md` for tests, build workaround and excluded local edits. P02–P11 were subsequently authorized as one autonomous batch; current delivery outcomes are recorded below.
 
 **Goal:** Make GitHub reflect the actual approved application without losing existing history.
 
@@ -217,4 +225,4 @@ Status: **complete, 29 October 2026**. User ACC received. Baseline `0467f91` pus
 
 ## Recommended order
 
-P01 → P02 recovery + P03 triage → P04/P05/P06 Helpdesk → P07 customer → P08 operational admin → P09 Crew web → P10 final flows → P11 handoff. Tests/bug triage may run in parallel with UI planning; only one agent operates the browser at a time. No future task begins merely because its predecessor is written here.
+P01 → P02 recovery + P03 triage → P04/P05/P06 Helpdesk → P07 customer → P08 operational admin → P09 Crew web → P10 final flows → P11 handoff. Tests/bug triage may run in parallel with UI planning; only one agent operates the browser at a time. The explicit autonomous instruction authorizes this sequence without another approval gate.

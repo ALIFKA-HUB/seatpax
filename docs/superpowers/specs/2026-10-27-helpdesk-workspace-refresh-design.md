@@ -1,6 +1,6 @@
 # Helpdesk workspace refresh
 
-Status: visual preview approved; written design awaiting approval.
+Status: visual preview approved; autonomous implementation authorized on 29 October 2026. Implementation and verification limits: `docs/setup/HELPDESK_UI_REFRESH_SETUP.md`.
 
 ## Intent
 

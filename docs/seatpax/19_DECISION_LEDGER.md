@@ -405,3 +405,7 @@ User requested redesign of /pengaduan/buat and /pengaduan/cek using Dribbble ref
 ## D2026-10-26-01 - Local OTP-free testing entry
 
 User asked to temporarily disable OTP and list role emails after accepting a local test-account selector. Enable explicit local-development-only preset login, retaining real Supabase sessions and fresh database role authorization. Never disable email verification globally or expose this entry in production/public-host pages. Provision one dedicated confirmed development Helpdesk account in Demo PO A; do not grant Helpdesk capabilities to all admins or existing customers. See docs/setup/LOCAL_QUICK_LOGIN_SETUP.md.
+
+## D2026-10-29-01 — Autonomous stabilization delivery
+
+The user authorized autonomous execution of the reviewed UI/stabilization roadmap, delegated workers, verification and meaningful per-task commit/push. This includes the previously approved Helpdesk visual direction and audited P03 defects. Existing single-company business rules remain unchanged; no SaaS/mobile rollout or deployment is authorized by this batch. External acceptance blocked by tool, provider or physical-device access must remain explicitly untested. See the roadmap and `docs/setup/DELIVERY_2026_10_29.md` for outcomes.

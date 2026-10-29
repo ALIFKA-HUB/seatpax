@@ -6,7 +6,7 @@ Aplikasi pemesanan tiket dan operasional untuk **satu perusahaan shuttle**: rute
 
 Baseline mencakup login/session, lokasi/rute/tarif/armada/layout/jadwal, booking satu penumpang untuk diri sendiri atau orang lain, pembayaran Sandbox, Pesanan saya, manifest Crew, boarding/snack serta Helpdesk berbasis formulir. Kode dan migrasi tersedia; ini bukan klaim seluruh alur sudah lolos pengujian perangkat atau siap produksi.
 
-SaaS Free/Pro, billing langganan dan onboarding perusahaan mandiri ditunda; branch eksperimen tersebut tidak termasuk baseline aktif. Flutter Crew belum diimplementasikan; Crew web tetap tersedia. Dashboard Helpdesk baru masih preview desain.
+SaaS Free/Pro, billing langganan dan onboarding perusahaan mandiri ditunda; branch eksperimen tersebut tidak termasuk baseline aktif. Flutter Crew belum diimplementasikan; Crew web tetap tersedia. Dashboard Helpdesk, sidebar, daftar dan detail pengaduan sudah diimplementasikan; penerimaan alur perangkat/provider tetap terpisah.
 
 ## Mulai membaca
 
@@ -65,10 +65,13 @@ Login normal memakai kode email. [Quick login testing](docs/setup/LOCAL_QUICK_LO
 
 ## Audit dan pekerjaan berikutnya
 
-Audit 29 Oktober: 82 file/312 unit tests dan typecheck lolos. Tiga temuan Helpdesk berprioritas rendah dicatat terpisah; belum diperbaiki. Computer Use terbaru terhambat penentuan URL browser sehingga tidak ada flow baru yang dianggap lolos. Bukti historis mencakup pembayaran Sandbox yang ditunjukkan pengguna dan satu email receipt Helpdesk yang dikonfirmasi masuk inbox. Lifecycle lengkap, unduhan privat melalui UI dan perangkat fisik masih memerlukan verifikasi.
+Audit dan perbaikan 29 Oktober: temuan retry email, pagination dan konteks pemantauan Helpdesk sudah diperbaiki. Hasil pemeriksaan terbaru tercatat di [laporan delivery](docs/setup/DELIVERY_2026_10_29.md). Computer Use terbaru terhambat geometri input browser sehingga tidak ada flow baru yang dianggap lolos. Bukti historis mencakup pembayaran Sandbox yang ditunjukkan pengguna dan satu email receipt Helpdesk yang dikonfirmasi masuk inbox. Lifecycle lengkap, unduhan privat melalui UI dan perangkat fisik masih memerlukan verifikasi.
 
 - [Roadmap task, tujuan dan kriteria selesai](docs/superpowers/plans/2026-10-29-project-stabilization-roadmap.md)
 - [Audit sumber](docs/analysis/2026-10-29-source-bug-audit.md)
 - [Batas Computer Use](docs/analysis/2026-10-29-computer-use-flow-audit.md)
 
 Task yang sudah di-ACC: implementasi sesuai scope, verifikasi, commit bermakna lalu push terverifikasi. Jangan sertakan kredensial atau artefak pribadi.
+
+- [Panduan demo dan pemeriksaan ulang](docs/setup/DEMO_CHECKLIST_2026_10_29.md)
+- [Bukti responsif dan batas penerimaan](docs/setup/RESPONSIVE_AUDIT_2026_10_29.md)
