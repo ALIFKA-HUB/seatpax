@@ -1,5 +1,11 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-11-02-01 — Internal dashboard visual approval
+
+The user approved preview v5 with **"acc deh"**: solid blue/green/orange summary cards, Inter with explicit weight hierarchy, grouped sidebar and clear bordered action buttons. Approval ID: `ADM-DESIGN-05`. See [visual spec](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md) and [bounded implementation plan](../superpowers/plans/2026-11-02-internal-dashboard-visual.md). This records design approval, not completed production delivery or authorization to introduce staff CRUD, password login, configurable RBAC or changed access policies. The sample preview data must not become production data.
+
+The subsequent **"ok"** approved `ADM-UI-01`: apply the internal shell typography/navigation/action treatment around the existing working company screen. This bounded slice is implemented and verified; see [delivery evidence](../setup/INTERNAL_PANEL_VISUAL_SETUP.md). `ADM-DATA-01` and the other functional panel proposals remain pending. The preview's staff metrics/register are not represented as live functionality.
+
 ## D2026-10-08-01 — Purchase for self or another passenger
 
 **Status: ADOPTED PRODUCT DECISION; implementation pending.** The user proposed self checkout using profile data and a separate form when purchasing for a friend, then accepted the described ownership model with “oke sikat, selanjut nya apa”.

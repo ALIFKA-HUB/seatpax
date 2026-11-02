@@ -1,5 +1,9 @@
 # Seatpax — UI/UX & Visual Design
 
+## Latest internal dashboard visual direction — 2 November 2026
+
+The user approved the [v5 dashboard appearance](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md), approval `ADM-DESIGN-05`: solid Seatpax blue/green/orange summary cards, panel-scoped Inter (400 body, 500 labels/navigation, 600 actions/section headings, 700 page heading/summary numbers), white content cards, grouped sidebar and clearly bordered action controls. This supplements the internal panel's visual direction only; public/customer typography and existing product/access rules remain unchanged. Preview staff/counts/activity are illustrative, not production data. See the [implementation plan and data dependencies](../superpowers/plans/2026-11-02-internal-dashboard-visual.md).
+
 > **Active release — 6 Oktober 2026:** Untuk release aktif, login Email OTP sebelum checkout dan satu passenger/seat per booking. Tombol guest claim, cash sale, reschedule/reseat dan workflow refund umum ditunda. Pertahankan latest visual direction, tetapi render screen sesuai scope aktif; daftar 23 layar adalah cakupan desain awal, bukan kewajiban release semuanya. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).
 
 

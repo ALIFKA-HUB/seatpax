@@ -1,5 +1,9 @@
 # Seatpax Documentation Index
 
+## Internal panel visual update — 2 November 2026
+
+The user approved dashboard preview v5 and the bounded `ADM-UI-01` shell implementation: panel-scoped Inter, grouped sidebar, responsive navigation and clear action controls around the current Super Admin company screen. See [visual spec](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md), [plan](../superpowers/plans/2026-11-02-internal-dashboard-visual.md) and [verification](../setup/INTERNAL_PANEL_VISUAL_SETUP.md). Real staff cards/register, staff password login and editable RBAC remain separate pending functional work; existing authorization is unchanged.
+
 ## Current audit and approval queue — 29 October 2026
 
 The user requests preservation of existing product behavior, UI-focused forward work, explicit task goals/criteria and commit/push after each approved verified task. See [task approval roadmap](../superpowers/plans/2026-10-29-project-stabilization-roadmap.md), [source findings](../analysis/2026-10-29-source-bug-audit.md) and [blocked Computer Use evidence](../analysis/2026-10-29-computer-use-flow-audit.md). The user subsequently authorized autonomous completion. The approved Helpdesk workspace is now implemented; see [delivery evidence](../setup/HELPDESK_UI_REFRESH_SETUP.md), [responsive audit](../setup/RESPONSIVE_AUDIT_2026_10_29.md) and [remaining flow acceptance](../setup/FLOW_ACCEPTANCE_2026_10_29.md). This queue does not activate deferred SaaS or mobile implementation.
