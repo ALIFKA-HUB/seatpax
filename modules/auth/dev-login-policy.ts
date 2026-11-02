@@ -5,7 +5,7 @@ export const quickLoginAccounts = [
  {id:'admin-a',label:'Admin operasional - PO A',email:'johancocthird+admina@gmail.com',href:'/admin'},
  {id:'helpdesk',label:'Petugas Helpdesk - PO A',email:'johancocthird+helpdesk@gmail.com',href:'/helpdesk'},
  {id:'crew-a',label:'Crew - PO A',email:'johancocthird+crewa@gmail.com',href:'/crew'},
- {id:'super-admin',label:'Super Admin',email:'johancocthird+super@gmail.com',href:'/super-admin/companies'},
+ {id:'super-admin',label:'Super Admin',email:'johancocthird+super@gmail.com',href:'/super-admin'},
  {id:'admin-b',label:'Admin operasional - PO B',email:'johancocthird+adminb@gmail.com',href:'/admin'},
  {id:'crew-b',label:'Crew - PO B',email:'johancocthird+crewb@gmail.com',href:'/crew'},
 ] as const;

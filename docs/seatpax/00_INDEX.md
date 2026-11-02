@@ -2,7 +2,7 @@
 
 ## Internal panel visual update — 2 November 2026
 
-The user approved dashboard preview v5 and the bounded `ADM-UI-01` shell implementation: panel-scoped Inter, grouped sidebar, responsive navigation and clear action controls around the current Super Admin company screen. See [visual spec](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md), [plan](../superpowers/plans/2026-11-02-internal-dashboard-visual.md) and [verification](../setup/INTERNAL_PANEL_VISUAL_SETUP.md). Real staff cards/register, staff password login and editable RBAC remain separate pending functional work; existing authorization is unchanged.
+The user approved dashboard preview v5 and the bounded `ADM-UI-01` shell implementation: panel-scoped Inter, grouped sidebar, responsive navigation and clear action controls around the current Super Admin company screen. See [visual spec](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md), [plan](../superpowers/plans/2026-11-02-internal-dashboard-visual.md) and [verification](../setup/INTERNAL_PANEL_VISUAL_SETUP.md). The subsequently approved `ADM-DASH-01` now supplies real single-company staff cards/register at `/super-admin`; see [read-model design](../superpowers/specs/2026-11-02-staff-directory-read-model.md), [dashboard plan](../superpowers/plans/2026-11-02-staff-dashboard.md) and [verification](../setup/STAFF_DASHBOARD_SETUP.md). Staff CRUD, password login, editable RBAC and expanded tenant-operational access remain separate pending work.
 
 ## Current audit and approval queue — 29 October 2026
 

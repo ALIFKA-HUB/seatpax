@@ -9,7 +9,7 @@ export async function listEntryWorkspaces(userId:string):Promise<{href:string;la
  if(memberships.some(item=>item.role==='HELPDESK'&&item.companyId!==null))destinations.push({href:'/helpdesk',label:'Petugas Helpdesk'});
  if(memberships.some(item=>item.role==='ADMIN_PO'&&item.companyId!==null))destinations.push({href:'/admin',label:'Admin PO'});
  if(memberships.some(item=>item.role==='CREW'&&item.companyId!==null))destinations.push({href:'/crew',label:'Perjalanan Crew'});
- if(memberships.some(item=>item.role==='SUPER_ADMIN'&&item.companyId===null))destinations.push({href:'/super-admin/companies',label:'Super Admin'});
+ if(memberships.some(item=>item.role==='SUPER_ADMIN'&&item.companyId===null))destinations.push({href:'/super-admin',label:'Super Admin'});
  return destinations;
 }
 export async function resolveEntryDestination(userId:string,rawNext:unknown):Promise<string>{

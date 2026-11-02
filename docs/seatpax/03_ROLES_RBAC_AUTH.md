@@ -1,5 +1,9 @@
 # Seatpax — Roles, RBAC, Tenant Isolation & Authentication
 
+## Implemented staff-directory overlay — 2 November 2026
+
+`/super-admin` provides a read-only staff directory for the single server-configured company. Every request requires a verified identity and a fresh active global `SUPER_ADMIN` membership before staff profiles are read. Other internal roles and customers remain denied; browser table grants/RLS are unchanged. This does not grant tenant-operational access, staff mutations or configurable permissions. See [D2026-11-02-02](19_DECISION_LEDGER.md) and [delivery evidence](../setup/STAFF_DASHBOARD_SETUP.md).
+
 > **Fondasi diadopsi — D2026-10-06-02:** Admin PO mengelola assignment crew pada PO sendiri; crew membutuhkan membership dan assignment trip aktif. Passenger checkout hanya untuk akun sendiri. Super Admin tidak otomatis memiliki akses PII/operasional tenant. Authorization server wajib walaupun DB connection bypass RLS; exposed tables default-deny. Acuan: [rancangan fondasi](../superpowers/specs/2026-10-06-foundation-design.md) dan [ledger](19_DECISION_LEDGER.md). Kontrak ini mendahului uraian lama yang berbeda; implementasi belum dibuat.
 
 > **Active release — 6 Oktober 2026:** Passenger memakai Email OTP dan login sebelum checkout. Google OAuth, guest booking/claim, cash sale, serta reseat/reschedule permissions tidak diaktifkan pada release ini. Empat role dan batas tenant/assigned-trip tetap berlaku; detail penugasan crew mengikuti fondasi diadopsi. Acuan: [scope aktif](02_MVP_SCOPE.md) dan [D2026-10-06-01](19_DECISION_LEDGER.md).

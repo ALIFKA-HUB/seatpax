@@ -13,6 +13,7 @@ describe('local testing login boundary',()=>{
   expect(quickLoginAllowed({...env,NODE_ENV:'production'},'localhost:3001','http://localhost:3001')).toBe(false);
  });
  it('accepts preset IDs, never a caller-supplied email',()=>{
+  expect(quickLoginAccount('super-admin')?.href).toBe('/super-admin');
   expect(quickLoginAccount('helpdesk')?.email).toBe('johancocthird+helpdesk@gmail.com');
   for(const id of ['anyone@gmail.com','__proto__','constructor',null,{},''])expect(quickLoginAccount(id)).toBeNull();
  });

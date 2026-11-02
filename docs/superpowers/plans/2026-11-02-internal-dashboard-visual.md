@@ -1,6 +1,6 @@
 # Internal dashboard visual implementation plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Apply the approved dashboard appearance while retaining current product behavior.
 
@@ -12,7 +12,7 @@
 
 ## Global constraints
 
-- `ADM-DESIGN-05` visual approval recorded: **"acc deh"**, 2 November 2026. `ADM-UI-01` approved by the subsequent **"ok"** on 2 November 2026; `ADM-DATA-01` remains design-only and pending its functional contract.
+- `ADM-DESIGN-05` visual approval recorded: **"acc deh"**, 2 November 2026. `ADM-UI-01` approved by the subsequent **"ok"** on 2 November 2026; `ADM-DATA-01` was subsequently approved; its reviewed contract and live implementation are recorded in the staff dashboard plan/setup.
 - Preserve server authorization, redirects, existing routes and company-status confirmation/pending/result behavior.
 - No schema migration, password login, staff CRUD, permission editing, SaaS or mobile rollout in this visual slice.
 - No preview identities, counts or invented audit events in production. Passenger/public typography stays unchanged.
@@ -46,7 +46,7 @@
 - [x] Run `npm run test -- tests/unit/super-admin-view.test.ts tests/unit/access-service.test.ts tests/unit/access-server.test.ts`; all pass.
 - [x] Run `npm run typecheck` and `npm run lint`; both pass.
 - [x] Inspect 320/390/768/1024/1440/1920px, CSS 200% zoom, keyboard/reduced motion, denied/empty/error views and company confirmation/pending/result contracts; no overflow or hidden content. Actual browser exercises request/cancel; pending/result states are covered by the existing unit contracts.
-- [ ] Commit verified task files, push approved branch, compare remote hash with local HEAD and report evidence.
+- [x] Commit verified task files, push approved branch, compare remote hash with local HEAD and report evidence.
 
 ### ADM-DATA-01 — Real staff dashboard contract
 
@@ -58,11 +58,13 @@
 
 **Completion criteria:** A reviewed spec defines staff identity/counts, active/disabled semantics, authorized scope, minimal fields and available audit sources; a subsequent plan names concrete route/service/repository interfaces and tests. No domain policy is treated as CSS.
 
-- [ ] Inspect membership constraints and read authorization without changing records.
-- [ ] Specify count identity and legacy multi-membership display explicitly.
-- [ ] Map every visible action to an implemented destination or a separately approved functional task.
-- [ ] Review the resulting read-model spec before implementing staff queries or adding a dashboard route.
+- [x] Inspect membership constraints and read authorization without changing records.
+- [x] Specify count identity and legacy multi-membership display explicitly.
+- [x] Map every visible action to an implemented destination or a separately approved functional task.
+- [x] Review the resulting read-model spec before implementing staff queries or adding a dashboard route.
 
 ## Self-review
 
 Visual shell changes belong to ADM-UI-01 and are implemented; see [delivery evidence](../../setup/INTERNAL_PANEL_VISUAL_SETUP.md). Staff cards/register depend explicitly on ADM-DATA-01. No sample data, broadened Super Admin permissions, configurable RBAC or staff password login is silently included.
+
+Subsequent delivery: ADM-DATA-01 contract was reviewed and ADM-DASH-01 explicitly approved, implemented and verified. See docs/setup/STAFF_DASHBOARD_SETUP.md.

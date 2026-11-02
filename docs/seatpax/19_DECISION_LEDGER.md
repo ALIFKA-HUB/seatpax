@@ -1,5 +1,11 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-11-02-02 — Real, single-company staff dashboard
+
+The user selected Demo PO A for initial development testing, approved one row/count per person and active status when any scoped staff role remains active, and approved `ADM-DASH-01` with **"ACC, langsung eksekusi ADM-DASH-01"**. The dashboard reads configured-company Operasional/Helpdesk/Crew memberships; it displays legacy roles/statuses without changing them. Customer-only/global-only Super Admin accounts are not staff entries. Production requires an explicit server company ID; only development may use the approved demo fallback. Only a current active global Super Admin can read this directory.
+
+The three approved coloured cards, bounded register, search and status filters now use actual data at `/super-admin`, which is the new Super Admin entry destination. Company controls remain at `/super-admin/companies`; no other role gains access. Staff CRUD, password login, editable RBAC, general staff activity logs and database cleanup remain deferred. See [design](../superpowers/specs/2026-11-02-staff-directory-read-model.md), [plan](../superpowers/plans/2026-11-02-staff-dashboard.md) and [verification](../setup/STAFF_DASHBOARD_SETUP.md).
+
 ## D2026-11-02-01 — Internal dashboard visual approval
 
 The user approved preview v5 with **"acc deh"**: solid blue/green/orange summary cards, Inter with explicit weight hierarchy, grouped sidebar and clear bordered action buttons. Approval ID: `ADM-DESIGN-05`. See [visual spec](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md) and [bounded implementation plan](../superpowers/plans/2026-11-02-internal-dashboard-visual.md). This records design approval, not completed production delivery or authorization to introduce staff CRUD, password login, configurable RBAC or changed access policies. The sample preview data must not become production data.
