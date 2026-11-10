@@ -2,7 +2,7 @@ import type {Sql} from 'postgres';
 import type {DomainTx} from '@/modules/access/transaction';
 import {DomainError} from '@/modules/access/transaction';
 import {createCompanyRepository} from '@/modules/company/repository';
-import type {StaffDirectoryQuery,StaffDirectorySnapshot} from './types';
+import type {StaffRole,StaffStatus,StaffDirectoryQuery,StaffDirectorySnapshot} from './types';
 
 export function createStaffDirectoryRepository(client:Sql){return {
  client,
@@ -36,6 +36,22 @@ export function createStaffDirectoryRepository(client:Sql){return {
    from company cross join totals cross join meta`;
   if(!snapshot)throw new DomainError('unavailable','Data perusahaan belum tersedia.');
   return {...snapshot,query,pageSize:25};
+ },
+ async findAuthUserByEmail(tx:DomainTx,email:string):Promise<string|null>{
+  const [row]=await tx<{id:string}[]>`select id from auth.users where lower(email)=lower(${email}) limit 1`;
+  return row?.id??null;
+ },
+ async upsertStaff(tx:DomainTx,input:{companyId:string;userId:string;name?:string;email?:string;role:StaffRole;status:StaffStatus}):Promise<void>{
+  const [company]=await tx<{id:string}[]>`select id from public.companies where id=${input.companyId} for share`;
+  if(!company)throw new DomainError('unavailable','Data perusahaan belum tersedia.');
+  if(input.name!==undefined||input.email!==undefined){
+   await tx`insert into public.users (id,name,email,updated_at) values (${input.userId},${input.name??null},${input.email??null},clock_timestamp()) on conflict (id) do update set name=coalesce(excluded.name,public.users.name),email=coalesce(excluded.email,public.users.email),updated_at=clock_timestamp()`;
+  }else{
+   const [user]=await tx<{id:string}[]>`select id from public.users where id=${input.userId} for update`;
+   if(!user)throw new DomainError('validation','Petugas tidak ditemukan.');
+  }
+  await tx`insert into public.memberships (user_id,company_id,role,status,updated_at) values (${input.userId},${input.companyId},${input.role},${input.status},clock_timestamp()) on conflict (user_id,company_id,role) where company_id is not null do update set status=${input.status},updated_at=clock_timestamp()`;
+  await tx`update public.memberships set status='DISABLED',updated_at=clock_timestamp() where user_id=${input.userId} and company_id=${input.companyId} and role::text in ('ADMIN_PO','HELPDESK','CREW') and role::text<>${input.role}`;
  },
 };}
 export type StaffDirectoryRepository=ReturnType<typeof createStaffDirectoryRepository>;

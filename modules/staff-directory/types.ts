@@ -7,3 +7,5 @@ export type StaffDirectorySnapshot={
  counts:{total:number;active:number;disabled:number};
  query:StaffDirectoryQuery;page:number;pageSize:25;totalPages:number;filteredTotal:number;rows:StaffDirectoryRow[];
 };
+export type CreateStaffInput={name:string;email:string;role:StaffRole};
+export type UpdateStaffInput={userId:string;role:StaffRole;status:StaffStatus};
