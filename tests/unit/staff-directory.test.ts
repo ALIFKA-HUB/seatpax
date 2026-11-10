@@ -1,4 +1,6 @@
 import {it,expect,vi} from 'vitest';
+import type {Sql} from 'postgres';
+import type {DomainTx} from '@/modules/access/transaction';
 import {parseDirectoryQuery,resolveDirectoryCompany,parseCreateStaffInput,parseUpdateStaffInput} from '@/modules/staff-directory/validation';
 import {createStaffDirectoryService} from '@/modules/staff-directory/service';
 import {createStaffDirectoryRepository,type StaffDirectoryRepository} from '@/modules/staff-directory/repository';
@@ -144,6 +146,7 @@ it('authorizes as Super Admin first when creating staff, reuses existing auth us
   role:'CREW',
  });
  expect(resB).toEqual({userId:newUserId});
+ expect(authB).toHaveBeenCalledWith(expect.anything(),userId);
  expect(findB).toHaveBeenCalledWith(expect.anything(),'dewi@example.com');
  expect(ensureAuthUserB).toHaveBeenCalledWith('dewi@example.com','Dewi Lestari');
  expect(upsertB).toHaveBeenCalledWith(expect.anything(),{
@@ -198,15 +201,15 @@ it('authorizes as Super Admin first when updating staff and calls repo.upsertSta
 });
 
 it('implements repository findAuthUserByEmail and upsertStaff with transactional queries',async()=>{
- const fakeClient={} as any;
+ const fakeClient={} as unknown as Sql;
  const repo=createStaffDirectoryRepository(fakeClient);
 
- const txFind=vi.fn(async()=>[{id:'user-1'}]) as any;
+ const txFind=vi.fn(async()=>[{id:'user-1'}]) as unknown as DomainTx;
  expect(await repo.findAuthUserByEmail(txFind,'User@Example.com')).toBe('user-1');
- const txFindNull=vi.fn(async()=>[]) as any;
+ const txFindNull=vi.fn(async()=>[]) as unknown as DomainTx;
  expect(await repo.findAuthUserByEmail(txFindNull,'nobody@example.com')).toBeNull();
 
- const txMissingCompany=vi.fn(async()=>[]) as any;
+ const txMissingCompany=vi.fn(async()=>[]) as unknown as DomainTx;
  await expect(repo.upsertStaff(txMissingCompany,{
   companyId,
   userId,
@@ -219,7 +222,7 @@ it('implements repository findAuthUserByEmail and upsertStaff with transactional
   if(query.includes('from public.companies'))return [{id:companyId}];
   if(query.includes('from public.users'))return [];
   return [];
- }) as any;
+ }) as unknown as DomainTx;
  await expect(repo.upsertStaff(txMissingUser,{
   companyId,
   userId,
@@ -233,7 +236,7 @@ it('implements repository findAuthUserByEmail and upsertStaff with transactional
   executedQueries.push(query);
   if(query.includes('from public.companies'))return [{id:companyId}];
   return [];
- }) as any;
+ }) as unknown as DomainTx;
  await repo.upsertStaff(txSuccess,{
   companyId,
   userId,
