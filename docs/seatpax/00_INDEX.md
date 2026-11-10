@@ -1,5 +1,9 @@
 # Seatpax Documentation Index
 
+## Super Admin staff management — 10 November 2026
+
+The user approved `ADM-STAFF-01`: Super Admin can provision staff accounts (`+ Tambah petugas`) with automatic Auth Admin provisioning and update staff roles or toggle access status inline. Preserves foreign key integrity (`trip_crew_assignments` RESTRICT) by updating status rather than deleting rows. See [spec](../superpowers/specs/2026-11-10-staff-management-design.md), [plan](../superpowers/plans/2026-11-10-staff-management.md), and [decision D2026-11-10-01](19_DECISION_LEDGER.md#d2026-11-10-01--single-company-super-admin-staff-management-adm-staff-01).
+
 ## Internal panel visual update — 2 November 2026
 
 The user approved dashboard preview v5 and the bounded `ADM-UI-01` shell implementation: panel-scoped Inter, grouped sidebar, responsive navigation and clear action controls around the current Super Admin company screen. See [visual spec](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md), [plan](../superpowers/plans/2026-11-02-internal-dashboard-visual.md) and [verification](../setup/INTERNAL_PANEL_VISUAL_SETUP.md). The subsequently approved `ADM-DASH-01` now supplies real single-company staff cards/register at `/super-admin`; see [read-model design](../superpowers/specs/2026-11-02-staff-directory-read-model.md), [dashboard plan](../superpowers/plans/2026-11-02-staff-dashboard.md) and [verification](../setup/STAFF_DASHBOARD_SETUP.md). Staff CRUD, password login, editable RBAC and expanded tenant-operational access remain separate pending work.

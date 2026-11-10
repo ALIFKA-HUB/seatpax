@@ -1,5 +1,14 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-11-10-01 — Single-company Super Admin staff management (ADM-STAFF-01)
+
+The user approved staff provisioning and access management (`ADM-STAFF-01`) on 10 November 2026 with **"sikat"**.
+
+- **Staff Creation (`+ Tambah petugas`):** Super Admin can add staff by full name (`1..80` chars), email, and initial staff role (`ADMIN_PO` Operasional, `HELPDESK` Helpdesk, or `CREW` Crew). If the email is already in `auth.users`, its ID is reused; if not, an OTP-ready account is provisioned via Supabase Auth Admin. `public.users` and `public.memberships` are upserted with `status = 'ACTIVE'`.
+- **Inline Access & Role Controls:** Super Admin can change staff role inline or toggle their status (`ACTIVE` <-> `DISABLED`). `public.memberships` rows are never deleted (preserving `trip_crew_assignments` foreign keys with `ON DELETE RESTRICT`). Setting an active role disables other staff roles for that user within the company, maintaining one active staff role per person. Disabling sets all staff roles to `DISABLED`.
+- **Security & Scope:** Authorized strictly for active global `SUPER_ADMIN` via `withSuperAdminTransaction`. Company ID is resolved server-side via `resolveDirectoryCompany(process.env)`.
+- See [design](../superpowers/specs/2026-11-10-staff-management-design.md) and [plan](../superpowers/plans/2026-11-10-staff-management.md).
+
 ## D2026-11-02-02 — Real, single-company staff dashboard
 
 The user selected Demo PO A for initial development testing, approved one row/count per person and active status when any scoped staff role remains active, and approved `ADM-DASH-01` with **"ACC, langsung eksekusi ADM-DASH-01"**. The dashboard reads configured-company Operasional/Helpdesk/Crew memberships; it displays legacy roles/statuses without changing them. Customer-only/global-only Super Admin accounts are not staff entries. Production requires an explicit server company ID; only development may use the approved demo fallback. Only a current active global Super Admin can read this directory.
