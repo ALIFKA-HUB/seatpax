@@ -5,7 +5,7 @@ export function createDatabaseConnection(url: string) {
   const client = postgres(url, {
     prepare: false,
     max: 1,
-    ssl: { rejectUnauthorized: true },
+    ssl: "require",
     connect_timeout: 5,
     idle_timeout: 20,
   });
