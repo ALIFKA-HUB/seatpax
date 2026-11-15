@@ -55,11 +55,11 @@ Ikuti [panduan Supabase](docs/setup/SUPABASE_DEV_SETUP.md), [checkout/payment](d
 | Pengguna | Halaman | Batas akses |
 | --- | --- | --- |
 | Pengunjung/pelanggan | `/`, `/trips`, `/login`, `/tickets`, `/account` | Booking/tiket pribadi memerlukan login |
-| Pelapor | `/pengaduan`, `/pengaduan/buat`, `/pengaduan/cek` | Tanpa login; pelengkapan melalui tautan email khusus |
-| Admin operasional | `/admin` | Membership perusahaan aktif |
-| Petugas Helpdesk | `/helpdesk` | Helpdesk menangani, Admin perusahaan dapat memantau read-only |
+| Pelapor | `/pengaduan`, `/pengaduan/buat`, `/pengaduan/cek`, `/pengaduan/lengkapi` | Tanpa login; pelengkapan melalui tautan email khusus |
+| Admin operasional | `/admin`, `/admin/companies/[companyId]/helpdesk`, `helpdesk-staff` | Membership perusahaan aktif; pemantauan read-only & pengelolaan petugas Helpdesk |
+| Petugas Helpdesk | `/helpdesk`, `/helpdesk/pengaduan` | Helpdesk menangani kasus; Admin perusahaan memantau read-only |
 | Crew | `/crew` | Perjalanan yang ditugaskan, boarding/snack terpisah |
-| Super Admin teknis | `/super-admin/companies` | Akses teknis yang dipertahankan, bukan aktivasi SaaS |
+| Super Admin teknis | `/super-admin`, `/super-admin/companies` | Manajemen petugas internal & kontrol status penjualan PO (bukan aktivasi SaaS) |
 
 Login normal memakai kode email. [Quick login testing](docs/setup/LOCAL_QUICK_LOGIN_SETUP.md) hanya aktif dengan flag eksplisit di development, project development yang ditentukan dan host loopback. Ini tetap menghasilkan session Supabase serta mengikuti role guard. Production mempertahankan login normal.
 
