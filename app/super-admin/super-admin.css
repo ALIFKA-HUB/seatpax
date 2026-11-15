@@ -1,10 +1,10 @@
 .super-admin-shell {
- --super-primary:#005bd1;--super-primary-hover:#0049aa;--super-soft:#eaf1fb;--super-action-hover:#dceaff;
- --super-canvas:#f3f6fb;--super-surface:#fff;--super-ink:#0a2144;--super-muted:#526078;--super-border:#d5dfea;
- --super-danger:#b91c1c;--super-danger-soft:#fff1f2;--super-danger-border:#edbcbc;--super-shadow:0 3px 12px rgb(10 33 68 / .04);
+ --super-primary:#0057cc;--super-primary-hover:#00419e;--super-soft:#eaf1fb;--super-action-hover:#dceaff;
+ --super-canvas:#eef3fb;--super-surface:#fff;--super-ink:#081c3a;--super-muted:#475872;--super-border:#cedaea;
+ --super-danger:#b41c1c;--super-danger-soft:#fef1f2;--super-danger-border:#fec7c7;--super-shadow:0 1px 3px rgb(8 28 58 / .04),0 10px 26px -8px rgb(8 28 58 / .08);
  --super-weight-body:400;--super-weight-label:500;--super-weight-action:600;--super-weight-heading:700;
  display:grid;grid-template-columns:236px minmax(0,1fr);max-width:1600px;min-height:100dvh;margin-inline:auto;
- background:var(--super-canvas);color:var(--super-ink);font-family:var(--font-internal-inter),Arial,sans-serif;font-size:14px;font-weight:var(--super-weight-body);line-height:1.55;overflow-wrap:anywhere;font-synthesis:none;
+ background:radial-gradient(1200px 380px at 55% -120px,rgb(0 87 204 / .055),transparent 72%),var(--super-canvas);color:var(--super-ink);font-family:var(--font-internal-inter),Arial,sans-serif;font-size:14px;font-weight:var(--super-weight-body);line-height:1.55;overflow-wrap:anywhere;font-synthesis:none;
 }
 .super-admin-shell *{box-sizing:border-box}
 .super-admin-shell :is(button,input,select){font:inherit}

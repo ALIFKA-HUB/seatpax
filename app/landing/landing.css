@@ -2,17 +2,17 @@
    Radius scale: photos 28px, panel 24px, controls 12px, icon enclosures round.
    Layers: hero scrim 0, copy 1; search uses document order, shell nav retains 30. */
 .passenger-shell.sp-landing {
-  --sp-ink:#0a2144; --sp-primary:#005bd1; --sp-hover:#0049aa;
-  --sp-canvas:#fff; --sp-muted:#526078; --sp-border:#dce5ef;
-  --sp-control:#8b9bb0; --sp-danger:#b91c1c;
-  --lp-surface:#fff; --lp-tint:#f4f8fe;
-  color-scheme:light; background:#fff;
+  --sp-ink:#081c3a; --sp-primary:#0057cc; --sp-hover:#00419e;
+  --sp-canvas:#ffffff; --sp-muted:#475872; --sp-border:#d1deec;
+  --sp-control:#7c8fa9; --sp-danger:#b41c1c;
+  --lp-surface:#ffffff; --lp-tint:#edf4ff;
+  color-scheme:light; background:#ffffff;
   font-family:var(--font-passenger-jakarta),sans-serif;
 }
-.sp-landing .sp-header {background:#fff; border:0}
+.sp-landing .sp-header {background:transparent; border:0}
 .sp-landing .sp-header-inner {max-width:1280px; padding:10px 32px; min-height:76px}
 .sp-landing .sp-brand {width:150px}
-.sp-landing .sp-header nav {flex-wrap:nowrap; gap:8px; background:#fff}
+.sp-landing .sp-header nav {flex-wrap:nowrap; gap:8px; background:transparent}
 .sp-landing .sp-header nav a {font-size:13px; white-space:nowrap; color:var(--sp-ink)}
 .sp-landing .sp-header nav a:hover {color:var(--sp-primary); text-decoration:none}
 .passenger-shell.sp-landing .passenger {width:calc(100% - 64px); max-width:1216px; padding:0}
@@ -43,18 +43,18 @@
 .sp-landing .lp-eyebrow {font-size:11px; font-weight:650; letter-spacing:.14em; margin:0 0 20px; color:#fff}
 .sp-landing .lp-hero h1 {font-size:clamp(44px,5.2vw,66px); letter-spacing:-.055em; line-height:1.06; font-weight:750; margin:0 0 20px; color:#fff}
 .sp-landing .lp-hero-intro {font-size:15px; line-height:1.7; max-width:360px; color:#fff; margin:0}
-.sp-landing .lp-search-panel {position:relative; margin:-144px 38px 0; padding:26px 28px; background:#fff; border-radius:24px; border:6px solid #f5f8fc; box-shadow:0 18px 48px -18px #163d7129}
+.sp-landing .lp-search-panel {position:relative; margin:-144px 38px 0; padding:26px 28px; background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%); border-radius:24px; border:6px solid #eef4fc; box-shadow:0 22px 54px -16px rgba(8,28,58,.18),0 2px 8px rgba(8,28,58,.05)}
 .sp-landing .lp-search-panel h2 {font-size:20px; letter-spacing:-.03em; margin:0 0 20px; font-weight:700}
 .lp-search-fields {display:grid; grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr) minmax(160px,.85fr) auto; gap:14px; align-items:end}
 .lp-search-fields label {display:grid; gap:9px; min-width:0; font-size:12px; font-weight:650}
 .lp-search-fields label>span {display:flex; align-items:center; gap:7px}
 .lp-search-fields label>span svg {color:var(--sp-muted)}
-.sp-landing .lp-search-fields input,.sp-landing .lp-search-fields select {width:100%; min-width:0; min-height:50px; padding:12px; border:1px solid var(--sp-control); border-radius:12px; background:#fff; color:var(--sp-ink); font:inherit; font-size:13px; line-height:1.4; color-scheme:light; text-overflow:ellipsis}
+.sp-landing .lp-search-fields input,.sp-landing .lp-search-fields select {width:100%; min-width:0; min-height:50px; padding:12px; border:1px solid var(--sp-control); border-radius:12px; background:#fbfdff; color:var(--sp-ink); font:inherit; font-size:13px; line-height:1.4; color-scheme:light; text-overflow:ellipsis; box-shadow:inset 0 1px 2px rgba(8,28,58,.03)}
 .sp-landing .lp-search-fields .lp-swap {display:grid; place-items:center; width:36px; min-height:50px; padding:0; border:0; background:transparent; color:var(--sp-primary); border-radius:12px}
-.sp-landing .lp-button {display:inline-flex; align-items:center; justify-content:center; gap:14px; min-height:50px; padding:8px 10px 8px 20px; border:0; border-radius:999px; white-space:nowrap; background:var(--sp-primary); color:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer}
-.sp-landing .lp-button:hover:not(:disabled) {background:var(--sp-hover); color:#fff}
-.sp-landing .lp-button:disabled {background:#e8edf4; color:var(--sp-muted); cursor:wait}
-.lp-button-arrow,.lp-link-arrow {display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:rgb(255 255 255 / .16); flex:none}
+.sp-landing .lp-button {display:inline-flex; align-items:center; justify-content:center; gap:14px; min-height:50px; padding:8px 10px 8px 20px; border:0; border-radius:999px; white-space:nowrap; background:linear-gradient(180deg,#0b66db 0%,var(--sp-primary) 100%); color:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(0,87,204,.24),inset 0 1px 0 rgba(255,255,255,.2)}
+.sp-landing .lp-button:hover:not(:disabled) {background:linear-gradient(180deg,var(--sp-primary) 0%,var(--sp-hover) 100%); color:#fff; box-shadow:0 6px 16px rgba(0,65,158,.3)}
+.sp-landing .lp-button:disabled {background:#e8edf4; color:var(--sp-muted); cursor:wait; box-shadow:none}
+.lp-button-arrow,.lp-link-arrow {display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:rgb(255 255 255 / .18); flex:none}
 .sp-landing .lp-form-error {font-size:13px; line-height:1.6; color:var(--sp-danger); margin:12px 0 0}
 .sp-landing .lp-search-note {font-size:12px; line-height:1.6; color:var(--sp-muted); margin:14px 0 0}
 .sp-landing .lp-section-title h2,.sp-landing .lp-experience h2 {font-size:clamp(28px,3vw,38px); line-height:1.2; letter-spacing:-.045em; margin:0 0 14px; font-weight:700}
@@ -63,10 +63,10 @@
 .lp-featured-heading {display:flex; justify-content:space-between; align-items:center; gap:24px}
 .sp-landing .lp-featured-heading .lp-text-link {margin:0; flex:none; white-space:nowrap}
 .sp-landing .lp-demo-note {display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; margin:22px 0 18px; color:var(--sp-muted); font-size:12px; line-height:1.7}
-.lp-demo-note>span {flex:none; padding:3px 9px; border-radius:6px; color:#344d70; background:#edf2f8; font-weight:600}
+.lp-demo-note>span {flex:none; padding:3px 9px; border-radius:6px; color:#2b4770; background:#e7effb; font-weight:600}
 .lp-featured-trips {display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; list-style:none; padding:0; margin:0}
 .lp-featured-trips>li {min-width:0}
-.lp-featured-trip {height:100%; padding:24px; border:1px solid var(--sp-border); border-radius:20px; background:#fff}
+.lp-featured-trip {height:100%; padding:24px; border:1px solid var(--sp-border); border-radius:20px; background:linear-gradient(180deg,#ffffff 0%,#fafcff 100%); box-shadow:0 2px 6px rgba(8,28,58,.04),0 12px 28px -10px rgba(8,28,58,.08)}
 .lp-featured-trip-top {display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:24px; font-size:11px; color:var(--sp-muted)}
 .lp-featured-trip-top>span:first-child {display:flex; align-items:center; gap:7px}
 .lp-featured-trip-top svg {color:var(--sp-primary); flex:none}
@@ -248,7 +248,7 @@ html:has(.sp-landing) {scroll-behavior:smooth}
 .sp-landing .lp-screen--hero>.lp-hero {min-height:calc(100vh - var(--lp-header-flow) - 40px); min-height:calc(100dvh - var(--lp-header-flow) - 40px)}
 .sp-landing .lp-hero-copy {padding-bottom:46px}
 .sp-landing .lp-hero-action {margin-top:28px}
-.sp-landing .lp-screen .lp-search-panel {margin:0; padding:36px; box-shadow:0 18px 48px -18px #163d711f}
+.sp-landing .lp-screen .lp-search-panel {margin:0; padding:36px; box-shadow:0 22px 54px -16px rgba(8,28,58,.18),0 2px 8px rgba(8,28,58,.05)}
 .sp-landing .lp-screen--search .lp-search-panel h2 {font-size:clamp(28px,3vw,38px); line-height:1.2; margin-bottom:30px}
 .sp-landing .lp-photo-credits {padding-top:16px; padding-bottom:24px}
 

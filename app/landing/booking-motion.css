@@ -1,6 +1,6 @@
 /* Illustration layers stay local: paper/map 0, ticket 1, travelling numeral 2.
    The deck uses parallel 3D planes; opacity on those planes would flatten them. */
-.lpm-root {--lpm-blue:var(--sp-primary,#005bd1); --lpm-ink:var(--sp-ink,#0a2144); --lpm-muted:var(--sp-muted,#526078); --lpm-line:var(--sp-border,#dce5ef); container-type:inline-size; min-width:0; color:var(--lpm-ink); font-family:var(--font-passenger-jakarta),sans-serif}
+.lpm-root {--lpm-blue:var(--sp-primary,#0057cc); --lpm-ink:var(--sp-ink,#081c3a); --lpm-muted:var(--sp-muted,#475872); --lpm-line:var(--sp-border,#d1deec); container-type:inline-size; min-width:0; color:var(--lpm-ink); font-family:var(--font-passenger-jakarta),sans-serif}
 .lpm-root * {box-sizing:border-box}
 .lpm-field {height:410px; position:relative; isolation:isolate; perspective:1100px; min-width:0}
 .lpm-field svg {flex:none; stroke-width:1.5}
@@ -46,8 +46,8 @@
 
 .lpm-root:not([data-motion-ready=true]) .lpm-deck-field {height:auto; min-height:410px}
 .lpm-deck {position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:center; gap:18px; min-height:100%; transform-style:preserve-3d; perspective:1000px}
-.lpm-card {position:relative; width:100%; max-width:220px; height:280px; padding:20px; margin:auto; border:1px solid var(--lpm-line); border-radius:20px; background:#fff; color:var(--lpm-ink); box-shadow:0 4px 0 -1px #d5e1f3,0 26px 45px -17px #143d7624; backface-visibility:hidden; overflow:hidden; text-align:left}
-.lpm-card-payment {background:#f8fbff}
+.lpm-card {position:relative; width:100%; max-width:220px; height:280px; padding:20px; margin:auto; border:1px solid var(--lpm-line); border-radius:20px; background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%); color:var(--lpm-ink); box-shadow:0 4px 0 -1px #cedcf1,0 26px 48px -15px rgba(8,28,58,.18); backface-visibility:hidden; overflow:hidden; text-align:left}
+.lpm-card-payment {background:linear-gradient(180deg,#f6faff 0%,#edf4ff 100%)}
 .lpm-card-heading {display:flex; align-items:center; justify-content:space-between; gap:9px; color:var(--lpm-blue); font-size:12px; font-weight:650}
 .lpm-card-heading img {width:96px; height:auto}
 .lpm-mini-seats {display:grid; grid-template-columns:1fr 1fr; gap:12px 20px; max-width:110px; margin:22px auto 0}

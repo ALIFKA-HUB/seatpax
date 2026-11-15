@@ -1,15 +1,15 @@
 .super-admin-shell{
- --super-green:#087f5b;--super-orange:#bd4b12;--super-on-card:#fff;--super-card-line:rgb(255 255 255 / .3);
- --super-card-action:rgb(255 255 255 / .12);--super-card-hover:rgb(255 255 255 / .22);--super-green-soft:#e9f5ee;--super-green-ink:#185b3d;--super-disabled-soft:#edf0f5;
+ --super-green:#0b7a54;--super-orange:#bf460e;--super-on-card:#fff;--super-card-line:rgb(255 255 255 / .3);
+ --super-card-action:rgb(255 255 255 / .14);--super-card-hover:rgb(255 255 255 / .24);--super-green-soft:#eafbf0;--super-green-ink:#0f6835;--super-disabled-soft:#e8eef6;
 }
 .super-admin-shell .super-page-heading{margin-bottom:28px}
 .super-admin-shell .super-page-heading p{margin:0;color:var(--super-muted)}
 .super-admin-shell .super-dashboard-nav{margin:0 0 12px}
 .super-admin-shell .super-nav-group a:not([aria-current]):hover{background:var(--super-soft)}
 .super-admin-shell .super-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:0 0 32px}
-.super-admin-shell .super-metric{padding:24px;border-radius:14px;background:var(--super-primary);color:var(--super-on-card)}
-.super-admin-shell .super-metric-active{background:var(--super-green)}
-.super-admin-shell .super-metric-disabled{background:var(--super-orange)}
+.super-admin-shell .super-metric{padding:24px;border-radius:14px;background:linear-gradient(155deg,#0c6ae0 0%,var(--super-primary) 100%);color:var(--super-on-card);box-shadow:0 8px 24px -8px rgb(0 87 204 / .32),inset 0 1px 0 rgb(255 255 255 / .18)}
+.super-admin-shell .super-metric-active{background:linear-gradient(155deg,#109165 0%,var(--super-green) 100%);box-shadow:0 8px 24px -8px rgb(11 122 84 / .32),inset 0 1px 0 rgb(255 255 255 / .18)}
+.super-admin-shell .super-metric-disabled{background:linear-gradient(155deg,#d6571b 0%,var(--super-orange) 100%);box-shadow:0 8px 24px -8px rgb(191 70 14 / .32),inset 0 1px 0 rgb(255 255 255 / .18)}
 .super-admin-shell .super-metric dt{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:500}
 .super-admin-shell .super-metric dd{display:flex;align-items:baseline;gap:12px;margin:16px 0}
 .super-admin-shell .super-metric dd strong{font-size:46px;font-weight:700;line-height:1.1;letter-spacing:-.025em;font-variant-numeric:tabular-nums}

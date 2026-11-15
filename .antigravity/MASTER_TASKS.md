@@ -44,38 +44,38 @@
 ## WAVE 2: UI Color Tokens & Visual Depth (Zero Layout, Grid, Spacing, or Typography Edits)
 
 ### Batch 2A — Global & Passenger Core Stylesheets
-- [ ] **W2-01:** Upgrade `:root`, body canvas depth, `.auth-card`, and button color depth tokens in `app/globals.css`.
-- [ ] **W2-02:** Upgrade `--sp-*` palette tokens in `app/passenger.css` (deep maritime ink, vibrant top-lit cobalt primary, cool-slate atmospheric canvas).
-- [ ] **W2-03:** Upgrade `.passenger-card`, `.sp-state`, `.sp-discovery-card`, `.passenger-form`, `.sp-seat-summary`, and `.sp-qr-frame` surface elevation, subtle top-lit gradients, and tinted borders in `app/passenger.css`.
-- [ ] **W2-04:** Upgrade `.seat-cell`, `.seat-legend`, `.sp-badge-*`, and `.sp-hold-clock` semantic palette and tactile state transitions in `app/passenger.css` (preserving `.passenger-shell .seat-cell{...overflow-wrap:anywhere...}`).
-- [ ] **W2-05:** Upgrade `app/components/passenger-navigation.css` translucent bar backdrop, floating shadow depth, pill contrast, and account popover elevation.
-- [ ] **W2-06:** Upgrade `app/components/passenger-footer.css` surface contrast, subtle top highlight border, and link hover states.
-- [ ] **W2-07:** Upgrade `app/components/complaint-entry.css` floating button gradient sheen, border definition, and interactive glow shadow.
+- [x] **W2-01:** Upgrade `:root`, body canvas depth, `.auth-card`, and button color depth tokens in `app/globals.css`.
+- [x] **W2-02:** Upgrade `--sp-*` palette tokens in `app/passenger.css` (deep maritime ink, vibrant top-lit cobalt primary, cool-slate atmospheric canvas).
+- [x] **W2-03:** Upgrade `.passenger-card`, `.sp-state`, `.sp-discovery-card`, `.passenger-form`, `.sp-seat-summary`, and `.sp-qr-frame` surface elevation, subtle top-lit gradients, and tinted borders in `app/passenger.css`.
+- [x] **W2-04:** Upgrade `.seat-cell`, `.seat-legend`, `.sp-badge-*`, and `.sp-hold-clock` semantic palette and tactile state transitions in `app/passenger.css` (preserving `.passenger-shell .seat-cell{...overflow-wrap:anywhere...}`).
+- [x] **W2-05:** Upgrade `app/components/passenger-navigation.css` translucent bar backdrop, floating shadow depth, pill contrast, and account popover elevation.
+- [x] **W2-06:** Upgrade `app/components/passenger-footer.css` surface contrast, subtle top highlight border, and link hover states.
+- [x] **W2-07:** Upgrade `app/components/complaint-entry.css` floating button gradient sheen, border definition, and interactive glow shadow.
 
 ### Batch 2B — Landing & Login Color Elevation
-- [ ] **W2-08:** Upgrade `app/landing/landing.css` palette tokens (`--sp-*`, `--lp-*`), `.lp-search-panel` elevation depth, `.lp-featured-trip` card shadows & hover border transitions, `.lp-flow-icon` depth, and `.lp-button` tactile cobalt gradient.
-- [ ] **W2-09:** Upgrade `app/landing/booking-motion.css` card, stub, seat rail, and confirmation badge color depth & layered shadow hierarchy.
-- [ ] **W2-10:** Upgrade `app/login/login.css` palette tokens, `.lg-visual` depth scrim, `.lg-card` mobile elevation, `.lg-input-box` focus glow, `.lg-dropdown-menu` shadow, and `.lg-primary` top-lit gradient.
+- [x] **W2-08:** Upgrade `app/landing/landing.css` palette tokens (`--sp-*`, `--lp-*`), `.lp-search-panel` elevation depth, `.lp-featured-trip` card shadows & hover border transitions, `.lp-flow-icon` depth, and `.lp-button` tactile cobalt gradient.
+- [x] **W2-09:** Upgrade `app/landing/booking-motion.css` card, stub, seat rail, and confirmation badge color depth & layered shadow hierarchy.
+- [x] **W2-10:** Upgrade `app/login/login.css` palette tokens, `.lg-visual` depth scrim, `.lg-card` mobile elevation, `.lg-input-box` focus glow, `.lg-dropdown-menu` shadow, and `.lg-primary` top-lit gradient.
 
 ### Batch 2C — Public Pengaduan & Staff Helpdesk Color Elevation
-- [ ] **W2-11:** Upgrade `app/pengaduan/pengaduan.css` surface tint, `.hd-choice-shell` layered frame & card shadows, `.hd-panel` depth, `.hd-badge` / `.hd-notice` / `.hd-primary` color hierarchy.
-- [ ] **W2-12:** Upgrade `app/pengaduan/complaint-workspace.css` `--hd-*` color tokens, elevated panel shadow depth, form field focus depth, upload dropzone tint, and guide card polish.
-- [ ] **W2-13:** Upgrade `app/helpdesk/helpdesk.css` workspace canvas, sidebar & mobile bar depth, `.hd-stat` card hierarchy, table hover contrast, active status colors, and elevated panel shadows.
+- [x] **W2-11:** Upgrade `app/pengaduan/pengaduan.css` surface tint, `.hd-choice-shell` layered frame & card shadows, `.hd-panel` depth, `.hd-badge` / `.hd-notice` / `.hd-primary` color hierarchy.
+- [x] **W2-12:** Upgrade `app/pengaduan/complaint-workspace.css` `--hd-*` color tokens, elevated panel shadow depth, form field focus depth, upload dropzone tint, and guide card polish.
+- [x] **W2-13:** Upgrade `app/helpdesk/helpdesk.css` workspace canvas, sidebar & mobile bar depth, `.hd-stat` card hierarchy, table hover contrast, active status colors, and elevated panel shadows.
 
 ### Batch 2D — Admin PO, Super Admin & Crew Operational Surface Elevation
-- [ ] **W2-14:** Upgrade `app/admin/admin.css` color & contrast tokens while preserving 100% of `.admin-shell`/`.admin-entry` selector prefixes and all `admin-visual-contract.test.ts` literal substrings.
-- [ ] **W2-15:** Upgrade `app/admin/admin-refresh.css` `--admin-*` palette tokens, sidebar surface separation, `.admin-breadcrumb` elevation, `.admin-panel` & `.stop-panel` layered shadows, table row hover tint, and modal backdrop/shadow.
-- [ ] **W2-16:** Upgrade `app/super-admin/super-admin.css` `--super-*` palette tokens, surface elevation, `.company-list` card depth, button & badge contrast while preserving 100% `.super-admin-shell` selector scoping and all `admin-visual-contract.test.ts` substrings.
-- [ ] **W2-17:** Upgrade `app/super-admin/dashboard.css` metric card depth gradients, directory/context panel shadows, staff tab active state depth, status badge contrast, and pagination depth.
-- [ ] **W2-18:** Upgrade `app/crew/crew.css` surface depth, `.crew-topbar` elevation, `.crew-panel` & `.crew-trip-card` layered shadows, `.crew-state-*` / `.crew-seat` / `.crew-primary` high-contrast operational colors while keeping every selector scoped to `.crew-shell` and preserving all `crew-visual-contract.test.ts` assertions.
+- [x] **W2-14:** Upgrade `app/admin/admin.css` color & contrast tokens while preserving 100% of `.admin-shell`/`.admin-entry` selector prefixes and all `admin-visual-contract.test.ts` literal substrings.
+- [x] **W2-15:** Upgrade `app/admin/admin-refresh.css` `--admin-*` palette tokens, sidebar surface separation, `.admin-breadcrumb` elevation, `.admin-panel` & `.stop-panel` layered shadows, table row hover tint, and modal backdrop/shadow.
+- [x] **W2-16:** Upgrade `app/super-admin/super-admin.css` `--super-*` palette tokens, surface elevation, `.company-list` card depth, button & badge contrast while preserving 100% `.super-admin-shell` selector scoping and all `admin-visual-contract.test.ts` substrings.
+- [x] **W2-17:** Upgrade `app/super-admin/dashboard.css` metric card depth gradients, directory/context panel shadows, staff tab active state depth, status badge contrast, and pagination depth.
+- [x] **W2-18:** Upgrade `app/crew/crew.css` surface depth, `.crew-topbar` elevation, `.crew-panel` & `.crew-trip-card` layered shadows, `.crew-state-*` / `.crew-seat` / `.crew-primary` high-contrast operational colors while keeping every selector scoped to `.crew-shell` and preserving all `crew-visual-contract.test.ts` assertions.
 
 ### Batch 2E — Wave 2 Verification & Commit
-- [ ] **W2-19:** Verify zero layout/grid/spacing/typography diffs across all CSS files using `git diff -- app/**/*.css`.
-- [ ] **W2-20:** Run visual & shell contract tests (`admin-visual-contract`, `crew-visual-contract`, `passenger-seat-view`, `admin-shell`, `crew-shell`, `super-admin-view`).
-- [ ] **W2-21:** Run `npm.cmd run typecheck` and `npm.cmd run lint`.
-- [ ] **W2-22:** Run full `npx.cmd vitest run tests/unit`.
-- [ ] **W2-23:** Check off Wave 2 items in `.antigravity/MASTER_TASKS.md`.
-- [ ] **W2-24:** Commit Wave 2 selectively (`style(wave-2): upgrade color palette and surface elevation system`).
+- [x] **W2-19:** Verify zero layout/grid/spacing/typography diffs across all CSS files using `git diff -- app/**/*.css`.
+- [x] **W2-20:** Run visual & shell contract tests (`admin-visual-contract`, `crew-visual-contract`, `passenger-seat-view`, `admin-shell`, `crew-shell`, `super-admin-view`).
+- [x] **W2-21:** Run `npm.cmd run typecheck` and `npm.cmd run lint`.
+- [x] **W2-22:** Run full `npx.cmd vitest run tests/unit`.
+- [x] **W2-23:** Check off Wave 2 items in `.antigravity/MASTER_TASKS.md`.
+- [x] **W2-24:** Commit Wave 2 selectively (`style(wave-2): upgrade color palette and surface elevation system`).
 
 ---
 
