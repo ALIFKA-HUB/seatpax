@@ -1,16 +1,14 @@
 # Local quick login for testing
 
-The user authorized skipping the email OTP challenge for local testing. Open http://localhost:3001/login, choose a preset and press Masuk tanpa OTP. The page remains available to signed-in local testers so a different preset replaces the current browser session. These are existing real Supabase identities, not client-defined role claims.
+The user authorized skipping the email OTP challenge for local testing. Open http://localhost:3001/login, choose a preset and press Masuk. The page remains available to signed-in local testers so a different preset replaces the current browser session. These are existing real Supabase identities, not client-defined role claims.
 
 | Preset | Email | Destination |
 | --- | --- | --- |
 | Customer | johancocthird@gmail.com | /trips |
-| Admin PO A | johancocthird+admina@gmail.com | /admin |
-| Helpdesk PO A | johancocthird+helpdesk@gmail.com | /helpdesk |
-| Crew PO A | johancocthird+crewa@gmail.com | /crew |
-| Super Admin | johancocthird+super@gmail.com | /super-admin/companies |
-| Admin PO B (older fixture) | johancocthird+adminb@gmail.com | /admin |
-| Crew PO B (older fixture) | johancocthird+crewb@gmail.com | /crew |
+| Admin operasional | johancocthird+admina@gmail.com | /admin |
+| Petugas Helpdesk | johancocthird+helpdesk@gmail.com | /helpdesk |
+| Crew | johancocthird+crewa@gmail.com | /crew |
+| Super Admin | johancocthird+super@gmail.com | /super-admin |
 
 Other customer identities still exist; this table lists only the quick-login presets. No existing admin/crew membership was changed. The dedicated Helpdesk identity was newly provisioned confirmed, with only ACTIVE HELPDESK in Demo PO A. scripts/setup-dev-helpdesk.ts is guarded to the established development project, checks the company and preserves existing membership states. A repeat run verified idempotent behavior. Existing unconfirmed identities fail setup instead of being silently confirmed or granted membership.
 

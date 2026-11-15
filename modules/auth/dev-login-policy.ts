@@ -2,12 +2,10 @@ import {DEV_PROJECT_REF} from '@/lib/env/migration';
 
 export const quickLoginAccounts = [
  {id:'customer',label:'Customer',email:'johancocthird@gmail.com',href:'/trips'},
- {id:'admin-a',label:'Admin operasional - PO A',email:'johancocthird+admina@gmail.com',href:'/admin'},
- {id:'helpdesk',label:'Petugas Helpdesk - PO A',email:'johancocthird+helpdesk@gmail.com',href:'/helpdesk'},
- {id:'crew-a',label:'Crew - PO A',email:'johancocthird+crewa@gmail.com',href:'/crew'},
+ {id:'admin-a',label:'Admin operasional',email:'johancocthird+admina@gmail.com',href:'/admin'},
+ {id:'helpdesk',label:'Petugas Helpdesk',email:'johancocthird+helpdesk@gmail.com',href:'/helpdesk'},
+ {id:'crew-a',label:'Crew',email:'johancocthird+crewa@gmail.com',href:'/crew'},
  {id:'super-admin',label:'Super Admin',email:'johancocthird+super@gmail.com',href:'/super-admin'},
- {id:'admin-b',label:'Admin operasional - PO B',email:'johancocthird+adminb@gmail.com',href:'/admin'},
- {id:'crew-b',label:'Crew - PO B',email:'johancocthird+crewb@gmail.com',href:'/crew'},
 ] as const;
 export function quickLoginAccount(id:unknown){return quickLoginAccounts.find(a=>a.id===id)??null;}
 export function quickLoginEnabled(env:Record<string,string|undefined>,host:string){
