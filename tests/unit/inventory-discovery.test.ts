@@ -12,9 +12,9 @@ function fixture():Snapshot{return {
  holds:[{seatId:'held',from:0,to:1}],booked:[],layout:null,inventoryCount:2,
 } as unknown as Snapshot;}
 let snapshot:Snapshot;
-const candidates=vi.fn(),read=vi.fn();
-const service=()=>createAvailabilityService({client:{},discoveryCandidates:candidates,snapshot:read} as unknown as InventoryRepository);
-beforeEach(()=>{snapshot=fixture();candidates.mockReset().mockResolvedValue([row]);read.mockReset().mockImplementation(async()=>snapshot);});
+const candidates=vi.fn(),upcoming=vi.fn(),upcomingRoute=vi.fn(),read=vi.fn();
+const service=()=>createAvailabilityService({client:{},discoveryCandidates:candidates,upcomingCandidates:upcoming,upcomingRouteCandidates:upcomingRoute,snapshot:read} as unknown as InventoryRepository);
+beforeEach(()=>{snapshot=fixture();candidates.mockReset().mockResolvedValue([row]);upcoming.mockReset().mockResolvedValue([row]);upcomingRoute.mockReset().mockResolvedValue([row]);read.mockReset().mockImplementation(async()=>snapshot);});
 it('discovers real full-route fare, holds and nullable arrival within a WIB day',async()=>{
  const result=await service().discover({dateWib:'2026-10-20'});
  expect(candidates).toHaveBeenCalledWith('2026-10-19T17:00:00.000Z','2026-10-20T17:00:00.000Z',51);
@@ -24,4 +24,10 @@ it('discovers real full-route fare, holds and nullable arrival within a WIB day'
 it('caps snapshot reads and reports truncation honestly',async()=>{candidates.mockResolvedValue(Array.from({length:51},()=>row));const result=await service().discover({dateWib:'2026-10-20'});expect(result.trips).toHaveLength(50);expect(read).toHaveBeenCalledTimes(50);expect(result.candidateLimitReached).toBe(true);});
 it('does not advertise closed or suspended snapshots',async()=>{snapshot.companyStatus='SUSPENDED';expect((await service().discover({dateWib:'2026-10-20'})).trips).toEqual([]);snapshot.companyStatus='ACTIVE';snapshot.serverNow='2026-10-20T01:00:00Z';expect((await service().discover({dateWib:'2026-10-20'})).trips).toEqual([]);});
 it('rejects invalid calendar dates before candidate reads',async()=>{await expect(service().discover({dateWib:'2026-02-30'})).rejects.toMatchObject({code:'validation'});expect(candidates).not.toHaveBeenCalled();});
+it('discovers upcoming active trips when no specific date filter is applied',async()=>{
+ const result=await service().discoverUpcoming(10);
+ expect(upcoming).toHaveBeenCalledWith(11);
+ expect(result.trips).toHaveLength(1);
+ expect(result.candidateLimitReached).toBe(false);
+});
 it('selects only active published full routes with a bounded deterministic SQL query',async()=>{let query='';let values:unknown[]=[];const client=Object.assign(async(strings:TemplateStringsArray,...params:unknown[])=>{query=strings.join('?');values=params;return [];},{});await createInventoryRepository(client as never).discoveryCandidates('start','end',51);expect(query).toContain("c.status='ACTIVE'");expect(query).toContain("t.status='OPEN_FOR_SALE'");expect(query).toContain('order by a.departure_at,t.id');expect(query).toContain('limit');expect(query).toContain('clock_timestamp()');expect(values).toEqual(['start','end',51]);});

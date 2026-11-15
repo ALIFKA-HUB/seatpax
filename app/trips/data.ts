@@ -35,8 +35,10 @@ export const passengerServices=()=>({
  availability:{
   locations:()=>readAvailability(service=>service.locations()),
   discover:(input:DiscoveryInput)=>readAvailability(service=>service.discover(input)),
+  discoverUpcoming:(limit?:number)=>readAvailability(service=>service.discoverUpcoming(limit)),
   detail:(tripId:string,fromStopId:string,toStopId:string)=>readAvailability(service=>service.detail(tripId,fromStopId,toStopId)),
   search:(input:SearchInput)=>readAvailability(service=>service.search(input)),
+  searchUpcoming:(fromSourceStopId:string,toSourceStopId:string,limit?:number)=>readAvailability(service=>service.searchUpcoming(fromSourceStopId,toSourceStopId,limit)),
  },
  holds:createHoldService(createInventoryRepository(getDatabase().$client)),
 });

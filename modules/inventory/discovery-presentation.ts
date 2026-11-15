@@ -1,7 +1,8 @@
 import type {SearchResult} from './types';
-export function readDiscoveryQuery(raw:Record<string,string|string[]|undefined>,today:string):{from?:string;to?:string;date:string;malformed:boolean}{
- const value=(key:string)=>typeof raw[key]==='string'?raw[key] as string:undefined;
- return {from:value('from'),to:value('to'),date:value('date')??today,malformed:['from','to','date'].some(key=>Array.isArray(raw[key]))};
+export function readDiscoveryQuery(raw:Record<string,string|string[]|undefined>,today:string):{from?:string;to?:string;date:string;hasExplicitDate:boolean;malformed:boolean}{
+ const value=(key:string)=>{const item=raw[key];return typeof item==='string'&&item.trim()?item.trim():undefined;};
+ const explicitDate=value('date');
+ return {from:value('from'),to:value('to'),date:explicitDate??today,hasExplicitDate:Boolean(explicitDate),malformed:['from','to','date'].some(key=>Array.isArray(raw[key]))};
 }
 export function filterAndSortTrips(trips:SearchResult[],filters:{classNames:string[];maxFare:string;sort:'departure'|'price'}):SearchResult[]{
  const maximum=/^\d+$/.test(filters.maxFare)?BigInt(filters.maxFare):null;

@@ -16,6 +16,22 @@ export function createInventoryRepository(client:Sql){return {
   and a.departure_at>=${start}::timestamptz and a.departure_at<${end}::timestamptz
   and clock_timestamp()<least(a.departure_at,coalesce(t.sales_close_at,a.departure_at))
   order by a.departure_at,t.id limit ${limit}`;},
+ async upcomingCandidates(limit:number){return await client<{tripId:string;fromStopId:string;toStopId:string}[]>`
+  select t.id as "tripId",a.id as "fromStopId",b.id as "toStopId"
+  from public.trips t join public.companies c on c.id=t.company_id
+  join lateral (select id,sequence,departure_at from public.trip_stops where trip_id=t.id order by sequence limit 1) a on true
+  join lateral (select id,sequence from public.trip_stops where trip_id=t.id order by sequence desc limit 1) b on a.sequence<b.sequence
+  where t.status='OPEN_FOR_SALE' and c.status='ACTIVE'
+  and clock_timestamp()<least(a.departure_at,coalesce(t.sales_close_at,a.departure_at))
+  order by a.departure_at,t.id limit ${limit}`;},
+ async upcomingRouteCandidates(from:string,to:string,limit:number){return await client<{tripId:string;fromStopId:string;toStopId:string}[]>`
+  select t.id as "tripId",a.id as "fromStopId",b.id as "toStopId"
+  from public.trips t join public.companies c on c.id=t.company_id
+  join public.trip_stops a on a.trip_id=t.id join public.trip_stops b on b.trip_id=t.id
+  where t.status='OPEN_FOR_SALE' and c.status='ACTIVE'
+  and a.stop_id=${from} and b.stop_id=${to} and a.sequence<b.sequence
+  and clock_timestamp()<least(a.departure_at,coalesce(t.sales_close_at,a.departure_at))
+  order by a.departure_at,t.id limit ${limit}`;},
  async snapshot(tx:Sql|DomainTx,id:string):Promise<Snapshot>{
   const rows=await tx<Snapshot[]>`with clock as materialized(select clock_timestamp() as now)
    select json_build_object('id',t.id,'companyId',t.company_id,'name',t.name,'routeId',t.route_id,'vehicleId',t.vehicle_id,'serviceClassId',t.service_class_id,'departureAt',t.departure_at,'salesCloseAt',t.sales_close_at,'revision',t.revision,'status',t.status,'publishedAt',t.published_at,'identity',t.identity_snapshot) as trip,
@@ -29,7 +45,11 @@ export function createInventoryRepository(client:Sql){return {
    from public.trips t join public.companies c on c.id=t.company_id cross join clock where t.id=${id} and t.status='OPEN_FOR_SALE'`;
   if(rows.length!==1)throw new DomainError('unavailable','Perjalanan tidak tersedia.');return rows[0];
  },
- async locations(){return await client<{id:string;name:string;city:string}[]>`select distinct on(s.stop_id) s.stop_id as id,s.name,s.city from public.trip_stops s join public.trips t on t.id=s.trip_id join public.companies c on c.id=t.company_id where t.status='OPEN_FOR_SALE' and c.status='ACTIVE' and exists(select 1 from public.trip_stops a join public.trip_stops b on b.trip_id=a.trip_id and a.sequence<b.sequence where a.trip_id=t.id and (s.id=a.id or s.id=b.id) and clock_timestamp()<least(a.departure_at,coalesce(t.sales_close_at,a.departure_at))) order by s.stop_id,t.departure_at desc,t.id`;},
+ async locations(){
+  const scheduled=await client<{id:string;name:string;city:string}[]>`select distinct on(s.stop_id) s.stop_id as id,s.name,s.city from public.trip_stops s join public.trips t on t.id=s.trip_id join public.companies c on c.id=t.company_id where t.status='OPEN_FOR_SALE' and c.status='ACTIVE' and exists(select 1 from public.trip_stops a join public.trip_stops b on b.trip_id=a.trip_id and a.sequence<b.sequence where a.trip_id=t.id and (s.id=a.id or s.id=b.id) and clock_timestamp()<least(a.departure_at,coalesce(t.sales_close_at,a.departure_at))) order by s.stop_id,t.departure_at desc,t.id`;
+  if(scheduled.length>0)return scheduled;
+  return await client<{id:string;name:string;city:string}[]>`select distinct on(s.id) s.id,s.name,s.city from public.stops s join public.companies c on c.id=s.company_id where c.status='ACTIVE' and s.status='ACTIVE' and exists(select 1 from public.route_stops rs join public.routes r on r.id=rs.route_id where rs.stop_id=s.id and r.status='ACTIVE') order by s.id,s.name`;
+ },
  async candidates(from:string,to:string,start:string,end:string){return await client<{tripId:string;fromStopId:string;toStopId:string}[]>`select t.id as "tripId",a.id as "fromStopId",b.id as "toStopId" from public.trips t join public.companies c on c.id=t.company_id join public.trip_stops a on a.trip_id=t.id join public.trip_stops b on b.trip_id=t.id where t.status='OPEN_FOR_SALE' and c.status='ACTIVE' and a.stop_id=${from} and b.stop_id=${to} and a.sequence<b.sequence and a.departure_at>=${start}::timestamptz and a.departure_at<${end}::timestamptz and clock_timestamp()<least(a.departure_at,coalesce(t.sales_close_at,a.departure_at)) order by a.departure_at,t.id`;},
  async own(tx:Sql|DomainTx,owner:string,id:string,lock=false):Promise<HoldRecord|null>{const rows=await tx<HoldRecord[]>`select ${tx.unsafe(holdColumns)} from public.seat_holds where held_by_user_id=${owner} and id=${id} ${lock?tx`for update`:tx``}`;return rows[0]??null;},
  async byKey(tx:Sql|DomainTx,owner:string,key:string):Promise<HoldRecord|null>{const rows=await tx<HoldRecord[]>`select ${tx.unsafe(holdColumns)} from public.seat_holds where held_by_user_id=${owner} and request_key=${key}`;return rows[0]??null;},

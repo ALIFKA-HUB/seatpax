@@ -16,21 +16,22 @@ export function availability(s:Snapshot,fromId:string,toId:string):AvailabilityV
 }
 export function createAvailabilityService(repo:InventoryRepository){
  async function resultsFor(rows:{tripId:string;fromStopId:string;toStopId:string}[]):Promise<SearchResult[]>{
-  const results:SearchResult[]=[];
-  for(const row of rows){
+  const resolved=await Promise.all(rows.map(async(row):Promise<SearchResult|null>=>{
    let snapshot:Snapshot;
-   try{snapshot=await repo.snapshot(repo.client,row.tripId);}catch(error){if(error instanceof DomainError&&error.code==='unavailable')continue;throw error;}
+   try{snapshot=await repo.snapshot(repo.client,row.tripId);}catch(error){if(error instanceof DomainError&&error.code==='unavailable')return null;throw error;}
    const view=availability(snapshot,row.fromStopId,row.toStopId);
-   if(!view.saleOpen)continue;
+   if(!view.saleOpen)return null;
    const from=snapshot.stops.find(stop=>stop.id===row.fromStopId)!;
    const to=snapshot.stops.find(stop=>stop.id===row.toStopId)!;
-   results.push({...row,name:snapshot.trip.name,companyName:snapshot.companyName,originName:from.name,destinationName:to.name,departureAt:from.departureAt,arrivalAt:to.arrivalAt??null,className:snapshot.trip.identity!.className,fare:view.fare,availableCount:view.seats.filter(seat=>seat.status==='AVAILABLE').length});
-  }
-  return results;
+   return {...row,name:snapshot.trip.name,companyName:snapshot.companyName,originName:from.name,destinationName:to.name,departureAt:from.departureAt,arrivalAt:to.arrivalAt??null,className:snapshot.trip.identity!.className,fare:view.fare,availableCount:view.seats.filter(seat=>seat.status==='AVAILABLE').length};
+  }));
+  return resolved.filter((item):item is SearchResult=>item!==null);
  }
  return {
  locations:()=>repo.locations(),
  async discover(input:DiscoveryInput){const bounds=wibDayBounds(input.dateWib),rows=await repo.discoveryCandidates(bounds.start,bounds.end,51);return {trips:await resultsFor(rows.slice(0,50)),candidateLimitReached:rows.length>50};},
+ async discoverUpcoming(limit=50){const cap=Math.max(1,Math.min(limit,50));const rows=await repo.upcomingCandidates(cap+1);return {trips:await resultsFor(rows.slice(0,cap)),candidateLimitReached:rows.length>cap};},
  async detail(tripId:string,fromStopId:string,toStopId:string){if(![tripId,fromStopId,toStopId].every(x=>z.uuid().safeParse(x).success))throw new DomainError('validation','Pilihan perjalanan tidak valid.');return availability(await repo.snapshot(repo.client,tripId),fromStopId,toStopId);},
  async search(input:SearchInput):Promise<SearchResult[]>{const parsed=searchInputSchema.safeParse(input);if(!parsed.success)throw new DomainError('validation','Pencarian tidak valid.');const bounds=wibDayBounds(input.dateWib);return resultsFor(await repo.candidates(input.fromSourceStopId,input.toSourceStopId,bounds.start,bounds.end));},
+ async searchUpcoming(fromSourceStopId:string,toSourceStopId:string,limit=50):Promise<SearchResult[]>{const parsed=searchInputSchema.pick({fromSourceStopId:true,toSourceStopId:true}).safeParse({fromSourceStopId,toSourceStopId});if(!parsed.success)throw new DomainError('validation','Pencarian tidak valid.');const cap=Math.max(1,Math.min(limit,50));return resultsFor((await repo.upcomingRouteCandidates(fromSourceStopId,toSourceStopId,cap+1)).slice(0,cap));},
  };}
