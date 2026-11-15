@@ -87,9 +87,6 @@ function LoginLayout({
             <ArrowLeft size={16} weight="bold" aria-hidden="true" />
             <span>{backLabel}</span>
           </Link>
-          <Link className="lg-utility-link" href="/trips">
-            Cari perjalanan
-          </Link>
         </header>
 
         <main id="login-content" className="lg-form-wrap">

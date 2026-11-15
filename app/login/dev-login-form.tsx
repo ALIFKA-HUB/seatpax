@@ -1,6 +1,6 @@
 'use client';
 import { useActionState, useEffect, useId, useRef, useState } from 'react';
-import { ArrowRight, CaretDown, Check, UserCircle } from '@phosphor-icons/react';
+import { CaretDown, Check, UserCircle } from '@phosphor-icons/react';
 import { quickLoginAction } from './dev-actions';
 
 type QuickAccount = {
@@ -125,16 +125,8 @@ export default function DevLoginForm({ accounts, next }: { accounts: readonly Qu
         </div>
       </div>
 
-      {selected && (
-        <div className="lg-role-preview">
-          <span>Tujuan masuk</span>
-          <code>{next && selected.id === 'customer' ? next : selected.href}</code>
-        </div>
-      )}
-
       <button type="submit" className="lg-primary auth-primary" disabled={pending}>
-        <span>{pending ? 'Membuka akun...' : 'Masuk tanpa OTP'}</span>
-        {!pending && <ArrowRight size={18} weight="bold" aria-hidden="true" />}
+        {pending ? 'Membuka akun...' : 'Masuk'}
       </button>
 
       <p role="status" aria-live="polite" className="auth-message lg-status" data-tone={statusTone}>
