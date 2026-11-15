@@ -5,7 +5,8 @@ try{
  for(const [account,path] of [['customer','/trips'],['admin-a','/admin'],['helpdesk','/helpdesk']]){
  const context=await browser.newContext();const page=await context.newPage();
  await page.goto('http://localhost:3001/login',{waitUntil:'networkidle'});
- await page.getByLabel('Akun testing').selectOption(account);
+ await page.getByRole('button',{name:/Akun testing/}).click();
+ await page.getByRole('option',{name:new RegExp(account==='customer'?'Customer':account==='admin-a'?'Admin operasional - PO A':'Petugas Helpdesk - PO A')}).click();
  await page.getByRole('button',{name:'Masuk tanpa OTP',exact:true}).click();
  try{await page.waitForURL(u=>path==='/admin'?u.pathname.startsWith('/admin/companies/'):u.pathname===path,{timeout:60000});}catch{console.log('LOGIN FAILURE',account,await page.locator('.auth-message').textContent());throw Error('Quick login failed');}
  if(account==='helpdesk')await page.getByRole('heading',{name:'Pengaduan pelanggan',exact:true}).waitFor();
@@ -18,7 +19,7 @@ try{
  }
  if(account==='helpdesk'){
  await page.goto('http://localhost:3001/login',{waitUntil:'networkidle'});
- assert.equal(await page.getByLabel('Akun testing').count(),1);console.log('PASS logged-in tester can reopen account switcher');
+ assert.equal(await page.getByRole('button',{name:/Akun testing/}).count(),1);console.log('PASS logged-in tester can reopen account switcher');
  }
  await context.close();
  }

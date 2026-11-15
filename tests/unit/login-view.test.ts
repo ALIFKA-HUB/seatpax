@@ -23,15 +23,14 @@ describe('login view contracts', () => {
     expect(html).toContain('auth-message');
   });
 
-  it('renders dev quick login with role chips, account select, and destination preview', () => {
+  it('renders dev quick login with custom account dropdown and destination preview', () => {
     const html = render(h(DevLoginForm, { accounts: quickLoginAccounts, next: '/trips' }));
     expect(html).toContain('Akun testing');
+    expect(html).toContain('aria-haspopup="listbox"');
     expect(html).toContain('Masuk tanpa OTP');
     expect(html).toContain('auth-message');
     expect(html).toContain('Tujuan masuk');
     expect(html).toContain('/trips');
-    for (const account of quickLoginAccounts) {
-      expect(html).toContain(account.label);
-    }
+    expect(html).toContain(quickLoginAccounts[0].label);
   });
 });
