@@ -14,3 +14,4 @@ it('forwards refreshed cookies and preserves separate batches and headers',async
 });
 it('passes anonymous navigation without identity payload',async()=>{f.run.mockResolvedValue({data:{user:null},error:null});const r=await updateSession(new NextRequest('http://localhost:3000/login'));expect(r.headers.get('x-middleware-next')).toBe('1');expect(await r.text()).toBe('');expect(r.headers.get('Cache-Control')).toContain('no-store');});
 it('network error does not expose credentials',async()=>{f.run.mockRejectedValue(Error('PRIVATE'));const r=await updateSession(new NextRequest('http://localhost:3000/login'));expect(await r.text()).toBe('');});
+it('skips remote auth check on Next.js router prefetch requests',async()=>{const r=await updateSession(new NextRequest('http://localhost:3000/trips',{headers:{'next-router-prefetch':'1'}}));expect(f.run).not.toHaveBeenCalled();expect(r.headers.get('Cache-Control')).toContain('no-store');});
