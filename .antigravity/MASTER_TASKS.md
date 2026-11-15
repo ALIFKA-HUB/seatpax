@@ -80,13 +80,13 @@
 ---
 
 ## WAVE 3: Build Verification, QA Re-Testing & Deployment Polish
-- [ ] **W3-01:** Run `npm.cmd run typecheck` (`tsc --noEmit`) with zero errors.
-- [ ] **W3-02:** Run `npm.cmd run lint` (`eslint .`) with zero errors/warnings.
-- [ ] **W3-03:** Run full unit test suite `npx.cmd vitest run tests/unit` and verify 100% pass rate.
-- [ ] **W3-04:** Run Next.js production build (`npm.cmd run build`, falling back to `npm.cmd run build -- --webpack` only if local Turbopack symlink check triggers — and document exact result).
-- [ ] **W3-05:** Audit built routes and ensure zero unresolved import, server/client boundary, or CSS syntax errors.
-- [ ] **W3-06:** Revert incidental `next-env.d.ts` changes if produced by `next build` (`git checkout -- next-env.d.ts`).
-- [ ] **W3-07:** Check `git status --short` to ensure no untracked `.docx`/`.xlsx`/scripts artifacts were staged or committed.
-- [ ] **W3-08:** Mark 100% of Wave 3 items `[x]` in `.antigravity/MASTER_TASKS.md`.
-- [ ] **W3-09:** Create final Wave 3 commit (`chore(wave-3): pass production build and final QA verification`).
-- [ ] **W3-10:** Verify branch log (`git log -n 5 --oneline`) and clean working tree for tracked files.
+- [x] **W3-01:** Run `npm.cmd run typecheck` (`tsc --noEmit`) with zero errors.
+- [x] **W3-02:** Run `npm.cmd run lint` (`eslint .`) with zero errors/warnings.
+- [x] **W3-03:** Run full unit test suite `npx.cmd vitest run tests/unit` and verify 100% pass rate.
+- [x] **W3-04:** Run Next.js production build (`npm.cmd run build`, falling back to `npm.cmd run build -- --webpack` only if local Turbopack symlink check triggers — and document exact result).
+- [x] **W3-05:** Audit built routes and ensure zero unresolved import, server/client boundary, or CSS syntax errors.
+- [x] **W3-06:** Revert incidental `next-env.d.ts` changes if produced by `next build` (`git checkout -- next-env.d.ts`).
+- [x] **W3-07:** Check `git status --short` to ensure no untracked `.docx`/`.xlsx`/scripts artifacts were staged or committed.
+- [x] **W3-08:** Mark 100% of Wave 3 items `[x]` in `.antigravity/MASTER_TASKS.md`.
+- [x] **W3-09:** Create final Wave 3 commit (`chore(wave-3): pass production build and final QA verification`).
+- [x] **W3-10:** Verify branch log (`git log -n 5 --oneline`) and clean working tree for tracked files.
