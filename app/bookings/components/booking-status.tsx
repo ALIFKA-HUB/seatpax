@@ -4,6 +4,7 @@ import {ArrowsClockwise,CreditCard} from '@phosphor-icons/react';
 import BookingOutcome from '@/app/components/booking-outcome';
 import JourneySummary from '@/app/components/journey-summary';
 import {useEffect,useState} from 'react';
+import {useRouter} from 'next/navigation';
 import type {BookingView} from '@/modules/booking/types';
 import {refreshBookingAction,prepareBookingPaymentAction} from '@/app/checkout/actions';
 import {openSnap} from '@/app/checkout/snap-client';
@@ -11,11 +12,15 @@ import {openSnap} from '@/app/checkout/snap-client';
 const terminal=(s:string)=>s!=='PENDING_PAYMENT';
 
 export default function BookingStatus({initial,clientKey}:{initial:BookingView;clientKey:string|null}){
- const [booking,setBooking]=useState(initial),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
+ const [booking,setBooking]=useState(initial),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),router=useRouter();
 
  async function refresh(){
   const r=await refreshBookingAction(booking.id);
-  if(r.ok){setBooking(r.booking);setMessage('');}
+  if(r.ok){
+   setBooking(r.booking);
+   setMessage('');
+   if(terminal(r.booking.status))router.refresh();
+  }
   else setMessage(r.message);
  }
 
@@ -38,10 +43,14 @@ export default function BookingStatus({initial,clientKey}:{initial:BookingView;c
   const timer=window.setInterval(()=>{
    if(document.visibilityState!=='visible'||reading)return;
    reading=true;
-   void refreshBookingAction(booking.id).then(r=>{if(alive&&r.ok)setBooking(r.booking);}).finally(()=>{reading=false;});
+   void refreshBookingAction(booking.id).then(r=>{
+    if(!alive||!r.ok)return;
+    setBooking(r.booking);
+    if(terminal(r.booking.status))router.refresh();
+   }).finally(()=>{reading=false;});
   },5000);
   return()=>{alive=false;window.clearInterval(timer);};
- },[booking.id,booking.status]);
+ },[booking.id,booking.status,router]);
 
  return <section className="pf-card sp-ticket-panel">
   <div className="pf-card-head">

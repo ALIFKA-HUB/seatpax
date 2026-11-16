@@ -16,7 +16,11 @@ export default function CheckoutForm({holdId,profile,email,payment}:{holdId:stri
 
  async function refresh(id:string){
   const r=await refreshBookingAction(id);
-  if(r.ok){setStatus(r.booking.status);return r.booking;}
+  if(r.ok){
+   setStatus(r.booking.status);
+   if(pollingTerminal(r.booking.status))router.push(`/bookings/${id}`);
+   return r.booking;
+  }
   setMessage(r.message);
   return null;
  }
@@ -67,10 +71,14 @@ export default function CheckoutForm({holdId,profile,email,payment}:{holdId:stri
   const timer=window.setInterval(()=>{
    if(document.visibilityState!=='visible'||reading)return;
    reading=true;
-   void refreshBookingAction(bookingId).then(r=>{if(alive&&r.ok)setStatus(r.booking.status);}).finally(()=>{reading=false;});
+   void refreshBookingAction(bookingId).then(r=>{
+    if(!alive||!r.ok)return;
+    setStatus(r.booking.status);
+    if(pollingTerminal(r.booking.status))router.push(`/bookings/${bookingId}`);
+   }).finally(()=>{reading=false;});
   },5000);
   return()=>{alive=false;window.clearInterval(timer);};
- },[bookingId,status]);
+ },[bookingId,status,router]);
 
  return <section className="pf-card" aria-labelledby="checkout-form-title">
   <div className="pf-card-head">
@@ -121,7 +129,7 @@ export default function CheckoutForm({holdId,profile,email,payment}:{holdId:stri
    <h2>Status booking</h2>
    <div role="status">
     <StatusBadge {...bookingPresentation(status)}/>
-    <p>Tiket akan tersedia setelah pembayaran berhasil dikonfirmasi.</p>
+    <p>{status==='CONFIRMED'?'Pembayaran dikonfirmasi. Mengalihkan ke tiket…':'Tiket akan tersedia setelah pembayaran berhasil dikonfirmasi.'}</p>
    </div>
    <div className="pf-action-row" style={{marginTop:'14px'}}>
     <Link className="sp-secondary" href={`/bookings/${bookingId}`}>Lihat detail booking<ArrowRight size={16} aria-hidden="true" style={{marginLeft:6}}/></Link>

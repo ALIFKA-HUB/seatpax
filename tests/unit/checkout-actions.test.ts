@@ -24,4 +24,12 @@ describe('checkout actions',()=>{
   const result=await actions.start({holdId:'22222222-2222-4222-8222-222222222222',requestKey:'11111111-1111-4111-8111-111111111111',mode:'SELF',name:'A',phone:'0812345678'});
   expect(result.ok).toBe(false);expect(readHold).not.toHaveBeenCalled();expect(initiate).not.toHaveBeenCalled();
  });
+ it('prefers syncBooking when refreshing booking status',async()=>{
+  const readBooking=vi.fn(),syncBooking=vi.fn().mockResolvedValue({id:'33333333-3333-4333-8333-333333333333',status:'CONFIRMED'});
+  const actions=createCheckoutActions({getActor:async()=>({userId:'u',verifiedEmail:'u@example.test'}),readHold:vi.fn(),initiate:vi.fn(),prepare:vi.fn(),readBooking,syncBooking,paymentEnabled:true});
+  const result=await actions.refresh('33333333-3333-4333-8333-333333333333');
+  expect(result).toEqual({ok:true,booking:{id:'33333333-3333-4333-8333-333333333333',status:'CONFIRMED'}});
+  expect(syncBooking).toHaveBeenCalledWith('u','33333333-3333-4333-8333-333333333333');
+  expect(readBooking).not.toHaveBeenCalled();
+ });
 });
