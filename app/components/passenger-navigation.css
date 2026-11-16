@@ -2,8 +2,8 @@
 .passenger-shell:not(.sp-focused) .sp-header{position:sticky;top:16px;z-index:20;width:calc(100% - 64px);max-width:1216px;margin:16px auto 0;background:transparent;border:0;border-radius:20px}
 .passenger-shell{position:relative}
 .sp-header-marker{position:absolute;top:32px;left:0;width:1px;height:1px;pointer-events:none}
-.passenger-shell:not(.sp-focused) .sp-header-inner{position:relative;isolation:isolate;max-width:none;min-height:72px;display:grid;grid-template-columns:1fr auto 1fr;gap:20px;padding:10px 24px;border-radius:20px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);box-shadow:0 1px 3px rgba(8,28,58,.04),0 0 0 1px rgba(206,218,234,.65)}
-.passenger-shell:not(.sp-focused) .sp-header-inner::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:0 12px 30px rgba(8,28,58,.11),0 0 0 1px #d1ddec;opacity:0;pointer-events:none}
+.passenger-shell:not(.sp-focused) .sp-header-inner{position:relative;isolation:isolate;max-width:none;min-height:72px;display:grid;grid-template-columns:1fr auto 1fr;gap:20px;padding:10px 24px;border-radius:20px;background:#fff;box-shadow:none}
+.passenger-shell:not(.sp-focused) .sp-header-inner::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:0 8px 24px #143f7517,0 0 0 1px #e4ebf3;opacity:0;pointer-events:none}
 .passenger-shell:not(.sp-focused) .sp-header[data-floating=true] .sp-header-inner::before{opacity:1}
 @media(prefers-reduced-motion:no-preference){
  .passenger-shell:not(.sp-focused) .sp-header-inner::before{transform:translateY(-2px);transition:opacity 450ms cubic-bezier(.22,1,.36,1),transform 450ms cubic-bezier(.22,1,.36,1)}
@@ -14,7 +14,7 @@
  .passenger-shell:not(.sp-focused) .sp-header[data-floating=true] .sp-header-inner{transform:translateY(4px) scale(.98)}
 }
 .passenger-shell:not(.sp-focused) .sp-header .sp-brand{width:150px}
-.passenger-shell:not(.sp-focused) .sp-header nav{display:flex;flex-wrap:nowrap;gap:8px;width:auto;background:transparent}
+.passenger-shell:not(.sp-focused) .sp-header nav{display:flex;flex-wrap:nowrap;gap:8px;width:auto;background:#fff}
 .passenger-shell:not(.sp-focused) .sp-header nav a{display:flex;align-items:center;gap:8px;white-space:nowrap;min-height:44px;font-size:13px;color:var(--sp-ink);text-decoration:none;background:transparent;border:0;box-shadow:none}
 .passenger-shell:not(.sp-focused) .sp-header nav a[aria-current=page],.passenger-shell:not(.sp-focused) .sp-header nav a:hover{color:var(--sp-primary);background:transparent;border:0;box-shadow:none;text-decoration:none}
 .passenger-shell:not(.sp-focused) .sp-header nav a>span{position:relative}
@@ -25,18 +25,18 @@
 .passenger-shell:not(.sp-focused) .sp-header nav .sp-account-mobile{display:none}
 .passenger-shell:not(.sp-focused) .sp-header nav a svg{display:none}
 .sp-header-account{justify-self:end;position:relative;min-width:74px}
-.passenger-shell .sp-account-trigger{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 17px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap;color:var(--sp-ink);background:#eaf1fb;border:1px solid #d2e0f3;list-style:none;text-decoration:none}
-.passenger-shell .sp-account-trigger:hover{color:var(--sp-primary);background:#dfecff;border-color:#adc8ef;text-decoration:none}
+.passenger-shell .sp-account-trigger{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 17px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap;color:var(--sp-ink);background:#f3f7fd;list-style:none;text-decoration:none}
+.passenger-shell .sp-account-trigger:hover{color:var(--sp-primary);text-decoration:none}
 .sp-account-trigger::-webkit-details-marker{display:none}
-.passenger-shell .sp-account-login{background:linear-gradient(180deg,#0b66db 0%,var(--sp-primary) 100%);border-color:var(--sp-primary);color:#fff;box-shadow:0 2px 8px rgba(0,87,204,.2)}
-.passenger-shell .sp-account-login:hover{background:linear-gradient(180deg,var(--sp-primary) 0%,var(--sp-hover) 100%);border-color:var(--sp-hover);color:#fff}
+.passenger-shell .sp-account-login{background:#005bd1;color:#fff}
+.passenger-shell .sp-account-login:hover{background:#0049aa;color:#fff}
 .passenger-shell .sp-account-disclosure{position:relative;margin:0;padding:0}
 .passenger-shell .sp-account-disclosure summary{cursor:pointer;line-height:1.5}
-.sp-account-popover{position:absolute;right:0;top:calc(100% + 10px);width:210px;max-width:calc(100vw - 32px);padding:8px;border-radius:16px;background:#fff;border:1px solid var(--sp-border);color:var(--sp-ink);box-shadow:0 18px 45px rgba(8,28,58,.16),0 2px 8px rgba(8,28,58,.06)}
-.passenger-shell .sp-account-popover a,.passenger-shell .sp-account-popover button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:11px 12px;border:0;border-radius:10px;background:#fff;color:var(--sp-ink);text-align:left;font-size:13px;text-decoration:none}
-.passenger-shell .sp-account-popover a:hover,.passenger-shell .sp-account-popover button:hover:not(:disabled){background:#edf4ff;text-decoration:none}
-.passenger-shell .sp-account-popover button{color:#b41c1c}
-.passenger-shell .sp-account-popover button:disabled{color:#475872;background:#f0f5fc;cursor:wait}
+.sp-account-popover{position:absolute;right:0;top:calc(100% + 10px);width:210px;max-width:calc(100vw - 32px);padding:8px;border-radius:16px;background:#fff;color:var(--sp-ink);box-shadow:0 16px 45px #143f7524}
+.passenger-shell .sp-account-popover a,.passenger-shell .sp-account-popover button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:11px 12px;border:0;border-radius:10px;background:#fff;color:#0a2144;text-align:left;font-size:13px;text-decoration:none}
+.passenger-shell .sp-account-popover a:hover,.passenger-shell .sp-account-popover button:hover:not(:disabled){background:#f3f7fd;text-decoration:none}
+.passenger-shell .sp-account-popover button{color:#a62222}
+.passenger-shell .sp-account-popover button:disabled{color:#526078;background:#f3f7fd;cursor:wait}
 .passenger-shell .sp-menu-error{font-size:12px;line-height:1.6;color:#a62222;margin:8px 10px}
 @media(min-width:640px) and (max-width:1023px){
  .passenger-shell:not(.sp-focused) .sp-header{width:calc(100% - 48px)}

@@ -1,15 +1,15 @@
 .lg-page {
-  --lg-ink: #081c3a;
-  --lg-primary: #0057cc;
-  --lg-hover: #00419e;
-  --lg-muted: #475872;
-  --lg-border: #cedaea;
-  --lg-input-border: #a7b9d0;
-  --lg-tint: #eaf2ff;
-  --lg-soft: #f2f6fc;
-  --lg-danger: #b41c1c;
-  --lg-danger-bg: #fef1f2;
-  --lg-danger-border: #fec7c7;
+  --lg-ink: #0a2144;
+  --lg-primary: #005bd1;
+  --lg-hover: #0049aa;
+  --lg-muted: #526078;
+  --lg-border: #dce5ef;
+  --lg-input-border: #b8c6d8;
+  --lg-tint: #edf4ff;
+  --lg-soft: #f5f8fc;
+  --lg-danger: #b91c1c;
+  --lg-danger-bg: #fef2f2;
+  --lg-danger-border: #fecaca;
   color-scheme: light;
   background: #ffffff;
   color: var(--lg-ink);
@@ -207,7 +207,7 @@
   min-width: 0;
   min-height: 0;
   padding: 16px 36px 18px;
-  background: radial-gradient(640px 360px at 85% -60px, rgba(0, 87, 204, 0.045), transparent 70%), #ffffff;
+  background: #ffffff;
 }
 
 .lg-topbar {
@@ -544,19 +544,17 @@
   margin-top: 2px;
   border: 1px solid var(--lg-primary);
   border-radius: 12px;
-  background: linear-gradient(180deg, #0b66db 0%, var(--lg-primary) 100%);
+  background: var(--lg-primary);
   color: #ffffff;
   font: inherit;
   font-size: 14.5px;
   font-weight: 650;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 87, 204, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .lg-primary:hover:not(:disabled) {
-  background: linear-gradient(180deg, var(--lg-primary) 0%, var(--lg-hover) 100%);
+  background: var(--lg-hover);
   border-color: var(--lg-hover);
-  box-shadow: 0 5px 14px rgba(0, 65, 158, 0.28);
 }
 
 .lg-primary:active:not(:disabled) {
@@ -795,7 +793,7 @@
 @media (max-width: 959px) {
   .lg-page {
     grid-template-columns: 1fr;
-    background: radial-gradient(800px 320px at 50% -100px, rgba(0, 87, 204, 0.06), transparent 72%), #eff4fb;
+    background: #f5f7fa;
   }
 
   .lg-aside {
@@ -819,11 +817,11 @@
   }
 
   .lg-card {
-    background: linear-gradient(180deg, #ffffff 0%, #fcfdff 100%);
+    background: #ffffff;
     border: 1px solid var(--lg-border);
     border-radius: 20px;
     padding: 24px;
-    box-shadow: 0 2px 6px rgba(8, 28, 58, 0.04), 0 14px 36px -8px rgba(8, 28, 58, 0.1);
+    box-shadow: 0 12px 32px rgba(10, 33, 68, 0.06);
   }
 }
 
