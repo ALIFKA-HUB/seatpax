@@ -9,7 +9,8 @@ import {createPricingService} from '@/modules/pricing/service';
 import {withAdminTransaction,type Context} from '@/modules/access/transaction';
 config({path:'.env.local',quiet:true});
 let client:Sql;
-beforeAll(async()=>{client=postgres(parseMigrationEnvironment(process.env).url,{ssl:{rejectUnauthorized:true},prepare:false,max:5,connect_timeout:5});await client`select 1`;});
+let regencyId:string;
+beforeAll(async()=>{client=postgres(parseMigrationEnvironment(process.env).url,{ssl:{rejectUnauthorized:true},prepare:false,max:5,connect_timeout:5});const [r]=await client<{id:string}[]>`select r.id from public.region_regencies r join public.region_provinces p on p.id=r.province_id and p.provider=r.provider where r.provider='emsifa-v2' and r.active and p.active limit 1`;regencyId=r.id;});
 afterAll(async()=>{if(client)await client.end({timeout:5});});
 async function fixture(run:(f:{a:Context;b:Context;route:ReturnType<typeof createRouteService>;pricing:ReturnType<typeof createPricingService>})=>Promise<void>){
   const a={actorId:randomUUID(),companyId:randomUUID()},b={actorId:randomUUID(),companyId:randomUUID()};
@@ -18,7 +19,7 @@ async function fixture(run:(f:{a:Context;b:Context;route:ReturnType<typeof creat
     const repo=createRouteRepository(client);await run({a,b,route:createRouteService(repo),pricing:createPricingService(repo)});
   }finally{await client.begin(async tx=>{const ids=[a.companyId,b.companyId];await tx`delete from public.segment_fares where company_id in ${tx(ids)}`;await tx`delete from public.route_stops where company_id in ${tx(ids)}`;await tx`delete from public.routes where company_id in ${tx(ids)}`;await tx`delete from public.stops where company_id in ${tx(ids)}`;await tx`delete from public.service_classes where company_id in ${tx(ids)}`;await tx`delete from public.memberships where company_id in ${tx(ids)}`;await tx`delete from public.users where id in ${tx([a.actorId,b.actorId])}`;await tx`delete from auth.users where id in ${tx([a.actorId,b.actorId])}`;await tx`delete from public.companies where id in ${tx(ids)}`;});}
 }
-const stopInput=(name:string)=>({name,city:'City',address:null,status:'ACTIVE'});
+const stopInput=(name:string)=>({name,regionRegencyId:regencyId,address:null,status:'ACTIVE'});
 it('creates four-stop route and exact bigint quote, rejects cross tenant and stale edits',async()=>fixture(async({a,b,route,pricing})=>{
   const ids=[];for(const name of ['A','B','C','D'])ids.push(await route.saveStop(a,stopInput(name)));
   const classId=await route.saveClass(a,{name:'Executive',code:'executive',status:'ACTIVE'});
