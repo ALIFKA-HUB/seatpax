@@ -4,7 +4,7 @@ import PassengerShell from '@/app/components/passenger-shell';
 import BookingStepper from '@/app/components/booking-stepper';
 import StatePanel from '@/app/components/state-panel';
 import {formatDepartureWib} from '@/app/presentation';
-import {passengerServices} from '../data';
+import {activeHoldForTrip,passengerServices} from '../data';
 import {getVerifiedUser} from '@/modules/auth/identity';
 import SeatSelection from '../components/seat-selection';
 import '../../passenger.css';
@@ -14,9 +14,12 @@ export const dynamic='force-dynamic';
 
 export default async function TripPage({params,searchParams}:{params:Promise<{tripId:string}>;searchParams:Promise<Record<string,string|undefined>>}){
  const {tripId}=await params,p=await searchParams;
- let v;
- try{v=await passengerServices().availability.detail(tripId,p.from??'',p.to??'');}catch{}
- const loggedIn=Boolean(await getVerifiedUser());
+ const user=await getVerifiedUser();
+ const [v,activeHold]=await Promise.all([
+  passengerServices().availability.detail(tripId,p.from??'',p.to??'').catch(()=>undefined),
+  user?activeHoldForTrip(user.id,tripId):Promise.resolve(null),
+ ]);
+ const loggedIn=Boolean(user);
 
  if(!v)return <PassengerShell active="search">
   <div className="pf-wrap">
@@ -45,7 +48,7 @@ export default async function TripPage({params,searchParams}:{params:Promise<{tr
      <span className="pf-fact-chip"><Clock size={15} aria-hidden="true"/>Batas pesan {formatDepartureWib(v.cutoff)}</span>
     </div>
    </header>
-   <SeatSelection key={`${p.from}:${p.to}`} initial={v} from={p.from!} to={p.to!} loggedIn={loggedIn}/>
+   <SeatSelection key={`${p.from}:${p.to}`} initial={v} from={p.from!} to={p.to!} loggedIn={loggedIn} activeHold={activeHold}/>
   </div>
  </PassengerShell>;
 }

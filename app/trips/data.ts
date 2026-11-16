@@ -1,4 +1,5 @@
 import 'server-only';
+import {z} from 'zod';
 import {getDatabase} from '@/lib/db';
 import {createDatabaseConnection} from '@/lib/db/connection';
 import {getDatabaseEnv} from '@/lib/env/server';
@@ -6,6 +7,8 @@ import {createInventoryRepository} from '@/modules/inventory/repository';
 import {createAvailabilityService} from '@/modules/inventory/availability-service';
 import {createHoldService} from '@/modules/inventory/hold-service';
 import type {DiscoveryInput, SearchInput} from '@/modules/inventory/types';
+
+export type TripActiveHold={id:string;seatCode:string;expiresAt:string};
 
 type AvailabilityService = ReturnType<typeof createAvailabilityService>;
 let readConnection:ReturnType<typeof createDatabaseConnection>|undefined;
@@ -29,6 +32,20 @@ async function readAvailability<T>(work: (service: AvailabilityService) => Promi
  } finally {
   clearTimeout(timer);
  }
+}
+
+export async function activeHoldForTrip(userId:string,tripId:string):Promise<TripActiveHold|null>{
+ if(!z.uuid().safeParse(userId).success||!z.uuid().safeParse(tripId).success)return null;
+ try{
+  const rows=await getDatabase().$client<TripActiveHold[]>`
+   select h.id,st.seat_code as "seatCode",h.effective_expires_at::text as "expiresAt"
+   from public.seat_holds h
+   join public.trip_seats st on st.id=h.trip_seat_id
+   where h.held_by_user_id=${userId} and h.trip_id=${tripId} and h.status='ACTIVE' and h.effective_expires_at>clock_timestamp()
+   order by h.created_at desc limit 1
+  `;
+  return rows[0]??null;
+ }catch{return null;}
 }
 
 export const passengerServices=()=>({

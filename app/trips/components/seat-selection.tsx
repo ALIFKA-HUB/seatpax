@@ -1,18 +1,34 @@
 'use client';
 import Link from 'next/link';
+import {ArrowRight,Clock,ShieldCheck,Ticket,Trash,Van} from '@phosphor-icons/react';
 import JourneySummary from '@/app/components/journey-summary';
-import {formatIdr} from '@/app/presentation';
+import {formatDepartureWib,formatIdr} from '@/app/presentation';
 import {useEffect,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {quoteInterval} from '@/modules/inventory/fare';
 import type {AvailabilityView} from '@/modules/inventory/types';
-import {holdIntent,startVisiblePolling,type Intent} from '@/modules/inventory/selection-state';
-import {createHoldAction,refreshAvailabilityAction} from '../actions';
+import {deadlineCountdown,holdIntent,startVisiblePolling,type Intent} from '@/modules/inventory/selection-state';
+import {createHoldAction,refreshAvailabilityAction,releaseHoldAction} from '../actions';
+import type {TripActiveHold} from '../data';
 
 const formatTime=(iso:string)=>new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}).format(new Date(iso));
 
-export default function SeatSelection({initial,from,to,loggedIn}:{initial:AvailabilityView;from:string;to:string;loggedIn:boolean}){
+export default function SeatSelection({
+ initial,
+ from,
+ to,
+ loggedIn,
+ activeHold=null,
+}:{
+ initial:AvailabilityView;
+ from:string;
+ to:string;
+ loggedIn:boolean;
+ activeHold?:TripActiveHold|null;
+}){
  const [view,setView]=useState(initial),[selected,setSelected]=useState(''),[pending,setPending]=useState(false),[message,setMessage]=useState('');
+ const [ownedHold,setOwnedHold]=useState<TripActiveHold|null>(activeHold);
+ const [holdRemaining,setHoldRemaining]=useState(activeHold?Math.max(0,Date.parse(activeHold.expiresAt)-Date.parse(initial.serverNow)):0);
  const intent=useRef<Intent|null>(null),busy=useRef(false),router=useRouter();
  const path=`/trips/${view.detail.trip.id}?from=${from}&to=${to}`;
  const selectedAvailable=view.seats.some(seat=>seat.id===selected&&seat.status==='AVAILABLE');
@@ -22,6 +38,17 @@ export default function SeatSelection({initial,from,to,loggedIn}:{initial:Availa
  const availableTotal=view.seats.filter(s=>s.status==='AVAILABLE').length;
  const segments=Array.isArray(view.detail.segments)?view.detail.segments:[];
  const lastSeq=view.detail.stops[view.detail.stops.length-1]?.sequence;
+ const identity=view.detail.trip.identity;
+
+ useEffect(()=>{
+  if(!ownedHold)return;
+  let alive=true;
+  const tick=deadlineCountdown(ownedHold.expiresAt,view.serverNow,Date.now(),()=>{
+   if(alive)setOwnedHold(null);
+  });
+  const timer=setInterval(()=>setHoldRemaining(tick(Date.now())),1000);
+  return()=>{alive=false;clearInterval(timer);};
+ },[ownedHold,view.serverNow]);
 
  useEffect(()=>{
   let alive=true,reading=false;
@@ -62,11 +89,27 @@ export default function SeatSelection({initial,from,to,loggedIn}:{initial:Availa
   finally{busy.current=false;setPending(false);}
  }
 
+ async function releaseOwned(){
+  if(!ownedHold||busy.current)return;
+  busy.current=true;setPending(true);setMessage('');
+  try{
+   const res=await releaseHoldAction(ownedHold.id);
+   if(!res.ok){setMessage(res.message);return;}
+   setOwnedHold(null);
+   intent.current=null;
+   const fresh=await refreshAvailabilityAction(view.detail.trip.id,from,to);
+   if(fresh.ok)setView(fresh.data);
+  }catch{setMessage('Gagal melepas kursi. Coba lagi.');}
+  finally{busy.current=false;setPending(false);}
+ }
+
  function stopFareFromOrigin(targetSequence:number):string|null{
   if(!originStop||targetSequence<=originStop.sequence||segments.length===0)return null;
   try{return quoteInterval(segments,{from:originStop.sequence,to:targetSequence});}
   catch{return null;}
  }
+
+ const holdSeconds=Math.max(0,Math.ceil(holdRemaining/1000));
 
  return <div className="pf-grid">
   <section className="pf-card pf-seat-stage" aria-labelledby="seat-map-title">
@@ -76,6 +119,18 @@ export default function SeatSelection({initial,from,to,loggedIn}:{initial:Availa
      <p className="pf-summary-note">{availableTotal} dari {view.seats.length} kursi tersedia untuk rute ini.</p>
     </div>
    </div>
+
+   {ownedHold&&<div className="pf-owned-hold" role="region" aria-label="Kursi sedang Anda tahan">
+    <div className="pf-owned-hold-copy">
+     <strong>Kursi {ownedHold.seatCode} sedang Anda tahan</strong>
+     <span>Sisa waktu {Math.floor(holdSeconds/60)}:{String(holdSeconds%60).padStart(2,'0')} (berakhir {formatDepartureWib(ownedHold.expiresAt)})</span>
+    </div>
+    <div className="pf-action-row">
+     <Link className="sp-primary" href={`/checkout/${ownedHold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
+     <button className="sp-secondary pf-danger-btn" type="button" disabled={pending} onClick={()=>void releaseOwned()}><Trash size={15} aria-hidden="true" style={{marginRight:5}}/>{pending?'Melepas...':'Lepaskan kursi'}</button>
+    </div>
+   </div>}
+
    <div className="seat-legend" aria-label="Legenda kursi">
     {[['available','Tersedia'],['selected','Dipilih'],['held','Ditahan'],['booked','Terjual']].map(([kind,label])=><span key={kind}><i aria-hidden="true" className={`sp-legend-swatch sp-legend-${kind}`}/>{label}</span>)}
    </div>
@@ -137,15 +192,30 @@ export default function SeatSelection({initial,from,to,loggedIn}:{initial:Availa
    </div>
   </section>
 
-  <aside className="pf-summary-sticky" aria-label="Ringkasan pilihan">
+  <aside className="pf-summary-sticky" aria-label="Ringkasan pilihan dan informasi perjalanan">
    <div className="pf-summary-card">
     <h2>Ringkasan perjalanan</h2>
-    <JourneySummary fromName={originStop?.name??''} toName={destinationStop?.name??''} departureAt={originStop!.departureAt} fare={view.fare} seatCode={selectedSeat?.seatCode}/>
-    <p className="pf-summary-note">{view.saleOpen?'Setelah memilih kursi, Anda langsung diarahkan ke pengisian data dan pembayaran (kursi dikunci 10 menit).':'Penjualan interval ini sudah ditutup.'}</p>
-    {loggedIn
-     ?<button className="sp-primary" type="button" onClick={()=>void hold()} disabled={pending||!selectedAvailable||!view.saleOpen}>{pending?'Mengunci kursi...':'Tahan kursi 10 menit'}</button>
-     :<Link className="sp-primary" href={`/login?next=${encodeURIComponent(path)}`}>Masuk untuk menahan kursi</Link>}
+    <JourneySummary fromName={originStop?.name??''} toName={destinationStop?.name??''} departureAt={originStop!.departureAt} fare={view.fare} seatCode={selectedSeat?.seatCode??ownedHold?.seatCode}/>
+    <p className="pf-summary-note">{ownedHold?'Anda sudah menahan kursi pada jadwal ini. Lanjutkan ke checkout atau lepaskan untuk memilih ulang.':view.saleOpen?'Setelah memilih kursi, Anda langsung diarahkan ke pengisian data dan pembayaran (kursi dikunci 10 menit).':'Penjualan interval ini sudah ditutup.'}</p>
+    {!loggedIn
+     ?<Link className="sp-primary" href={`/login?next=${encodeURIComponent(path)}`}>Masuk untuk menahan kursi</Link>
+     :ownedHold
+      ?<>
+       <Link className="sp-primary" href={`/checkout/${ownedHold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
+       <button className="sp-secondary pf-danger-btn" type="button" disabled={pending} onClick={()=>void releaseOwned()}><Trash size={15} aria-hidden="true" style={{marginRight:5}}/>{pending?'Melepas...':'Lepaskan kursi'}</button>
+      </>
+      :<button className="sp-primary" type="button" onClick={()=>void hold()} disabled={pending||!selectedAvailable||!view.saleOpen}>{pending?'Mengunci kursi...':'Tahan kursi 10 menit'}</button>}
     {message&&<p role="status" aria-live="polite" className="auth-message" style={{margin:0}}>{message}</p>}
+   </div>
+
+   <div className="pf-info-card">
+    <h3>Informasi dan ketentuan</h3>
+    <ul className="pf-info-list">
+     {identity&&<li><Van size={16} aria-hidden="true"/><span>Armada {identity.vehicleName} ({identity.plateNumber}), kelas {identity.className}.</span></li>}
+     <li><Clock size={16} aria-hidden="true"/><span>Kunci kursi berlaku 10 menit hingga pembayaran dibuat, sebelum batas pesan {formatDepartureWib(view.cutoff)}.</span></li>
+     <li><ShieldCheck size={16} aria-hidden="true"/><span>Tarif mencakup rute dari {originStop?.name??'asal'} ke {destinationStop?.name??'tujuan'}.</span></li>
+     <li><Ticket size={16} aria-hidden="true"/><span>E-tiket dan QR boarding langsung tersedia di menu Pesanan saya setelah pembayaran terkonfirmasi.</span></li>
+    </ul>
    </div>
   </aside>
  </div>;

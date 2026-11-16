@@ -237,10 +237,78 @@ body {
 }
 
 .passenger-shell .pf-seat-stage .seat-scroll {
+  display: flex;
+  justify-content: center;
   padding: 20px 16px;
   border: 0;
   border-radius: var(--pf-radius-md);
   background: var(--pf-tint);
+}
+
+.passenger-shell .pf-owned-hold {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  border-radius: var(--pf-radius-md);
+  border: 1px solid var(--pf-warn-border);
+  background: var(--pf-warn-bg);
+  color: var(--pf-warn-ink);
+}
+
+.passenger-shell .pf-owned-hold-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.passenger-shell .pf-owned-hold-copy strong {
+  font-size: 14px;
+}
+
+.passenger-shell .pf-owned-hold-copy span {
+  font-size: 13px;
+}
+
+.passenger-shell .pf-info-card {
+  padding: 18px 22px;
+  border-radius: var(--pf-radius-lg);
+  border: 1px solid var(--pf-border);
+  background: var(--pf-surface);
+  display: grid;
+  gap: 12px;
+}
+
+.passenger-shell .pf-info-card h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pf-ink);
+}
+
+.passenger-shell .pf-info-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.passenger-shell .pf-info-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--pf-muted);
+}
+
+.passenger-shell .pf-info-list svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--pf-primary);
 }
 
 .passenger-shell .pf-seat-stage .seat-front {
