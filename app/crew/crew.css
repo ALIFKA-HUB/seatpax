@@ -3,117 +3,178 @@
 .crew-shell a { margin:0; text-decoration:none; color:#005BD1; overflow-wrap:anywhere; }
 .crew-shell :focus-visible { outline:3px solid #005BD1; outline-offset:4px; }
 .crew-shell h1,.crew-shell h2,.crew-shell h3 { margin:0; line-height:1.2; letter-spacing:-.025em; overflow-wrap:anywhere; }
-.crew-shell h1 { font-size:clamp(1.75rem,4vw,2.25rem); }
-.crew-shell h2 { font-size:1.25rem; }
-.crew-shell h3 { font-size:1.0625rem; }
+.crew-shell h1 { font-size:clamp(1.65rem,3.5vw,2.15rem); font-weight:750; }
+.crew-shell h2 { font-size:1.2rem; font-weight:700; }
+.crew-shell h3 { font-size:1.0625rem; font-weight:650; }
 .crew-shell p { margin:0; overflow-wrap:anywhere; }
 .crew-shell section { margin:0; padding:0; }
 .crew-shell ul,.crew-shell ol { margin:0; }
 .crew-shell li { padding:0; }
-.crew-shell .crew-main { width:100%; max-width:1008px; margin:0 auto; padding:32px 24px 64px; }
-.crew-shell .crew-topbar { background:white; border-bottom:1px solid #D5DFEA; }
-.crew-shell .crew-topbar-inner { max-width:1008px; margin:auto; padding:12px 24px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 24px; }
-.crew-shell .crew-identity { display:flex; align-items:center; gap:16px; }
-.crew-shell .sp-brand { display:block; width:140px; flex-shrink:0; }
+
+.crew-shell .crew-main { width:100%; max-width:1008px; margin:0 auto; padding:28px 24px 64px; }
+.crew-shell .crew-topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-bottom:1px solid #D5DFEA; }
+.crew-shell .crew-topbar-inner { max-width:1008px; margin:auto; padding:10px 24px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 24px; }
+.crew-shell .crew-identity { display:flex; align-items:center; gap:14px; }
+.crew-shell .sp-brand { display:block; width:136px; flex-shrink:0; }
 .crew-shell .sp-brand img { display:block; width:100%; height:auto; }
-.crew-shell .crew-role { border-left:1px solid #D5DFEA; padding-left:16px; font-weight:600; color:#526078; }
-.crew-shell nav { display:flex; flex-wrap:wrap; gap:8px 20px; }
-.crew-shell nav a { display:inline-flex; align-items:center; min-height:48px; }
+.crew-shell .crew-role { display:inline-flex; align-items:center; padding:4px 10px; border-radius:999px; background:#EDF3FB; border:1px solid #B7CBE5; font-size:.8125rem; font-weight:700; color:#005BD1; }
+.crew-shell nav { display:flex; flex-wrap:wrap; gap:6px 16px; }
+.crew-shell nav a { display:inline-flex; align-items:center; min-height:48px; font-weight:600; color:#0A2144; padding:0 8px; border-radius:8px; }
 .crew-shell .crew-skip { position:absolute; left:16px; top:-100px; padding:12px; background:white; z-index:20; }
 .crew-shell .crew-skip:focus { top:8px; }
+
 .crew-shell .crew-page-header { display:grid; gap:10px; margin-bottom:24px; }
-.crew-shell .crew-eyebrow { text-transform:uppercase; letter-spacing:.1em; font-size:.75rem; font-weight:700; color:#526078; }
+.crew-shell .crew-home-head { gap:12px; }
+.crew-shell .crew-home-head-top { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px 20px; }
+.crew-shell .crew-head-copy { display:grid; gap:6px; }
+.crew-shell .crew-head-sub { font-size:.9375rem; }
+.crew-shell .crew-eyebrow { text-transform:uppercase; letter-spacing:.09em; font-size:.75rem; font-weight:700; color:#005BD1; }
 .crew-shell .crew-muted { color:#526078; }
-.crew-shell .crew-back { min-height:48px; display:inline-flex; align-items:center; width:fit-content; }
-.crew-shell .crew-panel { background:white; border:1px solid #D5DFEA; border-radius:12px; padding:24px; min-width:0; }
-.crew-shell .crew-stack { display:grid; gap:24px; min-width:0; }
+.crew-shell .crew-count-pill { display:inline-flex; align-items:center; padding:6px 12px; border-radius:999px; background:#EDF3FB; border:1px solid #B7CBE5; color:#0A2144; font-size:.875rem; font-weight:650; }
+.crew-shell .crew-back { min-height:48px; display:inline-flex; align-items:center; gap:8px; width:fit-content; font-weight:600; color:#005BD1; }
+
+.crew-shell .crew-subnav { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:6px; padding:6px; background:white; border:1px solid #D5DFEA; border-radius:12px; }
+.crew-shell .crew-subnav-link { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:48px; padding:10px 14px; border-radius:8px; font-size:.9375rem; font-weight:650; color:#526078; text-align:center; }
+.crew-shell .crew-subnav-link.crew-subnav-active { background:#005BD1; color:white; }
+
+.crew-shell .crew-panel { background:white; border:1px solid #D5DFEA; border-radius:14px; padding:24px; min-width:0; box-shadow:0 1px 2px rgba(10,33,68,.04); }
+.crew-shell .crew-stack { display:grid; gap:20px; min-width:0; }
 .crew-shell .crew-actions { display:flex; flex-wrap:wrap; gap:12px; }
-.crew-shell .crew-button,.crew-shell button { display:inline-flex; justify-content:center; align-items:center; min-height:48px; padding:11px 18px; border:1px solid #7D8FA8; border-radius:8px; font:inherit; font-weight:600; color:#0A2144; background:white; cursor:pointer; text-align:center; overflow-wrap:anywhere; }
+.crew-shell .crew-button,.crew-shell button { display:inline-flex; justify-content:center; align-items:center; gap:8px; min-height:48px; padding:11px 18px; border:1px solid #7D8FA8; border-radius:10px; font:inherit; font-weight:650; color:#0A2144; background:white; cursor:pointer; text-align:center; overflow-wrap:anywhere; }
+.crew-shell .crew-button-ghost { border-color:#D5DFEA; background:#F8FAFC; color:#005BD1; }
 .crew-shell .crew-primary { color:white; background:#005BD1; border-color:#005BD1; }
-.crew-shell button:disabled { cursor:default; opacity:.6; }
-.crew-shell input,.crew-shell select { display:block; width:100%; min-width:0; min-height:48px; padding:11px 12px; border:1px solid #7D8FA8; border-radius:8px; color:#0A2144; background:white; font:inherit; }
+.crew-shell button:disabled { cursor:not-allowed; opacity:.55; }
+.crew-shell input,.crew-shell select { display:block; width:100%; min-width:0; min-height:48px; padding:11px 12px; border:1px solid #7D8FA8; border-radius:10px; color:#0A2144; background:white; font:inherit; }
 .crew-shell label { display:grid; gap:8px; font-weight:600; min-width:0; }
 .crew-shell .manifest-controls input,.crew-shell .manifest-controls select,.crew-shell .boarding-form select { min-height:48px; color:#0A2144; border-color:#7D8FA8; }
 .crew-shell .crew-message { color:#526078; font-size:.875rem; overflow-wrap:anywhere; }
+
 .crew-shell .crew-trip-list { display:grid; gap:16px; padding:0; list-style:none; }
+.crew-shell .crew-trip-item { display:grid; gap:16px; padding:20px 24px; }
 .crew-shell .crew-trip-card { display:flex; gap:16px; align-items:center; justify-content:space-between; color:#0A2144; }
-.crew-shell .crew-trip-card > div { display:grid; gap:8px; min-width:0; }
-.crew-shell .crew-card-arrow { color:#005BD1; font-size:1.5rem; flex-shrink:0; }
+.crew-shell .crew-trip-meta { display:grid; gap:8px; min-width:0; }
+.crew-shell .crew-time-badge { display:inline-flex; align-items:center; gap:6px; width:fit-content; padding:4px 10px; border-radius:999px; background:#EDF3FB; color:#005BD1; font-size:.8125rem; font-weight:700; font-variant-numeric:tabular-nums; }
+.crew-shell .crew-trip-route,.crew-shell .crew-trip-fleet { display:flex; align-items:center; gap:8px; font-size:.9375rem; }
+.crew-shell .crew-trip-route { font-weight:600; color:#0A2144; }
+.crew-shell .crew-card-arrow { color:#005BD1; font-size:1.35rem; font-weight:700; flex-shrink:0; }
+.crew-shell .crew-trip-quick-actions { display:flex; flex-wrap:wrap; gap:10px; padding-top:14px; border-top:1px solid #E5ECF4; }
+
 .crew-shell .crew-trip-identity { gap:8px; }
-.crew-shell .crew-departure { font-variant-numeric:tabular-nums; font-weight:600; }
-.crew-shell .crew-schedule { list-style:none; padding:0; display:grid; gap:24px; }
-.crew-shell .crew-schedule li { display:grid; grid-template-columns:32px minmax(0,1fr); gap:12px; }
-.crew-shell .crew-stop-number { background:#EDF3FB; border-radius:50%; width:32px; height:32px; display:grid; place-items:center; font-weight:600; }
-.crew-shell .crew-stop-times { margin:12px 0 0; display:flex; flex-wrap:wrap; gap:12px 32px; font-size:.875rem; }
+.crew-shell .crew-departure { font-variant-numeric:tabular-nums; font-weight:650; color:#005BD1; }
+.crew-shell .crew-section-head { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; }
+.crew-shell .crew-schedule { list-style:none; padding:0; display:grid; gap:18px; }
+.crew-shell .crew-schedule li { display:grid; grid-template-columns:36px minmax(0,1fr); gap:14px; position:relative; }
+.crew-shell .crew-stop-number { background:#EDF3FB; border:1px solid #B7CBE5; color:#005BD1; border-radius:50%; width:36px; height:36px; display:grid; place-items:center; font-weight:700; }
+.crew-shell .crew-stop-body { display:grid; gap:4px; padding-bottom:14px; border-bottom:1px solid #E5ECF4; }
+.crew-shell .crew-schedule li:last-child .crew-stop-body { padding-bottom:0; border-bottom:0; }
+.crew-shell .crew-stop-times { margin:8px 0 0; display:flex; flex-wrap:wrap; gap:12px 32px; font-size:.875rem; }
 .crew-shell .crew-stop-times dt { color:#526078; }
-.crew-shell .crew-stop-times dd { margin:0; font-variant-numeric:tabular-nums; }
-.crew-shell .crew-details summary { min-height:48px; padding:12px 0; font-weight:600; cursor:pointer; }
-.crew-shell .crew-details > div { margin-top:20px; }
+.crew-shell .crew-stop-times dd { margin:0; font-weight:600; font-variant-numeric:tabular-nums; }
+.crew-shell .crew-details summary { min-height:48px; padding:6px 0; font-weight:700; cursor:pointer; color:#0A2144; }
+.crew-shell .crew-details > div { margin-top:16px; padding-top:16px; border-top:1px solid #E5ECF4; }
 .crew-shell .crew-fares { list-style:none; padding:0; }
 .crew-shell .crew-fares li { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 24px; padding:12px 0; border-bottom:1px solid #D5DFEA; overflow-wrap:anywhere; }
-.crew-shell .seat-grid-region { min-width:0; max-width:100%; overflow-x:auto; padding:12px 4px; }
-.crew-shell .seat-front { margin-bottom:12px; font-size:.75rem; font-weight:600; letter-spacing:.08em; }
+
+.crew-shell .seat-grid-region { min-width:0; max-width:100%; overflow-x:auto; padding:14px; background:#F8FAFC; border:1px solid #D5DFEA; border-radius:12px; }
+.crew-shell .seat-front { margin-bottom:12px; font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#526078; }
 .crew-shell .seat-grid { display:grid; gap:8px; width:max-content; }
-.crew-shell .seat-cell { min-width:0; width:60px; min-height:60px; padding:6px; font-size:.75rem; opacity:1; }
+.crew-shell .seat-cell { display:grid; place-items:center; min-width:0; width:60px; min-height:60px; padding:6px; border:1px solid #B7CBE5; border-radius:10px; font-size:.8125rem; font-weight:700; color:#0A2144; opacity:1; }
 .crew-shell .seat-seat { background:#EDF3FB; border-color:#B7CBE5; }
-.crew-shell .seat-aisle,.crew-shell .seat-empty { background:transparent; border-style:dashed; color:#526078; }
-.crew-shell .manifest-counters { gap:16px; margin:0 0 24px; }
-.crew-shell .manifest-counters div { background:#F5F7FA; border:0; border-radius:8px; padding:12px; min-width:0; }
-.crew-shell .manifest-counters dt { color:#526078; overflow-wrap:anywhere; }
+.crew-shell .seat-aisle,.crew-shell .seat-empty { background:transparent; border-style:dashed; border-color:#CBD5E1; color:#526078; font-weight:500; }
+
+.crew-shell .manifest-counters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0; }
+.crew-shell .manifest-counters div { display:grid; gap:4px; background:#F5F7FA; border:1px solid #E5ECF4; border-radius:12px; padding:14px 16px; min-width:0; }
+.crew-shell .manifest-counters dt { font-size:.8125rem; font-weight:600; color:#526078; overflow-wrap:anywhere; }
+.crew-shell .manifest-counters dd { margin:0; font-size:1.75rem; font-weight:750; line-height:1.15; font-variant-numeric:tabular-nums; color:#0A2144; }
+.crew-shell .manifest-toolbar { display:grid; gap:12px; padding-top:4px; }
 .crew-shell .manifest-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
 .crew-shell .manifest-controls label { min-width:0; }
-.crew-shell .manifest-count { margin:20px 0 8px; color:#526078; font-size:.875rem; }
-.crew-shell .manifest-passengers { margin:0; }
-.crew-shell .manifest-passengers li { gap:20px; padding:20px 0; }
-.crew-shell .manifest-person { min-width:0; flex:1 1 240px; overflow-wrap:anywhere; }
+.crew-shell .manifest-label-row { display:inline-flex; align-items:center; gap:6px; }
+.crew-shell .crew-filter-pills { display:flex; flex-wrap:wrap; gap:8px; }
+.crew-shell .crew-filter-pills .crew-pill { min-height:40px; padding:6px 14px; border-radius:999px; border:1px solid #D5DFEA; background:#F8FAFC; font-size:.875rem; font-weight:650; color:#526078; }
+.crew-shell .crew-filter-pills .crew-pill-active { background:#0A2144; border-color:#0A2144; color:white; }
+.crew-shell .manifest-count { margin:0; color:#526078; font-size:.875rem; font-weight:600; }
+
+.crew-shell .manifest-passengers { list-style:none; padding:0; margin:0; display:grid; gap:12px; }
+.crew-shell .manifest-passengers li { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding:16px; border:1px solid #D5DFEA; border-radius:12px; background:#FAFBFD; }
+.crew-shell .manifest-row-main { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+.crew-shell .manifest-seat { display:grid; place-items:center; gap:2px; min-width:68px; padding:10px 8px; border:1px solid #B7CBE5; background:#EDF3FB; border-radius:10px; text-align:center; color:#526078; font-size:.75rem; font-weight:600; flex-shrink:0; }
+.crew-shell .manifest-seat strong { color:#0A2144; font-size:1.25rem; line-height:1.1; font-variant-numeric:tabular-nums; }
+.crew-shell .manifest-person { display:grid; gap:4px; min-width:0; flex:1 1 220px; overflow-wrap:anywhere; }
 .crew-shell .manifest-person > span,.crew-shell .manifest-person > strong { display:block; }
-.crew-shell .manifest-name { font-size:1.125rem; }
-.crew-shell .manifest-seat { color:#526078; font-size:.875rem; }
-.crew-shell .manifest-seat strong { color:#0A2144; font-size:1.125rem; }
-.crew-shell .manifest-snack { color:#526078; font-size:.875rem; }
-.crew-shell .crew-state { width:fit-content; border-radius:6px; padding:4px 8px; font-size:.875rem; }
-.crew-shell .crew-state-success { color:#166534; background:#F0FDF4; }
-.crew-shell .crew-state-pending { color:#92400E; background:#FFFBEB; }
-.crew-shell .crew-empty { padding:24px 0; color:#526078; }
-.crew-shell .boarding-profile { display:grid; gap:24px; }
-.crew-shell .crew-profile-heading { display:flex; align-items:center; gap:20px; }
+.crew-shell .manifest-name { font-size:1.0625rem; font-weight:700; color:#0A2144; }
+.crew-shell .manifest-route { font-size:.9375rem; color:#334155; font-weight:550; }
+.crew-shell .manifest-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+.crew-shell .manifest-badges .crew-state { display:inline-flex; align-items:center; gap:5px; }
+.crew-shell .manifest-cta { flex-shrink:0; }
+.crew-shell .manifest-snack { color:#526078; font-size:.8125rem; }
+
+.crew-shell .crew-state { width:fit-content; border-radius:999px; padding:4px 10px; font-size:.8125rem; font-weight:650; }
+.crew-shell .crew-state-success { color:#166534; background:#F0FDF4; border:1px solid #BBF7D0; }
+.crew-shell .crew-state-pending { color:#92400E; background:#FFFBEB; border:1px solid #FDE68A; }
+.crew-shell .crew-state-neutral { color:#475569; background:#F1F5F9; border:1px solid #E2E8F0; }
+.crew-shell .crew-empty { padding:24px 0; text-align:center; color:#526078; }
+.crew-shell .crew-empty-panel { text-align:center; display:grid; gap:8px; padding:36px 24px; }
+
+.crew-shell .boarding-profile { display:grid; gap:20px; }
+.crew-shell .crew-profile-heading { display:flex; align-items:center; gap:18px; }
 .crew-shell .crew-profile-heading > div { min-width:0; }
-.crew-shell .crew-profile-heading p { margin-top:8px; }
-.crew-shell .crew-seat { display:grid; gap:4px; padding:12px 16px; border:1px solid #B7CBE5; background:#EDF3FB; border-radius:8px; flex:0 0 100px; overflow-wrap:anywhere; text-align:center; }
-.crew-shell .crew-seat span { font-size:.75rem; color:#526078; }
-.crew-shell .crew-seat strong { font-size:1.5rem; font-variant-numeric:tabular-nums; }
-.crew-shell .boarding-profile .crew-profile-facts { display:grid; grid-template-columns:140px minmax(0,1fr); gap:12px 20px; margin:0; }
-.crew-shell .crew-profile-facts dt { color:#526078; }
-.crew-shell .crew-profile-facts dd { margin:0; overflow-wrap:anywhere; }
+.crew-shell .crew-profile-title p { margin-top:6px; }
+.crew-shell .crew-seat { display:grid; gap:2px; padding:12px 14px; border:1px solid #B7CBE5; background:#EDF3FB; border-radius:12px; flex:0 0 92px; overflow-wrap:anywhere; text-align:center; }
+.crew-shell .crew-seat span { font-size:.75rem; font-weight:600; color:#526078; }
+.crew-shell .crew-seat strong { font-size:1.5rem; font-weight:750; font-variant-numeric:tabular-nums; }
+.crew-shell .boarding-profile .crew-profile-facts { display:grid; grid-template-columns:140px minmax(0,1fr); gap:10px 20px; margin:0; padding:16px; background:#F8FAFC; border:1px solid #E5ECF4; border-radius:12px; }
+.crew-shell .crew-profile-facts dt { color:#526078; font-weight:600; }
+.crew-shell .crew-profile-facts dd { margin:0; font-weight:600; overflow-wrap:anywhere; }
 .crew-shell .crew-profile-statuses { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-.crew-shell .crew-state-card { display:grid; gap:6px; padding:16px; border:1px solid #D5DFEA; border-radius:8px; min-width:0; overflow-wrap:anywhere; }
+.crew-shell .crew-state-card { display:grid; gap:6px; padding:16px; border:1px solid #D5DFEA; border-radius:12px; min-width:0; overflow-wrap:anywhere; }
+.crew-shell .crew-state-label { display:inline-flex; align-items:center; gap:6px; font-size:.8125rem; font-weight:650; }
 .crew-shell .crew-state-card > span,.crew-shell .crew-state-card p { font-size:.875rem; }
-.crew-shell .crew-camera-frame { background:#0A2144; border:1px solid #7D8FA8; border-radius:12px; overflow:hidden; width:100%; max-width:520px; margin:0 auto; }
-.crew-shell .boarding-camera { display:block; width:100%; height:auto; max-height:390px; aspect-ratio:4/3; object-fit:cover; margin:0; border:0; border-radius:0; }
-.crew-shell .crew-camera-state { text-align:center; color:#526078; font-size:.875rem; }
-.crew-shell .boarding-camera-actions { margin:0; }
-.crew-shell .boarding-form.crew-operation { margin:0; padding:24px 0 0; display:grid; gap:12px; border-top:1px solid #D5DFEA; }
+
+.crew-shell .crew-ops-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; align-items:stretch; }
+.crew-shell .crew-step-chip { display:inline-flex; width:fit-content; padding:4px 10px; border-radius:999px; background:#EDF3FB; color:#005BD1; font-size:.75rem; font-weight:700; letter-spacing:.03em; }
+.crew-shell .crew-state-success .crew-step-chip { background:rgba(22,101,52,.12); color:#166534; }
+.crew-shell .boarding-form.crew-operation { margin:0; padding:0; display:grid; gap:12px; align-content:start; }
 .crew-shell .crew-operation button { justify-self:start; }
-.crew-shell .boarding-result { display:grid; gap:4px; padding:16px; border-radius:8px; margin:0; }
+.crew-shell .boarding-result { display:grid; gap:8px; padding:18px; border-radius:12px; margin:0; }
+.crew-shell .crew-result-title { display:inline-flex; align-items:center; gap:8px; font-size:1.0625rem; }
+
+.crew-shell .crew-callout { display:flex; align-items:flex-start; gap:10px; padding:14px 16px; border-radius:12px; background:#EDF3FB; border:1px solid #B7CBE5; color:#0A2144; font-size:.9375rem; }
+.crew-shell .crew-callout svg { color:#005BD1; flex-shrink:0; margin-top:2px; }
+.crew-shell .crew-camera-frame { background:#0A2144; border:1px solid #7D8FA8; border-radius:14px; overflow:hidden; width:100%; max-width:520px; margin:0 auto; }
+.crew-shell .boarding-camera { display:block; width:100%; height:auto; max-height:390px; aspect-ratio:4/3; object-fit:cover; margin:0; border:0; border-radius:0; }
+.crew-shell .crew-camera-state { text-align:center; color:#526078; font-size:.9375rem; font-weight:600; }
+.crew-shell .boarding-camera-actions { margin:0; justify-content:center; }
+.crew-shell .crew-scan-feedback { text-align:center; font-weight:600; color:#0A2144; }
+.crew-shell .crew-scan-result { padding-top:20px; border-top:1px solid #D5DFEA; }
+
 @media (hover:hover) {
  .crew-shell .crew-primary:not(:disabled):hover { background:#0049AA; border-color:#0049AA; }
- .crew-shell .crew-trip-card:hover { border-color:#7D8FA8; }
+ .crew-shell .crew-button:not(.crew-primary):not(:disabled):hover { background:#F8FAFC; border-color:#005BD1; }
+ .crew-shell .crew-trip-card:hover .crew-card-arrow { transform:translateX(3px); }
+ .crew-shell .crew-subnav-link:not(.crew-subnav-active):hover { background:#F1F5F9; color:#0A2144; }
 }
 @media (prefers-reduced-motion:no-preference) {
- .crew-shell .crew-button,.crew-shell button,.crew-shell .crew-trip-card { transition:background-color 150ms,border-color 150ms; }
+ .crew-shell .crew-button,.crew-shell button,.crew-shell .crew-trip-card,.crew-shell .crew-card-arrow,.crew-shell .crew-subnav-link { transition:background-color 150ms,border-color 150ms,color 150ms,transform 150ms; }
+}
+@media (max-width:720px) {
+ .crew-shell .crew-subnav { grid-template-columns:minmax(0,1fr); }
+ .crew-shell .crew-ops-grid { grid-template-columns:minmax(0,1fr); }
 }
 @media (max-width:600px) {
- .crew-shell .crew-main { padding:24px 16px 48px; }
- .crew-shell .crew-topbar-inner { padding:12px 16px; }
+ .crew-shell .crew-main { padding:20px 16px 48px; }
+ .crew-shell .crew-topbar-inner { padding:10px 16px; }
  .crew-shell .crew-topbar nav { width:100%; border-top:1px solid #D5DFEA; padding-top:4px; }
- .crew-shell .crew-panel { padding:20px 16px; }
- .crew-shell .crew-actions > * { flex:1 1 200px; }
- .crew-shell .manifest-controls,.crew-shell .crew-profile-statuses { grid-template-columns:minmax(0,1fr); }
- .crew-shell .manifest-counters { gap:8px; }
+ .crew-shell .crew-panel,.crew-shell .crew-trip-item { padding:18px 16px; }
+ .crew-shell .crew-actions > *,.crew-shell .crew-trip-quick-actions > * { flex:1 1 180px; }
+ .crew-shell .manifest-counters { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
  .crew-shell .manifest-counters div { padding:10px 8px; }
  .crew-shell .manifest-counters dt { font-size:.75rem; }
+ .crew-shell .manifest-counters dd { font-size:1.35rem; }
+ .crew-shell .manifest-controls,.crew-shell .crew-profile-statuses { grid-template-columns:minmax(0,1fr); }
+ .crew-shell .manifest-cta { width:100%; }
  .crew-shell .crew-profile-heading { align-items:start; gap:12px; }
- .crew-shell .crew-seat { flex-basis:76px; padding:12px 8px; }
+ .crew-shell .crew-seat { flex-basis:76px; padding:10px 8px; }
  .crew-shell .boarding-profile .crew-profile-facts { grid-template-columns:minmax(0,1fr); gap:4px; }
- .crew-shell .crew-profile-facts dd { margin-bottom:12px; }
+ .crew-shell .crew-profile-facts dd { margin-bottom:10px; }
 }
