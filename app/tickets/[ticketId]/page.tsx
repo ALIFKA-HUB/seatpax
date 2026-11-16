@@ -2,15 +2,14 @@ import Link from 'next/link';
 import {redirect} from 'next/navigation';
 import Image from 'next/image';
 import QRCode from 'qrcode';
-import {ArrowLeft} from '@phosphor-icons/react/ssr';
+import {ArrowLeft,ArrowRight} from '@phosphor-icons/react/ssr';
 import {getVerifiedUser} from '@/modules/auth/identity';
 import {ticketData} from '../data';
 import PassengerShell from '@/app/components/passenger-shell';
 import BookingStepper from '@/app/components/booking-stepper';
-import JourneySummary from '@/app/components/journey-summary';
 import StatePanel from '@/app/components/state-panel';
 import StatusBadge from '@/app/components/status-badge';
-import {bookingPresentation} from '@/app/presentation';
+import {bookingPresentation,formatDepartureWib,formatIdr} from '@/app/presentation';
 import PrintButton from './print-button';
 import '../../passenger.css';
 import '../../components/passenger-flow.css';
@@ -38,32 +37,44 @@ export default async function TicketPage({params}:{params:Promise<{ticketId:stri
     <Link className="pf-back-link" href="/tickets"><ArrowLeft size={16} aria-hidden="true"/>Tiket saya</Link>
     <BookingStepper step={3}/>
    </div>
-   <section className="pf-hero tk-print-hide" aria-labelledby="ticket-detail-title">
-    <div>
-     <p className="pf-eyebrow">E-Tiket Shuttle</p>
-     <h1 id="ticket-detail-title">Tiket perjalanan</h1>
-     <p className="pf-hero-sub">Simpan atau tunjukkan kode QR di bawah ini kepada petugas shuttle saat naik kendaraan.</p>
-    </div>
-   </section>
-   <section className="passenger-card tk-detail-card sp-ticket-panel">
-    <div className="tk-detail-actions">
-     <div style={{display:'flex',alignItems:'center',gap:'12px',flexWrap:'wrap'}}>
-      <h2 style={{margin:0}}>Detail tiket</h2>
+   <header className="pf-head tk-print-hide" aria-labelledby="ticket-detail-title">
+    <h1 id="ticket-detail-title">Tiket perjalanan</h1>
+    <p className="pf-head-sub">Simpan atau tunjukkan kode QR di sebelah kanan kepada petugas shuttle saat naik kendaraan.</p>
+   </header>
+   <article className="tk-pass" aria-label="Boarding pass elektronik">
+    <div className="tk-pass-main">
+     <div className="tk-pass-head">
       <StatusBadge {...bookingPresentation(ticket.bookingStatus)}/>
+      <span className="tk-trip-name">{ticket.snapshot.tripName}</span>
      </div>
-     {qr&&<PrintButton/>}
+     <div className="tk-pass-route">
+      <h2>
+       <span>{ticket.snapshot.fromName}</span>
+       <ArrowRight size={20} weight="bold" aria-hidden="true" style={{color:'var(--tk-primary)'}}/>
+       <span>{ticket.snapshot.toName}</span>
+      </h2>
+      <p>{formatDepartureWib(ticket.snapshot.departureAt)}</p>
+     </div>
+     <dl className="tk-pass-facts">
+      <div><dt>Penumpang</dt><dd>{ticket.passenger.name}</dd></div>
+      <div><dt>Nomor kursi</dt><dd>Kursi {ticket.snapshot.seatCode}</dd></div>
+      <div><dt>Armada</dt><dd>{ticket.snapshot.vehicleName}</dd></div>
+      <div><dt>Nomor polisi</dt><dd>{ticket.snapshot.plateNumber}</dd></div>
+      <div><dt>Tarif dibayar</dt><dd>{formatIdr(ticket.amount)}</dd></div>
+     </dl>
     </div>
-    <JourneySummary fromName={ticket.snapshot.fromName} toName={ticket.snapshot.toName} departureAt={ticket.snapshot.departureAt} seatCode={ticket.snapshot.seatCode} fare={ticket.amount} operator={ticket.snapshot.tripName}/>
-    <dl className="ticket-meta" style={{margin:'8px 0'}}>
-     <dt>Penumpang</dt><dd>{ticket.passenger.name}</dd>
-     <dt>Armada</dt><dd>{ticket.snapshot.vehicleName} · {ticket.snapshot.plateNumber}</dd>
-    </dl>
-    <div className="sp-ticket-qr-region">
+    <div className="tk-pass-qr sp-ticket-qr-region" style={{borderTop:0,paddingTop:'26px',marginTop:0}}>
      {qr
-      ?<><Image className="ticket-qr" src={qr} unoptimized width={320} height={320} alt={`QR tiket untuk ${ticket.passenger.name}, kursi ${ticket.snapshot.seatCode}`}/><p>Tunjukkan QR ini kepada petugas saat naik.</p></>
+      ?<>
+       <div className="tk-qr-frame">
+        <Image className="ticket-qr" style={{margin:0,border:0,width:210}} src={qr} unoptimized width={210} height={210} alt={`QR tiket untuk ${ticket.passenger.name}, kursi ${ticket.snapshot.seatCode}`}/>
+       </div>
+       <p>Tunjukkan QR ini kepada petugas saat naik.</p>
+       <PrintButton/>
+      </>
       :<p>{ticket.bookingStatus==='REFUNDED'?'QR tidak tersedia untuk booking yang telah di-refund.':'QR belum tersedia untuk booking yang perlu ditinjau.'}</p>}
     </div>
-   </section>
+   </article>
   </div>
  </PassengerShell>;
 }

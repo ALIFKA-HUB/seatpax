@@ -1,12 +1,15 @@
 'use client';
 import Link from 'next/link';
 import JourneySummary from '@/app/components/journey-summary';
-import {formatDepartureWib} from '@/app/presentation';
+import {formatIdr} from '@/app/presentation';
 import {useEffect,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
+import {quoteInterval} from '@/modules/inventory/fare';
 import type {AvailabilityView} from '@/modules/inventory/types';
 import {holdIntent,startVisiblePolling,type Intent} from '@/modules/inventory/selection-state';
 import {createHoldAction,refreshAvailabilityAction} from '../actions';
+
+const formatTime=(iso:string)=>new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}).format(new Date(iso));
 
 export default function SeatSelection({initial,from,to,loggedIn}:{initial:AvailabilityView;from:string;to:string;loggedIn:boolean}){
  const [view,setView]=useState(initial),[selected,setSelected]=useState(''),[pending,setPending]=useState(false),[message,setMessage]=useState('');
@@ -17,6 +20,8 @@ export default function SeatSelection({initial,from,to,loggedIn}:{initial:Availa
  const destinationStop=view.detail.stops.find(s=>s.id===to);
  const selectedSeat=view.seats.find(s=>s.id===selected);
  const availableTotal=view.seats.filter(s=>s.status==='AVAILABLE').length;
+ const segments=Array.isArray(view.detail.segments)?view.detail.segments:[];
+ const lastSeq=view.detail.stops[view.detail.stops.length-1]?.sequence;
 
  useEffect(()=>{
   let alive=true,reading=false;
@@ -57,6 +62,12 @@ export default function SeatSelection({initial,from,to,loggedIn}:{initial:Availa
   finally{busy.current=false;setPending(false);}
  }
 
+ function stopFareFromOrigin(targetSequence:number):string|null{
+  if(!originStop||targetSequence<=originStop.sequence||segments.length===0)return null;
+  try{return quoteInterval(segments,{from:originStop.sequence,to:targetSequence});}
+  catch{return null;}
+ }
+
  return <div className="pf-grid">
   <section className="pf-card pf-seat-stage" aria-labelledby="seat-map-title">
    <div className="pf-card-head">
@@ -79,19 +90,60 @@ export default function SeatSelection({initial,from,to,loggedIn}:{initial:Availa
      })}
     </div>
    </div>
-   <details className="pf-stops-details">
-    <summary>Lihat urutan titik naik &amp; turun ({view.detail.stops.length} stop)</summary>
-    <ol className="pf-stops-list">{view.detail.stops.map(stop=><li key={stop.id}>{stop.name}, {formatDepartureWib(stop.departureAt)}</li>)}</ol>
-   </details>
+
+   <div className="pf-timeline-section" aria-labelledby="route-timeline-title">
+    <div className="pf-timeline-head">
+     <h3 id="route-timeline-title">Urutan titik naik dan turun</h3>
+     <span>Tarif dihitung dari titik naik {originStop?.name??'awal'}</span>
+    </div>
+    <ol className="pf-timeline">
+     {view.detail.stops.map((stop,index)=>{
+      const isOrigin=stop.id===from;
+      const isDest=stop.id===to;
+      const isBetween=Boolean(originStop&&stop.sequence>originStop.sequence&&(!destinationStop||stop.sequence<destinationStop.sequence));
+      const roleLabel=isOrigin?'Titik naik Anda':isDest?'Titik turun Anda':isBetween?'Titik singgah':'Titik rute';
+      const cumulative=stopFareFromOrigin(stop.sequence);
+      const prevSegment=segments.find(s=>s.sequence===stop.sequence-1);
+      const hasTransit=stop.arrivalAt&&stop.departureAt&&stop.arrivalAt!==stop.departureAt&&stop.sequence!==lastSeq;
+      const timeText=stop.sequence===lastSeq
+       ?`Tiba ${formatTime(stop.arrivalAt||stop.departureAt)} WIB`
+       :hasTransit
+        ?`Tiba ${formatTime(stop.arrivalAt)} WIB, lanjut ${formatTime(stop.departureAt)} WIB`
+        :`Berangkat ${formatTime(stop.departureAt)} WIB`;
+
+      return <li key={stop.id??`${stop.sequence}`} className={`pf-timeline-item${isOrigin?' is-origin':isDest?' is-destination':''}`}>
+       <div className="pf-timeline-rail" aria-hidden="true">
+        <span className="pf-stop-num">{index+1}</span>
+        {index<view.detail.stops.length-1&&<span className="pf-stop-line"/>}
+       </div>
+       <div className="pf-stop-body">
+        <div className="pf-stop-title-row">
+         <strong>{stop.name}</strong>
+         <span className="pf-stop-role">{roleLabel}</span>
+        </div>
+        <p className="pf-stop-sub">{timeText}{stop.city?` di ${stop.city}`:''}</p>
+        {stop.address&&<p className="pf-stop-sub">{stop.address}</p>}
+       </div>
+       <div className="pf-stop-price">
+        {isOrigin
+         ?<><strong>Titik awal</strong><small>Mulai perjalanan</small></>
+         :cumulative!==null
+          ?<><strong>{formatIdr(cumulative)}</strong>{prevSegment&&<small>Segmen {formatIdr(prevSegment.price)}</small>}</>
+          :<small>Sebelum titik naik</small>}
+       </div>
+      </li>;
+     })}
+    </ol>
+   </div>
   </section>
 
   <aside className="pf-summary-sticky" aria-label="Ringkasan pilihan">
    <div className="pf-summary-card">
     <h2>Ringkasan perjalanan</h2>
     <JourneySummary fromName={originStop?.name??''} toName={destinationStop?.name??''} departureAt={originStop!.departureAt} fare={view.fare} seatCode={selectedSeat?.seatCode}/>
-    <p className="pf-summary-note">{view.saleOpen?'Setelah memilih kursi, Anda langsung diarahkan ke halaman isi data & bayar (kursi dikunci 10 menit).':'Penjualan interval ini sudah ditutup.'}</p>
+    <p className="pf-summary-note">{view.saleOpen?'Setelah memilih kursi, Anda langsung diarahkan ke pengisian data dan pembayaran (kursi dikunci 10 menit).':'Penjualan interval ini sudah ditutup.'}</p>
     {loggedIn
-     ?<button className="sp-primary" type="button" onClick={()=>void hold()} disabled={pending||!selectedAvailable||!view.saleOpen}>{pending?'Mengunci kursi…':'Tahan kursi 10 menit'}</button>
+     ?<button className="sp-primary" type="button" onClick={()=>void hold()} disabled={pending||!selectedAvailable||!view.saleOpen}>{pending?'Mengunci kursi...':'Tahan kursi 10 menit'}</button>
      :<Link className="sp-primary" href={`/login?next=${encodeURIComponent(path)}`}>Masuk untuk menahan kursi</Link>}
     {message&&<p role="status" aria-live="polite" className="auth-message" style={{margin:0}}>{message}</p>}
    </div>

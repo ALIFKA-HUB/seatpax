@@ -33,13 +33,10 @@ export default async function HoldPage({params}:{params:Promise<{holdId:string}>
     <Link className="pf-back-link" href="/trips"><ArrowLeft size={16} aria-hidden="true"/>Cari perjalanan</Link>
     <BookingStepper step={2}/>
    </div>
-   <section className="pf-hero" aria-labelledby="hold-title">
-    <div>
-     <p className="pf-eyebrow">Status Penguncian Kursi</p>
-     <h1 id="hold-title">Kursi Anda</h1>
-     <p className="pf-hero-sub">Lanjutkan ke pengisian data &amp; pembayaran atau lepaskan kursi bila ingin mengganti pilihan.</p>
-    </div>
-   </section>
+   <header className="pf-head" aria-labelledby="hold-title">
+    <h1 id="hold-title">Kursi Anda</h1>
+    <p className="pf-head-sub">Lanjutkan ke pengisian data dan pembayaran atau lepaskan kursi bila ingin mengganti pilihan.</p>
+   </header>
    <HoldDetail initial={initial}/>
   </div>
  </PassengerShell>;

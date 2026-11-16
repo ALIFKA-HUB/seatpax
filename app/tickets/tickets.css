@@ -1,41 +1,53 @@
-/* Scoped styles for /tickets and /tickets/[ticketId] */
-.passenger-shell .tk-page {
-  display: grid;
-  gap: 24px;
+/* Hallmark · v2.0.0 · stamp: modern-minimal · scope: app · hero: none · accent: var(--tk-primary) · polish: Step 3 Split Boarding Pass & Ticket Center */
+/* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V4 · weakest: R, dropped middle dots and uppercase labels to unify with Step 1-2 */
+
+:root {
+  --tk-ink: #0a2144;
+  --tk-muted: #4b5d78;
+  --tk-primary: #005bd1;
+  --tk-primary-ink: #fdfefe;
+  --tk-surface: #fdfefe;
+  --tk-tint: #f4f7fc;
+  --tk-tint-blue: #eaf2ff;
+  --tk-border: #d5e0ee;
+  --tk-warn-bg: #fffdf5;
+  --tk-warn-border: #f3d285;
+  --tk-radius-sm: 10px;
+  --tk-radius-md: 14px;
+  --tk-radius-lg: 18px;
 }
 
-.passenger-shell .tk-hero {
+.passenger-shell .tk-page {
+  display: grid;
+  gap: 20px;
+}
+
+.passenger-shell .tk-head {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 20px;
+  gap: 18px;
   flex-wrap: wrap;
-  padding: 26px 28px;
-  border-radius: 20px;
-  border: 1px solid #d5e2f2;
-  background: linear-gradient(155deg, #eef4ff 0%, #f8fbff 60%, #ffffff 100%);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--tk-border);
 }
 
-.passenger-shell .tk-eyebrow {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sp-primary);
-}
-
-.passenger-shell .tk-hero h1 {
-  margin: 0 0 8px;
-  font-size: clamp(26px, 3vw, 34px);
+.passenger-shell .tk-head h1 {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 2.8vw, 32px);
   line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--tk-ink);
+  overflow-wrap: break-word;
+  min-width: 0;
+  text-wrap: balance;
 }
 
-.passenger-shell .tk-hero-sub {
+.passenger-shell .tk-head-sub {
   margin: 0;
   font-size: 14px;
-  color: var(--sp-muted);
-  max-width: 56ch;
+  color: var(--tk-muted);
+  max-width: 58ch;
 }
 
 .passenger-shell .tk-stats {
@@ -47,23 +59,23 @@
 .passenger-shell .tk-stat {
   display: grid;
   gap: 2px;
-  min-width: 108px;
+  min-width: 104px;
   padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #d6e2f1;
-  background: #ffffff;
+  border-radius: var(--tk-radius-md);
+  border: 1px solid var(--tk-border);
+  background: var(--tk-surface);
 }
 
 .passenger-shell .tk-stat strong {
   font-size: 20px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--sp-ink);
+  color: var(--tk-ink);
 }
 
 .passenger-shell .tk-stat span {
   font-size: 12px;
-  color: var(--sp-muted);
+  color: var(--tk-muted);
 }
 
 .passenger-shell .tk-progress-section {
@@ -74,7 +86,7 @@
 .passenger-shell .tk-section-title {
   margin: 0;
   font-size: 18px;
-  color: var(--sp-ink);
+  color: var(--tk-ink);
 }
 
 .passenger-shell .tk-progress-grid {
@@ -87,9 +99,9 @@
   display: grid;
   gap: 12px;
   padding: 18px 20px;
-  border-radius: 16px;
-  border: 1px solid #f5d88d;
-  background: #fffdf5;
+  border-radius: var(--tk-radius-lg);
+  border: 1px solid var(--tk-warn-border);
+  background: var(--tk-warn-bg);
 }
 
 .passenger-shell .tk-progress-top {
@@ -102,13 +114,17 @@
 .passenger-shell .tk-progress-card h3 {
   margin: 0;
   font-size: 16px;
-  color: var(--sp-ink);
+  color: var(--tk-ink);
 }
 
 .passenger-shell .tk-progress-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
   margin: 0;
   font-size: 13px;
-  color: var(--sp-muted);
+  color: var(--tk-muted);
 }
 
 .passenger-shell .tk-controls {
@@ -117,10 +133,10 @@
   justify-content: space-between;
   gap: 14px;
   flex-wrap: wrap;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid #d7e1ee;
-  background: #ffffff;
+  padding: 12px 16px;
+  border-radius: var(--tk-radius-lg);
+  border: 1px solid var(--tk-border);
+  background: var(--tk-surface);
 }
 
 .passenger-shell .tk-tabs {
@@ -137,29 +153,31 @@
   min-height: 40px;
   padding: 7px 14px;
   border-radius: 999px;
-  border: 1px solid #dce5f0;
-  background: #f8fafd;
-  color: var(--sp-ink);
+  border: 1px solid var(--tk-border);
+  background: var(--tk-tint);
+  color: var(--tk-ink);
   font-size: 13px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .passenger-shell .tk-tab.is-active {
-  background: var(--sp-primary);
-  border-color: var(--sp-primary);
-  color: #ffffff;
+  background: var(--tk-primary);
+  border-color: var(--tk-primary);
+  color: var(--tk-primary-ink);
 }
 
 .passenger-shell .tk-tab-count {
   padding: 1px 7px;
   border-radius: 999px;
-  background: rgba(10, 33, 68, 0.08);
-  font-size: 11px;
+  background: var(--tk-tint-blue);
+  color: var(--tk-primary);
+  font-size: 12px;
 }
 
 .passenger-shell .tk-tab.is-active .tk-tab-count {
-  background: rgba(255, 255, 255, 0.22);
-  color: #ffffff;
+  background: var(--tk-primary-ink);
+  color: var(--tk-primary);
 }
 
 .passenger-shell .tk-search-tools {
@@ -181,16 +199,16 @@
 .passenger-shell .tk-search-box svg {
   position: absolute;
   left: 12px;
-  color: var(--sp-muted);
+  color: var(--tk-muted);
   pointer-events: none;
 }
 
 .passenger-shell .tk-search-box input {
   min-height: 40px;
   padding: 8px 12px 8px 36px;
-  border: 1px solid #d5dfea;
-  border-radius: 10px;
-  background: #f8fafd;
+  border: 1px solid var(--tk-border);
+  border-radius: var(--tk-radius-sm);
+  background: var(--tk-tint);
   font-size: 13px;
 }
 
@@ -198,9 +216,9 @@
   width: auto;
   min-height: 40px;
   padding: 8px 12px;
-  border: 1px solid #d5dfea;
-  border-radius: 10px;
-  background: #f8fafd;
+  border: 1px solid var(--tk-border);
+  border-radius: var(--tk-radius-sm);
+  background: var(--tk-tint);
   font-size: 13px;
   font-weight: 600;
 }
@@ -215,22 +233,21 @@
   grid-template-columns: minmax(0, 1fr) 220px;
   margin: 0;
   padding: 0;
-  border-radius: 18px;
-  border: 1px solid #d7e1ee;
-  background: #ffffff;
+  border-radius: var(--tk-radius-lg);
+  border: 1px solid var(--tk-border);
+  background: var(--tk-surface);
   overflow: hidden;
-  transition: border-color 150ms, box-shadow 150ms;
+  transition: border-color 150ms ease;
 }
 
 .passenger-shell .tk-card:hover {
-  border-color: #a9c4ea;
-  box-shadow: 0 10px 26px rgba(10, 33, 68, 0.06);
+  border-color: var(--tk-primary);
 }
 
 .passenger-shell .tk-card-main {
-  padding: 22px 24px;
+  padding: 20px 24px;
   display: grid;
-  gap: 14px;
+  gap: 12px;
   min-width: 0;
 }
 
@@ -245,7 +262,7 @@
 .passenger-shell .tk-trip-name {
   font-size: 14px;
   font-weight: 650;
-  color: var(--sp-muted);
+  color: var(--tk-muted);
 }
 
 .passenger-shell .tk-route-row {
@@ -253,10 +270,10 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 750;
   letter-spacing: -0.02em;
-  color: var(--sp-ink);
+  color: var(--tk-ink);
 }
 
 .passenger-shell .tk-meta-row {
@@ -265,7 +282,7 @@
   flex-wrap: wrap;
   gap: 8px 18px;
   font-size: 13px;
-  color: var(--sp-muted);
+  color: var(--tk-muted);
 }
 
 .passenger-shell .tk-meta-item {
@@ -275,9 +292,9 @@
 }
 
 .passenger-shell .tk-card-stub {
-  padding: 22px;
-  border-left: 1.5px dashed #d5dfea;
-  background: #f8fbff;
+  padding: 20px 22px;
+  border-left: 1.5px dashed var(--tk-border);
+  background: var(--tk-tint);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -292,18 +309,16 @@
 }
 
 .passenger-shell .tk-seat-box span {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--sp-muted);
+  color: var(--tk-muted);
 }
 
 .passenger-shell .tk-seat-box strong {
   font-size: 26px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--sp-primary);
+  color: var(--tk-primary);
   line-height: 1.1;
 }
 
@@ -318,21 +333,22 @@
   font-size: 15px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--sp-ink);
+  color: var(--tk-ink);
 }
 
 .passenger-shell .tk-stub-actions .sp-primary,
 .passenger-shell .tk-stub-actions .sp-secondary {
   width: 100%;
-  min-height: 42px;
+  min-height: 44px;
   font-size: 13px;
+  white-space: nowrap;
 }
 
 .passenger-shell .tk-empty {
-  padding: 36px 24px;
-  border-radius: 18px;
-  border: 1px solid #d7e1ee;
-  background: #ffffff;
+  padding: 32px 24px;
+  border-radius: var(--tk-radius-lg);
+  border: 1px solid var(--tk-border);
+  background: var(--tk-surface);
   display: grid;
   gap: 20px;
 }
@@ -349,59 +365,65 @@
 .passenger-shell .tk-empty-head h2 {
   margin: 0;
   font-size: 22px;
+  color: var(--tk-ink);
 }
 
 .passenger-shell .tk-empty-head p {
   margin: 0;
   font-size: 14px;
-  color: var(--sp-muted);
+  color: var(--tk-muted);
 }
 
 .passenger-shell .tk-guide-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--tk-border);
 }
 
 .passenger-shell .tk-guide-step {
-  padding: 16px;
-  border-radius: 14px;
-  border: 1px solid #e2eaf3;
-  background: #f8fafd;
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .passenger-shell .tk-guide-step strong {
   font-size: 14px;
-  color: var(--sp-ink);
+  color: var(--tk-ink);
 }
 
 .passenger-shell .tk-guide-step p {
   margin: 0;
-  font-size: 12px;
-  color: var(--sp-muted);
+  font-size: 13px;
+  color: var(--tk-muted);
 }
 
+/* Step 3: Split Boarding Pass */
 .passenger-shell .tk-detail-shell {
-  max-width: 780px;
+  max-width: 960px;
   margin: 0 auto;
   width: 100%;
-  display: grid;
-  gap: 20px;
-}
-
-.passenger-shell .tk-detail-card {
-  padding: 28px;
-  margin: 0;
-  border-radius: 20px;
-  border: 1px solid #d7e1ee;
-  background: #ffffff;
   display: grid;
   gap: 18px;
 }
 
-.passenger-shell .tk-detail-actions {
+.passenger-shell .tk-pass {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 320px);
+  border-radius: var(--tk-radius-lg);
+  border: 1px solid var(--tk-border);
+  background: var(--tk-surface);
+  overflow: hidden;
+}
+
+.passenger-shell .tk-pass-main {
+  padding: 26px 28px;
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+
+.passenger-shell .tk-pass-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -409,13 +431,103 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 760px) {
+.passenger-shell .tk-pass-route {
+  display: grid;
+  gap: 6px;
+}
+
+.passenger-shell .tk-pass-route h2 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: clamp(22px, 2.5vw, 28px);
+  letter-spacing: -0.025em;
+  color: var(--tk-ink);
+}
+
+.passenger-shell .tk-pass-route p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--tk-muted);
+}
+
+.passenger-shell .tk-pass-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--tk-border);
+  margin: 0;
+}
+
+.passenger-shell .tk-pass-facts div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.passenger-shell .tk-pass-facts dt {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tk-muted);
+}
+
+.passenger-shell .tk-pass-facts dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tk-ink);
+  overflow-wrap: break-word;
+  font-variant-numeric: tabular-nums;
+}
+
+.passenger-shell .tk-pass-qr {
+  padding: 26px 24px;
+  border-left: 1.5px dashed var(--tk-border);
+  background: var(--tk-tint);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.passenger-shell .tk-qr-frame {
+  padding: 12px;
+  border-radius: var(--tk-radius-md);
+  border: 1px solid var(--tk-border);
+  background: var(--tk-surface);
+}
+
+.passenger-shell .tk-qr-frame img {
+  display: block;
+  width: 210px;
+  max-width: 100%;
+  height: auto;
+}
+
+.passenger-shell .tk-pass-qr p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--tk-muted);
+  max-width: 26ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .passenger-shell .tk-card {
+    transition: none;
+  }
+}
+
+@media (max-width: 780px) {
   .passenger-shell .tk-card {
     grid-template-columns: 1fr;
   }
   .passenger-shell .tk-card-stub {
     border-left: 0;
-    border-top: 1.5px dashed #d5dfea;
+    border-top: 1.5px dashed var(--tk-border);
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
@@ -430,22 +542,28 @@
   .passenger-shell .tk-guide-grid {
     grid-template-columns: 1fr;
   }
+  .passenger-shell .tk-pass {
+    grid-template-columns: 1fr;
+  }
+  .passenger-shell .tk-pass-qr {
+    border-left: 0;
+    border-top: 1.5px dashed var(--tk-border);
+  }
 }
 
 @media (max-width: 639px) {
-  .passenger-shell .tk-hero {
-    padding: 20px 16px;
-    border-radius: 16px;
-  }
   .passenger-shell .tk-search-tools {
     width: 100%;
   }
   .passenger-shell .tk-search-box {
     max-width: none;
   }
-  .passenger-shell .tk-detail-card {
+  .passenger-shell .tk-pass-main,
+  .passenger-shell .tk-pass-qr {
     padding: 20px 16px;
-    border-radius: 16px;
+  }
+  .passenger-shell .tk-pass-facts {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -454,13 +572,11 @@
   .sp-site-footer,
   .sp-complaint-entry,
   .pf-topbar,
+  .pf-head,
   .tk-print-hide {
     display: none !important;
   }
   .passenger-shell {
-    background: #ffffff !important;
-  }
-  .passenger-shell .tk-detail-card {
-    border: 1px solid #cbd5e1 !important;
+    background: var(--tk-surface) !important;
   }
 }

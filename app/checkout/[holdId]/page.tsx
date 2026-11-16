@@ -43,16 +43,13 @@ export default async function CheckoutPage({params}:{params:Promise<{holdId:stri
  return <PassengerShell active="search">
   <div className="pf-wrap">
    <div className="pf-topbar">
-    <Link className="pf-back-link" href={`/holds/${h.id}`}><ArrowLeft size={16} aria-hidden="true"/>Detail hold</Link>
+    <Link className="pf-back-link" href={seatUrl}><ArrowLeft size={16} aria-hidden="true"/>Ubah kursi</Link>
     <BookingStepper step={2}/>
    </div>
-   <section className="pf-hero" aria-labelledby="checkout-title">
-    <div>
-     <p className="pf-eyebrow">Konfirmasi Pemesanan</p>
-     <h1 id="checkout-title">Data penumpang &amp; pembayaran</h1>
-     <p className="pf-hero-sub">Kursi Anda dikunci sementara selama 10 menit. Lengkapi data penumpang di bawah untuk melanjutkan pembayaran.</p>
-    </div>
-   </section>
+   <header className="pf-head" aria-labelledby="checkout-title">
+    <h1 id="checkout-title">Data penumpang dan pembayaran</h1>
+    <p className="pf-head-sub">Kursi Anda dikunci sementara selama 10 menit. Lengkapi data penerima tiket sebelum melanjutkan ke pembayaran.</p>
+   </header>
    <div className="pf-grid">
     {data.clientKey
      ?<CheckoutForm holdId={holdId} profile={data.profile} email={data.email} payment={{clientKey:data.clientKey}}/>
@@ -61,8 +58,8 @@ export default async function CheckoutPage({params}:{params:Promise<{holdId:stri
        <WarningCircle size={22} weight="fill" aria-hidden="true"/>
        <h2 id="sandbox-unavailable-title">Checkout belum tersedia</h2>
       </div>
-      <p>Pembayaran Sandbox belum dikonfigurasi dengan lengkap (`MIDTRANS_ENVIRONMENT`, `MIDTRANS_MERCHANT_ID`, `MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`, dan `TICKET_ENCRYPTION_KEY`).</p>
-      <p>Anda dapat langsung melepas kursi di panel kanan agar kursi kembali tersedia, atau lengkapi konfigurasi Sandbox pada `.env.local` lalu muat ulang halaman ini.</p>
+      <p>Pembayaran Sandbox belum dikonfigurasi dengan lengkap (MIDTRANS_ENVIRONMENT, MIDTRANS_MERCHANT_ID, MIDTRANS_SERVER_KEY, MIDTRANS_CLIENT_KEY, dan TICKET_ENCRYPTION_KEY).</p>
+      <p>Anda dapat langsung melepas kursi di panel kanan agar kursi kembali tersedia, atau lengkapi konfigurasi Sandbox pada .env.local lalu muat ulang halaman ini.</p>
       <div className="pf-action-row">
        <Link className="sp-secondary" href={seatUrl}>Kembali ke peta kursi</Link>
        <Link className="sp-secondary" href="/trips">Lihat jadwal lain</Link>

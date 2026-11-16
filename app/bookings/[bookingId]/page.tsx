@@ -39,13 +39,10 @@ export default async function BookingPage({params}:{params:Promise<{bookingId:st
     <Link className="pf-back-link" href="/tickets"><ArrowLeft size={16} aria-hidden="true"/>Pesanan saya</Link>
     <BookingStepper step={booking.status==='CONFIRMED'?3:2}/>
    </div>
-   <section className="pf-hero" aria-labelledby="booking-status-title">
-    <div>
-     <p className="pf-eyebrow">Status Transaksi</p>
-     <h1 id="booking-status-title">Booking Anda</h1>
-     <p className="pf-hero-sub">Pantau status pembayaran Anda. Tiket QR otomatis aktif begitu pembayaran terkonfirmasi.</p>
-    </div>
-   </section>
+   <header className="pf-head" aria-labelledby="booking-status-title">
+    <h1 id="booking-status-title">Booking Anda</h1>
+    <p className="pf-head-sub">Pantau status pembayaran Anda. Tiket QR otomatis aktif begitu pembayaran terkonfirmasi.</p>
+   </header>
    <BookingStatus initial={booking} clientKey={clientKey}/>
    <div className="pf-action-row">
     <Link className="sp-secondary" href={'/pengaduan/buat?pesanan='+encodeURIComponent(bookingId)}>Laporkan masalah pesanan</Link>

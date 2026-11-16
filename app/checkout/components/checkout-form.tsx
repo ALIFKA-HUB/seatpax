@@ -107,12 +107,12 @@ export default function CheckoutForm({holdId,profile,email,payment}:{holdId:stri
    </div>
 
    <p className="pf-email-chip">
-    <span><EnvelopeSimple size={15} aria-hidden="true" style={{verticalAlign:'-2px',marginRight:6}}/>Tiket &amp; bukti bayar dikirim ke</span>
+    <span><EnvelopeSimple size={15} aria-hidden="true" style={{verticalAlign:'-2px',marginRight:6}}/>Tiket dan bukti bayar dikirim ke</span>
     <strong>{email}</strong>
    </p>
 
    <button className="sp-primary" type="submit" disabled={busy||Boolean(bookingId)}>
-    {busy?'Menyiapkan pembayaran…':'Lanjutkan ke pembayaran'}
+    {busy?'Menyiapkan pembayaran...':'Lanjutkan ke pembayaran'}
     {!busy&&<ArrowRight size={17} aria-hidden="true"/>}
    </button>
   </form>
@@ -124,7 +124,7 @@ export default function CheckoutForm({holdId,profile,email,payment}:{holdId:stri
     <p>Tiket akan tersedia setelah pembayaran berhasil dikonfirmasi.</p>
    </div>
    <div className="pf-action-row" style={{marginTop:'14px'}}>
-    <Link className="sp-secondary" href={`/bookings/${bookingId}`}>Buka detail booking →</Link>
+    <Link className="sp-secondary" href={`/bookings/${bookingId}`}>Lihat detail booking<ArrowRight size={16} aria-hidden="true" style={{marginLeft:6}}/></Link>
     {status==='PENDING_PAYMENT'&&payment&&<button className="sp-primary" type="button" disabled={busy} onClick={()=>void reopen()}>Buka pembayaran lagi</button>}
    </div>
   </div>}

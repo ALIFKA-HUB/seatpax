@@ -71,7 +71,7 @@ export default function HoldDetail({initial}:{initial:HoldView}){
 
   {view.effectiveStatus!=='ACTIVE'&&<p className="sp-muted" style={{marginTop:'18px'}}>Kursi tidak lagi ditahan melalui hold ini. Kembali ke pilihan kursi atau periksa status booking yang sudah dibuat.</p>}
 
-  <div className="pf-action-row" style={{marginTop:'16px',paddingTop:'16px',borderTop:'1px solid #e5ecf5'}}>
+  <div className="pf-action-row" style={{marginTop:'16px',paddingTop:'16px',borderTop:'1px solid var(--pf-border)'}}>
    <button className="sp-secondary" disabled={pending} onClick={()=>void refresh()}>Perbarui status</button>
    <Link className="sp-secondary" href={`/trips/${h.tripId}?from=${h.fromStopId}&to=${h.toStopId}`}>Kembali ke peta kursi</Link>
   </div>
