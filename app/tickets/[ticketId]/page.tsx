@@ -75,6 +75,9 @@ export default async function TicketPage({params}:{params:Promise<{ticketId:stri
       :<p>{ticket.bookingStatus==='REFUNDED'?'QR tidak tersedia untuk booking yang telah di-refund.':'QR belum tersedia untuk booking yang perlu ditinjau.'}</p>}
     </div>
    </article>
+   <div className="pf-action-row tk-print-hide" style={{marginTop:'16px'}}>
+    <Link className="sp-secondary" href={'/pengaduan/buat?tiket='+encodeURIComponent(ticketId)}>Laporkan masalah tiket</Link>
+   </div>
   </div>
  </PassengerShell>;
 }

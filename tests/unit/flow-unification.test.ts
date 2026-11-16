@@ -23,12 +23,12 @@ it('unifies cross-workspace navigation across account, super-admin, passenger, a
 
  const trip=readFileSync('app/trips/[tripId]/page.tsx','utf8');
  expect(trip).toContain('StatePanel');
- expect(trip).toContain('sp-back');
- expect(trip).toContain('sp-page-heading');
+ expect(trip).toContain('pf-back-link');
+ expect(trip).toContain('pf-head');
 
  const hold=readFileSync('app/holds/[holdId]/page.tsx','utf8');
  expect(hold).toContain('StatePanel');
- expect(hold).toContain('sp-back');
+ expect(hold).toContain('pf-back-link');
 
  const ticket=readFileSync('app/tickets/[ticketId]/page.tsx','utf8');
  expect(ticket).toContain('/pengaduan/buat');
