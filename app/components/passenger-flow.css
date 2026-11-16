@@ -1,0 +1,517 @@
+/* Shared modern flow styles for seat selection, holds, checkout, and booking status */
+.passenger-shell .pf-wrap {
+  display: grid;
+  gap: 22px;
+}
+
+.passenger-shell .pf-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.passenger-shell .pf-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #d5dfea;
+  background: #ffffff;
+  color: var(--sp-ink);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.passenger-shell .pf-back-link:hover {
+  border-color: var(--sp-primary);
+  color: var(--sp-primary);
+  text-decoration: none;
+}
+
+.passenger-shell .pf-stepper {
+  flex: 1;
+  min-width: 280px;
+  max-width: 620px;
+}
+
+.passenger-shell .pf-stepper-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.passenger-shell .pf-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #dce5f0;
+  background: #ffffff;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .pf-step.is-current {
+  border-color: var(--sp-primary);
+  background: #edf4ff;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .pf-step.is-done {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.passenger-shell .pf-step-badge {
+  display: grid;
+  place-content: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .pf-step.is-current .pf-step-badge {
+  background: var(--sp-primary);
+  color: #ffffff;
+}
+
+.passenger-shell .pf-step.is-done .pf-step-badge {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.passenger-shell .pf-step-text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.passenger-shell .pf-step-text small {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.passenger-shell .pf-step-text strong {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.passenger-shell .pf-step-connector {
+  display: none;
+}
+
+.passenger-shell .pf-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 24px 28px;
+  border-radius: 18px;
+  border: 1px solid #d5e2f2;
+  background: linear-gradient(155deg, #eef4ff 0%, #f8fbff 60%, #ffffff 100%);
+}
+
+.passenger-shell .pf-eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sp-primary);
+}
+
+.passenger-shell .pf-hero h1 {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 2.8vw, 32px);
+  line-height: 1.2;
+}
+
+.passenger-shell .pf-hero-sub {
+  margin: 0;
+  font-size: 14px;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .pf-interval-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid #d7e1ee;
+  background: #ffffff;
+  margin: 0;
+}
+
+.passenger-shell .pf-interval-bar label {
+  display: grid;
+  gap: 5px;
+  flex: 1 1 200px;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .pf-interval-bar select {
+  min-height: 42px;
+  border: 1px solid #d5dfea;
+  border-radius: 10px;
+  background: #f8fafd;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .pf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 370px);
+  gap: 24px;
+  align-items: start;
+}
+
+.passenger-shell .pf-card {
+  padding: 24px;
+  margin: 0;
+  border-radius: 18px;
+  border: 1px solid #d7e1ee;
+  background: #ffffff;
+  min-width: 0;
+}
+
+.passenger-shell .pf-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.passenger-shell .pf-card-head h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.passenger-shell .pf-seat-stage {
+  display: grid;
+  gap: 16px;
+}
+
+.passenger-shell .pf-seat-stage .seat-legend {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f8fafd;
+  border: 1px solid #e2eaf3;
+}
+
+.passenger-shell .pf-seat-stage .seat-scroll {
+  padding: 20px 16px;
+  border-radius: 16px;
+  border: 1px solid #d7e1ee;
+  background: linear-gradient(180deg, #f3f7fd 0%, #f8fafd 100%);
+}
+
+.passenger-shell .pf-seat-stage .seat-front {
+  padding: 8px 12px;
+  margin: 0 0 8px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #dce5f0;
+  font-weight: 700;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .pf-seat-stage .seat-cell {
+  border-radius: 10px;
+  border-width: 1.5px;
+  transition: transform 120ms ease, border-color 150ms, background-color 150ms, box-shadow 150ms;
+}
+
+.passenger-shell .pf-seat-stage .seat-cell:not(:disabled):hover {
+  transform: translateY(-1px);
+  border-color: var(--sp-primary);
+  box-shadow: 0 6px 14px rgba(0, 91, 209, 0.12);
+}
+
+.passenger-shell .pf-seat-stage .seat-cell.selected {
+  box-shadow: 0 0 0 3px rgba(0, 91, 209, 0.16);
+}
+
+.passenger-shell .pf-stops-details {
+  margin: 4px 0 0;
+  border: 1px solid #e2eaf3;
+  border-radius: 12px;
+  padding: 0 16px;
+  background: #fafcff;
+}
+
+.passenger-shell .pf-stops-details summary {
+  padding: 12px 0;
+  min-height: 44px;
+}
+
+.passenger-shell .pf-stops-list {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .pf-summary-sticky {
+  position: sticky;
+  top: 104px;
+  display: grid;
+  gap: 16px;
+}
+
+.passenger-shell .pf-summary-card {
+  padding: 22px;
+  margin: 0;
+  border-radius: 18px;
+  border: 1px solid #d7e1ee;
+  background: #ffffff;
+  display: grid;
+  gap: 14px;
+}
+
+.passenger-shell .pf-summary-card h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.passenger-shell .pf-summary-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .pf-summary-card .sp-primary,
+.passenger-shell .pf-summary-card .sp-secondary {
+  width: 100%;
+  margin: 0;
+}
+
+.passenger-shell .pf-countdown-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fffbeb;
+  border: 1px solid #f5d88d;
+  color: #92400e;
+}
+
+.passenger-shell .pf-countdown-box.is-urgent {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.passenger-shell .pf-countdown-label {
+  display: grid;
+  gap: 2px;
+}
+
+.passenger-shell .pf-countdown-label span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.passenger-shell .pf-countdown-label small {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.passenger-shell .pf-countdown-time {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.passenger-shell .pf-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.passenger-shell .pf-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #d5dfea;
+  background: #f8fafd;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sp-ink);
+  cursor: pointer;
+}
+
+.passenger-shell .pf-mode-option input {
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  padding: 0;
+  flex: none;
+  accent-color: var(--sp-primary);
+}
+
+.passenger-shell .pf-mode-option:has(input:checked) {
+  border-color: var(--sp-primary);
+  background: #edf4ff;
+  color: var(--sp-primary);
+}
+
+.passenger-shell .pf-field-group {
+  display: grid;
+  gap: 6px;
+}
+
+.passenger-shell .pf-field-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .pf-field-group input {
+  border: 1px solid #cbd7e6;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.passenger-shell .pf-field-group input:focus {
+  border-color: var(--sp-primary);
+}
+
+.passenger-shell .pf-email-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: #f8fafd;
+  border: 1px solid #e2eaf3;
+  font-size: 13px;
+  margin: 0;
+}
+
+.passenger-shell .pf-sandbox-alert {
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #f5d88d;
+  background: #fffbeb;
+  color: #713f12;
+  display: grid;
+  gap: 12px;
+}
+
+.passenger-shell .pf-sandbox-alert h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #713f12;
+}
+
+.passenger-shell .pf-sandbox-alert p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.passenger-shell .pf-status-shell {
+  max-width: 780px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  gap: 18px;
+}
+
+.passenger-shell .pf-status-shell .sp-ticket-panel {
+  max-width: none;
+  margin: 0 !important;
+  border-radius: 18px;
+  border-color: #d7e1ee;
+}
+
+.passenger-shell .pf-action-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.passenger-shell .pf-danger-btn {
+  border-color: #fecaca;
+  background: #fff5f5;
+  color: #b91c1c;
+}
+
+.passenger-shell .pf-danger-btn:hover:not(:disabled) {
+  border-color: #f87171;
+  background: #fee2e2;
+}
+
+@media (max-width: 960px) {
+  .passenger-shell .pf-grid {
+    grid-template-columns: 1fr;
+  }
+  .passenger-shell .pf-summary-sticky {
+    position: static;
+  }
+}
+
+@media (max-width: 639px) {
+  .passenger-shell .pf-hero {
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+  .passenger-shell .pf-card,
+  .passenger-shell .pf-summary-card {
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+  .passenger-shell .pf-stepper-list {
+    gap: 6px;
+  }
+  .passenger-shell .pf-step {
+    padding: 8px;
+    gap: 6px;
+  }
+  .passenger-shell .pf-step-text small {
+    display: none;
+  }
+  .passenger-shell .pf-step-text strong {
+    font-size: 12px;
+  }
+  .passenger-shell .pf-mode-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {ArrowRight,EnvelopeSimple,User,Users} from '@phosphor-icons/react';
 import StatusBadge from '@/app/components/status-badge';
 import {bookingPresentation} from '@/app/presentation';
 import {useEffect,useRef,useState} from 'react';
@@ -7,13 +8,126 @@ import {useRouter} from 'next/navigation';
 import {refreshBookingAction,startCheckoutAction,prepareBookingPaymentAction} from '../actions';
 import {checkoutIntent,paymentCallbackState,popupClosedState,pollingTerminal,passengerForMode,type CheckoutIntent} from '../ui-state';
 import {openSnap} from '../snap-client';
+
 export default function CheckoutForm({holdId,profile,email,payment}:{holdId:string;profile:{name:string;phone:string};email:string;payment:{clientKey:string}|null}){
- const [mode,setMode]=useState<'SELF'|'OTHER'>('SELF'),[name,setName]=useState(profile.name),[phone,setPhone]=useState(profile.phone),[bookingId,setBookingId]=useState(''),[status,setStatus]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),intent=useRef<CheckoutIntent|null>(null),busyRef=useRef(false),router=useRouter();
+ const [mode,setMode]=useState<'SELF'|'OTHER'>('SELF'),[name,setName]=useState(profile.name),[phone,setPhone]=useState(profile.phone),[bookingId,setBookingId]=useState(''),[status,setStatus]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
+ const intent=useRef<CheckoutIntent|null>(null),busyRef=useRef(false),router=useRouter();
  const fingerprint=`${mode}|${name.trim()}|${phone.trim()}`;
- async function refresh(id:string){const r=await refreshBookingAction(id);if(r.ok){setStatus(r.booking.status);return r.booking;}setMessage(r.message);return null;}
- async function pay(token:string,id:string){if(!payment)return;try{await openSnap(token,payment.clientKey,()=>{const next=paymentCallbackState('PENDING_PAYMENT');if(next.refresh)void refresh(id);setStatus(value=>popupClosedState(value||'PENDING_PAYMENT'));});}catch{setMessage('Jendela pembayaran belum tersedia. Pembayaran tetap dapat dilanjutkan dari status booking.');}}
- async function reopen(){if(!bookingId||busyRef.current)return;busyRef.current=true;setBusy(true);try{const result=await prepareBookingPaymentAction(bookingId);if(!result.ok){setMessage(result.message);return;}setStatus(result.booking.status);if(result.token)await pay(result.token,bookingId);}catch{setMessage('Pembayaran belum tersedia. Coba perbarui status booking.');}finally{busyRef.current=false;setBusy(false);}}
- async function submit(e:React.FormEvent){e.preventDefault();if(busyRef.current)return;busyRef.current=true;setBusy(true);setMessage('');intent.current=checkoutIntent(intent.current,fingerprint);try{const result=await startCheckoutAction({holdId,requestKey:intent.current.requestKey,mode,name,phone});if(!result.ok){setMessage(result.message);return;}setBookingId(result.booking.id);setStatus(result.booking.status);if(result.token)await pay(result.token,result.booking.id);else if(result.booking.status!=='PENDING_PAYMENT')router.push(`/bookings/${result.booking.id}`);else setMessage(result.paymentState==='UNAVAILABLE'?'Status pembayaran belum pasti. Ulangi dengan data yang sama atau periksa booking.':'Pembayaran disiapkan; periksa status booking untuk melanjutkan.');}catch{setMessage('Hasil checkout belum diketahui. Ulangi dengan data yang sama untuk memeriksa transaksi yang sama.');}finally{busyRef.current=false;setBusy(false);}}
- useEffect(()=>{if(!bookingId||pollingTerminal(status))return;let alive=true,reading=false;const timer=window.setInterval(()=>{if(document.visibilityState!=='visible'||reading)return;reading=true;void refreshBookingAction(bookingId).then(r=>{if(alive&&r.ok)setStatus(r.booking.status);}).finally(()=>{reading=false;});},5000);return()=>{alive=false;window.clearInterval(timer);};},[bookingId,status]);
- return <section className="passenger-card"><form className="checkout-form" onSubmit={submit}><fieldset disabled={Boolean(bookingId)||busy}><legend>Untuk siapa tiket ini?</legend><label className="checkout-choice"><input type="radio" name="mode" value="SELF" checked={mode==='SELF'} onChange={()=>{setMode('SELF');const next=passengerForMode('SELF',profile);setName(next.name);setPhone(next.phone);}}/>Saya sendiri</label><label className="checkout-choice"><input type="radio" name="mode" value="OTHER" checked={mode==='OTHER'} onChange={()=>{setMode('OTHER');const next=passengerForMode('OTHER',profile);setName(next.name);setPhone(next.phone);}}/>Orang lain</label></fieldset><p className="form-note">Data yang terisi berasal dari profil Anda. Periksa sebelum melanjutkan. Perubahan penumpang lain tidak mengubah profil akun.</p><label htmlFor="passenger-name">Nama penumpang</label><input disabled={Boolean(bookingId)||busy} id="passenger-name" autoComplete="name" required maxLength={120} value={name} onChange={e=>setName(e.target.value)}/><label htmlFor="passenger-phone">Nomor HP penumpang</label><input disabled={Boolean(bookingId)||busy} id="passenger-phone" type="tel" autoComplete="tel" required value={phone} onChange={e=>setPhone(e.target.value)}/><p>Email pemesan: <strong>{email}</strong></p><button className="sp-primary" type="submit" disabled={busy||Boolean(bookingId)}>{busy?'Memeriksa…':'Lanjutkan ke pembayaran'}</button></form>{bookingId&&<div className="checkout-progress"><h2>Status booking</h2><div role="status"><StatusBadge {...bookingPresentation(status)}/><p>Tiket akan tersedia setelah pembayaran berhasil dikonfirmasi.</p></div><Link href={`/bookings/${bookingId}`}>Buka booking →</Link>{status==='PENDING_PAYMENT'&&payment&&<button className="sp-primary" type="button" disabled={busy} onClick={()=>void reopen()}>Buka pembayaran lagi</button>}</div>}<p role="status" aria-live="polite">{message}</p></section>;
+
+ async function refresh(id:string){
+  const r=await refreshBookingAction(id);
+  if(r.ok){setStatus(r.booking.status);return r.booking;}
+  setMessage(r.message);
+  return null;
+ }
+
+ async function pay(token:string,id:string){
+  if(!payment)return;
+  try{
+   await openSnap(token,payment.clientKey,()=>{
+    const next=paymentCallbackState('PENDING_PAYMENT');
+    if(next.refresh)void refresh(id);
+    setStatus(value=>popupClosedState(value||'PENDING_PAYMENT'));
+   });
+  }catch{setMessage('Jendela pembayaran belum tersedia. Pembayaran tetap dapat dilanjutkan dari status booking.');}
+ }
+
+ async function reopen(){
+  if(!bookingId||busyRef.current)return;
+  busyRef.current=true;setBusy(true);
+  try{
+   const result=await prepareBookingPaymentAction(bookingId);
+   if(!result.ok){setMessage(result.message);return;}
+   setStatus(result.booking.status);
+   if(result.token)await pay(result.token,bookingId);
+  }catch{setMessage('Pembayaran belum tersedia. Coba perbarui status booking.');}
+  finally{busyRef.current=false;setBusy(false);}
+ }
+
+ async function submit(e:React.FormEvent){
+  e.preventDefault();
+  if(busyRef.current)return;
+  busyRef.current=true;setBusy(true);setMessage('');
+  intent.current=checkoutIntent(intent.current,fingerprint);
+  try{
+   const result=await startCheckoutAction({holdId,requestKey:intent.current.requestKey,mode,name,phone});
+   if(!result.ok){setMessage(result.message);return;}
+   setBookingId(result.booking.id);
+   setStatus(result.booking.status);
+   if(result.token)await pay(result.token,result.booking.id);
+   else if(result.booking.status!=='PENDING_PAYMENT')router.push(`/bookings/${result.booking.id}`);
+   else setMessage(result.paymentState==='UNAVAILABLE'?'Status pembayaran belum pasti. Ulangi dengan data yang sama atau periksa booking.':'Pembayaran disiapkan; periksa status booking untuk melanjutkan.');
+  }catch{setMessage('Hasil checkout belum diketahui. Ulangi dengan data yang sama untuk memeriksa transaksi yang sama.');}
+  finally{busyRef.current=false;setBusy(false);}
+ }
+
+ useEffect(()=>{
+  if(!bookingId||pollingTerminal(status))return;
+  let alive=true,reading=false;
+  const timer=window.setInterval(()=>{
+   if(document.visibilityState!=='visible'||reading)return;
+   reading=true;
+   void refreshBookingAction(bookingId).then(r=>{if(alive&&r.ok)setStatus(r.booking.status);}).finally(()=>{reading=false;});
+  },5000);
+  return()=>{alive=false;window.clearInterval(timer);};
+ },[bookingId,status]);
+
+ return <section className="pf-card" aria-labelledby="checkout-form-title">
+  <div className="pf-card-head">
+   <div>
+    <h2 id="checkout-form-title">Data penumpang</h2>
+    <p className="pf-summary-note">Pilih penerima tiket, lalu periksa nama dan nomor HP aktif.</p>
+   </div>
+  </div>
+
+  <form className="checkout-form" onSubmit={submit}>
+   <fieldset disabled={Boolean(bookingId)||busy} style={{display:'grid',gap:'10px'}}>
+    <legend style={{fontSize:'14px',fontWeight:650,marginBottom:'6px'}}>Untuk siapa tiket ini?</legend>
+    <div className="pf-mode-grid">
+     <label className="pf-mode-option">
+      <input type="radio" name="mode" value="SELF" checked={mode==='SELF'} onChange={()=>{setMode('SELF');const next=passengerForMode('SELF',profile);setName(next.name);setPhone(next.phone);}}/>
+      <User size={18} aria-hidden="true"/><span>Saya sendiri</span>
+     </label>
+     <label className="pf-mode-option">
+      <input type="radio" name="mode" value="OTHER" checked={mode==='OTHER'} onChange={()=>{setMode('OTHER');const next=passengerForMode('OTHER',profile);setName(next.name);setPhone(next.phone);}}/>
+      <Users size={18} aria-hidden="true"/><span>Orang lain</span>
+     </label>
+    </div>
+   </fieldset>
+   <p className="form-note" style={{margin:'4px 0 8px'}}>Data bawaan diambil dari profil Anda. Mengubah nama untuk penumpang lain tidak mengubah profil akun Anda.</p>
+
+   <div className="pf-field-group">
+    <label htmlFor="passenger-name">Nama penumpang</label>
+    <input disabled={Boolean(bookingId)||busy} id="passenger-name" autoComplete="name" required maxLength={120} placeholder="Nama sesuai identitas" value={name} onChange={e=>setName(e.target.value)}/>
+   </div>
+
+   <div className="pf-field-group">
+    <label htmlFor="passenger-phone">Nomor HP penumpang</label>
+    <input disabled={Boolean(bookingId)||busy} id="passenger-phone" type="tel" autoComplete="tel" required placeholder="08xxxxxxxxxx" value={phone} onChange={e=>setPhone(e.target.value)}/>
+   </div>
+
+   <p className="pf-email-chip">
+    <span><EnvelopeSimple size={15} aria-hidden="true" style={{verticalAlign:'-2px',marginRight:6}}/>Tiket &amp; bukti bayar dikirim ke</span>
+    <strong>{email}</strong>
+   </p>
+
+   <button className="sp-primary" type="submit" disabled={busy||Boolean(bookingId)}>
+    {busy?'Menyiapkan pembayaran…':'Lanjutkan ke pembayaran'}
+    {!busy&&<ArrowRight size={17} aria-hidden="true"/>}
+   </button>
+  </form>
+
+  {bookingId&&<div className="checkout-progress">
+   <h2>Status booking</h2>
+   <div role="status">
+    <StatusBadge {...bookingPresentation(status)}/>
+    <p>Tiket akan tersedia setelah pembayaran berhasil dikonfirmasi.</p>
+   </div>
+   <div className="pf-action-row" style={{marginTop:'14px'}}>
+    <Link className="sp-secondary" href={`/bookings/${bookingId}`}>Buka detail booking →</Link>
+    {status==='PENDING_PAYMENT'&&payment&&<button className="sp-primary" type="button" disabled={busy} onClick={()=>void reopen()}>Buka pembayaran lagi</button>}
+   </div>
+  </div>}
+  {message&&<p role="status" aria-live="polite" className="auth-message" style={{margin:'12px 0 0'}}>{message}</p>}
+ </section>;
 }

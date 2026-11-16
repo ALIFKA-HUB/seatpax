@@ -1,0 +1,466 @@
+/* Scoped styles for /tickets and /tickets/[ticketId] */
+.passenger-shell .tk-page {
+  display: grid;
+  gap: 24px;
+}
+
+.passenger-shell .tk-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 26px 28px;
+  border-radius: 20px;
+  border: 1px solid #d5e2f2;
+  background: linear-gradient(155deg, #eef4ff 0%, #f8fbff 60%, #ffffff 100%);
+}
+
+.passenger-shell .tk-eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sp-primary);
+}
+
+.passenger-shell .tk-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.18;
+}
+
+.passenger-shell .tk-hero-sub {
+  margin: 0;
+  font-size: 14px;
+  color: var(--sp-muted);
+  max-width: 56ch;
+}
+
+.passenger-shell .tk-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.passenger-shell .tk-stat {
+  display: grid;
+  gap: 2px;
+  min-width: 108px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #d6e2f1;
+  background: #ffffff;
+}
+
+.passenger-shell .tk-stat strong {
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .tk-stat span {
+  font-size: 12px;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .tk-progress-section {
+  display: grid;
+  gap: 12px;
+}
+
+.passenger-shell .tk-section-title {
+  margin: 0;
+  font-size: 18px;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .tk-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.passenger-shell .tk-progress-card {
+  display: grid;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid #f5d88d;
+  background: #fffdf5;
+}
+
+.passenger-shell .tk-progress-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.passenger-shell .tk-progress-card h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .tk-progress-meta {
+  margin: 0;
+  font-size: 13px;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .tk-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid #d7e1ee;
+  background: #ffffff;
+}
+
+.passenger-shell .tk-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.passenger-shell .tk-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid #dce5f0;
+  background: #f8fafd;
+  color: var(--sp-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.passenger-shell .tk-tab.is-active {
+  background: var(--sp-primary);
+  border-color: var(--sp-primary);
+  color: #ffffff;
+}
+
+.passenger-shell .tk-tab-count {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(10, 33, 68, 0.08);
+  font-size: 11px;
+}
+
+.passenger-shell .tk-tab.is-active .tk-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.passenger-shell .tk-search-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 300px;
+  justify-content: flex-end;
+}
+
+.passenger-shell .tk-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 220px;
+  max-width: 320px;
+}
+
+.passenger-shell .tk-search-box svg {
+  position: absolute;
+  left: 12px;
+  color: var(--sp-muted);
+  pointer-events: none;
+}
+
+.passenger-shell .tk-search-box input {
+  min-height: 40px;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #d5dfea;
+  border-radius: 10px;
+  background: #f8fafd;
+  font-size: 13px;
+}
+
+.passenger-shell .tk-sort-select {
+  width: auto;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #d5dfea;
+  border-radius: 10px;
+  background: #f8fafd;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.passenger-shell .tk-list {
+  display: grid;
+  gap: 16px;
+}
+
+.passenger-shell .tk-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  margin: 0;
+  padding: 0;
+  border-radius: 18px;
+  border: 1px solid #d7e1ee;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.passenger-shell .tk-card:hover {
+  border-color: #a9c4ea;
+  box-shadow: 0 10px 26px rgba(10, 33, 68, 0.06);
+}
+
+.passenger-shell .tk-card-main {
+  padding: 22px 24px;
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.passenger-shell .tk-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.passenger-shell .tk-trip-name {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .tk-route-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .tk-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 13px;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .tk-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.passenger-shell .tk-card-stub {
+  padding: 22px;
+  border-left: 1.5px dashed #d5dfea;
+  background: #f8fbff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.passenger-shell .tk-seat-box {
+  display: grid;
+  gap: 2px;
+  text-align: right;
+}
+
+.passenger-shell .tk-seat-box span {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .tk-seat-box strong {
+  font-size: 26px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--sp-primary);
+  line-height: 1.1;
+}
+
+.passenger-shell .tk-stub-actions {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  text-align: right;
+}
+
+.passenger-shell .tk-fare {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .tk-stub-actions .sp-primary,
+.passenger-shell .tk-stub-actions .sp-secondary {
+  width: 100%;
+  min-height: 42px;
+  font-size: 13px;
+}
+
+.passenger-shell .tk-empty {
+  padding: 36px 24px;
+  border-radius: 18px;
+  border: 1px solid #d7e1ee;
+  background: #ffffff;
+  display: grid;
+  gap: 20px;
+}
+
+.passenger-shell .tk-empty-head {
+  text-align: center;
+  max-width: 54ch;
+  margin: 0 auto;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.passenger-shell .tk-empty-head h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.passenger-shell .tk-empty-head p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .tk-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.passenger-shell .tk-guide-step {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #e2eaf3;
+  background: #f8fafd;
+  display: grid;
+  gap: 6px;
+}
+
+.passenger-shell .tk-guide-step strong {
+  font-size: 14px;
+  color: var(--sp-ink);
+}
+
+.passenger-shell .tk-guide-step p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--sp-muted);
+}
+
+.passenger-shell .tk-detail-shell {
+  max-width: 780px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  gap: 20px;
+}
+
+.passenger-shell .tk-detail-card {
+  padding: 28px;
+  margin: 0;
+  border-radius: 20px;
+  border: 1px solid #d7e1ee;
+  background: #ffffff;
+  display: grid;
+  gap: 18px;
+}
+
+.passenger-shell .tk-detail-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .passenger-shell .tk-card {
+    grid-template-columns: 1fr;
+  }
+  .passenger-shell .tk-card-stub {
+    border-left: 0;
+    border-top: 1.5px dashed #d5dfea;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .passenger-shell .tk-seat-box {
+    text-align: left;
+  }
+  .passenger-shell .tk-stub-actions {
+    width: auto;
+    flex: 1 1 180px;
+  }
+  .passenger-shell .tk-guide-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 639px) {
+  .passenger-shell .tk-hero {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+  .passenger-shell .tk-search-tools {
+    width: 100%;
+  }
+  .passenger-shell .tk-search-box {
+    max-width: none;
+  }
+  .passenger-shell .tk-detail-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+}
+
+@media print {
+  .sp-header,
+  .sp-site-footer,
+  .sp-complaint-entry,
+  .pf-topbar,
+  .tk-print-hide {
+    display: none !important;
+  }
+  .passenger-shell {
+    background: #ffffff !important;
+  }
+  .passenger-shell .tk-detail-card {
+    border: 1px solid #cbd5e1 !important;
+  }
+}
