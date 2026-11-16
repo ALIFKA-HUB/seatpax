@@ -26,6 +26,9 @@ export default async function TripPage({params,searchParams}:{params:Promise<{tr
   </div>
  </PassengerShell>;
 
+ const originName=v.detail.stops.find(s=>s.id===p.from)?.name;
+ const destName=v.detail.stops.find(s=>s.id===p.to)?.name;
+
  return <PassengerShell active="search">
   <div className="pf-wrap">
    <div className="pf-topbar">
@@ -36,14 +39,9 @@ export default async function TripPage({params,searchParams}:{params:Promise<{tr
     <div>
      <p className="pf-eyebrow">{v.detail.trip.identity?.className??'Shuttle'} / {v.detail.trip.identity?.vehicleName??'Armada'}</p>
      <h1 id="trip-seat-title">{v.detail.trip.name}</h1>
-     <p className="pf-hero-sub">{v.detail.trip.identity?.routeName??'Rute perjalanan shuttle'} ({v.detail.stops.length} titik pemberhentian)</p>
+     <p className="pf-hero-sub">{originName&&destName?`${originName} → ${destName} (${v.detail.stops.length} titik singgah)`:v.detail.trip.identity?.routeName??'Detail perjalanan shuttle'}</p>
     </div>
    </section>
-   <form className="pf-interval-bar" aria-label="Ubah titik naik dan turun">
-    <label>Titik naik<select name="from" defaultValue={p.from}>{v.detail.stops.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
-    <label>Titik turun<select name="to" defaultValue={p.to}>{v.detail.stops.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
-    <button className="sp-secondary" type="submit">Ubah rute naik/turun</button>
-   </form>
    <SeatSelection key={`${p.from}:${p.to}`} initial={v} from={p.from!} to={p.to!} loggedIn={loggedIn}/>
   </div>
  </PassengerShell>;
