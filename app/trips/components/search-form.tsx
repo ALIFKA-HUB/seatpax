@@ -15,6 +15,7 @@ export default function SearchForm({
  const [to,setTo]=useState(initial.to??'');
  const [date,setDate]=useState(initial.hasExplicitDate?(initial.date??''):'');
  const [pending,setPending]=useState(false);
+ const [swapped,setSwapped]=useState(false);
  const [error,setError]=useState('');
  const hasFilters=Boolean(from||to||date);
 
@@ -47,10 +48,10 @@ export default function SearchForm({
     </select>
    </label>
    <button
-    className="tp-swap"
+    className={`tp-swap${swapped?' is-rotated':''}`}
     type="button"
     aria-label="Tukar asal dan tujuan"
-    onClick={()=>{setFrom(to);setTo(from);setError('');}}
+    onClick={()=>{setFrom(to);setTo(from);setSwapped(current=>!current);setError('');}}
    >
     <ArrowsLeftRight size={18} aria-hidden="true"/>
    </button>
@@ -65,7 +66,7 @@ export default function SearchForm({
     <span><CalendarBlank size={15} aria-hidden="true"/>Tanggal (opsional)</span>
     <input name="date" type="date" value={date} onChange={event=>{setDate(event.target.value);setError('');}}/>
    </label>
-   <button className="sp-primary tp-search-submit" type="submit" disabled={pending}>
+   <button className="tp-cta-accent tp-search-submit" type="submit" disabled={pending}>
     <MagnifyingGlass size={18} aria-hidden="true"/>{pending?'Mencari…':'Cari jadwal'}
    </button>
   </form>

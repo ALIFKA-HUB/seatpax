@@ -1,5 +1,9 @@
 # Seatpax Documentation Index
 
+## `/trips` discovery visual refresh — 16 November 2026
+
+The user approved `UI-TRIPS-01` (Compact Deep Navy Hero, floating search card, 60–30–10 palette with burnt-orange `#bd4b12` CTAs, boarding-pass `TripCard` stub, 2-line quick date chips, segmented sort, and toggle-chip filter dialog), preserving all existing discovery queries, availability rules, and test contracts. See [spec](../superpowers/specs/2026-11-16-trips-discovery-visual-design.md) and [plan](../superpowers/plans/2026-11-16-trips-discovery-visual.md).
+
 ## Super Admin staff management — 10 November 2026
 
 The user approved `ADM-STAFF-01`: Super Admin can provision staff accounts (`+ Tambah petugas`) with automatic Auth Admin provisioning and update staff roles or toggle access status inline. Preserves foreign key integrity (`trip_crew_assignments` RESTRICT) by updating status rather than deleting rows. See [spec](../superpowers/specs/2026-11-10-staff-management-design.md), [plan](../superpowers/plans/2026-11-10-staff-management.md), and [decision D2026-11-10-01](19_DECISION_LEDGER.md#d2026-11-10-01--single-company-super-admin-staff-management-adm-staff-01).

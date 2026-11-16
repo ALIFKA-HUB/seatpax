@@ -101,24 +101,31 @@ export default async function TripsPage({searchParams}:{searchParams:Promise<Rec
 
  return <PassengerShell active="search">
   <div className="tp-page">
-   <section className="tp-hero" aria-labelledby="discovery-title">
-    <div className="tp-hero-top">
-     <div>
-      <p className="tp-eyebrow">Jadwal Shuttle Resmi</p>
-      <h1 id="discovery-title">Pilih jadwal keberangkatan Anda</h1>
-      <p className="tp-hero-sub">Lihat semua jadwal shuttle yang sedang dibuka, pilih titik naik–turun, lalu kunci kursi Anda secara langsung.</p>
+   <div className="tp-hero-block">
+    <section className="tp-hero" aria-labelledby="discovery-title">
+     <svg className="tp-hero-arc" viewBox="0 0 340 180" fill="none" aria-hidden="true">
+      <path d="M20 150 C 110 40, 210 130, 320 26" stroke="#60a5fa" strokeWidth="2" strokeDasharray="6 8" strokeLinecap="round"/>
+      <circle cx="20" cy="150" r="5" fill="#93c5fd"/>
+      <circle cx="320" cy="26" r="5" fill="#bd4b12"/>
+     </svg>
+     <div className="tp-hero-top">
+      <div>
+       <p className="tp-eyebrow">Jadwal Shuttle Resmi</p>
+       <h1 id="discovery-title">Pilih jadwal keberangkatan Anda</h1>
+       <p className="tp-hero-sub">Lihat semua jadwal shuttle yang sedang dibuka, pilih titik naik–turun, lalu kunci kursi Anda secara langsung.</p>
+      </div>
+      {!failed&&!invalid&&<div className="tp-hero-stats" aria-label="Ringkasan ketersediaan">
+       <span className="tp-stat-chip"><span className="tp-stat-dot" aria-hidden="true"/>{shownCount} jadwal aktif</span>
+       {locations.length>0&&<span className="tp-stat-chip">{locations.length} titik pemberhentian</span>}
+      </div>}
      </div>
-     {!failed&&!invalid&&<div className="tp-hero-stats" aria-label="Ringkasan ketersediaan">
-      <span className="tp-stat-chip"><span className="tp-stat-dot" aria-hidden="true"/>{shownCount} jadwal aktif</span>
-      {locations.length>0&&<span className="tp-stat-chip">{locations.length} titik pemberhentian</span>}
-     </div>}
-    </div>
+    </section>
     <SearchForm
      key={`${p.from??''}-${p.to??''}-${p.hasExplicitDate?date:''}`}
      locations={locations}
      initial={{from:p.from,to:p.to,date,hasExplicitDate:p.hasExplicitDate}}
     />
-   </section>
+   </div>
 
    {validation&&<p role="alert" className="sp-search-validation">{validation}</p>}
 

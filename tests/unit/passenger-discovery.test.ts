@@ -5,6 +5,7 @@ import {filterAndSortTrips,readDiscoveryQuery} from '@/modules/inventory/discove
 import type {SearchResult} from '@/modules/inventory/types';
 import TripCard from '@/app/components/trip-card';
 import TripDiscovery from '@/app/trips/components/trip-discovery';
+import SearchForm from '@/app/trips/components/search-form';
 const base={tripId:'a',name:'Trip',companyName:'PO',fromStopId:'origin',toStopId:'end',originName:'Bandung',destinationName:'Bogor',departureAt:'2026-10-20T01:00:00Z',className:'Ekonomi',fare:'10000',availableCount:1};
 const trips:SearchResult[]=[base,{...base,tripId:'b',className:'Eksekutif',fare:'9000',departureAt:'2026-10-20T02:00:00Z'}];
 it('flags repeated search parameters and tracks explicit date presence',()=>{
@@ -23,4 +24,27 @@ it('shows fallback upcoming trips when an explicit date has no departures',()=>{
  expect(html).toContain('Jadwal shuttle terdekat yang tersedia');
  expect(html).toContain('Bandung');
  expect(html).toContain('Pilih kursi');
+});
+it('renders ticket-stub trip card without duplicated route text in footer meta',()=>{
+ const withArrival:SearchResult={...base,arrivalAt:'2026-10-20T03:30:00Z'};
+ const html=render(h(TripCard,{trip:withArrival}));
+ expect(html).toContain('tp-card-purchase');
+ expect(html).toContain('tp-cta-accent');
+ expect(html).toContain('tp-duration-pill');
+ expect(html).toContain('2j 30m');
+ expect(html).not.toContain('Bandung → Bogor');
+});
+it('renders two-line date chips and segmented sort controls in discovery toolbar',()=>{
+ const html=render(h(TripDiscovery,{trips,fallbackTrips:[],locations:[],quickDates:[{dateWib:'2026-10-20',label:'Sel, 20 Okt'}],candidateLimitReached:false,dateWib:'2026-10-20',hasExplicitDate:false}));
+ expect(html).toContain('tp-date-day');
+ expect(html).toContain('Sel');
+ expect(html).toContain('20 Okt');
+ expect(html).toContain('tp-segmented');
+ expect(html).toContain('Berangkat awal');
+ expect(html).toContain('Harga terendah');
+});
+it('renders orange accent submit button in search form',()=>{
+ const html=render(h(SearchForm,{locations:[{id:'a',name:'Pool Pasteur',city:'Bandung'}],initial:{}}));
+ expect(html).toContain('tp-cta-accent');
+ expect(html).toContain('Cari jadwal');
 });
