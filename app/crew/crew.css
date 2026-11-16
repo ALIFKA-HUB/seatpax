@@ -134,7 +134,7 @@
 .crew-shell .crew-ops-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; align-items:stretch; }
 .crew-shell .crew-step-chip { display:inline-flex; width:fit-content; padding:4px 10px; border-radius:999px; background:#EDF3FB; color:#005BD1; font-size:.75rem; font-weight:700; letter-spacing:.03em; }
 .crew-shell .crew-state-success .crew-step-chip { background:rgba(22,101,52,.12); color:#166534; }
-.crew-shell .boarding-form.crew-operation { margin:0; padding:0; display:grid; gap:12px; align-content:start; }
+.crew-shell .boarding-form.crew-operation { margin:0; padding:0; border-top:0; max-width:none; display:grid; gap:12px; align-content:start; }
 .crew-shell .crew-operation button { justify-self:start; }
 .crew-shell .boarding-result { display:grid; gap:8px; padding:18px; border-radius:12px; margin:0; }
 .crew-shell .crew-result-title { display:inline-flex; align-items:center; gap:8px; font-size:1.0625rem; }
