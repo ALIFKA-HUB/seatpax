@@ -1,14 +1,14 @@
 /* Scoped styles for /trips schedule discovery */
-.tp-page {
+.passenger-shell .tp-page {
   display: grid;
   gap: 24px;
 }
 
-.tp-hero {
+.passenger-shell .tp-hero {
   background: linear-gradient(155deg, #eef4ff 0%, #f8fbff 55%, #ffffff 100%);
   border: 1px solid #d5e2f2;
   border-radius: 20px;
-  padding: 26px 28px;
+  padding: 28px 30px;
 }
 
 .tp-hero-top {
@@ -19,7 +19,7 @@
   flex-wrap: wrap;
 }
 
-.tp-eyebrow {
+.passenger-shell .tp-eyebrow {
   margin: 0 0 8px;
   font-size: 12px;
   font-weight: 700;
@@ -28,7 +28,7 @@
   color: var(--sp-primary);
 }
 
-.tp-hero h1 {
+.passenger-shell .tp-hero h1 {
   margin: 0 0 8px;
   font-size: clamp(26px, 3vw, 34px);
   line-height: 1.18;
@@ -36,7 +36,7 @@
   color: var(--sp-ink);
 }
 
-.tp-hero-sub {
+.passenger-shell .tp-hero-sub {
   margin: 0;
   max-width: 58ch;
   font-size: 14px;
@@ -224,13 +224,13 @@
   flex-wrap: wrap;
 }
 
-.tp-toolbar h2 {
+.passenger-shell .tp-toolbar h2 {
   margin: 0 0 4px;
   font-size: 21px;
   color: var(--sp-ink);
 }
 
-.tp-toolbar p {
+.passenger-shell .tp-toolbar p {
   margin: 0;
   font-size: 13px;
   color: var(--sp-muted);
@@ -281,13 +281,13 @@
   color: #713f12;
 }
 
-.tp-fallback-banner strong {
+.passenger-shell .tp-fallback-banner strong {
   display: block;
   font-size: 15px;
   margin-bottom: 3px;
 }
 
-.tp-fallback-banner p {
+.passenger-shell .tp-fallback-banner p {
   margin: 0;
   font-size: 13px;
 }
@@ -563,7 +563,7 @@
 }
 
 @media (max-width: 639px) {
-  .tp-hero {
+  .passenger-shell .tp-hero {
     padding: 20px 16px;
     border-radius: 16px;
   }
