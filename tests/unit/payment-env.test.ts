@@ -5,4 +5,5 @@ it('accepts only complete sandbox credentials and a 32-byte encryption key',()=>
 
 it('rejects empty Sandbox credential suffixes',()=>{expect(()=>parsePaymentEnv({...input,MIDTRANS_SERVER_KEY:'SB-Mid-server-'})).toThrow();expect(()=>parsePaymentEnv({...input,MIDTRANS_CLIENT_KEY:'SB-Mid-client-'})).toThrow();});
 it('accepts dashboard keys without SB prefix while requiring sandbox environment',()=>{expect(parsePaymentEnv({...input,MIDTRANS_SERVER_KEY:'Mid-server-example',MIDTRANS_CLIENT_KEY:'Mid-client-example'}).merchantId).toBe('GTEST');expect(()=>parsePaymentEnv({...input,MIDTRANS_ENVIRONMENT:'production'})).toThrow();});
+it('accepts Midtrans scoped sandbox keys containing dot separators',()=>{expect(parsePaymentEnv({...input,MIDTRANS_SERVER_KEY:'SB-Mid-server-part1.part2_3',MIDTRANS_CLIENT_KEY:'SB-Mid-client-part1.part2'}).merchantId).toBe('GTEST');});
 
