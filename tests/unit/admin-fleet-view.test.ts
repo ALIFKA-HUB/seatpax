@@ -1,9 +1,23 @@
 import {it,expect,vi} from 'vitest';import {createElement as h} from 'react';import {renderToStaticMarkup as render} from 'react-dom/server';
 import type {TemplateDetail,VehicleDetail} from '@/modules/fleet/types';
+import {applyCellBrush,emptyGrid} from '@/modules/fleet/grid';
 import Builder from '@/app/admin/components/seat-template-builder';import SeatGrid from '@/app/admin/components/seat-grid';import VehicleForm from '@/app/admin/components/vehicle-form';
 vi.mock('next/navigation',()=>({useRouter:()=>({refresh(){},push(){}})}));vi.mock('@/app/admin/fleet-actions',()=>({runFleetAction:vi.fn()}));
 const template:TemplateDetail={id:'t',name:'Denah A',version:2,status:'ACTIVE',capacity:1,rows:2,cols:3,cells:[{rowIndex:0,colIndex:0,type:'SEAT',seatCode:'01',label:null},{rowIndex:0,colIndex:1,type:'DRIVER',seatCode:null,label:null},{rowIndex:0,colIndex:2,type:'AISLE',seatCode:null,label:null},{rowIndex:1,colIndex:0,type:'DOOR',seatCode:null,label:null},{rowIndex:1,colIndex:1,type:'FACILITY',seatCode:null,label:null},{rowIndex:1,colIndex:2,type:'EMPTY',seatCode:null,label:null}]};
-it('renders Indonesian cell labels with original enum values',()=>{const html=render(h(Builder,{companyId:'a',initial:template}));expect(html).toContain('value="SEAT"');expect(html).toMatch(/value="SEAT"[^>]*>Kursi/);expect(html).toContain('Sel baris 1, kolom 1');expect(html).toContain('01');});
+it('renders Indonesian cell labels with original enum values',()=>{const html=render(h(Builder,{companyId:'a',initial:template}));expect(html).toContain('value="SEAT"');expect(html).toMatch(/value="SEAT"[^>]*>Kursi/);expect(html).toContain('Sel baris 1, kolom 1');expect(html).toContain('01');expect(html).toContain('Mode klik grid');expect(html).toContain('Pilih sel');});
+it('applies cell brush for rapid multi-seat layout creation and toggles same-type cells off',()=>{
+ let grid=emptyGrid(2,2);
+ grid=applyCellBrush(grid,0,0,'SEAT');
+ grid=applyCellBrush(grid,0,1,'SEAT');
+ grid=applyCellBrush(grid,1,0,'DRIVER');
+ expect(grid.cells.find(c=>c.rowIndex===0&&c.colIndex===0)?.seatCode).toBe('01');
+ expect(grid.cells.find(c=>c.rowIndex===0&&c.colIndex===1)?.seatCode).toBe('02');
+ expect(grid.cells.find(c=>c.rowIndex===1&&c.colIndex===0)?.type).toBe('DRIVER');
+ grid=applyCellBrush(grid,0,0,'SEAT');
+ expect(grid.cells.find(c=>c.rowIndex===0&&c.colIndex===0)?.type).toBe('EMPTY');
+ expect(grid.cells.find(c=>c.rowIndex===0&&c.colIndex===0)?.seatCode).toBeNull();
+ expect(applyCellBrush(grid,1,1,null)).toEqual(grid);
+});
 it('separates primary save from archive and renumber',()=>{const html=render(h(Builder,{companyId:'a',initial:template}));expect(html).toMatch(/class="admin-primary"[^>]*>Simpan template/);expect(html).toMatch(/class="admin-danger"[^>]*>Arsipkan template/);expect(html).toContain('Nomori ulang kursi');expect(html).toContain('Aktif');});
 it('shows fleet status and immutable snapshot controls',()=>{
  const editable=render(h(SeatGrid,{layout:template,selected:'0:0',onSelect(){}}));expect(editable).toContain('aria-pressed="true"');

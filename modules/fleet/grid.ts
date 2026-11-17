@@ -28,3 +28,10 @@ export function setCell(layout: Layout, row: number, col: number, type: CellType
   const code = type === 'SEAT' ? (seatCode === undefined ? current.seatCode ?? String(number).padStart(2, '0') : seatCode) : null;
   return { ...layout, cells: layout.cells.map(cell => cell === current ? { ...cell, type, label: label === undefined ? cell.label : label, seatCode: code } : { ...cell }) };
 }
+export function applyCellBrush(layout: Layout, row: number, col: number, brush: CellType | null): Layout {
+  if (!brush) return layout;
+  const target = layout.cells.find(cell => cell.rowIndex === row && cell.colIndex === col);
+  if (!target) throw new Error('Sel tidak ditemukan.');
+  const nextType: CellType = target.type === brush && brush !== 'EMPTY' ? 'EMPTY' : brush;
+  return setCell(layout, row, col, nextType, nextType === 'EMPTY' || target.type !== nextType ? null : undefined, nextType === 'SEAT' ? undefined : null);
+}

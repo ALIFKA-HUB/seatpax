@@ -79,3 +79,10 @@
 @media(max-width:760px){.admin-shell .stop-search input,.admin-shell .stop-dialog .admin-form input,.admin-shell .stop-dialog .admin-form select{font-size:16px}}
 
 .region-guidance{grid-column:1/-1;margin:0;color:var(--admin-muted,#526785);font-size:.875rem;line-height:1.6}.admin-fields label{min-width:0}.admin-fields input[list]{width:100%;min-width:0}
+.admin-shell .fleet-brush-bar{display:grid;gap:10px;padding:14px 16px;background:#f7fafe;border:1px solid var(--admin-line);border-radius:12px}
+.admin-shell .fleet-brush-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;font-size:13px;color:var(--admin-muted)}
+.admin-shell .fleet-brush-head strong{color:var(--admin-ink);font-size:13px}
+.admin-shell .fleet-brush-pills{display:flex;flex-wrap:wrap;gap:8px}
+.admin-shell .fleet-brush-btn{min-height:40px;padding:8px 14px;border-radius:999px;border:1px solid #cbd5e1;background:#fff;color:var(--admin-ink);font-size:13px;font-weight:600}
+.admin-shell .fleet-brush-btn:hover{border-color:#005bd1;background:#eff6ff}
+.admin-shell .fleet-brush-btn.is-active{background:#005bd1;border-color:#005bd1;color:#fff}
