@@ -165,7 +165,7 @@
 /* KPI Row */
 .admin-shell .dash-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;padding:0}
 .admin-shell .dash-kpi-card{display:flex;flex-direction:column;justify-content:space-between;padding:16px 16px;gap:12px;min-width:0;border-radius:16px}
-.admin-shell .dash-kpi-top{display:flex;align-items:center;gap:12px;min-width:0}
+.admin-shell .dash-kpi-top{display:flex;align-items:flex-start;gap:12px;min-width:0}
 .admin-shell .dash-kpi-meta{display:grid;gap:2px;min-width:0}
 .admin-shell .dash-kpi-value{font-size:26px;font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--admin-ink);font-variant-numeric:tabular-nums}
 .admin-shell .dash-kpi-label{font-size:12.5px;color:var(--admin-muted);font-weight:500;line-height:1.3}
