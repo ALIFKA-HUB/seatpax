@@ -38,8 +38,39 @@ export default async function AdminDashboardPage({
   const data = await adminDashboardData(companyId);
   const base = `/admin/companies/${companyId}`;
   const actionNeeded = data.kpis.openConflicts + data.kpis.openComplaints;
-  const maxDaily = Math.max(1, ...data.dailyActivity.map(d => d.count));
   const total7d = data.dailyActivity.reduce((sum, d) => sum + d.count, 0);
+
+  // SVG Chart Calculation
+  const maxVal = Math.max(4, ...data.dailyActivity.map(d => d.count));
+  const svgWidth = 540;
+  const svgHeight = 110;
+  const padX = 26;
+  const padYTop = 16;
+  const padYBottom = 16;
+  const plotW = svgWidth - padX * 2;
+  const plotH = svgHeight - padYTop - padYBottom;
+
+  const chartPoints = data.dailyActivity.map((d, i) => {
+    const x = padX + (i / Math.max(1, data.dailyActivity.length - 1)) * plotW;
+    const y = padYTop + plotH - (d.count / maxVal) * plotH;
+    return {
+      x,
+      y,
+      count: d.count,
+      dayShort: d.dayShort,
+      dateNum: d.dateNum,
+      dayKey: d.dayKey,
+    };
+  });
+
+  const pathD = chartPoints.reduce((acc, p, i, arr) => {
+    if (i === 0) return `M ${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+    const prev = arr[i - 1];
+    const cpX = ((prev.x + p.x) / 2).toFixed(1);
+    return `${acc} C ${cpX},${prev.y.toFixed(1)} ${cpX},${p.y.toFixed(1)} ${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+  }, '');
+
+  const areaD = `${pathD} L ${(padX + plotW).toFixed(1)},${(padYTop + plotH).toFixed(1)} L ${padX.toFixed(1)},${(padYTop + plotH).toFixed(1)} Z`;
 
   const resourceCards = [
     {
@@ -95,19 +126,20 @@ export default async function AdminDashboardPage({
         </div>
         <div className="dash-hero-actions">
           <span className="dash-date-pill">
-            <CalendarBlank size={16} weight="bold" aria-hidden="true" />
+            <CalendarBlank size={15} weight="bold" aria-hidden="true" />
             <span>{data.nowWibLabel}</span>
           </span>
         </div>
       </header>
 
       <div className="dash-bento">
+        {/* Left Column: KPIs, Activity Chart, Master Resources */}
         <div className="dash-primary-col">
           <section className="dash-kpi-grid" aria-label="Ringkasan operasional">
             <article className="dash-card dash-kpi-card">
               <div className="dash-kpi-top">
                 <span className="dash-icon-badge is-blue" aria-hidden="true">
-                  <CalendarBlank size={22} weight="duotone" />
+                  <CalendarBlank size={20} weight="duotone" />
                 </span>
                 <div className="dash-kpi-meta">
                   <strong className="dash-kpi-value">{data.kpis.openTrips}</strong>
@@ -117,7 +149,7 @@ export default async function AdminDashboardPage({
               <div className="dash-kpi-foot">
                 <span>{data.kpis.draftTrips} draft</span>
                 <Link href={`${base}/trips`} className="dash-link">
-                  Detail <ArrowRight size={14} aria-hidden="true" />
+                  Detail <ArrowRight size={13} aria-hidden="true" />
                 </Link>
               </div>
             </article>
@@ -125,7 +157,7 @@ export default async function AdminDashboardPage({
             <article className="dash-card dash-kpi-card">
               <div className="dash-kpi-top">
                 <span className="dash-icon-badge is-green" aria-hidden="true">
-                  <Ticket size={22} weight="duotone" />
+                  <Ticket size={20} weight="duotone" />
                 </span>
                 <div className="dash-kpi-meta">
                   <strong className="dash-kpi-value">{data.kpis.confirmedBookings}</strong>
@@ -135,7 +167,7 @@ export default async function AdminDashboardPage({
               <div className="dash-kpi-foot">
                 <span>{data.kpis.totalTrips} jadwal PO</span>
                 <Link href={`${base}/trips`} className="dash-link">
-                  Detail <ArrowRight size={14} aria-hidden="true" />
+                  Detail <ArrowRight size={13} aria-hidden="true" />
                 </Link>
               </div>
             </article>
@@ -143,7 +175,7 @@ export default async function AdminDashboardPage({
             <article className="dash-card dash-kpi-card">
               <div className="dash-kpi-top">
                 <span className="dash-icon-badge is-amber" aria-hidden="true">
-                  <WarningCircle size={22} weight="duotone" />
+                  <WarningCircle size={20} weight="duotone" />
                 </span>
                 <div className="dash-kpi-meta">
                   <strong className="dash-kpi-value">{actionNeeded}</strong>
@@ -155,7 +187,7 @@ export default async function AdminDashboardPage({
                   {data.kpis.openConflicts} konflik · {data.kpis.openComplaints} aduan
                 </span>
                 <Link href={`${base}/payment-conflicts`} className="dash-link">
-                  Periksa <ArrowRight size={14} aria-hidden="true" />
+                  Periksa <ArrowRight size={13} aria-hidden="true" />
                 </Link>
               </div>
             </article>
@@ -170,23 +202,88 @@ export default async function AdminDashboardPage({
               <span className="dash-pill-muted">{total7d} pesanan minggu ini</span>
             </div>
 
-            <div className="dash-bars" role="list" aria-label="Grafik batang pemesanan 7 hari">
-              {data.dailyActivity.map(point => {
-                const heightPct = total7d > 0 ? Math.max(8, Math.round((point.count / maxDaily) * 100)) : 6;
-                return (
-                  <div key={point.dayKey} className="dash-bar-col" role="listitem">
-                    <span className="dash-bar-count">{point.count}</span>
-                    <div className="dash-bar-track">
-                      <div
-                        className={`dash-bar-fill${point.count > 0 ? ' has-value' : ''}`}
-                        style={{ height: `${heightPct}%` }}
-                      />
-                    </div>
-                    <span className="dash-bar-day">{point.dayShort}</span>
-                    <span className="dash-bar-date">{point.dateNum}</span>
+            <div className="dash-chart-wrap" aria-label="Grafik pemesanan 7 hari">
+              <svg
+                viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+                className="dash-chart-svg"
+                preserveAspectRatio="none"
+              >
+                <defs>
+                  <linearGradient id="dashChartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#005bd1" stopOpacity="0.18" />
+                    <stop offset="100%" stopColor="#005bd1" stopOpacity="0.0" />
+                  </linearGradient>
+                </defs>
+
+                {/* Gridlines */}
+                <line
+                  x1={padX}
+                  y1={padYTop}
+                  x2={padX + plotW}
+                  y2={padYTop}
+                  stroke="#eef2f7"
+                  strokeDasharray="3 3"
+                />
+                <line
+                  x1={padX}
+                  y1={padYTop + plotH / 2}
+                  x2={padX + plotW}
+                  y2={padYTop + plotH / 2}
+                  stroke="#eef2f7"
+                  strokeDasharray="3 3"
+                />
+                <line
+                  x1={padX}
+                  y1={padYTop + plotH}
+                  x2={padX + plotW}
+                  y2={padYTop + plotH}
+                  stroke="#e2e8f0"
+                />
+
+                {/* Y-axis Ticks */}
+                <text x={padX - 8} y={padYTop + 4} className="dash-chart-axis-label">
+                  {maxVal}
+                </text>
+                <text x={padX - 8} y={padYTop + plotH / 2 + 3} className="dash-chart-axis-label">
+                  {Math.round(maxVal / 2)}
+                </text>
+                <text x={padX - 8} y={padYTop + plotH} className="dash-chart-axis-label">
+                  0
+                </text>
+
+                {/* Fill & Curve */}
+                <path d={areaD} fill="url(#dashChartGrad)" />
+                <path
+                  d={pathD}
+                  fill="none"
+                  stroke="#005bd1"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+
+                {/* Data Points */}
+                {chartPoints.map(p => (
+                  <circle
+                    key={p.dayKey}
+                    cx={p.x}
+                    cy={p.y}
+                    r={p.count > 0 ? 4 : 3}
+                    className={`dash-chart-dot${p.count > 0 ? ' has-val' : ''}`}
+                  />
+                ))}
+              </svg>
+
+              {/* X-axis Days */}
+              <div className="dash-chart-x-labels" role="list">
+                {chartPoints.map(p => (
+                  <div key={p.dayKey} className="dash-chart-x-col" role="listitem">
+                    <span className="dash-chart-day">{p.dayShort}</span>
+                    <span className="dash-chart-date">{p.dateNum}</span>
+                    <span className="dash-chart-val">{p.count}</span>
                   </div>
-                );
-              })}
+                ))}
+              </div>
             </div>
 
             {total7d === 0 && (
@@ -203,7 +300,7 @@ export default async function AdminDashboardPage({
                 <p>Kelola data dasar rute, armada, dan denah sebelum merilis perjalanan.</p>
               </div>
               <Link href={`${base}/routes`} className="dash-link">
-                Semua rute <ArrowRight size={14} aria-hidden="true" />
+                Semua rute <ArrowRight size={13} aria-hidden="true" />
               </Link>
             </div>
 
@@ -211,19 +308,20 @@ export default async function AdminDashboardPage({
               {resourceCards.map(({ href, label, meta, Icon, tone }) => (
                 <Link key={href} href={href} className="dash-resource-item">
                   <span className={`dash-icon-badge is-${tone}`} aria-hidden="true">
-                    <Icon size={20} weight="duotone" />
+                    <Icon size={18} weight="duotone" />
                   </span>
                   <span className="dash-resource-copy">
                     <strong>{label}</strong>
                     <small>{meta}</small>
                   </span>
-                  <ArrowRight size={16} className="dash-resource-arrow" aria-hidden="true" />
+                  <ArrowRight size={14} className="dash-resource-arrow" aria-hidden="true" />
                 </Link>
               ))}
             </div>
           </section>
         </div>
 
+        {/* Right Column: Calendar Agenda + Alerts Stack */}
         <aside className="dash-side-col" aria-label="Agenda dan ringkasan tindak lanjut">
           <section className="dash-card dash-schedule-card">
             <div className="dash-card-head">
@@ -283,11 +381,11 @@ export default async function AdminDashboardPage({
               </ul>
             ) : (
               <div className="dash-agenda-empty">
-                <CalendarBlank size={28} weight="duotone" aria-hidden="true" />
+                <CalendarBlank size={24} weight="duotone" aria-hidden="true" />
                 <strong>Belum ada keberangkatan terjadwal</strong>
                 <p>Buat jadwal perjalanan baru dari rute dan armada yang sudah siap.</p>
                 <Link href={`${base}/trips#perjalanan-baru`} className="dash-outline-cta">
-                  Buat jadwal pertama <ArrowRight size={14} aria-hidden="true" />
+                  Buat jadwal pertama <ArrowRight size={13} aria-hidden="true" />
                 </Link>
               </div>
             )}
@@ -297,7 +395,7 @@ export default async function AdminDashboardPage({
             <Link href={`${base}/payment-conflicts`} className="dash-tint-card is-blue">
               <div className="dash-tint-head">
                 <span className="dash-tint-icon" aria-hidden="true">
-                  <CreditCard size={20} weight="duotone" />
+                  <CreditCard size={18} weight="duotone" />
                 </span>
                 <span className="dash-tint-count">{data.kpis.openConflicts}</span>
               </div>
@@ -308,14 +406,14 @@ export default async function AdminDashboardPage({
                   : 'Tidak ada konflik pembayaran yang menunggu pemeriksaan.'}
               </p>
               <span className="dash-tint-link">
-                Tinjau pembayaran <ArrowRight size={14} aria-hidden="true" />
+                Tinjau pembayaran <ArrowRight size={13} aria-hidden="true" />
               </span>
             </Link>
 
             <Link href={`${base}/helpdesk`} className="dash-tint-card is-amber">
               <div className="dash-tint-head">
                 <span className="dash-tint-icon" aria-hidden="true">
-                  <ClipboardText size={20} weight="duotone" />
+                  <ClipboardText size={18} weight="duotone" />
                 </span>
                 <span className="dash-tint-count">{data.kpis.openComplaints}</span>
               </div>
@@ -326,7 +424,7 @@ export default async function AdminDashboardPage({
                   : 'Semua kasus pengaduan pelanggan sudah terselesaikan.'}
               </p>
               <span className="dash-tint-link">
-                Buka helpdesk <ArrowRight size={14} aria-hidden="true" />
+                Buka helpdesk <ArrowRight size={13} aria-hidden="true" />
               </span>
             </Link>
           </section>
