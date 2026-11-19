@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Armchair, CheckCircle, Plus, Stack } from '@phosphor-icons/react/ssr';
 import { sourceStatusPresentation } from '@/app/admin/presentation';
 import { fleetData } from '../../../fleet-data';
 import SeatTemplateBuilder from '../../../components/seat-template-builder';
@@ -7,27 +8,55 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
   const { companyId } = await params;
   const { context, templates } = await fleetData(companyId);
   const list = await templates.list(context);
+  const activeCount = list.filter(t => t.status === 'ACTIVE').length;
+  const maxCapacity = list.reduce((max, t) => Math.max(max, t.capacity), 0);
 
   return (
-    <>
-      <div className="admin-breadcrumb" aria-label="Lokasi halaman">
-        <Link href={`/admin/companies/${companyId}`}>Dashboard</Link>
-        <span aria-hidden="true">/</span>
-        <strong>Template kursi</strong>
-      </div>
-
-      <header className="admin-header admin-page-head">
-        <div>
-          <p className="eyebrow">SUMBER DENAH</p>
+    <div className="dash-root">
+      <header className="dash-hero">
+        <div className="dash-hero-copy">
           <h1>Template kursi</h1>
           <p>Susun denah yang dapat digunakan oleh armada PO Anda.</p>
         </div>
-        <a href="#template-baru" className="dash-primary-cta">
-          Buat template baru
-        </a>
+        <div className="dash-hero-actions">
+          <a href="#template-baru" className="dash-primary-cta">
+            <Plus size={16} weight="bold" aria-hidden="true" />
+            <span>Buat template baru</span>
+          </a>
+        </div>
       </header>
 
-      <section className="admin-panel admin-panel-modern">
+      <div className="admin-stat-grid" role="region" aria-label="Ringkasan template kursi">
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-blue" aria-hidden="true">
+            <Armchair size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{list.length}</strong>
+            <span className="admin-stat-label">Total template denah</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-green" aria-hidden="true">
+            <CheckCircle size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{activeCount}</strong>
+            <span className="admin-stat-label">Template aktif</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-indigo" aria-hidden="true">
+            <Stack size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{maxCapacity}</strong>
+            <span className="admin-stat-label">Kapasitas tertinggi</span>
+          </div>
+        </div>
+      </div>
+
+      <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
           <h2>
             Daftar template <span className="admin-count">{list.length}</span>
@@ -83,12 +112,12 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         )}
       </section>
 
-      <section className="admin-panel admin-panel-modern" id="template-baru">
+      <section className="dash-card admin-panel-modern" id="template-baru">
         <div className="admin-panel-head">
           <h2>Template baru</h2>
         </div>
         <SeatTemplateBuilder companyId={companyId} />
       </section>
-    </>
+    </div>
   );
 }

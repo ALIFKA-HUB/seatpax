@@ -1,7 +1,100 @@
 import Link from 'next/link';
-import {notFound} from 'next/navigation';
-import {companyData} from '../../../../data';
+import { notFound } from 'next/navigation';
+import AdminBackLink from '@/app/admin/components/admin-back-link';
+import { companyData } from '../../../../data';
 import RouteEditor from '../../../../components/route-editor';
 import FareEditor from '../../../../components/fare-editor';
 import QuotePreview from '../../../../components/quote-preview';
-export default async function Page({params}:{params:Promise<{companyId:string;routeId:string}>}){const {companyId,routeId}=await params;const services=await companyData(companyId);let detail;try{detail=await services.route.detail(services.context,routeId);}catch{notFound();}const fares=await Promise.all(detail.classes.map(c=>services.pricing.list(services.context,routeId,c.id)));return <><header className="admin-header"><Link href={`/admin/companies/${companyId}/routes`}>← Semua rute</Link><p className="eyebrow">DETAIL RUTE · {detail.route.status==='ACTIVE'?'AKTIF':'NONAKTIF'}</p><h1>{detail.route.name}</h1><p>{detail.stops.map(s=>s.name).join(' → ')}</p></header><section className="admin-panel"><h2>Informasi & urutan stop</h2><RouteEditor  companyId={companyId} choices={detail.choices} route={detail.route} initialStops={detail.stops}/></section><section className="admin-panel"><h2>Preview harga perjalanan</h2><QuotePreview key={detail.route.revision} companyId={companyId} routeId={routeId} stops={detail.stops} classes={detail.classes}/></section><section className="admin-panel"><h2>Tarif per kelas</h2><p className="admin-hint">Harga rupiah per segmen. Masukkan 0 bila segmen gratis; isian kosong berarti belum dikonfigurasi.</p>{detail.classes.length?detail.classes.map((c,i)=><div className="admin-class-fare" key={c.id}><h3>{c.name} {c.status==='INACTIVE'?'· Nonaktif':''}</h3><FareEditor key={c.id+'-'+detail.stops.map(s=>s.id).join(',')} companyId={companyId} route={detail.route} stops={detail.stops} classId={c.id} className={c.name} initial={fares[i]}/></div>):<Link href={`/admin/companies/${companyId}/service-classes`}>Tambah kelas layanan terlebih dahulu →</Link>}</section></>;}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ companyId: string; routeId: string }>;
+}) {
+  const { companyId, routeId } = await params;
+  const services = await companyData(companyId);
+  let detail;
+  try {
+    detail = await services.route.detail(services.context, routeId);
+  } catch {
+    notFound();
+  }
+  const fares = await Promise.all(
+    detail.classes.map(c => services.pricing.list(services.context, routeId, c.id)),
+  );
+  const active = detail.route.status === 'ACTIVE';
+
+  return (
+    <div className="dash-root">
+      <header className="dash-hero">
+        <div className="dash-hero-copy">
+          <AdminBackLink href={`/admin/companies/${companyId}/routes`} label="Semua rute" />
+          <h1>{detail.route.name}</h1>
+          <p>{detail.stops.map(s => s.name).join(' → ')}</p>
+        </div>
+        <div className="dash-hero-actions">
+          <span className={`admin-status-pill ${active ? 'is-ok' : 'is-neutral'}`}>
+            {active ? 'Aktif' : 'Nonaktif'}
+          </span>
+        </div>
+      </header>
+
+      <section className="dash-card admin-panel-modern">
+        <div className="admin-panel-head">
+          <h2>Informasi &amp; urutan stop</h2>
+        </div>
+        <RouteEditor
+          companyId={companyId}
+          choices={detail.choices}
+          route={detail.route}
+          initialStops={detail.stops}
+        />
+      </section>
+
+      <section className="dash-card admin-panel-modern">
+        <div className="admin-panel-head">
+          <h2>Preview harga perjalanan</h2>
+        </div>
+        <QuotePreview
+          key={detail.route.revision}
+          companyId={companyId}
+          routeId={routeId}
+          stops={detail.stops}
+          classes={detail.classes}
+        />
+      </section>
+
+      <section className="dash-card admin-panel-modern">
+        <div className="admin-panel-head">
+          <h2>Tarif per kelas</h2>
+        </div>
+        <p className="admin-hint">
+          Harga rupiah per segmen. Masukkan 0 bila segmen gratis; isian kosong berarti belum
+          dikonfigurasi.
+        </p>
+        {detail.classes.length ? (
+          detail.classes.map((c, i) => (
+            <div className="admin-class-fare" key={c.id}>
+              <h3>
+                {c.name} {c.status === 'INACTIVE' ? '· Nonaktif' : ''}
+              </h3>
+              <FareEditor
+                key={c.id + '-' + detail.stops.map(s => s.id).join(',')}
+                companyId={companyId}
+                route={detail.route}
+                stops={detail.stops}
+                classId={c.id}
+                className={c.name}
+                initial={fares[i]}
+              />
+            </div>
+          ))
+        ) : (
+          <Link href={`/admin/companies/${companyId}/service-classes`} className="dash-link">
+            Tambah kelas layanan terlebih dahulu →
+          </Link>
+        )}
+      </section>
+    </div>
+  );
+}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ClipboardText, CreditCard, WarningCircle } from '@phosphor-icons/react/ssr';
 import { paymentConflictData } from '@/app/admin/payment-data';
 
 const date = (s: string) =>
@@ -13,22 +14,45 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
   const { conflicts, reviews } = await paymentConflictData(companyId);
 
   return (
-    <>
-      <div className="admin-breadcrumb" aria-label="Lokasi halaman">
-        <Link href={`/admin/companies/${companyId}`}>Dashboard</Link>
-        <span aria-hidden="true">/</span>
-        <strong>Konflik pembayaran</strong>
-      </div>
-
-      <header className="admin-header admin-page-head">
-        <div>
-          <p className="eyebrow">PEMBAYARAN</p>
+    <div className="dash-root">
+      <header className="dash-hero">
+        <div className="dash-hero-copy">
           <h1>Konflik pembayaran</h1>
           <p>Periksa pembayaran PAID yang datang setelah kursi tidak lagi dapat dikonfirmasi.</p>
         </div>
       </header>
 
-      <section className="admin-panel admin-panel-modern">
+      <div className="admin-stat-grid" role="region" aria-label="Ringkasan pemeriksaan pembayaran">
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-amber" aria-hidden="true">
+            <WarningCircle size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{conflicts.length}</strong>
+            <span className="admin-stat-label">Konflik perlu tinjau</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-blue" aria-hidden="true">
+            <CreditCard size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{reviews.length}</strong>
+            <span className="admin-stat-label">Hasil provider diperiksa</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-slate" aria-hidden="true">
+            <ClipboardText size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{conflicts.length + reviews.length}</strong>
+            <span className="admin-stat-label">Total antrean pemeriksaan</span>
+          </div>
+        </div>
+      </div>
+
+      <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
           <h2>
             Perlu ditinjau <span className="admin-count">{conflicts.length}</span>
@@ -87,7 +111,7 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         )}
       </section>
 
-      <section className="admin-panel admin-panel-modern">
+      <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
           <h2>
             Hasil provider perlu diperiksa <span className="admin-count">{reviews.length}</span>
@@ -133,6 +157,6 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           <p className="admin-empty-copy">Tidak ada hasil provider yang menunggu pemeriksaan.</p>
         )}
       </section>
-    </>
+    </div>
   );
 }

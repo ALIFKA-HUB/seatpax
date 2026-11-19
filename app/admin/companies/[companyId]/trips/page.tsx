@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CalendarBlank, Clock, Plus, Ticket } from '@phosphor-icons/react/ssr';
 import { tripStatusPresentation } from '@/app/admin/presentation';
 import { tripData } from '@/app/admin/trip-data';
 import TripForm from '@/app/admin/components/trip-form';
@@ -7,27 +8,55 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
   const { companyId } = await params;
   const { context, trips } = await tripData(companyId);
   const [list, choices] = await Promise.all([trips.list(context), trips.choices(context)]);
+  const openCount = list.filter(t => t.status === 'OPEN_FOR_SALE').length;
+  const draftCount = list.filter(t => t.status === 'DRAFT').length;
 
   return (
-    <>
-      <div className="admin-breadcrumb" aria-label="Lokasi halaman">
-        <Link href={`/admin/companies/${companyId}`}>Dashboard</Link>
-        <span aria-hidden="true">/</span>
-        <strong>Perjalanan</strong>
-      </div>
-
-      <header className="admin-header admin-page-head">
-        <div>
-          <p className="eyebrow">JADWAL PO</p>
+    <div className="dash-root">
+      <header className="dash-hero">
+        <div className="dash-hero-copy">
           <h1>Perjalanan</h1>
           <p>Siapkan draft, lalu buka penjualan untuk mengunci jadwal, tarif, dan layout.</p>
         </div>
-        <a href="#perjalanan-baru" className="dash-primary-cta">
-          Buat perjalanan
-        </a>
+        <div className="dash-hero-actions">
+          <a href="#perjalanan-baru" className="dash-primary-cta">
+            <Plus size={16} weight="bold" aria-hidden="true" />
+            <span>Buat perjalanan</span>
+          </a>
+        </div>
       </header>
 
-      <section className="admin-panel admin-panel-modern">
+      <div className="admin-stat-grid" role="region" aria-label="Ringkasan perjalanan">
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-blue" aria-hidden="true">
+            <CalendarBlank size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{openCount}</strong>
+            <span className="admin-stat-label">Jadwal aktif dijual</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-amber" aria-hidden="true">
+            <Clock size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{draftCount}</strong>
+            <span className="admin-stat-label">Draft menunggu rilis</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-indigo" aria-hidden="true">
+            <Ticket size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{list.length}</strong>
+            <span className="admin-stat-label">Total perjalanan PO</span>
+          </div>
+        </div>
+      </div>
+
+      <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
           <h2>
             Daftar perjalanan <span className="admin-count">{list.length}</span>
@@ -70,7 +99,10 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
                         </span>
                       </td>
                       <td>
-                        <Link className="admin-row-link" href={`/admin/companies/${companyId}/trips/${t.id}`}>
+                        <Link
+                          className="admin-row-link"
+                          href={`/admin/companies/${companyId}/trips/${t.id}`}
+                        >
                           Buka perjalanan →
                         </Link>
                       </td>
@@ -87,12 +119,12 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         )}
       </section>
 
-      <section className="admin-panel admin-panel-modern" id="perjalanan-baru">
+      <section className="dash-card admin-panel-modern" id="perjalanan-baru">
         <div className="admin-panel-head">
           <h2>Perjalanan baru</h2>
         </div>
         <TripForm companyId={companyId} choices={choices} />
       </section>
-    </>
+    </div>
   );
 }

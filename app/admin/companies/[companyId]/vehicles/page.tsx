@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Armchair, Bus, CheckCircle, Plus } from '@phosphor-icons/react/ssr';
 import { sourceStatusPresentation } from '@/app/admin/presentation';
 import { fleetData } from '../../../fleet-data';
 import VehicleForm from '../../../components/vehicle-form';
@@ -7,27 +8,55 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
   const { companyId } = await params;
   const { context, vehicles, templates, data } = await fleetData(companyId);
   const [list, choices] = await Promise.all([vehicles.list(context), templates.list(context)]);
+  const activeCount = list.filter(v => v.status === 'ACTIVE').length;
+  const totalCapacity = list.reduce((sum, v) => sum + v.capacity, 0);
 
   return (
-    <>
-      <div className="admin-breadcrumb" aria-label="Lokasi halaman">
-        <Link href={`/admin/companies/${companyId}`}>Dashboard</Link>
-        <span aria-hidden="true">/</span>
-        <strong>Armada</strong>
-      </div>
-
-      <header className="admin-header admin-page-head">
-        <div>
-          <p className="eyebrow">KENDARAAN PO</p>
+    <div className="dash-root">
+      <header className="dash-hero">
+        <div className="dash-hero-copy">
           <h1>Armada</h1>
           <p>Hubungkan kendaraan dengan template kursi dan kelas layanan default.</p>
         </div>
-        <a href="#armada-baru" className="dash-primary-cta">
-          Tambah armada
-        </a>
+        <div className="dash-hero-actions">
+          <a href="#armada-baru" className="dash-primary-cta">
+            <Plus size={16} weight="bold" aria-hidden="true" />
+            <span>Tambah armada</span>
+          </a>
+        </div>
       </header>
 
-      <section className="admin-panel admin-panel-modern">
+      <div className="admin-stat-grid" role="region" aria-label="Ringkasan armada">
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-blue" aria-hidden="true">
+            <Bus size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{list.length}</strong>
+            <span className="admin-stat-label">Total unit armada</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-green" aria-hidden="true">
+            <CheckCircle size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{activeCount}</strong>
+            <span className="admin-stat-label">Armada aktif</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-indigo" aria-hidden="true">
+            <Armchair size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{totalCapacity}</strong>
+            <span className="admin-stat-label">Total kapasitas kursi</span>
+          </div>
+        </div>
+      </div>
+
+      <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
           <h2>
             Daftar armada <span className="admin-count">{list.length}</span>
@@ -63,7 +92,10 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
                         </span>
                       </td>
                       <td>
-                        <Link className="admin-row-link" href={`/admin/companies/${companyId}/vehicles/${v.id}`}>
+                        <Link
+                          className="admin-row-link"
+                          href={`/admin/companies/${companyId}/vehicles/${v.id}`}
+                        >
                           Buka armada →
                         </Link>
                       </td>
@@ -80,12 +112,12 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         )}
       </section>
 
-      <section className="admin-panel admin-panel-modern" id="armada-baru">
+      <section className="dash-card admin-panel-modern" id="armada-baru">
         <div className="admin-panel-head">
           <h2>Armada baru</h2>
         </div>
         <VehicleForm companyId={companyId} templates={choices} classes={data.classes} />
       </section>
-    </>
+    </div>
   );
 }

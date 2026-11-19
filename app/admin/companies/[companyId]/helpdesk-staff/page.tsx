@@ -1,9 +1,96 @@
 import Link from 'next/link';
-import {helpdeskConfig} from '@/lib/env/helpdesk';
-import {requireAccess} from '@/modules/access/server';
-import {withAdminTransaction} from '@/modules/access/transaction';
-import {getDatabase} from '@/lib/db';
+import AdminBackLink from '@/app/admin/components/admin-back-link';
+import { helpdeskConfig } from '@/lib/env/helpdesk';
+import { requireAccess } from '@/modules/access/server';
+import { withAdminTransaction } from '@/modules/access/transaction';
+import { getDatabase } from '@/lib/db';
 import HelpdeskStaffForm from '@/app/admin/components/helpdesk-staff-form';
 import '@/app/pengaduan/pengaduan.css';
 import '@/app/helpdesk/helpdesk.css';
-export default async function StaffPage({params}:{params:Promise<{companyId:string}>}){const {companyId}=await params;let staff;try{const config=helpdeskConfig();if(config.companyId!==companyId)throw new Error();const actor=await requireAccess('tenant.admin',companyId);staff=await withAdminTransaction(getDatabase().$client,{actorId:actor.userId,companyId},async tx=>tx`select u.email,m.status from public.memberships m join public.users u on u.id=m.user_id where m.company_id=${companyId} and m.role::text='HELPDESK' order by u.email`);}catch{}if(!staff)return <div className="hd hd-admin-monitor"><section className="hd-panel" role="alert"><h1>Petugas Helpdesk belum tersedia</h1><p>Pengelolaan petugas belum tersedia untuk perusahaan ini atau konfigurasi Helpdesk belum aktif.</p><Link className="hd-secondary" href={'/admin/companies/'+companyId+'/helpdesk'}>← Kembali ke pengaduan pelanggan</Link></section></div>;return <div className="hd hd-admin-monitor"><Link className="hd-back-link" href={'/admin/companies/'+companyId+'/helpdesk'}>← Kembali ke pengaduan pelanggan</Link><header className="hd-heading"><p className="hd-kicker">Operasional Helpdesk</p><h1>Petugas Helpdesk</h1><p>Aktifkan atau nonaktifkan akses penanganan pengaduan.</p></header><HelpdeskStaffForm/><section className="hd-panel hd-table-scroll"><h2>Daftar petugas</h2>{staff.length?<table className="hd-staff-table"><thead><tr><th>Email petugas</th><th>Status akses</th></tr></thead><tbody>{staff.map(s=><tr key={String(s.email)}><td>{String(s.email)}</td><td><span className="hd-badge">{s.status==='ACTIVE'?'Aktif':'Nonaktif'}</span></td></tr>)}</tbody></table>:<p className="hd-empty">Belum ada petugas Helpdesk terdaftar.</p>}</section></div>;}
+
+export default async function StaffPage({ params }: { params: Promise<{ companyId: string }> }) {
+  const { companyId } = await params;
+  let staff;
+  try {
+    const config = helpdeskConfig();
+    if (config.companyId !== companyId) throw new Error();
+    const actor = await requireAccess('tenant.admin', companyId);
+    staff = await withAdminTransaction(getDatabase().$client, { actorId: actor.userId, companyId }, async tx =>
+      tx`select u.email,m.status from public.memberships m join public.users u on u.id=m.user_id where m.company_id=${companyId} and m.role::text='HELPDESK' order by u.email`,
+    );
+  } catch {}
+
+  if (!staff) {
+    return (
+      <div className="dash-root hd hd-admin-monitor">
+        <section className="dash-card hd-panel" role="alert">
+          <h1>Petugas Helpdesk belum tersedia</h1>
+          <p>
+            Pengelolaan petugas belum tersedia untuk perusahaan ini atau konfigurasi Helpdesk belum
+            aktif.
+          </p>
+          <Link className="dash-outline-cta" href={`/admin/companies/${companyId}/helpdesk`}>
+            ← Kembali ke pengaduan pelanggan
+          </Link>
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dash-root hd hd-admin-monitor">
+      <header className="dash-hero">
+        <div className="dash-hero-copy">
+          <AdminBackLink
+            href={`/admin/companies/${companyId}/helpdesk`}
+            label="Kembali ke pengaduan pelanggan"
+          />
+          <h1>Petugas Helpdesk</h1>
+          <p>Aktifkan atau nonaktifkan akses penanganan pengaduan.</p>
+        </div>
+      </header>
+
+      <div className="dash-card admin-panel-modern">
+        <HelpdeskStaffForm />
+      </div>
+
+      <section className="dash-card admin-panel-modern">
+        <div className="admin-panel-head">
+          <h2>
+            Daftar petugas <span className="admin-count">{staff.length}</span>
+          </h2>
+        </div>
+        {staff.length ? (
+          <div className="admin-table-wrap">
+            <table className="admin-modern-table hd-staff-table">
+              <thead>
+                <tr>
+                  <th>Email petugas</th>
+                  <th>Status akses</th>
+                </tr>
+              </thead>
+              <tbody>
+                {staff.map(s => (
+                  <tr key={String(s.email)}>
+                    <td>
+                      <strong>{String(s.email)}</strong>
+                    </td>
+                    <td>
+                      <span
+                        className={`admin-status-pill ${s.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
+                      >
+                        {s.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="admin-empty-copy">Belum ada petugas Helpdesk terdaftar.</p>
+        )}
+      </section>
+    </div>
+  );
+}

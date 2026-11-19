@@ -1,31 +1,59 @@
 import Link from 'next/link';
+import { CheckCircle, MapPin, Path, Plus } from '@phosphor-icons/react/ssr';
 import { companyData } from '../../../data';
 import RouteEditor from '../../../components/route-editor';
 
 export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const { data } = await companyData(companyId);
+  const activeCount = data.routes.filter(r => r.status === 'ACTIVE').length;
 
   return (
-    <>
-      <div className="admin-breadcrumb" aria-label="Lokasi halaman">
-        <Link href={`/admin/companies/${companyId}`}>Dashboard</Link>
-        <span aria-hidden="true">/</span>
-        <strong>Rute &amp; tarif</strong>
-      </div>
-
-      <header className="admin-header admin-page-head">
-        <div>
-          <p className="eyebrow">JARINGAN PERJALANAN</p>
+    <div className="dash-root">
+      <header className="dash-hero">
+        <div className="dash-hero-copy">
           <h1>Rute &amp; tarif</h1>
           <p>Susun stop perjalanan dan tarif antar-stop untuk PO Anda.</p>
         </div>
-        <a href="#rute-baru" className="dash-primary-cta">
-          Buat rute baru
-        </a>
+        <div className="dash-hero-actions">
+          <a href="#rute-baru" className="dash-primary-cta">
+            <Plus size={16} weight="bold" aria-hidden="true" />
+            <span>Buat rute baru</span>
+          </a>
+        </div>
       </header>
 
-      <section className="admin-panel admin-panel-modern">
+      <div className="admin-stat-grid" role="region" aria-label="Ringkasan rute">
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-blue" aria-hidden="true">
+            <Path size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{data.routes.length}</strong>
+            <span className="admin-stat-label">Total rute terdaftar</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-green" aria-hidden="true">
+            <CheckCircle size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{activeCount}</strong>
+            <span className="admin-stat-label">Rute aktif</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-teal" aria-hidden="true">
+            <MapPin size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{data.stops.length}</strong>
+            <span className="admin-stat-label">Titik tersedia</span>
+          </div>
+        </div>
+      </div>
+
+      <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
           <h2>
             Daftar rute <span className="admin-count">{data.routes.length}</span>
@@ -61,7 +89,10 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
                       </span>
                     </td>
                     <td>
-                      <Link className="admin-row-link" href={`/admin/companies/${companyId}/routes/${r.id}`}>
+                      <Link
+                        className="admin-row-link"
+                        href={`/admin/companies/${companyId}/routes/${r.id}`}
+                      >
                         Buka rute →
                       </Link>
                     </td>
@@ -73,12 +104,12 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         )}
       </section>
 
-      <section className="admin-panel admin-panel-modern" id="rute-baru">
+      <section className="dash-card admin-panel-modern" id="rute-baru">
         <div className="admin-panel-head">
           <h2>Rute baru</h2>
         </div>
         <RouteEditor companyId={companyId} choices={data.stops} />
       </section>
-    </>
+    </div>
   );
 }

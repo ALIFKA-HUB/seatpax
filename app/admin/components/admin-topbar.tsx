@@ -11,6 +11,7 @@ const SECTION_TITLES: readonly { segment: string; title: string; group: string }
   { segment: 'seat-templates', title: 'Template kursi', group: 'Operasional' },
   { segment: 'service-classes', title: 'Kelas layanan', group: 'Operasional' },
   { segment: 'payment-conflicts', title: 'Konflik pembayaran', group: 'Operasional' },
+  { segment: 'helpdesk-staff', title: 'Petugas Helpdesk', group: 'Pesanan' },
   { segment: 'helpdesk', title: 'Pengaduan pelanggan', group: 'Pesanan' },
 ];
 
