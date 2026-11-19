@@ -133,9 +133,9 @@ export default async function AdminDashboardPage({
                 </div>
               </div>
               <div className="dash-kpi-foot">
-                <span>{data.kpis.totalTrips} jadwal PO</span>
+                <span>{data.kpis.totalTrips} jadwal</span>
                 <Link href={`${base}/trips`} className="dash-link">
-                  Detail <ArrowRight size={14} aria-hidden="true" />
+                  Detail <ArrowRight size={13} aria-hidden="true" />
                 </Link>
               </div>
             </article>
@@ -154,8 +154,15 @@ export default async function AdminDashboardPage({
                 <span>
                   {data.kpis.openConflicts} konflik · {data.kpis.openComplaints} aduan
                 </span>
-                <Link href={`${base}/payment-conflicts`} className="dash-link">
-                  Periksa <ArrowRight size={14} aria-hidden="true" />
+                <Link
+                  href={
+                    data.kpis.openConflicts === 0 && data.kpis.openComplaints > 0
+                      ? `${base}/helpdesk`
+                      : `${base}/payment-conflicts`
+                  }
+                  className="dash-link"
+                >
+                  Periksa <ArrowRight size={13} aria-hidden="true" />
                 </Link>
               </div>
             </article>
