@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Plus } from '@phosphor-icons/react/ssr';
+import { Bell } from '@phosphor-icons/react/ssr';
 
 const SECTION_TITLES: readonly { segment: string; title: string; group: string }[] = [
   { segment: 'trips', title: 'Perjalanan', group: 'Operasional' },
@@ -58,10 +58,6 @@ export default function AdminTopbar({
               {complaintCount}
             </span>
           )}
-        </Link>
-        <Link href={`${base}/trips#perjalanan-baru`} className="admin-topbar-cta">
-          <Plus size={15} weight="bold" aria-hidden="true" />
-          <span>Buat perjalanan</span>
         </Link>
       </div>
     </header>
