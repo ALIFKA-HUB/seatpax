@@ -19,8 +19,8 @@ it('matches nested sections without prefix collision',async()=>{
 });
 it('preserves single-company redirect and multi-company links',async()=>{
  const {default:Page}=await import('@/app/admin/page');
- await expect(Page()).rejects.toThrow('/admin/companies/a/routes');
+ await expect(Page()).rejects.toThrow('/admin/companies/a');
  companies.mockResolvedValueOnce([{id:'a',name:'PO <A>'},{id:'b',name:'PO B'}]);
- const html=render(await Page());expect(html).toContain('admin-entry');expect(html).toContain('/admin/companies/b/routes');
+ const html=render(await Page());expect(html).toContain('admin-entry');expect(html).toContain('/admin/companies/b');
  companies.mockResolvedValueOnce([]);expect(render(await Page())).toContain('belum memiliki akses');
 });

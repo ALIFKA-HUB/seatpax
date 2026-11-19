@@ -56,22 +56,24 @@ export default function ManifestList({ view, readOnly = false }: { view: Manifes
           </label>
         </div>
 
-        <div className="crew-filter-pills" role="group" aria-label="Filter cepat boarding">
-          {FILTERS.map(item => {
-            const active = filter === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                className={active ? 'crew-pill crew-pill-active' : 'crew-pill'}
-                aria-pressed={active}
-                onClick={() => setFilter(item.id)}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
+        {!readOnly && (
+          <div className="crew-filter-pills" role="group" aria-label="Filter cepat boarding">
+            {FILTERS.map(item => {
+              const active = filter === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={active ? 'crew-pill crew-pill-active' : 'crew-pill'}
+                  aria-pressed={active}
+                  onClick={() => setFilter(item.id)}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <p className="manifest-count" role="status">

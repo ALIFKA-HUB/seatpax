@@ -11,10 +11,13 @@
 .admin-shell .admin-company .admin-company-avatar{display:grid;place-items:center;width:36px;height:38px;flex-shrink:0;background:#e3efff;color:#005bd1;border-radius:10px;font-size:14px;font-weight:700}
 .admin-shell .admin-sidebar nav{gap:6px}
 .admin-shell .admin-sidebar .admin-nav-caption{margin:4px 14px 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--admin-muted)}
-.admin-shell .admin-sidebar nav a{padding:13px 14px;min-height:50px;border:0;border-radius:12px;font-size:13px;line-height:1.5}
+.admin-shell .admin-sidebar nav a{position:relative;padding:11px 14px;min-height:46px;border:0;border-radius:12px;font-size:13px;line-height:1.45;transition:background-color 140ms ease,color 140ms ease}
 .admin-shell .admin-sidebar nav svg,.admin-shell .admin-account>svg{flex-shrink:0}
 .admin-shell .admin-sidebar nav a:hover{background:#f4f8fd;color:#005bd1}
 .admin-shell .admin-sidebar nav a[aria-current=page]{background:#e9f2ff;color:#005bd1;font-weight:700}
+.admin-shell .admin-sidebar nav a[aria-current=page]::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3.5px;border-radius:0 4px 4px 0;background:#005bd1}
+.admin-shell .admin-sidebar .admin-nav-label{flex:1;min-width:0}
+.admin-shell .admin-sidebar .admin-nav-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#fff1e6;color:#c2410c;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
 .admin-shell .admin-sidebar :focus-visible{outline-color:#005bd1}
 .admin-shell .admin-account{margin-top:auto!important;border-top:1px solid var(--admin-line);border-radius:0!important;padding:20px 12px 0;min-height:64px!important}
 .admin-shell .admin-main{max-width:1440px;padding:36px clamp(24px,3.4vw,60px);min-width:0}
@@ -86,3 +89,175 @@
 .admin-shell .fleet-brush-btn{min-height:40px;padding:8px 14px;border-radius:999px;border:1px solid #cbd5e1;background:#fff;color:var(--admin-ink);font-size:13px;font-weight:600}
 .admin-shell .fleet-brush-btn:hover{border-color:#005bd1;background:#eff6ff}
 .admin-shell .fleet-brush-btn.is-active{background:#005bd1;border-color:#005bd1;color:#fff}
+
+/* HiveQ-inspired Seatpax Admin PO Dashboard & Unified Operational Subpages */
+.admin-shell{
+  --admin-blue-soft:#eaf2ff;
+  --admin-green:#067354;
+  --admin-green-soft:#eaf7ef;
+  --admin-amber:#b45309;
+  --admin-amber-soft:#fff7ed;
+  --admin-danger:#b91c1c;
+  --admin-danger-soft:#fef2f2;
+  --admin-indigo:#3730a3;
+  --admin-indigo-soft:#eef2ff;
+  --admin-teal:#0f766e;
+  --admin-teal-soft:#f0fdfa;
+  --admin-slate:#475569;
+  --admin-slate-soft:#f1f5f9;
+}
+.admin-shell .admin-breadcrumb a{color:var(--admin-muted);text-decoration:none;font-weight:500}
+.admin-shell .admin-breadcrumb a:hover{color:var(--admin-blue)}
+.admin-shell .admin-tabular{font-variant-numeric:tabular-nums}
+
+/* Dashboard Hero */
+.admin-shell .dash-root{display:grid;gap:24px}
+.admin-shell .dash-root .admin-breadcrumb{margin-bottom:0}
+.admin-shell .dash-hero{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px}
+.admin-shell .dash-hero-copy h1{margin:0 0 6px;font-size:clamp(24px,2.4vw,30px);font-weight:800;letter-spacing:-.035em;line-height:1.2;color:var(--admin-ink)}
+.admin-shell .dash-hero-copy p{margin:0;font-size:14px;color:var(--admin-muted);line-height:1.6}
+.admin-shell .dash-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.admin-shell .dash-date-pill{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 14px;border-radius:12px;border:1px solid var(--admin-line);background:#fff;color:var(--admin-ink);font-size:13px;font-weight:600}
+.admin-shell .dash-date-pill svg{color:var(--admin-blue)}
+.admin-shell .dash-primary-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:10px 18px;border-radius:12px;background:var(--admin-blue);color:#fff;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;transition:background-color 140ms ease}
+.admin-shell .dash-primary-cta:hover{background:#0049aa;color:#fff}
+.admin-shell .dash-primary-cta:focus-visible,.admin-shell .dash-link:focus-visible,.admin-shell .dash-resource-item:focus-visible,.admin-shell .dash-agenda-item:focus-visible,.admin-shell .dash-tint-card:focus-visible,.admin-shell .dash-outline-cta:focus-visible{outline:2px solid var(--admin-blue);outline-offset:2px}
+
+/* Dashboard Asymmetric Bento Grid */
+.admin-shell .dash-bento{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:22px;align-items:start}
+.admin-shell .dash-primary-col,.admin-shell .dash-side-col{display:grid;gap:20px;min-width:0}
+
+/* Shared Surface Card */
+.admin-shell .dash-card{background:#fff;border:1px solid var(--admin-line);border-radius:18px;padding:20px 22px}
+.admin-shell .dash-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+.admin-shell .dash-card-head h2{margin:0 0 4px;font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--admin-ink)}
+.admin-shell .dash-card-head p{margin:0;font-size:13px;color:var(--admin-muted);line-height:1.5}
+.admin-shell .dash-pill-muted{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#f4f7fc;color:var(--admin-muted);font-size:12px;font-weight:600;white-space:nowrap}
+.admin-shell .dash-pill-blue{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:var(--admin-blue-soft);color:var(--admin-blue);font-size:11px;font-weight:700;letter-spacing:.04em}
+
+/* KPI Row */
+.admin-shell .dash-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.admin-shell .dash-kpi-card{display:flex;flex-direction:column;justify-content:space-between;padding:18px 18px;gap:14px;min-width:0}
+.admin-shell .dash-kpi-top{display:flex;align-items:center;gap:12px;min-width:0}
+.admin-shell .dash-kpi-meta{display:grid;gap:2px;min-width:0}
+.admin-shell .dash-kpi-value{font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--admin-ink);font-variant-numeric:tabular-nums}
+.admin-shell .dash-kpi-label{font-size:13px;color:var(--admin-muted);font-weight:500;line-height:1.35}
+.admin-shell .dash-kpi-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;padding-top:12px;border-top:1px dashed #d6e2f2;font-size:12px;color:var(--admin-muted)}
+.admin-shell .dash-link{display:inline-flex;align-items:center;gap:5px;color:var(--admin-blue);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
+.admin-shell .dash-link:hover{text-decoration:underline}
+
+/* Icon Badges */
+.admin-shell .dash-icon-badge{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;flex-shrink:0}
+.admin-shell .dash-icon-badge.is-blue{background:var(--admin-blue-soft);color:var(--admin-blue)}
+.admin-shell .dash-icon-badge.is-green{background:var(--admin-green-soft);color:var(--admin-green)}
+.admin-shell .dash-icon-badge.is-amber{background:var(--admin-amber-soft);color:var(--admin-amber)}
+.admin-shell .dash-icon-badge.is-indigo{background:var(--admin-indigo-soft);color:var(--admin-indigo)}
+.admin-shell .dash-icon-badge.is-teal{background:var(--admin-teal-soft);color:var(--admin-teal)}
+.admin-shell .dash-icon-badge.is-slate{background:var(--admin-slate-soft);color:var(--admin-slate)}
+
+/* 7-Day Activity Bar Chart */
+.admin-shell .dash-bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:end;padding-top:6px}
+.admin-shell .dash-bar-col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.admin-shell .dash-bar-count{font-size:12px;font-weight:700;color:var(--admin-ink);font-variant-numeric:tabular-nums}
+.admin-shell .dash-bar-track{width:100%;max-width:44px;height:112px;border-radius:10px;background:#f4f7fc;display:flex;align-items:flex-end;overflow:hidden;padding:4px}
+.admin-shell .dash-bar-fill{width:100%;border-radius:7px;background:#d6e4f7;transition:height 220ms ease}
+.admin-shell .dash-bar-fill.has-value{background:var(--admin-blue)}
+.admin-shell .dash-bar-day{font-size:12px;font-weight:600;color:var(--admin-ink)}
+.admin-shell .dash-bar-date{font-size:11px;color:var(--admin-muted);font-variant-numeric:tabular-nums}
+.admin-shell .dash-activity-note{margin:16px 0 0;padding:12px 14px;border-radius:12px;background:#f7fafe;border:1px solid var(--admin-line);font-size:13px;color:var(--admin-muted);line-height:1.55}
+
+/* 2x3 Operational Resource Mini-Cards (HiveQ Top Performers pattern) */
+.admin-shell .dash-resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.admin-shell .dash-resource-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;border:1px solid var(--admin-line);background:#fbfdff;text-decoration:none;color:var(--admin-ink);transition:border-color 140ms ease,background-color 140ms ease}
+.admin-shell .dash-resource-item:hover{border-color:#9fc2f5;background:#f4f8ff}
+.admin-shell .dash-resource-copy{flex:1;min-width:0;display:grid;gap:2px}
+.admin-shell .dash-resource-copy strong{font-size:14px;font-weight:700;color:var(--admin-ink);line-height:1.3}
+.admin-shell .dash-resource-copy small{font-size:12px;color:var(--admin-muted);line-height:1.4}
+.admin-shell .dash-resource-arrow{color:#8397b3;flex-shrink:0}
+.admin-shell .dash-resource-item:hover .dash-resource-arrow{color:var(--admin-blue)}
+
+/* Right Column: Week Calendar Strip + Agenda */
+.admin-shell .dash-week-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding:10px 8px;border-radius:14px;background:#f7fafe;border:1px solid var(--admin-line);margin-bottom:16px}
+.admin-shell .dash-week-day{display:flex;flex-direction:column;align-items:center;gap:5px;padding:6px 2px;border-radius:10px}
+.admin-shell .dash-week-name{font-size:11px;font-weight:600;color:var(--admin-muted)}
+.admin-shell .dash-week-num{display:grid;place-items:center;width:30px;height:30px;border-radius:999px;font-size:13px;font-weight:700;color:var(--admin-ink);font-variant-numeric:tabular-nums}
+.admin-shell .dash-week-day.is-today .dash-week-num{background:var(--admin-blue);color:#fff}
+.admin-shell .dash-week-day.is-today .dash-week-name{color:var(--admin-blue)}
+.admin-shell .dash-week-dot{width:5px;height:5px;border-radius:999px;background:transparent}
+.admin-shell .dash-week-dot.is-visible{background:var(--admin-blue)}
+.admin-shell .dash-agenda-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.admin-shell .dash-agenda-item{display:grid;gap:5px;padding:12px 14px;border-radius:12px;border:1px solid var(--admin-line);border-left:4px solid var(--admin-blue);background:#fff;text-decoration:none;color:var(--admin-ink);transition:border-color 140ms ease,background-color 140ms ease}
+.admin-shell .dash-agenda-item.is-draft{border-left-color:#d97706}
+.admin-shell .dash-agenda-item:hover{background:#f7fafe;border-color:#9fc2f5}
+.admin-shell .dash-agenda-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.admin-shell .dash-agenda-top strong{font-size:13px;font-weight:700;color:var(--admin-ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admin-shell .dash-status-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.admin-shell .dash-status-tag.is-open{background:var(--admin-green-soft);color:var(--admin-green)}
+.admin-shell .dash-status-tag.is-draft{background:var(--admin-amber-soft);color:var(--admin-amber)}
+.admin-shell .dash-agenda-route{margin:0;font-size:12px;color:var(--admin-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-shell .dash-agenda-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:var(--admin-ink);font-variant-numeric:tabular-nums;margin-top:2px}
+.admin-shell .dash-agenda-empty{display:grid;justify-items:center;text-align:center;gap:8px;padding:24px 16px;border-radius:14px;background:#f8fbff;border:1px dashed #c8d9f0}
+.admin-shell .dash-agenda-empty svg{color:var(--admin-blue)}
+.admin-shell .dash-agenda-empty strong{font-size:14px;color:var(--admin-ink)}
+.admin-shell .dash-agenda-empty p{margin:0;font-size:13px;color:var(--admin-muted);max-width:260px;line-height:1.5}
+.admin-shell .dash-outline-cta{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:9px 14px;border-radius:10px;border:1px solid var(--admin-blue);background:#fff;color:var(--admin-blue);font-size:12px;font-weight:700;text-decoration:none;transition:background-color 140ms ease}
+.admin-shell .dash-outline-cta:hover{background:var(--admin-blue-soft)}
+
+/* Bottom-Right Tinted Summary Cards */
+.admin-shell .dash-alerts-stack{display:grid;gap:12px}
+.admin-shell .dash-tint-card{display:grid;gap:6px;padding:18px 20px;border-radius:16px;border:1px solid transparent;text-decoration:none;transition:border-color 140ms ease,transform 140ms ease}
+.admin-shell .dash-tint-card.is-blue{background:#eef5ff;border-color:#d4e5ff;color:var(--admin-ink)}
+.admin-shell .dash-tint-card.is-blue:hover{border-color:#8cb8f5}
+.admin-shell .dash-tint-card.is-amber{background:#fff7ed;border-color:#fed7aa;color:var(--admin-ink)}
+.admin-shell .dash-tint-card.is-amber:hover{border-color:#f59e0b}
+.admin-shell .dash-tint-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px}
+.admin-shell .dash-tint-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#fff}
+.admin-shell .dash-tint-card.is-blue .dash-tint-icon{color:var(--admin-blue)}
+.admin-shell .dash-tint-card.is-amber .dash-tint-icon{color:var(--admin-amber)}
+.admin-shell .dash-tint-count{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--admin-ink)}
+.admin-shell .dash-tint-card strong{font-size:14px;font-weight:700;color:var(--admin-ink)}
+.admin-shell .dash-tint-card p{margin:0;font-size:12px;color:var(--admin-muted);line-height:1.5}
+.admin-shell .dash-tint-link{display:inline-flex;align-items:center;gap:5px;margin-top:4px;font-size:12px;font-weight:700}
+.admin-shell .dash-tint-card.is-blue .dash-tint-link{color:var(--admin-blue)}
+.admin-shell .dash-tint-card.is-amber .dash-tint-link{color:var(--admin-amber)}
+
+/* Unified Operational Subpages */
+.admin-shell .admin-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px;margin-bottom:24px}
+.admin-shell .admin-page-head h1{margin:0 0 6px}
+.admin-shell .admin-page-head p{margin:0}
+.admin-shell .admin-panel-modern{background:#fff;border:1px solid var(--admin-line);border-radius:18px;padding:22px 24px;margin-bottom:22px}
+.admin-shell .admin-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.admin-shell .admin-panel-head h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--admin-ink);display:inline-flex;align-items:center;gap:8px}
+.admin-shell .admin-count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 8px;border-radius:999px;background:var(--admin-blue-soft);color:var(--admin-blue);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.admin-shell .admin-modern-table{width:100%;border-collapse:collapse}
+.admin-shell .admin-modern-table th{background:#f8fbff;border-top:1px solid var(--admin-line);border-bottom:1px solid var(--admin-line);font-weight:600;color:var(--admin-muted);font-size:12px;text-align:left;padding:12px 16px;white-space:nowrap}
+.admin-shell .admin-modern-table td{padding:15px 16px;border-bottom:1px solid var(--admin-line);font-size:13px;color:var(--admin-muted);vertical-align:middle}
+.admin-shell .admin-modern-table td strong{display:block;font-size:14px;font-weight:600;color:var(--admin-ink)}
+.admin-shell .admin-modern-table td small{display:block;margin-top:3px;font-size:12px;color:var(--admin-muted)}
+.admin-shell .admin-modern-table tbody tr:last-child td{border-bottom:0}
+.admin-shell .admin-modern-table tbody tr:hover{background:#fbfdff}
+.admin-shell .admin-row-link{display:inline-flex;align-items:center;font-weight:600;color:var(--admin-blue);text-decoration:none;white-space:nowrap}
+.admin-shell .admin-row-link:hover{text-decoration:underline}
+.admin-shell .admin-status-pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;background:#f1f5f9;color:#475569}
+.admin-shell .admin-status-pill.is-ok,.admin-shell .admin-status-pill.is-active,.admin-shell .admin-status-pill.is-success{background:var(--admin-green-soft);color:var(--admin-green)}
+.admin-shell .admin-status-pill.is-warn,.admin-shell .admin-status-pill.is-draft{background:var(--admin-amber-soft);color:var(--admin-amber)}
+.admin-shell .admin-status-pill.is-danger,.admin-shell .admin-status-pill.is-error{background:var(--admin-danger-soft);color:var(--admin-danger)}
+.admin-shell .admin-empty-copy{margin:0;padding:24px 18px;border-radius:12px;background:#f8fbff;border:1px dashed #cfe0f5;color:var(--admin-muted);font-size:13px;text-align:center}
+
+@media(max-width:1120px){
+  .admin-shell .dash-bento{grid-template-columns:1fr}
+  .admin-shell .dash-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:860px){
+  .admin-shell .dash-kpi-grid{grid-template-columns:1fr}
+  .admin-shell .dash-resource-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .admin-shell .admin-sidebar nav a[aria-current=page]::before{display:none}
+  .admin-shell .dash-hero-actions{width:100%}
+  .admin-shell .dash-primary-cta{flex:1}
+  .admin-shell .admin-panel-modern{padding:18px 16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .admin-shell *{transition:none!important}
+}
