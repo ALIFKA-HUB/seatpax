@@ -8,7 +8,6 @@ import {
   CreditCard,
   MapPin,
   Path,
-  Plus,
   Stack,
   Ticket,
   WarningCircle,
@@ -89,12 +88,6 @@ export default async function AdminDashboardPage({
 
   return (
     <div className="dash-root">
-      <div className="admin-breadcrumb" aria-label="Lokasi halaman">
-        <span>Admin PO</span>
-        <span aria-hidden="true">/</span>
-        <strong>Dashboard</strong>
-      </div>
-
       <header className="dash-hero">
         <div className="dash-hero-copy">
           <h1>Selamat datang, {data.companyName}</h1>
@@ -105,10 +98,6 @@ export default async function AdminDashboardPage({
             <CalendarBlank size={16} weight="bold" aria-hidden="true" />
             <span>{data.nowWibLabel}</span>
           </span>
-          <Link href={`${base}/trips#perjalanan-baru`} className="dash-primary-cta">
-            <Plus size={16} weight="bold" aria-hidden="true" />
-            <span>Buat perjalanan</span>
-          </Link>
         </div>
       </header>
 
