@@ -129,47 +129,49 @@
   --admin-slate:#475569;
   --admin-slate-soft:#f1f5f9;
 }
+.admin-shell section{padding:0;margin:0}
 .admin-shell .admin-breadcrumb a{color:var(--admin-muted);text-decoration:none;font-weight:500}
 .admin-shell .admin-breadcrumb a:hover{color:var(--admin-blue)}
 .admin-shell .admin-tabular{font-variant-numeric:tabular-nums}
 
 /* Dashboard Hero */
 .admin-shell .dash-root{display:grid;gap:18px}
-.admin-shell .dash-hero{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 18px}
-.admin-shell .dash-hero-copy h1{margin:0 0 3px;font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.25;color:var(--admin-ink)}
-.admin-shell .dash-hero-copy p{margin:0;font-size:13px;color:var(--admin-muted);line-height:1.5}
-.admin-shell .dash-hero-actions{display:flex;align-items:center;gap:10px}
-.admin-shell .dash-date-pill{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:6px 12px;border-radius:10px;border:1px solid var(--admin-line);background:#fff;color:var(--admin-ink);font-size:12px;font-weight:600}
+.admin-shell .dash-root .admin-breadcrumb{margin-bottom:0}
+.admin-shell .dash-hero{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px 20px}
+.admin-shell .dash-hero-copy h1{margin:0 0 4px;font-size:clamp(22px,2.2vw,28px);font-weight:800;letter-spacing:-.035em;line-height:1.2;color:var(--admin-ink)}
+.admin-shell .dash-hero-copy p{margin:0;font-size:13.5px;color:var(--admin-muted);line-height:1.55}
+.admin-shell .dash-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.admin-shell .dash-date-pill{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:6px 12px;border-radius:10px;border:1px solid var(--admin-line);background:#fff;color:var(--admin-ink);font-size:12.5px;font-weight:600}
 .admin-shell .dash-date-pill svg{color:var(--admin-blue)}
 .admin-shell .dash-primary-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:9px 16px;border-radius:11px;background:var(--admin-blue);color:#fff;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;transition:background-color 140ms ease}
 .admin-shell .dash-primary-cta:hover{background:#0049aa;color:#fff}
 .admin-shell .dash-primary-cta:focus-visible,.admin-shell .dash-link:focus-visible,.admin-shell .dash-resource-item:focus-visible,.admin-shell .dash-agenda-item:focus-visible,.admin-shell .dash-tint-card:focus-visible,.admin-shell .dash-outline-cta:focus-visible{outline:2px solid var(--admin-blue);outline-offset:2px}
 
 /* Dashboard Asymmetric Bento Grid */
-.admin-shell .dash-bento{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(310px,1fr);gap:18px;align-items:start}
+.admin-shell .dash-bento{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:16px;align-items:start}
 .admin-shell .dash-primary-col,.admin-shell .dash-side-col{display:grid;gap:16px;min-width:0}
 
 /* Shared Surface Card */
-.admin-shell .dash-card{background:#fff;border:1px solid var(--admin-line);border-radius:16px;padding:16px 18px;box-shadow:0 1px 3px rgba(16,39,70,0.03)}
+.admin-shell .dash-card{background:#fff;border:1px solid var(--admin-line);border-radius:16px;padding:18px 20px}
 .admin-shell .dash-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
-.admin-shell .dash-card-head h2{margin:0 0 2px;font-size:15px;font-weight:700;letter-spacing:-.015em;color:var(--admin-ink)}
-.admin-shell .dash-card-head p{margin:0;font-size:12px;color:var(--admin-muted);line-height:1.45}
+.admin-shell .dash-card-head h2{margin:0 0 3px;font-size:15.5px;font-weight:700;letter-spacing:-.02em;color:var(--admin-ink)}
+.admin-shell .dash-card-head p{margin:0;font-size:12.5px;color:var(--admin-muted);line-height:1.45}
 .admin-shell .dash-pill-muted{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:#f4f7fc;color:var(--admin-muted);font-size:11.5px;font-weight:600;white-space:nowrap}
-.admin-shell .dash-pill-blue{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:var(--admin-blue-soft);color:var(--admin-blue);font-size:10.5px;font-weight:700;letter-spacing:.04em}
+.admin-shell .dash-pill-blue{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:var(--admin-blue-soft);color:var(--admin-blue);font-size:11px;font-weight:700;letter-spacing:.04em}
 
 /* KPI Row */
-.admin-shell .dash-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.admin-shell .dash-kpi-card{display:flex;flex-direction:column;justify-content:space-between;padding:14px 16px;gap:10px;min-width:0}
+.admin-shell .dash-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;padding:0}
+.admin-shell .dash-kpi-card{display:flex;flex-direction:column;justify-content:space-between;padding:16px 16px;gap:12px;min-width:0;border-radius:16px}
 .admin-shell .dash-kpi-top{display:flex;align-items:center;gap:12px;min-width:0}
-.admin-shell .dash-kpi-meta{display:grid;gap:1px;min-width:0}
-.admin-shell .dash-kpi-value{font-size:24px;font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--admin-ink);font-variant-numeric:tabular-nums}
-.admin-shell .dash-kpi-label{font-size:12px;color:var(--admin-muted);font-weight:500;line-height:1.3}
-.admin-shell .dash-kpi-foot{display:flex;align-items:center;justify-content:space-between;gap:6px 10px;padding-top:10px;border-top:1px solid #f1f5f9;font-size:11.5px;color:var(--admin-muted)}
-.admin-shell .dash-link{display:inline-flex;align-items:center;gap:4px;color:var(--admin-blue);font-size:11.5px;font-weight:600;text-decoration:none;white-space:nowrap}
+.admin-shell .dash-kpi-meta{display:grid;gap:2px;min-width:0}
+.admin-shell .dash-kpi-value{font-size:26px;font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--admin-ink);font-variant-numeric:tabular-nums}
+.admin-shell .dash-kpi-label{font-size:12.5px;color:var(--admin-muted);font-weight:500;line-height:1.3}
+.admin-shell .dash-kpi-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;padding-top:10px;border-top:1px dashed #d6e2f2;font-size:12px;color:var(--admin-muted)}
+.admin-shell .dash-link{display:inline-flex;align-items:center;gap:5px;color:var(--admin-blue);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
 .admin-shell .dash-link:hover{text-decoration:underline}
 
 /* Icon Badges */
-.admin-shell .dash-icon-badge{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;flex-shrink:0}
+.admin-shell .dash-icon-badge{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;flex-shrink:0}
 .admin-shell .dash-icon-badge.is-blue{background:var(--admin-blue-soft);color:var(--admin-blue)}
 .admin-shell .dash-icon-badge.is-green{background:var(--admin-green-soft);color:var(--admin-green)}
 .admin-shell .dash-icon-badge.is-amber{background:var(--admin-amber-soft);color:var(--admin-amber)}
@@ -177,40 +179,38 @@
 .admin-shell .dash-icon-badge.is-teal{background:var(--admin-teal-soft);color:var(--admin-teal)}
 .admin-shell .dash-icon-badge.is-slate{background:var(--admin-slate-soft);color:var(--admin-slate)}
 
-/* 7-Day Activity SVG Area Chart */
-.admin-shell .dash-chart-wrap{display:grid;gap:8px;width:100%}
-.admin-shell .dash-chart-svg{width:100%;height:110px;display:block;overflow:visible}
-.admin-shell .dash-chart-axis-label{font-size:9.5px;font-weight:600;fill:#94a3b8;text-anchor:end;font-family:inherit;font-variant-numeric:tabular-nums}
-.admin-shell .dash-chart-dot{fill:#fff;stroke:var(--admin-blue);stroke-width:2px;transition:r 120ms ease}
-.admin-shell .dash-chart-dot.has-val{fill:var(--admin-blue);stroke:#fff;r:4.5px}
-.admin-shell .dash-chart-x-labels{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center;padding:0 8px 0 20px}
-.admin-shell .dash-chart-x-col{display:flex;flex-direction:column;align-items:center;gap:1px}
-.admin-shell .dash-chart-day{font-size:11px;font-weight:600;color:var(--admin-ink)}
-.admin-shell .dash-chart-date{font-size:10.5px;color:var(--admin-muted);font-variant-numeric:tabular-nums}
-.admin-shell .dash-chart-val{font-size:10px;font-weight:700;color:var(--admin-blue);font-variant-numeric:tabular-nums;margin-top:1px}
-.admin-shell .dash-activity-note{margin:10px 0 0;padding:8px 12px;border-radius:10px;background:#f8fbff;border:1px solid #dce8f8;font-size:12px;color:var(--admin-muted);line-height:1.5}
+/* 7-Day Activity Bar Chart */
+.admin-shell .dash-bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:end;padding-top:4px}
+.admin-shell .dash-bar-col{display:flex;flex-direction:column;align-items:center;gap:5px}
+.admin-shell .dash-bar-count{font-size:12px;font-weight:700;color:var(--admin-ink);font-variant-numeric:tabular-nums}
+.admin-shell .dash-bar-track{width:100%;max-width:42px;height:100px;border-radius:9px;background:#f4f7fc;display:flex;align-items:flex-end;overflow:hidden;padding:3px}
+.admin-shell .dash-bar-fill{width:100%;border-radius:6px;background:#d6e4f7;transition:height 220ms ease}
+.admin-shell .dash-bar-fill.has-value{background:var(--admin-blue)}
+.admin-shell .dash-bar-day{font-size:11.5px;font-weight:600;color:var(--admin-ink)}
+.admin-shell .dash-bar-date{font-size:11px;color:var(--admin-muted);font-variant-numeric:tabular-nums}
+.admin-shell .dash-activity-note{margin:14px 0 0;padding:11px 13px;border-radius:11px;background:#f7fafe;border:1px solid var(--admin-line);font-size:12.5px;color:var(--admin-muted);line-height:1.5}
 
-/* 2x3 Operational Resource Mini-Cards */
+/* 2x3 Operational Resource Mini-Cards (HiveQ Top Performers pattern) */
 .admin-shell .dash-resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.admin-shell .dash-resource-item{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:12px;border:1px solid var(--admin-line);background:#fbfdff;text-decoration:none;color:var(--admin-ink);min-height:50px;transition:border-color 140ms ease,background-color 140ms ease}
+.admin-shell .dash-resource-item{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:13px;border:1px solid var(--admin-line);background:#fbfdff;text-decoration:none;color:var(--admin-ink);transition:border-color 140ms ease,background-color 140ms ease}
 .admin-shell .dash-resource-item:hover{border-color:#9fc2f5;background:#f4f8ff}
 .admin-shell .dash-resource-copy{flex:1;min-width:0;display:grid;gap:1px}
-.admin-shell .dash-resource-copy strong{font-size:13px;font-weight:700;color:var(--admin-ink);line-height:1.25}
+.admin-shell .dash-resource-copy strong{font-size:13.5px;font-weight:700;color:var(--admin-ink);line-height:1.3}
 .admin-shell .dash-resource-copy small{font-size:11.5px;color:var(--admin-muted);line-height:1.35}
-.admin-shell .dash-resource-arrow{color:#94a3b8;flex-shrink:0}
+.admin-shell .dash-resource-arrow{color:#8397b3;flex-shrink:0}
 .admin-shell .dash-resource-item:hover .dash-resource-arrow{color:var(--admin-blue)}
 
 /* Right Column: Week Calendar Strip + Agenda */
-.admin-shell .dash-week-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:8px 6px;border-radius:12px;background:#f7fafe;border:1px solid var(--admin-line);margin-bottom:12px}
-.admin-shell .dash-week-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 1px;border-radius:8px}
+.admin-shell .dash-week-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px 6px;border-radius:12px;background:#f7fafe;border:1px solid var(--admin-line);margin-bottom:12px}
+.admin-shell .dash-week-day{display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 2px;border-radius:8px}
 .admin-shell .dash-week-name{font-size:10.5px;font-weight:600;color:var(--admin-muted)}
-.admin-shell .dash-week-num{display:grid;place-items:center;width:28px;height:28px;border-radius:999px;font-size:12px;font-weight:700;color:var(--admin-ink);font-variant-numeric:tabular-nums}
+.admin-shell .dash-week-num{display:grid;place-items:center;width:28px;height:28px;border-radius:999px;font-size:12.5px;font-weight:700;color:var(--admin-ink);font-variant-numeric:tabular-nums}
 .admin-shell .dash-week-day.is-today .dash-week-num{background:var(--admin-blue);color:#fff}
-.admin-shell .dash-week-day.is-today .dash-week-name{color:var(--admin-blue);font-weight:700}
+.admin-shell .dash-week-day.is-today .dash-week-name{color:var(--admin-blue)}
 .admin-shell .dash-week-dot{width:4px;height:4px;border-radius:999px;background:transparent}
 .admin-shell .dash-week-dot.is-visible{background:var(--admin-blue)}
 .admin-shell .dash-agenda-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.admin-shell .dash-agenda-item{display:grid;gap:4px;padding:10px 12px;border-radius:11px;border:1px solid var(--admin-line);border-left:3.5px solid var(--admin-blue);background:#fff;text-decoration:none;color:var(--admin-ink);transition:border-color 140ms ease,background-color 140ms ease}
+.admin-shell .dash-agenda-item{display:grid;gap:4px;padding:10px 12px;border-radius:11px;border:1px solid var(--admin-line);border-left:4px solid var(--admin-blue);background:#fff;text-decoration:none;color:var(--admin-ink);transition:border-color 140ms ease,background-color 140ms ease}
 .admin-shell .dash-agenda-item.is-draft{border-left-color:#d97706}
 .admin-shell .dash-agenda-item:hover{background:#f7fafe;border-color:#9fc2f5}
 .admin-shell .dash-agenda-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -219,29 +219,29 @@
 .admin-shell .dash-status-tag.is-open{background:var(--admin-green-soft);color:var(--admin-green)}
 .admin-shell .dash-status-tag.is-draft{background:var(--admin-amber-soft);color:var(--admin-amber)}
 .admin-shell .dash-agenda-route{margin:0;font-size:11.5px;color:var(--admin-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.admin-shell .dash-agenda-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:600;color:var(--admin-ink);font-variant-numeric:tabular-nums;margin-top:1px}
-.admin-shell .dash-agenda-empty{display:grid;justify-items:center;text-align:center;gap:6px;padding:18px 14px;border-radius:12px;background:#f8fbff;border:1px dashed #c8d9f0}
+.admin-shell .dash-agenda-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:600;color:var(--admin-ink);font-variant-numeric:tabular-nums;margin-top:2px}
+.admin-shell .dash-agenda-empty{display:grid;justify-items:center;text-align:center;gap:6px;padding:20px 14px;border-radius:12px;background:#f8fbff;border:1px dashed #c8d9f0}
 .admin-shell .dash-agenda-empty svg{color:var(--admin-blue)}
-.admin-shell .dash-agenda-empty strong{font-size:13px;color:var(--admin-ink)}
-.admin-shell .dash-agenda-empty p{margin:0;font-size:11.5px;color:var(--admin-muted);max-width:240px;line-height:1.45}
-.admin-shell .dash-outline-cta{display:inline-flex;align-items:center;gap:5px;margin-top:4px;padding:7px 12px;border-radius:8px;border:1px solid var(--admin-blue);background:#fff;color:var(--admin-blue);font-size:11.5px;font-weight:700;text-decoration:none;transition:background-color 140ms ease}
+.admin-shell .dash-agenda-empty strong{font-size:13.5px;color:var(--admin-ink)}
+.admin-shell .dash-agenda-empty p{margin:0;font-size:12px;color:var(--admin-muted);max-width:240px;line-height:1.45}
+.admin-shell .dash-outline-cta{display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:8px 12px;border-radius:9px;border:1px solid var(--admin-blue);background:#fff;color:var(--admin-blue);font-size:11.5px;font-weight:700;text-decoration:none;transition:background-color 140ms ease}
 .admin-shell .dash-outline-cta:hover{background:var(--admin-blue-soft)}
 
 /* Bottom-Right Tinted Summary Cards */
 .admin-shell .dash-alerts-stack{display:grid;gap:10px}
-.admin-shell .dash-tint-card{display:grid;gap:4px;padding:14px 16px;border-radius:14px;border:1px solid transparent;text-decoration:none;transition:border-color 140ms ease}
-.admin-shell .dash-tint-card.is-blue{background:#f3f8fe;border-color:#dbe7f7;color:var(--admin-ink)}
-.admin-shell .dash-tint-card.is-blue:hover{border-color:#93c5fd}
-.admin-shell .dash-tint-card.is-amber{background:#fff9f2;border-color:#fce7d2;color:var(--admin-ink)}
-.admin-shell .dash-tint-card.is-amber:hover{border-color:#fdba74}
+.admin-shell .dash-tint-card{display:grid;gap:4px;padding:14px 16px;border-radius:14px;border:1px solid transparent;text-decoration:none;transition:border-color 140ms ease,transform 140ms ease}
+.admin-shell .dash-tint-card.is-blue{background:#eef5ff;border-color:#d4e5ff;color:var(--admin-ink)}
+.admin-shell .dash-tint-card.is-blue:hover{border-color:#8cb8f5}
+.admin-shell .dash-tint-card.is-amber{background:#fff7ed;border-color:#fed7aa;color:var(--admin-ink)}
+.admin-shell .dash-tint-card.is-amber:hover{border-color:#f59e0b}
 .admin-shell .dash-tint-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:2px}
-.admin-shell .dash-tint-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(16,39,70,0.05)}
+.admin-shell .dash-tint-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:#fff}
 .admin-shell .dash-tint-card.is-blue .dash-tint-icon{color:var(--admin-blue)}
 .admin-shell .dash-tint-card.is-amber .dash-tint-icon{color:var(--admin-amber)}
 .admin-shell .dash-tint-count{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--admin-ink)}
 .admin-shell .dash-tint-card strong{font-size:13.5px;font-weight:700;color:var(--admin-ink)}
 .admin-shell .dash-tint-card p{margin:0;font-size:11.5px;color:var(--admin-muted);line-height:1.45}
-.admin-shell .dash-tint-link{display:inline-flex;align-items:center;gap:4px;margin-top:2px;font-size:11.5px;font-weight:700}
+.admin-shell .dash-tint-link{display:inline-flex;align-items:center;gap:4px;margin-top:3px;font-size:11.5px;font-weight:700}
 .admin-shell .dash-tint-card.is-blue .dash-tint-link{color:var(--admin-blue)}
 .admin-shell .dash-tint-card.is-amber .dash-tint-link{color:var(--admin-amber)}
 
