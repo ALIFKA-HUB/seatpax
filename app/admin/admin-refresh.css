@@ -148,8 +148,11 @@
 .admin-shell .dash-primary-cta:focus-visible,.admin-shell .dash-link:focus-visible,.admin-shell .dash-resource-item:focus-visible,.admin-shell .dash-agenda-item:focus-visible,.admin-shell .dash-tint-card:focus-visible,.admin-shell .dash-outline-cta:focus-visible{outline:2px solid var(--admin-blue);outline-offset:2px}
 
 /* Dashboard Asymmetric Bento Grid */
-.admin-shell .dash-bento{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:16px;align-items:start}
-.admin-shell .dash-primary-col,.admin-shell .dash-side-col{display:grid;gap:16px;min-width:0}
+.admin-shell .dash-bento{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:16px;align-items:stretch}
+.admin-shell .dash-primary-col,.admin-shell .dash-side-col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.admin-shell .dash-resources-card{flex:1;display:flex;flex-direction:column}
+.admin-shell .dash-resources-card .dash-resource-grid{flex:1;align-content:start}
+.admin-shell .dash-schedule-card{flex:1;display:flex;flex-direction:column}
 
 /* Shared Surface Card */
 .admin-shell .dash-card{background:#fff;border:1px solid var(--admin-line);border-radius:16px;padding:18px 20px}
@@ -210,7 +213,7 @@
 .admin-shell .dash-week-day.is-today .dash-week-name{color:var(--admin-blue)}
 .admin-shell .dash-week-dot{width:4px;height:4px;border-radius:999px;background:transparent}
 .admin-shell .dash-week-dot.is-visible{background:var(--admin-blue)}
-.admin-shell .dash-agenda-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.admin-shell .dash-agenda-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;flex:1;align-content:start}
 .admin-shell .dash-agenda-item{display:grid;gap:4px;padding:10px 12px;border-radius:11px;border:1px solid var(--admin-line);border-left:4px solid var(--admin-blue);background:#fff;text-decoration:none;color:var(--admin-ink);transition:border-color 140ms ease,background-color 140ms ease}
 .admin-shell .dash-agenda-item.is-draft{border-left-color:#d97706}
 .admin-shell .dash-agenda-item:hover{background:#f7fafe;border-color:#9fc2f5}
@@ -221,7 +224,7 @@
 .admin-shell .dash-status-tag.is-draft{background:var(--admin-amber-soft);color:var(--admin-amber)}
 .admin-shell .dash-agenda-route{margin:0;font-size:11.5px;color:var(--admin-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .admin-shell .dash-agenda-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:600;color:var(--admin-ink);font-variant-numeric:tabular-nums;margin-top:2px}
-.admin-shell .dash-agenda-empty{display:grid;justify-items:center;text-align:center;gap:6px;padding:20px 14px;border-radius:12px;background:#f8fbff;border:1px dashed #c8d9f0}
+.admin-shell .dash-agenda-empty{flex:1;display:grid;align-content:center;justify-items:center;text-align:center;gap:8px;padding:24px 16px;border-radius:12px;background:#f8fbff;border:1px dashed #c8d9f0}
 .admin-shell .dash-agenda-empty svg{color:var(--admin-blue)}
 .admin-shell .dash-agenda-empty strong{font-size:13.5px;color:var(--admin-ink)}
 .admin-shell .dash-agenda-empty p{margin:0;font-size:12px;color:var(--admin-muted);max-width:240px;line-height:1.45}
@@ -229,8 +232,8 @@
 .admin-shell .dash-outline-cta:hover{background:var(--admin-blue-soft)}
 
 /* Bottom-Right Tinted Summary Cards */
-.admin-shell .dash-alerts-stack{display:grid;gap:10px}
-.admin-shell .dash-tint-card{display:grid;gap:4px;padding:14px 16px;border-radius:14px;border:1px solid transparent;text-decoration:none;transition:border-color 140ms ease,transform 140ms ease}
+.admin-shell .dash-alerts-stack{display:grid;gap:12px}
+.admin-shell .dash-tint-card{display:grid;gap:6px;padding:18px 18px;border-radius:15px;border:1px solid transparent;text-decoration:none;transition:border-color 140ms ease,transform 140ms ease}
 .admin-shell .dash-tint-card.is-blue{background:#eef5ff;border-color:#d4e5ff;color:var(--admin-ink)}
 .admin-shell .dash-tint-card.is-blue:hover{border-color:#8cb8f5}
 .admin-shell .dash-tint-card.is-amber{background:#fff7ed;border-color:#fed7aa;color:var(--admin-ink)}
