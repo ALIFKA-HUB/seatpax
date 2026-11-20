@@ -21,3 +21,18 @@ it('allows incomplete schedules/fares as drafts and browser roles cannot use tri
  for(const table of ['trips','trip_stops','trip_segments','trip_seats','trip_seat_inventory','trip_crew_assignments','trip_audit_events']){for(const role of ['anon','authenticated']){const rows=await client`select has_table_privilege(${role},${'public.'+table},'SELECT') or has_table_privilege(${role},${'public.'+table},'INSERT') or has_table_privilege(${role},${'public.'+table},'UPDATE') or has_table_privilege(${role},${'public.'+table},'DELETE') as allowed`;expect(rows[0].allowed).toBe(false);}const rows=await client`select relrowsecurity from pg_class where oid=${'public.'+table}::regclass`;expect(rows[0].relrowsecurity).toBe(true);}
  await expect(client`insert into public.trips(company_id,name,route_id,vehicle_id,service_class_id,departure_at) values(${f.b.companyId},'Foreign',${f.routeId},${f.vehicleId},${f.classId},now())`).rejects.toMatchObject({code:'23503'});
 }));
+it('persists recurring trip drafts atomically by weekday, blocks foreign tenants and inactive sources',async()=>tripFixture(client,async f=>{
+ const service=createDraftService(createTripRepository(client));
+ const recurringInput={name:'Jadwal Rutin',routeId:f.routeId,vehicleId:f.vehicleId,serviceClassId:f.classId,startDate:'2026-11-23',endDate:'2026-11-29',departureTime:'07:30',weekdays:[1,3,5],salesCloseBeforeMin:30};
+ const res=await service.saveRecurring(f.a,recurringInput);
+ expect(res.status).toBe('DRAFT');expect(res.count).toBe(3);expect(res.tripIds).toHaveLength(3);
+ const list=await service.list(f.a);
+ expect(list.map(t=>new Date(t.departureAt).toISOString()).sort()).toEqual(['2026-11-23T00:30:00.000Z','2026-11-25T00:30:00.000Z','2026-11-27T00:30:00.000Z']);
+ const first=await service.detail(f.a,res.tripIds[0]);
+ expect(first.trip.salesCloseAt).toBeTruthy();
+ expect(new Date(first.trip.salesCloseAt!).toISOString()).toBe('2026-11-23T00:00:00.000Z');
+ await expect(service.saveRecurring(f.b,recurringInput)).rejects.toMatchObject({code:'forbidden'});
+ await client`update public.routes set status='INACTIVE' where id=${f.routeId}`;
+ await expect(service.saveRecurring(f.a,recurringInput)).rejects.toMatchObject({code:'validation'});
+ expect(await service.list(f.a)).toHaveLength(3);
+}));
