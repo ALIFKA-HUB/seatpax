@@ -2,12 +2,11 @@ import Link from 'next/link';
 import { Armchair, Bus, CheckCircle, Plus } from '@phosphor-icons/react/ssr';
 import { sourceStatusPresentation } from '@/app/admin/presentation';
 import { fleetData } from '../../../fleet-data';
-import VehicleForm from '../../../components/vehicle-form';
 
 export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const { context, vehicles, templates, data } = await fleetData(companyId);
-  const [list, choices] = await Promise.all([vehicles.list(context), templates.list(context)]);
+  const { context, vehicles } = await fleetData(companyId);
+  const list = await vehicles.list(context);
   const activeCount = list.filter(v => v.status === 'ACTIVE').length;
   const totalCapacity = list.reduce((sum, v) => sum + v.capacity, 0);
 
@@ -19,10 +18,10 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           <p>Hubungkan kendaraan dengan template kursi dan kelas layanan default.</p>
         </div>
         <div className="dash-hero-actions">
-          <a href="#armada-baru" className="dash-primary-cta">
+          <Link href={`/admin/companies/${companyId}/vehicles/new`} className="dash-primary-cta">
             <Plus size={16} weight="bold" aria-hidden="true" />
             <span>Tambah armada</span>
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -110,13 +109,6 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             Belum ada armada. Siapkan template aktif dan kelas layanan terlebih dahulu.
           </p>
         )}
-      </section>
-
-      <section className="dash-card admin-panel-modern" id="armada-baru">
-        <div className="admin-panel-head">
-          <h2>Armada baru</h2>
-        </div>
-        <VehicleForm companyId={companyId} templates={choices} classes={data.classes} />
       </section>
     </div>
   );

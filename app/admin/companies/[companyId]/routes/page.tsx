@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { CheckCircle, MapPin, Path, Plus } from '@phosphor-icons/react/ssr';
 import { companyData } from '../../../data';
-import RouteEditor from '../../../components/route-editor';
 
 export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -16,10 +15,10 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           <p>Susun stop perjalanan dan tarif antar-stop untuk PO Anda.</p>
         </div>
         <div className="dash-hero-actions">
-          <a href="#rute-baru" className="dash-primary-cta">
+          <Link href={`/admin/companies/${companyId}/routes/new`} className="dash-primary-cta">
             <Plus size={16} weight="bold" aria-hidden="true" />
             <span>Buat rute baru</span>
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -102,13 +101,6 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             </table>
           </div>
         )}
-      </section>
-
-      <section className="dash-card admin-panel-modern" id="rute-baru">
-        <div className="admin-panel-head">
-          <h2>Rute baru</h2>
-        </div>
-        <RouteEditor companyId={companyId} choices={data.stops} />
       </section>
     </div>
   );

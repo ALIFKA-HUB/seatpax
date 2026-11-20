@@ -2,12 +2,11 @@ import Link from 'next/link';
 import { CalendarBlank, Clock, Plus, Ticket } from '@phosphor-icons/react/ssr';
 import { tripStatusPresentation } from '@/app/admin/presentation';
 import { tripData } from '@/app/admin/trip-data';
-import TripForm from '@/app/admin/components/trip-form';
 
 export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const { context, trips } = await tripData(companyId);
-  const [list, choices] = await Promise.all([trips.list(context), trips.choices(context)]);
+  const list = await trips.list(context);
   const openCount = list.filter(t => t.status === 'OPEN_FOR_SALE').length;
   const draftCount = list.filter(t => t.status === 'DRAFT').length;
 
@@ -19,10 +18,10 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           <p>Siapkan draft, lalu buka penjualan untuk mengunci jadwal, tarif, dan layout.</p>
         </div>
         <div className="dash-hero-actions">
-          <a href="#perjalanan-baru" className="dash-primary-cta">
+          <Link href={`/admin/companies/${companyId}/trips/new`} className="dash-primary-cta">
             <Plus size={16} weight="bold" aria-hidden="true" />
             <span>Buat perjalanan</span>
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -117,13 +116,6 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             Belum ada perjalanan. Gunakan rute dan armada yang sudah disiapkan.
           </p>
         )}
-      </section>
-
-      <section className="dash-card admin-panel-modern" id="perjalanan-baru">
-        <div className="admin-panel-head">
-          <h2>Perjalanan baru</h2>
-        </div>
-        <TripForm companyId={companyId} choices={choices} />
       </section>
     </div>
   );

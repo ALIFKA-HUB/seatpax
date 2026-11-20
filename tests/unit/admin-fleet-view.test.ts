@@ -2,7 +2,12 @@ import {it,expect,vi} from 'vitest';import {createElement as h} from 'react';imp
 import type {TemplateDetail,VehicleDetail} from '@/modules/fleet/types';
 import {applyCellBrush,emptyGrid} from '@/modules/fleet/grid';
 import Builder from '@/app/admin/components/seat-template-builder';import SeatGrid from '@/app/admin/components/seat-grid';import VehicleForm from '@/app/admin/components/vehicle-form';
+import VehiclesList from '@/app/admin/companies/[companyId]/vehicles/page';
+import VehiclesNew from '@/app/admin/companies/[companyId]/vehicles/new/page';
+import TemplatesList from '@/app/admin/companies/[companyId]/seat-templates/page';
+import TemplatesNew from '@/app/admin/companies/[companyId]/seat-templates/new/page';
 vi.mock('next/navigation',()=>({useRouter:()=>({refresh(){},push(){}})}));vi.mock('@/app/admin/fleet-actions',()=>({runFleetAction:vi.fn()}));
+vi.mock('@/app/admin/fleet-data',()=>({fleetData:async()=>({context:{},vehicles:{list:async()=>[]},templates:{list:async()=>[]},data:{classes:[]}})}));
 const template:TemplateDetail={id:'t',name:'Denah A',version:2,status:'ACTIVE',capacity:1,rows:2,cols:3,cells:[{rowIndex:0,colIndex:0,type:'SEAT',seatCode:'01',label:null},{rowIndex:0,colIndex:1,type:'DRIVER',seatCode:null,label:null},{rowIndex:0,colIndex:2,type:'AISLE',seatCode:null,label:null},{rowIndex:1,colIndex:0,type:'DOOR',seatCode:null,label:null},{rowIndex:1,colIndex:1,type:'FACILITY',seatCode:null,label:null},{rowIndex:1,colIndex:2,type:'EMPTY',seatCode:null,label:null}]};
 it('renders Indonesian cell labels with original enum values',()=>{const html=render(h(Builder,{companyId:'a',initial:template}));expect(html).toContain('value="SEAT"');expect(html).toMatch(/value="SEAT"[^>]*>Kursi/);expect(html).toContain('Sel baris 1, kolom 1');expect(html).toContain('01');expect(html).toContain('Mode klik grid');expect(html).toContain('Pilih sel');});
 it('applies cell brush for rapid multi-seat layout creation and toggles same-type cells off',()=>{
@@ -24,4 +29,12 @@ it('shows fleet status and immutable snapshot controls',()=>{
  const readonly=render(h(SeatGrid,{layout:template}));expect(readonly).toContain('disabled');expect(readonly).not.toContain('aria-pressed');
  const initial:VehicleDetail={id:'v',revision:1,name:'Bus',plateNumber:'B 1 AA',fleetNumber:null,seatTemplateId:'t',defaultServiceClassId:'c',status:'ACTIVE',capacity:1,templateStatus:'ARCHIVED',classStatus:'INACTIVE'};
  const form=render(h(VehicleForm,{companyId:'a',initial,templates:[{...template,status:'ARCHIVED'}],classes:[{id:'c',name:'Kelas lama',status:'INACTIVE'}]}));expect(form).toContain('Denah A');expect(form).toContain('Kelas lama');expect(form).toMatch(/value="MAINTENANCE"[^>]*>Dalam perawatan/);
+});
+it('keeps vehicles and seat-templates list pages clean and routes creation to /new',async()=>{
+ const vList=render(await VehiclesList({params:Promise.resolve({companyId:'a'})}));
+ expect(vList).toContain('/admin/companies/a/vehicles/new');expect(vList).not.toContain('Armada baru');
+ expect(render(await VehiclesNew({params:Promise.resolve({companyId:'a'})}))).toContain('Armada baru');
+ const tList=render(await TemplatesList({params:Promise.resolve({companyId:'a'})}));
+ expect(tList).toContain('/admin/companies/a/seat-templates/new');expect(tList).not.toContain('Template baru');
+ expect(render(await TemplatesNew({params:Promise.resolve({companyId:'a'})}))).toContain('Template baru');
 });

@@ -1,10 +1,12 @@
 import {it,expect,vi} from 'vitest';import {createElement as h} from 'react';import {renderToStaticMarkup as render} from 'react-dom/server';
 import type {TripDetail as Detail} from '@/modules/trip/types';import TripDetail from '@/app/admin/components/trip-detail';
+import TripsListPage from '@/app/admin/companies/[companyId]/trips/page';
+import TripsNewPage from '@/app/admin/companies/[companyId]/trips/new/page';
 export const detail:Detail={trip:{id:'trip',companyId:'a',name:'Perjalanan A',routeId:'r',vehicleId:'v',serviceClassId:'c',departureAt:'2026-10-10T01:00:00Z',salesCloseAt:null,revision:2,status:'OPEN_FOR_SALE',publishedAt:'2026-10-09T01:00:00Z',identity:{routeName:'Bandung → Bogor',routeCode:null,routeRevision:1,vehicleName:'Bus A',plateNumber:'B 1 DEM',vehicleRevision:1,className:'Eksekutif',classCode:'E',templateId:'t',templateVersion:1}},stops:[{sourceId:'s1',stopId:'s1',sequence:1,name:'Bandung',city:'Bandung',address:null,arrivalAt:'2026-10-10T01:00:00Z',departureAt:'2026-10-10T01:00:00Z'},{sourceId:'s2',stopId:'s2',sequence:2,name:'Bogor',city:'Bogor',address:null,arrivalAt:'2026-10-10T04:00:00Z',departureAt:'2026-10-10T04:00:00Z'}],segments:[{sequence:1,fromSequence:1,toSequence:2,price:'60000',currency:'IDR'}],seats:[{seatCode:'01',rowIndex:0,colIndex:0,label:null}],layout:{rows:1,cols:1,cells:[{rowIndex:0,colIndex:0,type:'SEAT',seatCode:'01',label:null}]},inventoryCount:1};
 vi.mock('next/navigation',()=>({useRouter:()=>({refresh(){},push(){}}),notFound(){throw Error('not found');}}));
 vi.mock('@/app/admin/trip-actions',()=>({saveTripAction:vi.fn(),publishTripAction:vi.fn(),setTripCrewAction:vi.fn()}));
 let current=detail;
-vi.mock('@/app/admin/trip-data',()=>({tripData:async()=>({context:{},trips:{detail:async()=>current,choices:async()=>({routes:[],vehicles:[],classes:[]})},publication:{preview:async()=>({projection:null,blockers:['Tarif belum siap']})},crew:{listAssignments:async()=>[],crewChoices:async()=>[]}})}));
+vi.mock('@/app/admin/trip-data',()=>({tripData:async()=>({context:{},trips:{list:async()=>[],detail:async()=>current,choices:async()=>({routes:[],vehicles:[],classes:[]})},publication:{preview:async()=>({projection:null,blockers:['Tarif belum siap']})},crew:{listAssignments:async()=>[],crewChoices:async()=>[]}})}));
 it('prioritizes published identity and separates technical snapshot details',()=>{
  const html=render(h(TripDetail,{detail}));for(const s of ['Bandung','B 1 DEM','Eksekutif','WIB','Rincian perjalanan','<details','Denah kursi','60.000','Jumlah anchor teknis'])expect(html).toContain(s);
  expect(html.indexOf('Tiba (WIB)')).toBeLessThan(html.indexOf('<details'));expect(html).not.toContain('kursi tersedia');
@@ -17,3 +19,9 @@ it('preserves draft published branches and assignment controls',async()=>{
  current={...detail,trip:{...detail.trip,status:'DRAFT',identity:null}};const draft=render(await Page({params}));expect(draft).toContain('Simpan draft');expect(draft).toContain('Tarif belum siap');expect(draft).not.toContain('Lihat manifest');
 });
 it('preserves read-only Admin manifest without operational links',async()=>{const {default:Manifest}=await import('@/app/crew/components/manifest-list');const view={tripId:'trip',companyId:'a',tripName:'Demo',departureAt:'2026-10-10T01:00:00Z',capacity:30,passengerCount:1,boardedCount:0,stops:[],passengers:[{ticketId:'ticket',name:'Nama <panjang>',seatCode:'01',fromName:'Bandung',toName:'Bogor',boarding:null,snack:null}]};const html=render(h(Manifest,{view,readOnly:true}));expect(html).toContain('Nama &lt;panjang&gt;');expect(html).not.toContain('/crew/trips/');expect(html).not.toContain('<button');});
+it('keeps trips list table clean and moves trip creation form to /trips/new',async()=>{
+ const listHtml=render(await TripsListPage({params:Promise.resolve({companyId:'a'})}));
+ expect(listHtml).toContain('/admin/companies/a/trips/new');expect(listHtml).toContain('Daftar perjalanan');expect(listHtml).not.toContain('Simpan draft');
+ const newHtml=render(await TripsNewPage({params:Promise.resolve({companyId:'a'})}));
+ expect(newHtml).toContain('Perjalanan baru');expect(newHtml).toContain('Simpan draft');expect(newHtml).toContain('/admin/companies/a/trips');
+});

@@ -18,13 +18,20 @@ it('labels known source states and retains unknown codes',async()=>{
  expect(label('MAINTENANCE').label).toBe('Dalam perawatan');expect(label('FUTURE')).toEqual({label:'Status perlu diperiksa: FUTURE',tone:'neutral'});expect(label('toString').tone).toBe('neutral');
  expect(formatIdr('9007199254740993')).toBe('Rp 9.007.199.254.740.993');
 });
-it('renders named locally scrollable route tables',async()=>{
+it('renders named locally scrollable route tables and routes creation to dedicated new page',async()=>{
  const {default:Page}=await import('@/app/admin/companies/[companyId]/routes/page');const html=render(await Page({params:Promise.resolve({companyId:'a'})}));
- for(const s of ['role="region"','aria-label="Daftar rute"','tabindex="0"','Rute &lt;panjang&gt;','/admin/companies/a/routes/route'])expect(html).toContain(s);
+ for(const s of ['role="region"','aria-label="Daftar rute"','tabindex="0"','Rute &lt;panjang&gt;','/admin/companies/a/routes/route','/admin/companies/a/routes/new'])expect(html).toContain(s);
+ expect(html).not.toContain('Rute baru');
+ const {default:NewRoute}=await import('@/app/admin/companies/[companyId]/routes/new/page');
+ expect(render(await NewRoute({params:Promise.resolve({companyId:'a'})}))).toContain('Rute baru');
 });
-it('retains existing stop rows with directory creation and distinguishes empty class data',async()=>{
+it('retains existing stop rows with directory creation and separates service class table from /new',async()=>{
  const html=render(await Stops({params:Promise.resolve({companyId:'a'})}));expect(html).toContain('Stop lama');expect(html).toContain('Tambah titik');
- const {default:Classes}=await import('@/app/admin/companies/[companyId]/service-classes/page');const list=render(await Classes({params:Promise.resolve({companyId:'a'})}));expect(list.indexOf('Kelas lama')).toBeLessThan(list.indexOf('Tambah kelas'));
+ const {default:Classes}=await import('@/app/admin/companies/[companyId]/service-classes/page');const list=render(await Classes({params:Promise.resolve({companyId:'a'})}));
+ for(const s of ['Daftar kelas layanan','Kelas lama','/admin/companies/a/service-classes/class','/admin/companies/a/service-classes/new'])expect(list).toContain(s);
+ expect(list).not.toContain('Tambah kelas');
+ const {default:NewClass}=await import('@/app/admin/companies/[companyId]/service-classes/new/page');
+ expect(render(await NewClass({params:Promise.resolve({companyId:'a'})}))).toContain('Tambah kelas');
  data.classes=[];expect(render(await Classes({params:Promise.resolve({companyId:'a'})}))).toContain('Belum ada kelas');
 });
 it('keeps revision conflict choices explicit',()=>{

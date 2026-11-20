@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { CheckCircle, MinusCircle, Plus, Stack } from '@phosphor-icons/react/ssr';
 import { companyData } from '../../../data';
-import MasterForm from '../../../components/master-form';
 
 export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -16,10 +16,13 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           <p>Setiap kelas memiliki konfigurasi tarif segmennya sendiri.</p>
         </div>
         <div className="dash-hero-actions">
-          <a href="#tambah-kelas" className="dash-primary-cta">
+          <Link
+            href={`/admin/companies/${companyId}/service-classes/new`}
+            className="dash-primary-cta"
+          >
             <Plus size={16} weight="bold" aria-hidden="true" />
             <span>Buat kelas baru</span>
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -53,35 +56,62 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         </div>
       </div>
 
-      <div className="admin-master-list">
-        {data.classes.length ? (
-          data.classes.map(c => (
-            <section className="dash-card admin-panel-modern" key={c.id}>
-              <div className="admin-panel-head">
-                <h2>{c.name}</h2>
-                <span
-                  className={`admin-status-pill ${c.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
-                >
-                  {c.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
-                </span>
-              </div>
-              <MasterForm companyId={companyId} kind="class" initial={c} />
-            </section>
-          ))
-        ) : (
-          <section className="dash-card admin-panel-modern">
-            <p className="admin-empty-copy">
-              Belum ada kelas layanan. Tambahkan kelas pertama di bawah.
-            </p>
-          </section>
-        )}
-      </div>
-
-      <section className="dash-card admin-panel-modern" id="tambah-kelas">
+      <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
-          <h2>Tambah kelas</h2>
+          <h2>
+            Daftar kelas layanan <span className="admin-count">{data.classes.length}</span>
+          </h2>
         </div>
-        <MasterForm companyId={companyId} kind="class" />
+        {data.classes.length ? (
+          <div
+            className="admin-table-wrap"
+            role="region"
+            aria-label="Daftar kelas layanan"
+            tabIndex={0}
+          >
+            <table className="admin-modern-table">
+              <thead>
+                <tr>
+                  <th>Nama kelas</th>
+                  <th>Kode</th>
+                  <th>Status</th>
+                  <th>Kelola</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.classes.map(c => (
+                  <tr key={c.id}>
+                    <td>
+                      <strong>{c.name}</strong>
+                    </td>
+                    <td>
+                      <code>{c.code ?? '—'}</code>
+                    </td>
+                    <td>
+                      <span
+                        className={`admin-status-pill ${c.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
+                      >
+                        {c.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
+                      </span>
+                    </td>
+                    <td>
+                      <Link
+                        className="admin-row-link"
+                        href={`/admin/companies/${companyId}/service-classes/${c.id}`}
+                      >
+                        Kelola kelas →
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="admin-empty-copy">
+            Belum ada kelas layanan. Tambahkan kelas pertama untuk mengatur tarif segmen.
+          </p>
+        )}
       </section>
     </div>
   );

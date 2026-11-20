@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Armchair, CheckCircle, Plus, Stack } from '@phosphor-icons/react/ssr';
 import { sourceStatusPresentation } from '@/app/admin/presentation';
 import { fleetData } from '../../../fleet-data';
-import SeatTemplateBuilder from '../../../components/seat-template-builder';
 
 export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -19,10 +18,10 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           <p>Susun denah yang dapat digunakan oleh armada PO Anda.</p>
         </div>
         <div className="dash-hero-actions">
-          <a href="#template-baru" className="dash-primary-cta">
+          <Link href={`/admin/companies/${companyId}/seat-templates/new`} className="dash-primary-cta">
             <Plus size={16} weight="bold" aria-hidden="true" />
             <span>Buat template baru</span>
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -107,16 +106,9 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           </div>
         ) : (
           <p className="admin-empty-copy">
-            Belum ada template. Pilih sel pada grid di bawah untuk membuat kursi pertama.
+            Belum ada template. Buat template baru untuk menyusun denah kursi pertama.
           </p>
         )}
-      </section>
-
-      <section className="dash-card admin-panel-modern" id="template-baru">
-        <div className="admin-panel-head">
-          <h2>Template baru</h2>
-        </div>
-        <SeatTemplateBuilder companyId={companyId} />
       </section>
     </div>
   );

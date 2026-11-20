@@ -293,7 +293,7 @@ export default async function AdminDashboardPage({
                 <CalendarBlank size={28} weight="duotone" aria-hidden="true" />
                 <strong>Belum ada keberangkatan terjadwal</strong>
                 <p>Buat jadwal perjalanan baru dari rute dan armada yang sudah siap.</p>
-                <Link href={`${base}/trips#perjalanan-baru`} className="dash-outline-cta">
+                <Link href={`${base}/trips/new`} className="dash-outline-cta">
                   Buat jadwal pertama <ArrowRight size={14} aria-hidden="true" />
                 </Link>
               </div>
