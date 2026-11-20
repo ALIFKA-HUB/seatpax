@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import Brand from '@/app/components/brand';
 import AdminNavigation from './admin-navigation';
 import AdminTopbar from './admin-topbar';
-import { CaretRight, UserCircle } from '@phosphor-icons/react/ssr';
+import { UserCircle } from '@phosphor-icons/react/ssr';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta', display: 'swap' });
@@ -31,21 +31,6 @@ export default function AdminShell({
         </div>
 
         <div className="admin-sidebar-body">
-          <Link
-            href="/admin"
-            className="admin-company"
-            aria-label={`Pilih workspace. Saat ini ${companyName}`}
-          >
-            <span className="admin-company-avatar" aria-hidden="true">
-              {Array.from(companyName.trim())[0] ?? 'P'}
-            </span>
-            <span>
-              <strong>{companyName}</strong>
-              <small>Admin PO</small>
-            </span>
-            <CaretRight size={15} aria-hidden="true" />
-          </Link>
-
           <AdminNavigation complaintCount={complaintCount} base={`/admin/companies/${companyId}`} />
 
           <div className="admin-account-wrap">
