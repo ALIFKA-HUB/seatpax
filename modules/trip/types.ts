@@ -1,7 +1,27 @@
 import type { Layout } from '@/modules/fleet/types';
 export type TripStatus = 'DRAFT' | 'OPEN_FOR_SALE';
+export type IsoWeekday = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type TripDraftInput = { name:string;routeId:string;vehicleId:string;serviceClassId:string;departureWib:string;salesCloseWib:string|null };
+export type RecurringTripInput = {
+  name: string;
+  routeId: string;
+  vehicleId: string;
+  serviceClassId: string;
+  startDate: string;
+  endDate: string;
+  departureTime: string;
+  weekdays: IsoWeekday[];
+  salesCloseBeforeMin: number | null;
+};
+export type RecurringScheduleOccurrence = {
+  date: string;
+  isoWeekday: IsoWeekday;
+  departureWib: string;
+  departureAt: string;
+  salesCloseAt: string | null;
+};
 export type TripCommandResult = {tripId:string;revision:number;status:TripStatus};
+export type RecurringTripCommandResult = { tripIds: string[]; count: number; status: TripStatus };
 export type SourceStop = {sourceId:string;stopId:string;name:string;city:string;address:string|null;sequence:number;arrivalOffsetMin:number|null;departureOffsetMin:number|null;status:string};
 export type PublicationSource = {
  route:{id:string;name:string;code:string|null;revision:number;status:string};

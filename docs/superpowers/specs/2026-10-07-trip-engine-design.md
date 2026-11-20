@@ -12,7 +12,7 @@ Acuan: scope aktif `02_MVP_SCOPE.md`, ledger D2026-10-06-01/02 dan keputusan rou
 
 Paket ini mencakup draft/list/detail/edit, buka penjualan, snapshot atomik, preview snapshot, crew assignment/revocation, audit assignment dan publikasi, serta halaman crew read-only daftar/detail assigned trips. Scheduling-only menunda hasil yang diperlukan inventory; menggabungkan checkout/payment memperbesar task secara berlebihan. Pilihan yang disetujui menyelesaikan persiapan trip dalam satu slice.
 
-Tidak mencakup passenger search/availability/hold, booking/payment, manifest/QR/boarding/snack, company-management UI, completion/cancellation workflow, penggantian armada, kalender berulang, conflict jadwal fisik armada/crew atau pelacakan GPS. Assignment bukan bukti crew benar-benar tersedia secara fisik; tidak ada janji mencegah jadwal armada bertabrakan.
+Tidak mencakup passenger search/availability/hold, booking/payment, manifest/QR/boarding/snack, company-management UI, completion/cancellation workflow, penggantian armada, template jadwal otomatis di latar belakang, conflict jadwal fisik armada/crew atau pelacakan GPS. Assignment bukan bukti crew benar-benar tersedia secara fisik; tidak ada janji mencegah jadwal armada bertabrakan. *(Pembaruan `D2026-11-20-01` / `TRIP-RECURRING-01`: Admin PO dapat membuat batch draft `public.trips` sekaligus dari `/trips/new` berdasarkan pilihan hari beroperasi `Sen`–`Min`, jam WIB, dan rentang tanggal maks. 90 hari / 60 perjalanan per batch.)*
 
 ## Draft dan jadwal
 

@@ -1,7 +1,7 @@
 import {beforeEach,it,expect,vi} from 'vitest';
-const f=vi.hoisted(()=>({identity:vi.fn(),save:vi.fn(),publish:vi.fn(),assignment:vi.fn(),revalidate:vi.fn()}));
-vi.mock('@/modules/auth/identity',()=>({getVerifiedUser:f.identity}));vi.mock('@/lib/db',()=>({getDatabase:()=>({$client:{}})}));vi.mock('@/modules/trip/repository',()=>({createTripRepository:()=>({})}));vi.mock('@/modules/trip/draft-service',()=>({createDraftService:()=>({save:f.save})}));vi.mock('@/modules/trip/publication-service',()=>({createPublicationService:()=>({publish:f.publish})}));vi.mock('@/modules/trip/crew-service',()=>({createCrewService:()=>({setAssignment:f.assignment})}));vi.mock('next/cache',()=>({revalidatePath:f.revalidate}));
-import {saveTripAction,publishTripAction,setTripCrewAction} from '@/app/admin/trip-actions';import {DomainError} from '@/modules/access/transaction';
+const f=vi.hoisted(()=>({identity:vi.fn(),save:vi.fn(),saveRecurring:vi.fn(),publish:vi.fn(),assignment:vi.fn(),revalidate:vi.fn()}));
+vi.mock('@/modules/auth/identity',()=>({getVerifiedUser:f.identity}));vi.mock('@/lib/db',()=>({getDatabase:()=>({$client:{}})}));vi.mock('@/modules/trip/repository',()=>({createTripRepository:()=>({})}));vi.mock('@/modules/trip/draft-service',()=>({createDraftService:()=>({save:f.save,saveRecurring:f.saveRecurring})}));vi.mock('@/modules/trip/publication-service',()=>({createPublicationService:()=>({publish:f.publish})}));vi.mock('@/modules/trip/crew-service',()=>({createCrewService:()=>({setAssignment:f.assignment})}));vi.mock('next/cache',()=>({revalidatePath:f.revalidate}));
+import {saveTripAction,saveRecurringTripsAction,publishTripAction,setTripCrewAction} from '@/app/admin/trip-actions';import {DomainError} from '@/modules/access/transaction';
 const cid='10000000-0000-4000-8000-000000000001',actorId='10000000-0000-4000-8000-000000000002';
 beforeEach(()=>{vi.resetAllMocks();f.identity.mockResolvedValue({id:actorId});f.save.mockResolvedValue({tripId:cid,revision:1,status:'DRAFT'});f.publish.mockResolvedValue({tripId:cid,revision:2,status:'OPEN_FOR_SALE'});});
 it('denies absent identity and malformed command without mutations',async()=>{
@@ -15,4 +15,12 @@ it('preserves safe conflict/blocker messages and conceals arbitrary errors',asyn
  f.publish.mockRejectedValue(new DomainError('conflict','Draft berubah.'));expect(await publishTripAction(cid,{id:cid,revision:1})).toMatchObject({ok:false,code:'conflict',message:'Draft berubah.'});
  f.publish.mockRejectedValue(new DomainError('validation','Tarif belum lengkap.'));expect(await publishTripAction(cid,{id:cid,revision:1})).toMatchObject({ok:false,message:'Tarif belum lengkap.'});
  f.save.mockRejectedValue(Error('SQL secret'));expect(JSON.stringify(await saveTripAction(cid,{input:{}}))).not.toContain('secret');
+});
+it('forwards verified actor for recurring trip batch creation and preserves domain validation',async()=>{
+ f.saveRecurring.mockResolvedValue({tripIds:[cid],count:1,status:'DRAFT'});
+ const payload={name:'Pagi',weekdays:[1,3]};
+ expect(await saveRecurringTripsAction(cid,{input:payload})).toEqual({ok:true,data:{tripIds:[cid],count:1,status:'DRAFT'}});
+ expect(f.saveRecurring).toHaveBeenCalledWith({actorId,companyId:cid},payload);
+ f.saveRecurring.mockRejectedValue(new DomainError('validation','Pilih minimal satu hari beroperasi.'));
+ expect(await saveRecurringTripsAction(cid,{input:{}})).toMatchObject({ok:false,code:'validation',message:'Pilih minimal satu hari beroperasi.'});
 });

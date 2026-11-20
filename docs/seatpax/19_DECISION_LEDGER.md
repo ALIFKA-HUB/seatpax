@@ -430,3 +430,7 @@ User asked to temporarily disable OTP and list role emails after accepting a loc
 ## D2026-10-29-01 — Autonomous stabilization delivery
 
 The user authorized autonomous execution of the reviewed UI/stabilization roadmap, delegated workers, verification and meaningful per-task commit/push. This includes the previously approved Helpdesk visual direction and audited P03 defects. Existing single-company business rules remain unchanged; no SaaS/mobile rollout or deployment is authorized by this batch. External acceptance blocked by tool, provider or physical-device access must remain explicitly untested. See the roadmap and `docs/setup/DELIVERY_2026_10_29.md` for outcomes.
+
+## D2026-11-20-01 — Recurring alarm-style trip draft batch creation (`TRIP-RECURRING-01`)
+
+The user asked for an alarm-style weekday selector and recurring schedule option on the Admin PO trip creation page and approved `TRIP-RECURRING-01` with `sikat`. `/trips/new` adds an optional `Berulang (pilih hari)` mode alongside the default `Sekali jalan` mode, letting Admin PO pick ISO weekdays (`Sen`–`Min`, plus quick presets), WIB departure time, start/end dates (max 90-day span, max 60 generated trips per batch), and optional sales cutoff offset in minutes before departure. Submitting creates individual `DRAFT` rows in `public.trips` atomically in a single transaction, preserving per-trip snapshot publication, seat/segment inventory, crew assignment, and cutoff invariants without introducing background schedulers or physical fleet conflict detection.

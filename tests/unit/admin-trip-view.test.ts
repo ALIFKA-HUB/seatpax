@@ -4,7 +4,7 @@ import TripsListPage from '@/app/admin/companies/[companyId]/trips/page';
 import TripsNewPage from '@/app/admin/companies/[companyId]/trips/new/page';
 export const detail:Detail={trip:{id:'trip',companyId:'a',name:'Perjalanan A',routeId:'r',vehicleId:'v',serviceClassId:'c',departureAt:'2026-10-10T01:00:00Z',salesCloseAt:null,revision:2,status:'OPEN_FOR_SALE',publishedAt:'2026-10-09T01:00:00Z',identity:{routeName:'Bandung → Bogor',routeCode:null,routeRevision:1,vehicleName:'Bus A',plateNumber:'B 1 DEM',vehicleRevision:1,className:'Eksekutif',classCode:'E',templateId:'t',templateVersion:1}},stops:[{sourceId:'s1',stopId:'s1',sequence:1,name:'Bandung',city:'Bandung',address:null,arrivalAt:'2026-10-10T01:00:00Z',departureAt:'2026-10-10T01:00:00Z'},{sourceId:'s2',stopId:'s2',sequence:2,name:'Bogor',city:'Bogor',address:null,arrivalAt:'2026-10-10T04:00:00Z',departureAt:'2026-10-10T04:00:00Z'}],segments:[{sequence:1,fromSequence:1,toSequence:2,price:'60000',currency:'IDR'}],seats:[{seatCode:'01',rowIndex:0,colIndex:0,label:null}],layout:{rows:1,cols:1,cells:[{rowIndex:0,colIndex:0,type:'SEAT',seatCode:'01',label:null}]},inventoryCount:1};
 vi.mock('next/navigation',()=>({useRouter:()=>({refresh(){},push(){}}),notFound(){throw Error('not found');}}));
-vi.mock('@/app/admin/trip-actions',()=>({saveTripAction:vi.fn(),publishTripAction:vi.fn(),setTripCrewAction:vi.fn()}));
+vi.mock('@/app/admin/trip-actions',()=>({saveTripAction:vi.fn(),saveRecurringTripsAction:vi.fn(),publishTripAction:vi.fn(),setTripCrewAction:vi.fn()}));
 let current=detail;
 vi.mock('@/app/admin/trip-data',()=>({tripData:async()=>({context:{},trips:{list:async()=>[],detail:async()=>current,choices:async()=>({routes:[],vehicles:[],classes:[]})},publication:{preview:async()=>({projection:null,blockers:['Tarif belum siap']})},crew:{listAssignments:async()=>[],crewChoices:async()=>[]}})}));
 it('prioritizes published identity and separates technical snapshot details',()=>{
@@ -24,4 +24,7 @@ it('keeps trips list table clean and moves trip creation form to /trips/new',asy
  expect(listHtml).toContain('/admin/companies/a/trips/new');expect(listHtml).toContain('Daftar perjalanan');expect(listHtml).not.toContain('Simpan draft');
  const newHtml=render(await TripsNewPage({params:Promise.resolve({companyId:'a'})}));
  expect(newHtml).toContain('Perjalanan baru');expect(newHtml).toContain('Simpan draft');expect(newHtml).toContain('/admin/companies/a/trips');
+ expect(newHtml).toContain('Sekali jalan');expect(newHtml).toContain('Berulang (pilih hari)');
+ const batchListHtml=render(await TripsListPage({params:Promise.resolve({companyId:'a'}),searchParams:Promise.resolve({created:'5'})}));
+ expect(batchListHtml).toContain('5 draft perjalanan');
 });

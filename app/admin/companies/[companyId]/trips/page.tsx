@@ -3,8 +3,16 @@ import { CalendarBlank, Clock, Plus, Ticket } from '@phosphor-icons/react/ssr';
 import { tripStatusPresentation } from '@/app/admin/presentation';
 import { tripData } from '@/app/admin/trip-data';
 
-export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams?: Promise<{ created?: string }>;
+}) {
   const { companyId } = await params;
+  const resolvedSearch = searchParams ? await searchParams : undefined;
+  const createdCount = Number(resolvedSearch?.created);
   const { context, trips } = await tripData(companyId);
   const list = await trips.list(context);
   const openCount = list.filter(t => t.status === 'OPEN_FOR_SALE').length;
@@ -24,6 +32,13 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           </Link>
         </div>
       </header>
+
+      {Number.isInteger(createdCount) && createdCount > 0 && (
+        <div className="admin-flash-ok" role="status">
+          Berhasil membuat <strong>{createdCount} draft perjalanan</strong>. Buka tiap perjalanan
+          untuk menugaskan crew dan membuka penjualan.
+        </div>
+      )}
 
       <div className="admin-stat-grid" role="region" aria-label="Ringkasan perjalanan">
         <div className="admin-stat-card">
