@@ -23,7 +23,10 @@ it('renders named locally scrollable route tables and routes creation to dedicat
  for(const s of ['role="region"','aria-label="Daftar rute"','tabindex="0"','Rute &lt;panjang&gt;','/admin/companies/a/routes/route','/admin/companies/a/routes/new'])expect(html).toContain(s);
  expect(html).not.toContain('Rute baru');
  const {default:NewRoute}=await import('@/app/admin/companies/[companyId]/routes/new/page');
- expect(render(await NewRoute({params:Promise.resolve({companyId:'a'})}))).toContain('Rute baru');
+ const newHtml=render(await NewRoute({params:Promise.resolve({companyId:'a'})}));
+ expect(newHtml).toContain('Rute baru');
+ expect(newHtml).toContain('Titik awal');
+ expect(newHtml).toContain('Tujuan akhir');
 });
 it('retains existing stop rows with directory creation and separates service class table from /new',async()=>{
  const html=render(await Stops({params:Promise.resolve({companyId:'a'})}));expect(html).toContain('Stop lama');expect(html).toContain('Tambah titik');

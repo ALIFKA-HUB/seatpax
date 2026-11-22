@@ -146,9 +146,15 @@
 .admin-shell .admin-select-check{flex:none;display:inline-flex;color:var(--admin-blue)}
 
 /* Route Stop Editor & Fare Modern Polish */
+.admin-shell .route-stop-guide{margin:0 0 16px}
 .admin-shell .admin-stop-list{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:12px}
-.admin-shell .admin-stop-list>li{display:grid;grid-template-columns:32px minmax(0,2fr) minmax(105px,1fr) minmax(105px,1fr) auto;gap:12px;align-items:end;padding:14px 16px;border:1px solid var(--admin-line);border-radius:12px;background:#fbfdff;border-top:1px solid var(--admin-line)}
+.admin-shell .admin-stop-list>li{display:grid;grid-template-columns:32px minmax(0,1.8fr) minmax(136px,1fr) minmax(146px,1fr) auto;gap:8px 12px;align-items:end;padding:14px 16px;border:1px solid var(--admin-line);border-radius:12px;background:#fbfdff;border-top:1px solid var(--admin-line)}
 .admin-shell .admin-stop-number{width:28px;height:28px;margin-bottom:7px;border-radius:999px;background:#eaf2ff;color:var(--admin-blue);font-size:12px;font-weight:700;display:grid;place-items:center}
+.admin-shell .admin-stop-role{display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;background:#eef2f7;color:#475569;font-size:11px;font-weight:600;line-height:1.4}
+.admin-shell .admin-stop-role.is-start{background:#eaf2ff;color:var(--admin-blue)}
+.admin-shell .admin-stop-role.is-end{background:#eaf7ef;color:#067354}
+.admin-shell .admin-stop-summary{grid-column:2 / -1;margin:4px 0 0;font-size:12px;font-weight:500;color:var(--admin-muted);line-height:1.45}
+.admin-shell .admin-stop-summary.is-warn{color:#b45309}
 .admin-shell .admin-row-buttons{display:flex;gap:6px;padding-top:0;align-self:end}
 .admin-shell .admin-row-buttons button{min-height:42px;min-width:38px;padding:0 10px;border-radius:10px;border:1px solid #d1dce9;background:#fff;color:var(--admin-ink);font-size:14px;font-weight:600;display:inline-grid;place-items:center}
 .admin-shell .admin-row-buttons button:hover:not(:disabled){border-color:#8fa6c4;background:#f0f6ff;color:var(--admin-blue)}
