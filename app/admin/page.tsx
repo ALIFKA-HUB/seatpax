@@ -13,26 +13,40 @@ export default async function AdminPage() {
 
   return (
     <main className="admin-entry">
-      <Brand href="/admin" />
+      <div className="admin-entry-top">
+        <Brand href="/admin" />
+      </div>
       <header className="admin-header">
         <p>Admin PO</p>
         <h1>Pilih perusahaan</h1>
+        <span className="admin-entry-sub">
+          Pilih workspace operator bus yang ingin Anda kelola hari ini.
+        </span>
       </header>
       {companies.length ? (
         <ul>
           {companies.map(c => (
             <li key={c.id}>
               <Link href={`/admin/companies/${c.id}`}>
-                <span>{c.name}</span>
-                <span aria-hidden="true"> →</span>
+                <span className="admin-entry-item">
+                  <span className="admin-entry-avatar" aria-hidden="true">
+                    {Array.from(c.name.trim())[0] ?? 'P'}
+                  </span>
+                  <span>{c.name}</span>
+                </span>
+                <span className="admin-entry-arrow" aria-hidden="true">
+                  →
+                </span>
               </Link>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Akun ini belum memiliki akses admin PO.</p>
+        <p className="admin-entry-empty">Akun ini belum memiliki akses admin PO.</p>
       )}
-      <Link href="/account">Kembali ke akun</Link>
+      <Link className="admin-entry-back" href="/account">
+        ← Kembali ke akun
+      </Link>
     </main>
   );
 }
