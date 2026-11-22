@@ -1045,14 +1045,14 @@ html[data-mode='dark'] .crew-shell a {
   color: var(--ops-accent);
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-sidebar, .crew-brand, .crew-topbar, .crew-panel, .crew-table-card, .crew-stat-card, .crew-date-pill, .crew-back, .crew-subnav, .crew-state-card, .admin-toast) {
+html[data-mode='dark'] .crew-shell :is(.crew-sidebar, .crew-brand, .crew-topbar, .crew-panel, .crew-table-card, .crew-stat-card, .manifest-counters > div, .crew-date-pill, .crew-back, .crew-subnav, .crew-state-card, .admin-toast) {
   background: var(--ops-paper-2);
   border-color: var(--ops-rule);
   color: var(--ops-ink);
   box-shadow: none;
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-company-card, .crew-trip-item, .crew-code-pill, .manifest-counters div, .manifest-passengers li, .seat-grid-region, .boarding-profile .crew-profile-facts) {
+html[data-mode='dark'] .crew-shell :is(.crew-company-card, .crew-trip-item, .crew-code-pill, .manifest-passengers li, .seat-grid-region, .boarding-profile .crew-profile-facts) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule);
   color: var(--ops-ink);
@@ -1242,8 +1242,18 @@ html[data-mode='dark'] .crew-shell :is(.manifest-seat, .crew-seat) {
   border-color: var(--ops-accent-border);
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-trip-quick-actions, .crew-stop-body, .crew-details > div, .crew-fares li, .crew-scan-result, .crew-topbar nav) {
+html[data-mode='dark'] .crew-shell :is(.crew-trip-quick-actions, .crew-stop-body, .crew-details > div, .crew-fares li, .crew-scan-result, .crew-topbar nav, .crew-table-card .manifest-toolbar, .crew-manifest-readonly) {
   border-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .crew-shell .crew-state-time {
+  background: var(--ops-paper-4);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell .crew-state-success .crew-state-time {
+  background: var(--ops-green-border);
+  color: var(--ops-green);
 }
 
 html[data-mode='dark'] .crew-shell :is(input, select, .manifest-controls input, .manifest-controls select, .boarding-form select) {

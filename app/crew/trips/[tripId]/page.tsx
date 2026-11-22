@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: Promise<{ tripId: strin
   }
 
   return (
-    <>
+    <div className="crew-dash-root">
       <CrewTripTabs
         tripId={tripId}
         tripName={detail.trip.name}
@@ -23,6 +23,6 @@ export default async function Page({ params }: { params: Promise<{ tripId: strin
         active="summary"
       />
       <CrewTripSummary detail={detail} />
-    </>
+    </div>
   );
 }

@@ -15,16 +15,14 @@ export default async function Page({ params }: { params: Promise<{ tripId: strin
   }
 
   return (
-    <>
+    <div className="crew-dash-root">
       <CrewTripTabs
         tripId={tripId}
         tripName={view.tripName}
         subtitle={`Keberangkatan ${wibTime(view.departureAt)}`}
         active="manifest"
       />
-      <section className="crew-panel crew-stack">
-        <ManifestList view={view} />
-      </section>
-    </>
+      <ManifestList view={view} />
+    </div>
   );
 }

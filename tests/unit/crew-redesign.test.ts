@@ -6,7 +6,10 @@ import CrewShell from '@/app/crew/components/crew-shell';
 import CrewNavigation, { isCrewTripsActive } from '@/app/crew/components/crew-navigation';
 import CrewTopbar, { resolveCrewTopbarTitle } from '@/app/crew/components/crew-topbar';
 import CrewTripTabs from '@/app/crew/components/trip-tabs';
-import type { TripRecord } from '@/modules/trip/types';
+import CrewTripSummary from '@/app/crew/components/trip-summary';
+import ManifestList from '@/app/crew/components/manifest-list';
+import type { TripDetail, TripRecord } from '@/modules/trip/types';
+import type { ManifestView } from '@/modules/boarding/types';
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -301,3 +304,164 @@ describe('Task 2: /crew Assigned Trips Dashboard & CrewTripTabs Admin PO Hero & 
     expect(summaryHtml).not.toContain('crew-eyebrow');
   });
 });
+
+describe('Task 3: CrewTripSummary & ManifestList Admin PO Card & Table Patterns', () => {
+  const mockTripDetail: TripDetail = {
+    trip: mockTrips[0],
+    stops: [
+      {
+        sourceId: 'src-1',
+        stopId: 'stop-1',
+        name: 'Bandung',
+        city: 'Bandung',
+        address: 'Terminal Leuwipanjang',
+        sequence: 1,
+        arrivalAt: '2026-10-10T01:00:00Z',
+        departureAt: '2026-10-10T01:00:00Z',
+      },
+      {
+        sourceId: 'src-2',
+        stopId: 'stop-2',
+        name: 'Bogor',
+        city: 'Bogor',
+        address: null,
+        sequence: 2,
+        arrivalAt: '2026-10-10T04:00:00Z',
+        departureAt: '2026-10-10T04:00:00Z',
+      },
+    ],
+    segments: [{ sequence: 1, fromSequence: 1, toSequence: 2, price: '60000', currency: 'IDR' }],
+    seats: [{ seatCode: '01-LONG-SEAT-CODE', rowIndex: 0, colIndex: 0, label: null }],
+    layout: {
+      rows: 1,
+      cols: 1,
+      cells: [{ rowIndex: 0, colIndex: 0, type: 'SEAT', seatCode: '01-LONG-SEAT-CODE', label: null }],
+    },
+    inventoryCount: 1,
+  };
+
+  const mockManifestView: ManifestView = {
+    tripId: 'trip-1',
+    companyId: 'company-1',
+    tripName: 'Perjalanan Pagi',
+    departureAt: '2026-10-10T01:00:00Z',
+    capacity: 30,
+    passengerCount: 2,
+    boardedCount: 1,
+    stops: [],
+    passengers: [
+      {
+        ticketId: 'ticket-1',
+        name: 'Budi Santoso',
+        seatCode: '01',
+        fromName: 'Bandung',
+        toName: 'Bogor',
+        boarding: { boardedAt: '2026-10-10T00:45:00Z' },
+        snack: { claimedAt: '2026-10-10T00:50:00Z' },
+      },
+      {
+        ticketId: 'ticket-2',
+        name: 'Siti Aminah',
+        seatCode: '02',
+        fromName: 'Bandung',
+        toName: 'Bogor',
+        boarding: null,
+        snack: null,
+      },
+    ],
+  };
+
+  it('renders CrewTripSummary with Admin PO panel heads, separated fleet/stop badges, expandable seat layout, and zero middle-dot joiners', () => {
+    const html = render(h(CrewTripSummary, { detail: mockTripDetail }));
+
+    // Top summary card with crew-panel-head, time badge, and separated fleet pills
+    expect(html).toContain('class="crew-panel crew-table-card crew-summary-card"');
+    expect(html).toContain('aria-label="Ringkasan perjalanan"');
+    expect(html).toContain('class="crew-panel-head"');
+    expect(html).toContain('Bandung → Bogor');
+    expect(html).toContain('class="crew-time-badge"');
+    expect(html).toContain('class="crew-muted crew-trip-fleet"');
+    expect(html).toContain('Bus A');
+    expect(html).toContain('class="crew-code-pill"');
+    expect(html).toContain('B 1234 DEM');
+    expect(html).toContain('class="crew-status-pill is-info"');
+    expect(html).toContain('Eksekutif');
+    expect(html).toContain('href="/crew/trips/trip-1/scan"');
+    expect(html).toContain('href="/crew/trips/trip-1/manifest"');
+
+    // Stop schedule card with count pill, status pill, and separated stop city + address pill
+    expect(html).toContain('id="crew-schedule-title"');
+    expect(html).toContain('Urutan titik naik &amp; turun');
+    expect(html).toContain('class="crew-status-pill is-neutral"');
+    expect(html).toContain('2 pemberhentian terdaftar');
+    expect(html).toContain('class="crew-muted crew-stop-location"');
+    expect(html).toContain('class="crew-stop-city"');
+    expect(html).toContain('class="crew-code-pill crew-stop-address"');
+    expect(html).toContain('Terminal Leuwipanjang');
+
+    // Expandable details card preserved
+    expect(html).toContain('<details class="crew-panel crew-table-card crew-details"');
+    expect(html).toContain('<summary>Rincian perjalanan (tarif segmen &amp; denah kursi)</summary>');
+    expect(html).toContain('Tarif per segmen');
+    expect(html).toContain('60.000');
+    expect(html).toContain('aria-label="Denah kursi"');
+    expect(html).toContain('01-LONG-SEAT-CODE');
+
+    // Zero middle-dot characters anywhere in CrewTripSummary
+    expect(html).not.toContain('·');
+  });
+
+  it('renders ManifestList with 3-card Admin PO KPI stat grid, crew-table-card wrapper, separated boarding/snack timestamp chips, and zero middle-dot joiners', () => {
+    const html = render(h(ManifestList, { view: mockManifestView }));
+
+    // 3-card Admin PO KPI strip with duotone Phosphor icon badges
+    expect(html).toContain('class="manifest-counters crew-stat-grid"');
+    expect(html).toContain('aria-label="Ringkasan manifest penumpang"');
+    expect(html).toContain('crew-icon-badge is-blue');
+    expect(html).toContain('crew-icon-badge is-indigo');
+    expect(html).toContain('crew-icon-badge is-green');
+    expect(html).toContain('<dt>Kapasitas kursi</dt><dd>30</dd>');
+    expect(html).toContain('<dt>Total penumpang</dt><dd>2</dd>');
+    expect(html).toContain('<dt>Sudah naik</dt><dd>1</dd>');
+
+    // Table card wrapper & header
+    expect(html).toContain('class="crew-panel crew-table-card"');
+    expect(html).toContain('aria-label="Daftar penumpang manifest"');
+    expect(html).toContain('class="crew-panel-head"');
+    expect(html).toContain('Daftar penumpang <span class="crew-count">2</span>');
+    expect(html).toContain('2 penumpang ditampilkan');
+
+    // Preserved search/select controls and seat chip class
+    expect(html).toContain('class="manifest-controls"');
+    expect(html).toContain('class="crew-filter-pills"');
+    expect(html).toContain('class="manifest-seat"');
+
+    // Separated boarding and snack status labels + timestamp chips (zero · middle dot)
+    expect(html).toContain('<span>Sudah naik</span>');
+    expect(html).toContain('<span>Snack sudah diserahkan</span>');
+    expect(html).toContain('class="crew-state-time"');
+    expect(html).toContain('<span>Belum naik</span>');
+    expect(html).toContain('<span>Snack belum diserahkan</span>');
+    expect(html).toContain('href="/crew/trips/trip-1/passengers/ticket-1"');
+    expect(html).toContain('href="/crew/trips/trip-1/passengers/ticket-2"');
+    expect(html).not.toContain('·');
+  });
+
+  it('renders ManifestList empty state with duotone icon badge and readOnly mode without middle dots', () => {
+    const emptyHtml = render(
+      h(ManifestList, {
+        view: { ...mockManifestView, passengerCount: 0, boardedCount: 0, passengers: [] },
+      }),
+    );
+    expect(emptyHtml).toContain('class="crew-empty"');
+    expect(emptyHtml).toContain('crew-empty-icon');
+    expect(emptyHtml).toContain('Belum ada penumpang terkonfirmasi untuk perjalanan ini.');
+    expect(emptyHtml).not.toContain('·');
+
+    const readOnlyHtml = render(h(ManifestList, { view: mockManifestView, readOnly: true }));
+    expect(readOnlyHtml).toContain('Manifest ini hanya untuk dibaca. Boarding dicatat crew yang ditugaskan.');
+    expect(readOnlyHtml).not.toContain('/passengers/ticket-1');
+    expect(readOnlyHtml).not.toContain('·');
+  });
+});
+

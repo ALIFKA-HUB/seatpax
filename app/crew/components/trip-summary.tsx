@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { IconClipboard, IconQrCode, IconVan } from './crew-icons';
+import { IconCalendar, IconClipboard, IconQrCode, IconVan } from './crew-icons';
 import type { TripDetail } from '@/modules/trip/types';
 import SeatGrid from '@/app/admin/components/seat-grid';
 import { formatDepartureWib, formatIdr } from '@/app/presentation';
@@ -10,35 +10,48 @@ export default function CrewTripSummary({ detail }: { detail: TripDetail }) {
 
   return (
     <div className="crew-stack">
-      <section className="crew-panel crew-stack crew-summary-card" aria-label="Ringkasan perjalanan">
-        <div className="crew-stack crew-trip-identity">
+      <section
+        className="crew-panel crew-table-card crew-summary-card"
+        aria-label="Ringkasan perjalanan"
+      >
+        <div className="crew-panel-head">
           <h2>{identity?.routeName ?? trip.name}</h2>
-          <p className="crew-departure">{formatDepartureWib(trip.departureAt)}</p>
-          {identity && (
-            <p className="crew-muted crew-trip-fleet">
-              <IconVan size={16} />
-              <span>
-                {identity.vehicleName} · {identity.plateNumber} · {identity.className}
-              </span>
-            </p>
-          )}
+          <span className="crew-time-badge">
+            <IconCalendar size={15} />
+            <span>{formatDepartureWib(trip.departureAt)}</span>
+          </span>
         </div>
-        <div className="crew-actions">
-          <Link className="crew-button crew-primary" href={`/crew/trips/${trip.id}/scan`}>
-            <IconQrCode size={18} />
-            <span>Scan QR</span>
-          </Link>
-          <Link className="crew-button" href={`/crew/trips/${trip.id}/manifest`}>
-            <IconClipboard size={18} />
-            <span>Manifest penumpang</span>
-          </Link>
+        <div className="crew-summary-body">
+          {identity && (
+            <div className="crew-muted crew-trip-fleet">
+              <IconVan size={16} />
+              <span>{identity.vehicleName}</span>
+              <span className="crew-code-pill">{identity.plateNumber}</span>
+              <span className="crew-status-pill is-info">{identity.className}</span>
+            </div>
+          )}
+          <div className="crew-actions">
+            <Link className="crew-button crew-primary" href={`/crew/trips/${trip.id}/scan`}>
+              <IconQrCode size={18} />
+              <span>Scan QR</span>
+            </Link>
+            <Link className="crew-button" href={`/crew/trips/${trip.id}/manifest`}>
+              <IconClipboard size={18} />
+              <span>Manifest penumpang</span>
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="crew-panel crew-stack" aria-labelledby="crew-schedule-title">
-        <div className="crew-section-head">
-          <h2 id="crew-schedule-title">Urutan titik naik &amp; turun</h2>
-          <p className="crew-muted">{stops.length} pemberhentian terdaftar</p>
+      <section
+        className="crew-panel crew-table-card"
+        aria-labelledby="crew-schedule-title"
+      >
+        <div className="crew-panel-head">
+          <h2 id="crew-schedule-title">
+            Urutan titik naik &amp; turun <span className="crew-count">{stops.length}</span>
+          </h2>
+          <span className="crew-status-pill is-neutral">{stops.length} pemberhentian terdaftar</span>
         </div>
         <ol className="crew-schedule">
           {stops.map(stop => (
@@ -48,9 +61,11 @@ export default function CrewTripSummary({ detail }: { detail: TripDetail }) {
               </span>
               <div className="crew-stop-body">
                 <h3>{stop.name}</h3>
-                <p className="crew-muted">
-                  {stop.city}
-                  {stop.address ? ' · ' + stop.address : ''}
+                <p className="crew-muted crew-stop-location">
+                  <span className="crew-stop-city">{stop.city}</span>
+                  {stop.address && (
+                    <span className="crew-code-pill crew-stop-address">{stop.address}</span>
+                  )}
                 </p>
                 <dl className="crew-stop-times">
                   <div>
@@ -68,7 +83,7 @@ export default function CrewTripSummary({ detail }: { detail: TripDetail }) {
         </ol>
       </section>
 
-      <details className="crew-panel crew-details">
+      <details className="crew-panel crew-table-card crew-details">
         <summary>Rincian perjalanan (tarif segmen &amp; denah kursi)</summary>
         <div className="crew-stack">
           <p className="crew-muted">

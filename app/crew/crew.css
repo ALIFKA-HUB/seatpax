@@ -151,18 +151,25 @@
 .crew-shell .crew-trip-quick-actions { display:flex; flex-wrap:wrap; gap:10px; padding-top:14px; border-top:1px solid #E5ECF4; }
 
 .crew-shell .crew-trip-identity { gap:8px; }
+.crew-shell .crew-summary-body { display:grid; gap:16px; padding:18px 20px; }
 .crew-shell .crew-departure { font-variant-numeric:tabular-nums; font-weight:650; color:#005BD1; }
 .crew-shell .crew-section-head { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; }
 .crew-shell .crew-schedule { list-style:none; padding:0; display:grid; gap:18px; }
+.crew-shell .crew-table-card .crew-schedule { padding:18px 20px; }
 .crew-shell .crew-schedule li { display:grid; grid-template-columns:36px minmax(0,1fr); gap:14px; position:relative; }
 .crew-shell .crew-stop-number { background:#EDF3FB; border:1px solid #B7CBE5; color:#005BD1; border-radius:50%; width:36px; height:36px; display:grid; place-items:center; font-weight:700; }
 .crew-shell .crew-stop-body { display:grid; gap:4px; padding-bottom:14px; border-bottom:1px solid #E5ECF4; }
 .crew-shell .crew-schedule li:last-child .crew-stop-body { padding-bottom:0; border-bottom:0; }
+.crew-shell .crew-stop-location { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.crew-shell .crew-stop-city { font-weight:500; }
+.crew-shell .crew-stop-address { font-weight:600; }
 .crew-shell .crew-stop-times { margin:8px 0 0; display:flex; flex-wrap:wrap; gap:12px 32px; font-size:.875rem; }
 .crew-shell .crew-stop-times dt { color:#526078; }
 .crew-shell .crew-stop-times dd { margin:0; font-weight:600; font-variant-numeric:tabular-nums; }
 .crew-shell .crew-details summary { min-height:48px; padding:6px 0; font-weight:700; cursor:pointer; color:var(--crew-ink); }
+.crew-shell .crew-table-card.crew-details summary { padding:16px 20px; }
 .crew-shell .crew-details > div { margin-top:16px; padding-top:16px; border-top:1px solid #E5ECF4; }
+.crew-shell .crew-table-card.crew-details > div { margin-top:0; padding:18px 20px; }
 .crew-shell .crew-fares { list-style:none; padding:0; }
 .crew-shell .crew-fares li { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 24px; padding:12px 0; border-bottom:1px solid #D5DFEA; overflow-wrap:anywhere; }
 
@@ -174,10 +181,12 @@
 .crew-shell .seat-aisle,.crew-shell .seat-empty { background:transparent; border-style:dashed; border-color:#CBD5E1; color:#526078; font-weight:500; }
 
 .crew-shell .manifest-counters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0; }
-.crew-shell .manifest-counters div { display:grid; gap:4px; background:#F5F7FA; border:1px solid #E5ECF4; border-radius:12px; padding:14px 16px; min-width:0; }
-.crew-shell .manifest-counters dt { font-size:.8125rem; font-weight:600; color:#526078; overflow-wrap:anywhere; }
-.crew-shell .manifest-counters dd { margin:0; font-size:1.75rem; font-weight:750; line-height:1.15; font-variant-numeric:tabular-nums; color:var(--crew-ink); }
+.crew-shell .manifest-counters > div { display:flex; align-items:flex-start; gap:12px; background:#FFFFFF; border:1px solid var(--crew-line); border-radius:16px; padding:14px 16px; min-width:0; }
+.crew-shell .manifest-counters .crew-stat-meta { display:grid; gap:2px; min-width:0; }
+.crew-shell .manifest-counters dt { font-size:12.5px; font-weight:500; color:var(--crew-muted); line-height:1.35; overflow-wrap:anywhere; order:2; }
+.crew-shell .manifest-counters dd { margin:0; font-size:24px; font-weight:800; line-height:1.1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--crew-ink); order:1; }
 .crew-shell .manifest-toolbar { display:grid; gap:12px; padding-top:4px; }
+.crew-shell .crew-table-card .manifest-toolbar { padding:16px 20px; border-bottom:1px solid var(--crew-line); }
 .crew-shell .manifest-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
 .crew-shell .manifest-controls label { min-width:0; }
 .crew-shell .manifest-label-row { display:inline-flex; align-items:center; gap:6px; }
@@ -187,6 +196,7 @@
 .crew-shell .manifest-count { margin:0; color:#526078; font-size:.875rem; font-weight:600; }
 
 .crew-shell .manifest-passengers { list-style:none; padding:0; margin:0; display:grid; gap:12px; }
+.crew-shell .crew-table-card .manifest-passengers { padding:18px 20px; }
 .crew-shell .manifest-passengers li { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding:16px; border:1px solid #D5DFEA; border-radius:12px; background:#FAFBFD; }
 .crew-shell .manifest-row-main { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
 .crew-shell .manifest-seat { display:grid; place-items:center; gap:2px; min-width:68px; padding:10px 8px; border:1px solid #B7CBE5; background:#EDF3FB; border-radius:10px; text-align:center; color:#526078; font-size:.75rem; font-weight:600; flex-shrink:0; }
@@ -197,6 +207,8 @@
 .crew-shell .manifest-route { font-size:.9375rem; color:#334155; font-weight:550; }
 .crew-shell .manifest-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
 .crew-shell .manifest-badges .crew-state { display:inline-flex; align-items:center; gap:5px; }
+.crew-shell .crew-state-time { display:inline-flex; align-items:center; padding:1px 6px; border-radius:999px; background:rgba(16,39,70,.08); font-size:.75rem; font-weight:700; font-variant-numeric:tabular-nums; }
+.crew-shell .crew-state-success .crew-state-time { background:rgba(22,101,52,.14); color:#166534; }
 .crew-shell .manifest-cta { flex-shrink:0; }
 .crew-shell .manifest-snack { color:#526078; font-size:.8125rem; }
 
@@ -204,7 +216,8 @@
 .crew-shell .crew-state-success { color:#166534; background:#F0FDF4; border:1px solid #BBF7D0; }
 .crew-shell .crew-state-pending { color:#92400E; background:#FFFBEB; border:1px solid #FDE68A; }
 .crew-shell .crew-state-neutral { color:#475569; background:#F1F5F9; border:1px solid #E2E8F0; }
-.crew-shell .crew-empty { padding:24px 0; text-align:center; color:#526078; }
+.crew-shell .crew-empty { padding:28px 20px; text-align:center; color:#526078; display:grid; justify-items:center; gap:8px; }
+.crew-shell .crew-manifest-readonly { padding:12px 20px 18px; border-top:1px solid var(--crew-line); font-size:.875rem; }
 .crew-shell .crew-empty-panel { text-align:center; display:grid; justify-items:center; gap:8px; padding:36px 24px; }
 .crew-shell .crew-empty-icon { width:46px; height:46px; border-radius:999px; display:grid; place-items:center; margin-bottom:2px; background:var(--crew-blue-soft); color:var(--crew-blue); }
 .crew-shell .crew-empty-icon.is-blue { background:var(--crew-blue-soft); color:var(--crew-blue); }
@@ -281,16 +294,16 @@
  .crew-shell .crew-hero { align-items:flex-start; }
  .crew-shell .crew-stat-grid { grid-template-columns:minmax(0,1fr); }
  .crew-shell .crew-panel.crew-table-card { padding:0; }
- .crew-shell .crew-panel-head { padding:14px 16px; }
- .crew-shell .crew-table-card .crew-trip-list { padding:14px 16px; }
+ .crew-shell .crew-panel-head,.crew-shell .crew-summary-body,.crew-shell .crew-table-card .crew-trip-list,.crew-shell .crew-table-card .crew-schedule,.crew-shell .crew-table-card.crew-details summary,.crew-shell .crew-table-card.crew-details > div,.crew-shell .crew-table-card .manifest-toolbar,.crew-shell .crew-table-card .manifest-passengers { padding:14px 16px; }
  .crew-shell .crew-subnav { grid-template-columns:minmax(0,1fr); }
  .crew-shell .crew-ops-grid { grid-template-columns:minmax(0,1fr); }
 }
 @media (max-width:600px) {
  .crew-shell .crew-panel,.crew-shell .crew-trip-item { padding:18px 16px; }
+ .crew-shell .crew-panel.crew-table-card { padding:0; }
  .crew-shell .crew-actions > *,.crew-shell .crew-trip-quick-actions > * { flex:1 1 180px; }
- .crew-shell .manifest-counters { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
- .crew-shell .manifest-counters div { padding:10px 8px; }
+ .crew-shell .manifest-counters { grid-template-columns:minmax(0,1fr); gap:10px; }
+ .crew-shell .manifest-counters > div { padding:12px 14px; }
  .crew-shell .manifest-counters dt { font-size:.75rem; }
  .crew-shell .manifest-counters dd { font-size:1.35rem; }
  .crew-shell .manifest-controls,.crew-shell .crew-profile-statuses { grid-template-columns:minmax(0,1fr); }
