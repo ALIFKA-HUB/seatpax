@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
+import { Users } from '@phosphor-icons/react/ssr';
 import AdminBackLink from '@/app/admin/components/admin-back-link';
+import AdminManifestView from '@/app/admin/components/admin-manifest-view';
 import { boardingData, enforceManifestCompany } from '@/app/crew/boarding-data';
-import ManifestList from '@/app/crew/components/manifest-list';
 
 export default async function Page({
   params,
@@ -27,15 +28,16 @@ export default async function Page({
           <p>{view.tripName}</p>
         </div>
         <div className="dash-hero-actions">
-          <span className="dash-pill-muted">
-            {view.boardedCount}/{view.passengerCount} sudah naik
+          <span className="dash-date-pill admin-tabular">
+            <Users size={16} weight="bold" aria-hidden="true" />
+            <span>
+              {view.boardedCount}/{view.passengerCount} sudah naik
+            </span>
           </span>
         </div>
       </header>
 
-      <section className="dash-card admin-panel-modern">
-        <ManifestList view={view} readOnly />
-      </section>
+      <AdminManifestView view={view} />
     </div>
   );
 }

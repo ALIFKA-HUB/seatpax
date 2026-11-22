@@ -368,6 +368,8 @@
 .admin-shell .admin-table-card .admin-panel-head{padding:16px 20px;margin:0;border-bottom:1px solid var(--admin-line)}
 .admin-shell .admin-table-card .admin-callout-info{margin:14px 20px}
 .admin-shell .admin-table-card .admin-callout-info+.admin-table-wrap .admin-modern-table th{border-top:1px solid var(--admin-line)}
+.admin-shell .admin-table-card .admin-callout-info+.admin-table-toolbar{border-top:1px solid var(--admin-line)}
+.admin-shell .manifest-seat-chip{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:30px;padding:0 9px;border-radius:8px;background:var(--admin-blue-soft);border:1px solid #c7dcff;color:var(--admin-blue);font-size:12.5px;font-weight:700;letter-spacing:.01em}
 .admin-shell .admin-panel-head h2{margin:0;font-size:15.5px;font-weight:700;letter-spacing:-.02em;color:var(--admin-ink);display:inline-flex;align-items:center;gap:8px}
 .admin-shell .admin-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 8px;border-radius:999px;background:var(--admin-blue-soft);color:var(--admin-blue);font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
 .admin-shell .admin-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0;margin:0}
