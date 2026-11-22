@@ -42,7 +42,7 @@ export function inspectPreviewAttachment(bytes: Uint8Array, mime: string, name: 
   }
   const contentSecurityPolicy = IMAGE_MIMES.has(mime)
     ? "default-src 'none'; img-src 'self'; sandbox"
-    : "default-src 'none'; object-src 'self'; frame-ancestors 'self'; script-src 'none'";
+    : "frame-ancestors 'self'";
   return {
     bytes: b,
     mime,

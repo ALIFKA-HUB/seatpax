@@ -10,6 +10,7 @@ import {
   Image as ImageIcon,
   X,
 } from '@phosphor-icons/react';
+import PdfPreview from './pdf-preview';
 
 export type HelpdeskAttachmentItem = {
   id: string;
@@ -38,12 +39,14 @@ function formatKindLabel(mime: string) {
 export default function AttachmentList({ files }: { files: HelpdeskAttachmentItem[] }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [active, setActive] = useState<HelpdeskAttachmentItem | null>(null);
+  const [imgError, setImgError] = useState(false);
 
   if (!files.length) {
     return <p className="hd-muted-label">Tidak ada lampiran.</p>;
   }
 
   function openPreview(file: HelpdeskAttachmentItem) {
+    setImgError(false);
     setActive(file);
     dialogRef.current?.showModal();
   }
@@ -51,6 +54,7 @@ export default function AttachmentList({ files }: { files: HelpdeskAttachmentIte
   function closePreview() {
     dialogRef.current?.close();
     setActive(null);
+    setImgError(false);
   }
 
   const activeUrl = active ? `/api/helpdesk/attachments/${active.id}?preview=1` : '';
@@ -151,14 +155,28 @@ export default function AttachmentList({ files }: { files: HelpdeskAttachmentIte
             </header>
             <div className="hd-preview-body">
               {isPdf ? (
-                <iframe
-                  className="hd-preview-frame"
-                  src={`${activeUrl}#navpanes=0&view=FitH`}
-                  title={`Pratinjau ${active.name}`}
+                <PdfPreview
+                  key={active.id}
+                  url={activeUrl}
+                  downloadUrl={activeDownloadUrl}
+                  name={active.name}
                 />
+              ) : imgError ? (
+                <div className="hd-preview-state is-error" role="alert">
+                  <p>Gambar tidak dapat ditampilkan langsung.</p>
+                  <a className="hd-download-link" href={activeDownloadUrl} download>
+                    <DownloadSimple size={16} aria-hidden="true" />
+                    <span>Unduh berkas</span>
+                  </a>
+                </div>
               ) : (
                 /* eslint-disable-next-line @next/next/no-img-element */
-                <img className="hd-preview-image" src={activeUrl} alt={active.name} />
+                <img
+                  className="hd-preview-image"
+                  src={activeUrl}
+                  alt={active.name}
+                  onError={() => setImgError(true)}
+                />
               )}
             </div>
           </div>
