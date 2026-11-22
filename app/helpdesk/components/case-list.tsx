@@ -114,7 +114,6 @@ export default function CaseList({
                         <Link className="hd-case-title-link" href={detailBase + '/' + r.id}>
                           {String(r.title)}
                         </Link>
-                        <div className="hd-code">{String(r.code)}</div>
                       </td>
                       <td>
                         <span className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}>
