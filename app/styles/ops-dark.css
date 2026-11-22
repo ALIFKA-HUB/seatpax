@@ -136,7 +136,7 @@ html[data-mode='dark'] .admin-shell :is(.admin-sidebar, .admin-brand, .admin-top
   box-shadow: none;
 }
 
-html[data-mode='dark'] .admin-shell :is(.admin-company, .dash-pill-muted, .dash-bar-track, .dash-resource-item, .dash-week-strip, .dash-agenda-item, .dash-agenda-empty, .admin-stop-list > li, .seat-grid-region, .fleet-inspector, .fleet-brush-bar, .fleet-meta-chip, .trip-details, .trip-mode-bar, .admin-fares label, .payment-conflict-details > div, .dash-activity-note, .hd-admin-monitor .hd-tab-count, .hd-code-pill, .hd-timeline-note, .hd-attachment-item, .hd-preview-body) {
+html[data-mode='dark'] .admin-shell :is(.admin-company, .dash-pill-muted, .dash-bar-track, .dash-resource-item, .dash-week-strip, .dash-agenda-item, .dash-agenda-empty, .admin-stop-list > li, .seat-grid-region, .fleet-inspector, .fleet-brush-bar, .fleet-meta-chip, .trip-details, .trip-mode-bar, .admin-fares label, .payment-conflict-details > div, .dash-activity-note, .hd-tab-count, .hd-code-pill, .hd-timeline-note, .hd-attachment-item, .hd-preview-body) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule);
   color: var(--ops-ink);
@@ -960,6 +960,47 @@ html[data-mode='dark'] .admin-shell.hd-workspace a.hd-timeline-link {
 html[data-mode='dark'] .admin-shell .hd-case-title-link:hover,
 html[data-mode='dark'] .admin-shell.hd-workspace a.hd-timeline-link:hover {
   color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .hd-status-tab {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell .hd-status-tab:hover {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .hd-status-tab.is-active {
+  color: var(--ops-accent-hover);
+  border-bottom-color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .hd-status-tab.is-active .hd-tab-count {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .hd-reset-link {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell .hd-reset-link:hover {
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .hd-search-box svg {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell .hd-search-box input,
+html[data-mode='dark'] .admin-shell .hd-search-box input:focus-visible {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+html[data-mode='dark'] .admin-shell .admin-modern-table tbody tr:hover .hd-code-pill {
+  background: var(--ops-paper-4);
 }
 
 html[data-mode='dark'] .admin-shell.hd-workspace .hd-queue-cta {

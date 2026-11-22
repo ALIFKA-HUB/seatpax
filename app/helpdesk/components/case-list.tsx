@@ -1,7 +1,9 @@
 import Link from 'next/link';
-import { MagnifyingGlass, ChatCircleText } from '@phosphor-icons/react/ssr';
-import AdminSelect from '@/app/admin/components/admin-select';
+import { ChatCircleText } from '@phosphor-icons/react/dist/ssr/ChatCircleText';
+import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
+import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import AdminPaginationBar from '@/app/admin/components/admin-pagination-bar';
+import AdminSelect from '@/app/admin/components/admin-select';
 import {
   categoryLabels,
   statusLabels,
@@ -41,7 +43,6 @@ export default function CaseList({
   query,
   base = '/helpdesk/pengaduan',
   detailBase = '/helpdesk',
-  embedded = false,
   statusCounts,
 }: {
   data: ListResult;
@@ -69,6 +70,7 @@ export default function CaseList({
     return qs ? `${base}?${qs}` : base;
   };
   const hasFilter = Boolean(query.search || query.status || query.priority);
+  const activeStatus = query.status || '';
   const totalCount = statusCounts
     ? statusCounts.MENUNGGU +
       statusCounts.DIPROSES +
@@ -76,237 +78,168 @@ export default function CaseList({
       statusCounts.SELESAI
     : undefined;
 
-  if (embedded) {
-    const activeStatus = query.status || '';
-    return (
-      <section className="dash-card admin-table-card hd-admin-card" aria-label="Daftar pengaduan pelanggan">
-        <div className="admin-panel-head">
-          <h2>
-            Daftar pengaduan <span className="admin-count">{totalCount ?? data.count}</span>
-          </h2>
+  return (
+    <section
+      className="dash-card admin-table-card hd-admin-card"
+      aria-label="Daftar pengaduan pelanggan"
+    >
+      <div className="admin-panel-head">
+        <h2>
+          Daftar pengaduan <span className="admin-count">{totalCount ?? data.count}</span>
+        </h2>
+      </div>
+      <nav className="hd-status-tabs" aria-label="Filter cepat status pengaduan">
+        {quickTabs.map(tab => {
+          const isActive = activeStatus === tab.value;
+          const tabCount = statusCounts
+            ? tab.value === ''
+              ? totalCount
+              : statusCounts[tab.value]
+            : undefined;
+          return (
+            <Link
+              key={tab.value || 'ALL'}
+              href={statusHref(tab.value)}
+              className={isActive ? 'hd-status-tab is-active' : 'hd-status-tab'}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              <span>{tab.label}</span>
+              {typeof tabCount === 'number' && <span className="hd-tab-count">{tabCount}</span>}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <form
+        key={`${query.search || ''}|${query.priority || ''}`}
+        className="hd-admin-toolbar"
+        action={base}
+        method="get"
+      >
+        {activeStatus && <input type="hidden" name="status" value={activeStatus} />}
+        <label className="hd-search-box">
+          <MagnifyingGlass size={18} aria-hidden="true" />
+          <span className="stop-sr-only">Cari laporan</span>
+          <input
+            name="search"
+            defaultValue={query.search}
+            placeholder="Cari judul atau kode laporan..."
+            maxLength={160}
+          />
+        </label>
+        <div className="hd-toolbar-select">
+          <AdminSelect
+            name="priority"
+            ariaLabel="Filter prioritas pengaduan"
+            defaultValue={query.priority || ''}
+            options={[
+              { value: '', label: 'Semua prioritas' },
+              ...Object.entries(priorityLabels).map(([value, label]) => ({ value, label })),
+            ]}
+          />
         </div>
-        <nav className="hd-status-tabs" aria-label="Filter cepat status pengaduan">
-          {quickTabs.map(tab => {
-            const isActive = activeStatus === tab.value;
-            const tabCount = statusCounts
-              ? tab.value === ''
-                ? totalCount
-                : statusCounts[tab.value]
-              : undefined;
-            return (
-              <Link
-                key={tab.value || 'ALL'}
-                href={statusHref(tab.value)}
-                className={isActive ? 'hd-status-tab is-active' : 'hd-status-tab'}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                <span>{tab.label}</span>
-                {typeof tabCount === 'number' && <span className="hd-tab-count">{tabCount}</span>}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="hd-toolbar-actions">
+          <button className="admin-primary" type="submit">
+            Terapkan
+          </button>
+          {hasFilter && (
+            <Link className="hd-reset-link" href={base}>
+              Reset
+            </Link>
+          )}
+        </div>
+      </form>
 
-        <form
-          key={`${query.search || ''}|${query.priority || ''}`}
-          className="hd-admin-toolbar"
-          method="get"
-        >
-          {activeStatus && <input type="hidden" name="status" value={activeStatus} />}
-          <label className="hd-search-box">
-            <MagnifyingGlass size={18} aria-hidden="true" />
-            <span className="stop-sr-only">Cari laporan</span>
-            <input
-              name="search"
-              defaultValue={query.search}
-              placeholder="Cari judul atau kode laporan..."
-              maxLength={160}
-            />
-          </label>
-          <div className="hd-toolbar-select">
-            <AdminSelect
-              name="priority"
-              ariaLabel="Filter prioritas pengaduan"
-              defaultValue={query.priority || ''}
-              options={[
-                { value: '', label: 'Semua prioritas' },
-                ...Object.entries(priorityLabels).map(([value, label]) => ({ value, label })),
-              ]}
-            />
-          </div>
-          <div className="hd-toolbar-actions">
-            <button className="admin-primary" type="submit">
-              Terapkan
-            </button>
-            {hasFilter && (
-              <Link className="hd-reset-link" href={base}>
-                Reset
-              </Link>
-            )}
-          </div>
-        </form>
-
-        {data.rows.length ? (
-          <div className="admin-table-wrap" role="region" aria-label="Tabel pengaduan" tabIndex={0}>
-            <table className="admin-modern-table hd-admin-table">
-              <thead>
-                <tr>
-                  <th>Pengaduan</th>
-                  <th>Status</th>
-                  <th>Prioritas</th>
-                  <th>Tanggal</th>
-                  <th className="admin-col-action">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.rows.map(r => {
-                  const statusKey = r.status as ComplaintStatus;
-                  const priorityKey = r.priority as Priority | null;
-                  const categoryKey = r.category as Category;
-                  return (
-                    <tr key={String(r.id)}>
-                      <td>
-                        <Link className="hd-case-title-link" href={detailBase + '/' + r.id}>
-                          {String(r.title)}
-                        </Link>
+      {data.rows.length ? (
+        <div className="admin-table-wrap" role="region" aria-label="Tabel pengaduan" tabIndex={0}>
+          <table className="admin-modern-table hd-admin-table">
+            <thead>
+              <tr>
+                <th>Pengaduan</th>
+                <th>Status</th>
+                <th>Prioritas</th>
+                <th>Tanggal</th>
+                <th className="admin-col-action">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.rows.map(r => {
+                const statusKey = r.status as ComplaintStatus;
+                const priorityKey = r.priority as Priority | null;
+                const categoryKey = r.category as Category;
+                return (
+                  <tr key={String(r.id)}>
+                    <td>
+                      <Link className="hd-case-title-link" href={detailBase + '/' + r.id}>
+                        {String(r.title)}
+                      </Link>
+                      <div className="hd-case-meta">
+                        <span className="hd-code-pill">{String(r.code)}</span>
                         <span className="hd-case-category">
                           {categoryLabels[categoryKey] ?? String(r.category)}
                         </span>
-                      </td>
-                      <td>
-                        <span className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}>
-                          {statusLabels[statusKey]}
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}>
+                        {statusLabels[statusKey]}
+                      </span>
+                    </td>
+                    <td>
+                      {priorityKey ? (
+                        <span
+                          className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}
+                        >
+                          {priorityLabels[priorityKey]}
                         </span>
-                      </td>
-                      <td>
-                        {priorityKey ? (
-                          <span className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}>
-                            {priorityLabels[priorityKey]}
-                          </span>
-                        ) : (
-                          <span className="hd-muted-dash" aria-label="Prioritas belum ditentukan">
-                            —
-                          </span>
-                        )}
-                      </td>
-                      <td className="admin-tabular">{new Date(r.created_at).toLocaleDateString('id-ID')}</td>
-                      <td className="admin-col-action">
-                        <Link className="admin-row-link hd-row-detail-link" href={detailBase + '/' + r.id}>
-                          Detail →
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="admin-empty-state">
-            <span className="admin-empty-icon is-blue" aria-hidden="true">
-              <ChatCircleText size={24} weight="duotone" />
-            </span>
-            <h3>Belum ada laporan yang sesuai</h3>
-            <p>Coba ubah kata kunci pencarian atau pilih status dan prioritas lainnya.</p>
-          </div>
-        )}
-
-        {data.rows.length > 0 || page > 1 ? (
-          <AdminPaginationBar
-            mode="link"
-            ariaLabel="Halaman laporan"
-            summary={`Menampilkan ${data.rows.length} laporan · ${data.count} belum selesai`}
-            currentPage={page}
-            hasNext={data.hasMore && page < 10000}
-            pageHref={pageHref}
-          />
-        ) : (
-          <div className="admin-table-footer" role="status">
-            <span className="admin-table-summary">
-              Menampilkan 0 laporan · {data.count} belum selesai
-            </span>
-          </div>
-        )}
-      </section>
-    );
-  }
-
-  return (
-    <>
-      <header className="hd-heading">
-        <p className="hd-kicker">Ruang kerja Helpdesk</p>
-        <h1>Pengaduan pelanggan</h1>
-        <p>
-          {data.count} laporan belum selesai. Periksa laporan, tentukan prioritas, lalu catat hasil
-          penanganan.
-        </p>
-      </header>
-      <form className="hd-panel hd-form hd-list-controls" method="get">
-        <div className="hd-grid">
-          <label>
-            Cari laporan
-            <input
-              name="search"
-              defaultValue={query.search}
-              placeholder="Nomor atau judul"
-              maxLength={160}
-            />
-          </label>
-          <label>
-            Status
-            <select name="status" defaultValue={query.status || ''}>
-              <option value="">Semua status</option>
-              {Object.entries(statusLabels).map(([v, l]) => (
-                <option key={v} value={v}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Prioritas
-            <select name="priority" defaultValue={query.priority || ''}>
-              <option value="">Semua prioritas</option>
-              {Object.entries(priorityLabels).map(([v, l]) => (
-                <option key={v} value={v}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          </label>
+                      ) : (
+                        <span className="hd-muted-dash" aria-label="Prioritas belum ditentukan">
+                          —
+                        </span>
+                      )}
+                    </td>
+                    <td className="admin-tabular">
+                      {new Date(r.created_at).toLocaleDateString('id-ID')}
+                    </td>
+                    <td className="admin-col-action">
+                      <Link
+                        className="admin-row-link hd-row-detail-link"
+                        href={detailBase + '/' + r.id}
+                      >
+                        Detail →
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-        <button className="hd-primary">Terapkan filter</button>
-      </form>
-      <section className="hd-panel hd-table-scroll">
-        <table className="hd-staff-table">
-          <thead>
-            <tr>
-              <th>Pengaduan</th>
-              <th>Status</th>
-              <th>Prioritas</th>
-              <th>Tanggal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.rows.map(r => (
-              <tr key={String(r.id)}>
-                <td>
-                  <Link href={detailBase + '/' + r.id}>{String(r.title)}</Link>
-                  <div className="hd-code">{String(r.code)}</div>
-                </td>
-                <td>{statusLabels[r.status as ComplaintStatus]}</td>
-                <td>{r.priority ? priorityLabels[r.priority as Priority] : 'Belum ditentukan'}</td>
-                <td>{new Date(r.created_at).toLocaleDateString('id-ID')}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {!data.rows.length && <p className="hd-empty">Belum ada laporan yang sesuai.</p>}
-        <nav className="hd-pagination" aria-label="Halaman laporan">
-          {page > 1 && <Link href={pageHref(page - 1)}>Sebelumnya</Link>}
-          {data.hasMore && page < 10000 && <Link href={pageHref(page + 1)}>Berikutnya</Link>}
-        </nav>
-      </section>
-    </>
+      ) : (
+        <AdminEmptyState
+          icon={<ChatCircleText size={24} weight="duotone" />}
+          tone="blue"
+          title="Belum ada laporan yang sesuai"
+          description="Coba ubah kata kunci pencarian atau pilih status dan prioritas lainnya."
+        />
+      )}
+
+      {data.rows.length > 0 || page > 1 ? (
+        <AdminPaginationBar
+          mode="link"
+          ariaLabel="Halaman laporan"
+          summary={`Menampilkan ${data.rows.length} laporan · ${data.count} belum selesai`}
+          currentPage={page}
+          hasNext={data.hasMore && page < 10000}
+          pageHref={pageHref}
+        />
+      ) : (
+        <div className="admin-table-footer" role="status">
+          <span className="admin-table-summary">
+            Menampilkan 0 laporan · {data.count} belum selesai
+          </span>
+        </div>
+      )}
+    </section>
   );
 }

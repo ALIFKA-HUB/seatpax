@@ -338,3 +338,162 @@ describe('Helpdesk /helpdesk dashboard & loading skeleton redesign', () => {
     expect(html).not.toContain(' · ');
   });
 });
+
+describe('Helpdesk /helpdesk/pengaduan unified CaseList redesign', () => {
+  beforeEach(() => {
+    mockHelpdeskContext.mockReset();
+  });
+
+  it('renders /helpdesk/pengaduan with Admin PO dash-hero, stat strip, unified status tabs, search toolbar, code pills, and pagination', async () => {
+    mockHelpdeskContext.mockResolvedValue({
+      ctx: { actorId: 'u1', companyId: 'c1' },
+      staff: {
+        list: async () => ({
+          count: 5,
+          hasMore: true,
+          rows: [
+            {
+              id: 'case-99',
+              code: 'SPX-ADU-9901',
+              title: 'Kursi ganda tercatat',
+              category: 'TICKET',
+              status: 'DIPROSES',
+              priority: 'MEDIUM',
+              created_at: '2026-11-22T03:00:00Z',
+            },
+            {
+              id: 'case-100',
+              code: 'SPX-ADU-9902',
+              title: 'Kendala jadwal keberangkatan',
+              category: 'SCHEDULE',
+              status: 'MENUNGGU',
+              priority: null,
+              created_at: '2026-11-22T04:00:00Z',
+            },
+          ],
+        }),
+        dashboard: async () => ({
+          counts: { MENUNGGU: 2, DIPROSES: 1, PERLU_DILENGKAPI: 2, SELESAI: 4 },
+          queue: [],
+          recent: [],
+          events: [],
+        }),
+      },
+    });
+
+    const { default: HelpdeskCases } = await import('@/app/helpdesk/pengaduan/page');
+    const html = render(
+      await HelpdeskCases({
+        searchParams: Promise.resolve({
+          status: 'DIPROSES',
+          search: 'kursi',
+          priority: 'MEDIUM',
+          page: '1',
+        }),
+      }),
+    );
+
+    for (const token of [
+      'dash-root',
+      'dash-hero',
+      'Pengaduan pelanggan',
+      '5 laporan belum selesai',
+      'admin-stat-grid',
+      'Menunggu pemeriksaan',
+      'Sedang diproses',
+      'Perlu dilengkapi',
+      'admin-table-card',
+      'hd-status-tabs',
+      'hd-admin-toolbar',
+      'admin-select',
+      'admin-modern-table',
+      'hd-case-meta',
+      'hd-code-pill',
+      'SPX-ADU-9901',
+      'SPX-ADU-9902',
+      'Prioritas belum ditentukan',
+      'admin-pagination',
+      'Detail →',
+      'href="/helpdesk/pengaduan?search=kursi&amp;priority=MEDIUM&amp;status=MENUNGGU"',
+      'href="/helpdesk/pengaduan?status=DIPROSES&amp;search=kursi&amp;priority=MEDIUM&amp;page=2"',
+    ]) {
+      expect(html).toContain(token);
+    }
+    expect(html).not.toContain('hd-kicker');
+    expect(html).not.toContain('hd-list-controls');
+    expect(html).not.toContain('hd-staff-table');
+    expect(html).not.toContain('SPX-ADU-9901 ·');
+    expect(html).not.toContain('SPX-ADU-9902 ·');
+  });
+
+  it('renders AdminEmptyState on /helpdesk/pengaduan when no rows match and renders Admin PO alert card on failure', async () => {
+    mockHelpdeskContext.mockResolvedValueOnce({
+      ctx: { actorId: 'u1', companyId: 'c1' },
+      staff: {
+        list: async () => ({ count: 0, hasMore: false, rows: [] }),
+        dashboard: async () => ({
+          counts: { MENUNGGU: 0, DIPROSES: 0, PERLU_DILENGKAPI: 0, SELESAI: 0 },
+          queue: [],
+          recent: [],
+          events: [],
+        }),
+      },
+    });
+
+    const { default: HelpdeskCases } = await import('@/app/helpdesk/pengaduan/page');
+    const emptyHtml = render(
+      await HelpdeskCases({ searchParams: Promise.resolve({}) }),
+    );
+    expect(emptyHtml).toContain('admin-empty-state');
+    expect(emptyHtml).toContain('Belum ada laporan yang sesuai');
+    expect(emptyHtml).not.toContain('admin-modern-table');
+
+    mockHelpdeskContext.mockRejectedValueOnce(new Error('sensitive pg detail'));
+    const errorHtml = render(
+      await HelpdeskCases({ searchParams: Promise.resolve({}) }),
+    );
+    expect(errorHtml).toContain('dash-root');
+    expect(errorHtml).toContain('dash-card admin-panel-modern');
+    expect(errorHtml).toContain('role="alert"');
+    expect(errorHtml).toContain('Daftar pengaduan belum tersedia');
+    expect(errorHtml).not.toContain('sensitive pg detail');
+  });
+
+  it('unifies CaseList across embedded and standalone callers and keeps Dark Mode parity globally under .admin-shell', async () => {
+    const { default: CaseList } = await import('@/app/helpdesk/components/case-list');
+    const sampleData = {
+      count: 1,
+      hasMore: false,
+      rows: [
+        {
+          id: 'case-1',
+          code: 'SPX-ADU-1001',
+          title: 'Pembayaran ganda',
+          category: 'PAYMENT',
+          status: 'MENUNGGU',
+          priority: 'HIGH',
+          created_at: '2026-11-22T01:00:00Z',
+        },
+      ],
+    } as unknown as Parameters<typeof CaseList>[0]['data'];
+
+    const standaloneHtml = render(h(CaseList, { data: sampleData, query: {} }));
+    const embeddedHtml = render(h(CaseList, { data: sampleData, query: {}, embedded: true }));
+
+    expect(standaloneHtml).toBe(embeddedHtml);
+    expect(standaloneHtml).toContain('hd-code-pill');
+    expect(standaloneHtml).toContain('SPX-ADU-1001');
+    expect(standaloneHtml).toContain('hd-case-meta');
+    expect(standaloneHtml).not.toContain('hd-list-controls');
+
+    const helpdeskCss = readFileSync('app/helpdesk/helpdesk.css', 'utf8');
+    expect(helpdeskCss).toContain('.admin-shell .hd-case-meta');
+
+    const opsDarkCss = readFileSync('app/styles/ops-dark.css', 'utf8');
+    expect(opsDarkCss).not.toContain('.hd-admin-monitor .hd-tab-count');
+    expect(opsDarkCss).toContain('.hd-tab-count');
+    expect(opsDarkCss).toContain("html[data-mode='dark'] .admin-shell .hd-status-tab");
+    expect(opsDarkCss).toContain("html[data-mode='dark'] .admin-shell .hd-reset-link");
+    expect(opsDarkCss).toContain("html[data-mode='dark'] .admin-shell .hd-search-box input");
+  });
+});
