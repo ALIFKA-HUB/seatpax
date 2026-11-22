@@ -135,10 +135,12 @@
 .admin-shell .fleet-meta-note{font-size:12.5px;color:var(--admin-muted)}
 .admin-shell .fleet-builder{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:20px;align-items:start}
 .admin-shell .seat-grid-region{display:grid;justify-items:center;padding:20px 16px}
-.admin-shell .fleet-inspector{position:sticky;top:84px;padding:18px;border:1px solid var(--admin-line);border-radius:14px;background:#fbfdff;display:grid;gap:14px;min-width:0}
-.admin-shell .fleet-inspector-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--admin-line)}
+.admin-shell .fleet-inspector{position:sticky;top:84px;padding:22px;border:1px solid var(--admin-line);border-radius:14px;background:#fbfdff;display:grid;gap:18px;min-width:0}
+.admin-shell .fleet-inspector-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--admin-line)}
 .admin-shell .fleet-inspector-head h3{margin:0;font-size:15px;font-weight:700;color:var(--admin-ink);letter-spacing:-.01em}
-.admin-shell .fleet-inspector-fields{display:grid;gap:12px}
+.admin-shell .fleet-inspector-fields{display:grid;gap:16px}
+.admin-shell .fleet-inspector-fields label{display:grid;gap:6px}
+.admin-shell .fleet-inspector-fields input,.admin-shell .fleet-inspector-fields select{margin-top:0}
 .admin-shell .fleet-legend{display:grid;gap:8px;padding-top:12px;border-top:1px dashed #d6e2f2}
 .admin-shell .fleet-legend>span{font-size:12px;font-weight:600;color:var(--admin-muted)}
 .admin-shell .fleet-legend-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
