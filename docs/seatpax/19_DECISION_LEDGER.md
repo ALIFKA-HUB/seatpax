@@ -1,5 +1,12 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-11-22-02 — Operational & Crew Dark Mode with Circular Reveal
+
+The user approved scoped Dark Mode across **Admin PO**, **Super Admin**, **Helpdesk**, and **Crew PWA**, keeping public Passenger pages light-mode only:
+
+- **Anchored Dark Tokens (`app/styles/ops-dark.css`):** Scoped under `html[data-mode='dark']` for `.admin-shell`, `.admin-entry`, `.super-admin-shell`, `.hd-workspace`, and `.crew-shell` only, using navy-slate dark surfaces (`#0b1322` canvas, `#111c30` cards, `#17253e` elevated surfaces, `#e7eef9` ink, `#9cb0cc` muted ink, no drop-shadow glow) and a clean light plate for raster brand logos.
+- **Circular Reveal Transition (`ThemeToggle` + `theme-mode.ts`):** Persists choice in `localStorage` (`seatpax.ops-mode`) read before first paint in `app/layout.tsx`, and animates both Dark and Light transitions with View Transitions (`::view-transition-new(root)` expanding from the toggle coordinates to the furthest viewport corner), falling back cleanly under `prefers-reduced-motion: reduce`.
+
 ## D2026-11-22-01 — Remove standalone /account page UI in favor of direct logout and role redirects
 
 The user explicitly requested removing the standalone `/account` hub page (`"hilangkan halaman ini. buat apa juga jir."`) and confirmed direct workspace logout and automatic route redirection:

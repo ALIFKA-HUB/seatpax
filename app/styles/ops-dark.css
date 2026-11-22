@@ -1,0 +1,1059 @@
+/* Hallmark · scope: app · modes: light+dark · contrast: verified · v2.0.0 */
+/* Critique: anchored navy-slate dark surfaces for Ops + Crew only; Passenger pages untouched. */
+
+/* Root tokens scoped to active operational + Crew shells so Passenger public views remain light. */
+html[data-mode='dark']:has(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) {
+  color-scheme: dark;
+  --ops-paper: #0b1322;
+  --ops-paper-2: #111c30;
+  --ops-paper-3: #17253e;
+  --ops-paper-4: #1d2f4e;
+  --ops-ink: #e7eef9;
+  --ops-ink-2: #cbd8ec;
+  --ops-muted: #9cb0cc;
+  --ops-soft-ink: #7d94b5;
+  --ops-rule: #253756;
+  --ops-rule-strong: #354d73;
+  --ops-accent: #5fa0ff;
+  --ops-accent-hover: #7fb3ff;
+  --ops-primary-fill: #2563eb;
+  --ops-primary-fill-hover: #1d4ed8;
+  --ops-primary-ink: #f8fbff;
+  --ops-accent-soft: #162a4a;
+  --ops-accent-border: #2b4f82;
+  --ops-green: #34d399;
+  --ops-green-soft: #0d2c24;
+  --ops-green-border: #175240;
+  --ops-amber: #fbbf24;
+  --ops-amber-soft: #2c200b;
+  --ops-amber-border: #5c4110;
+  --ops-danger: #fca5a5;
+  --ops-danger-soft: #311519;
+  --ops-danger-border: #6b262e;
+  --ops-indigo: #c4b5fd;
+  --ops-indigo-soft: #221d42;
+  --ops-indigo-border: #42387a;
+  --ops-teal: #5eead4;
+  --ops-teal-soft: #0e2c2e;
+  --ops-orange-soft: #311c11;
+  --ops-orange: #fdba74;
+  --ops-slate: #cbd5e1;
+  --ops-slate-soft: #1a2842;
+  --ops-brand-plate: #eef4fb;
+}
+
+html[data-mode='dark']:has(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace),
+html[data-mode='dark'] body:has(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) {
+  background: var(--ops-paper);
+  color: var(--ops-ink);
+  font-synthesis: none;
+}
+
+/* Circular reveal View Transitions (expand both directions, zero default crossfade flash). */
+html[data-theme-transition='expand']::view-transition-old(root),
+html[data-theme-transition='expand']::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-transition='expand']::view-transition-old(root) {
+  z-index: 1;
+}
+
+html[data-theme-transition='expand']::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-transition='expand']::view-transition-old(root),
+  html[data-theme-transition='expand']::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+/* Shared toggle appearance helpers */
+.ops-theme-toggle {
+  cursor: pointer;
+}
+
+/* Preserve legible Seatpax navy brand plate over dark surfaces without raster inversion. */
+html[data-mode='dark'] :is(.admin-shell .admin-brand .sp-brand, .admin-entry .admin-entry-top .sp-brand, .super-admin-shell .super-sidebar-brand .sp-brand, .super-admin-shell .super-mobile-bar .sp-brand, .hd-workspace .hd-sidebar > .sp-brand, .hd-workspace .hd-mobile-bar > .sp-brand, .crew-shell .crew-identity .sp-brand) {
+  background: var(--ops-brand-plate);
+  border-radius: 10px;
+  padding: 5px 9px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 1. Admin PO (.admin-shell & .admin-entry)                                  */
+/* -------------------------------------------------------------------------- */
+html[data-mode='dark'] .admin-shell {
+  --admin-ink: var(--ops-ink);
+  --admin-muted: var(--ops-muted);
+  --admin-line: var(--ops-rule);
+  --admin-blue: var(--ops-accent);
+  --admin-blue-soft: var(--ops-accent-soft);
+  --admin-green: var(--ops-green);
+  --admin-green-soft: var(--ops-green-soft);
+  --admin-amber: var(--ops-amber);
+  --admin-amber-soft: var(--ops-amber-soft);
+  --admin-danger: var(--ops-danger);
+  --admin-danger-soft: var(--ops-danger-soft);
+  --admin-indigo: var(--ops-indigo);
+  --admin-indigo-soft: var(--ops-indigo-soft);
+  --admin-teal: var(--ops-teal);
+  --admin-teal-soft: var(--ops-teal-soft);
+  --admin-slate: var(--ops-slate);
+  --admin-slate-soft: var(--ops-slate-soft);
+  background: var(--ops-paper);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell :is(a) {
+  color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell :is(.admin-sidebar, .admin-brand, .admin-topbar, .dash-card, .admin-panel, .admin-panel-modern, .admin-stat-card, .dash-date-pill, .dash-outline-cta, .admin-page-btn, .admin-page-num, .stop-dialog, .hd-preview-dialog, .hd-preview-head, .hd-pdf-bar, .hd-preview-state, .admin-toast, .trip-fare-list li) {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+  box-shadow: none;
+}
+
+html[data-mode='dark'] .admin-shell :is(.admin-company, .dash-pill-muted, .dash-bar-track, .dash-resource-item, .dash-week-strip, .dash-agenda-item, .dash-agenda-empty, .admin-stop-list > li, .seat-grid-region, .fleet-inspector, .fleet-brush-bar, .fleet-meta-chip, .trip-details, .trip-mode-bar, .admin-fares label, .payment-conflict-details > div, .dash-activity-note, .hd-admin-monitor .hd-tab-count, .hd-admin-monitor .hd-code-pill, .hd-timeline-note, .hd-attachment-item, .hd-preview-body) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .admin-sidebar nav a {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell .admin-sidebar nav a:hover {
+  background: var(--ops-paper-3);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .admin-sidebar nav a[aria-current='page'] {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .admin-sidebar nav a[aria-current='page']::before {
+  background: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .admin-sidebar .admin-nav-caption {
+  color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .admin-shell .admin-company .admin-company-avatar {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .admin-nav-badge {
+  background: var(--ops-orange-soft);
+  color: var(--ops-orange);
+}
+
+html[data-mode='dark'] .admin-shell .admin-account {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell .admin-account:hover:not(:disabled) {
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .admin-shell .admin-account:hover:not(:disabled) strong {
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .admin-shell .admin-topbar-sep {
+  color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .admin-shell .admin-topbar-company {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .admin-topbar-icon-btn {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .admin-topbar-icon-btn:hover:not(:disabled) {
+  border-color: var(--ops-accent);
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .admin-topbar-dot {
+  border-color: var(--ops-paper-2);
+}
+
+html[data-mode='dark'] .admin-shell :is(.dash-primary-cta, .admin-topbar-cta, button.admin-primary, .hd-admin-monitor .hd-primary, .admin-page-num.is-active, .dash-week-day.is-today .dash-week-num, .trip-weekday-pill.is-selected) {
+  background: var(--ops-primary-fill);
+  border-color: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .admin-shell :is(.dash-primary-cta:hover, .admin-topbar-cta:hover, button.admin-primary:hover:not(:disabled), .hd-admin-monitor .hd-primary:hover:not(:disabled)) {
+  background: var(--ops-primary-fill-hover);
+  border-color: var(--ops-primary-fill-hover);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .admin-shell :is(input, select, textarea, .admin-form input, .admin-form select, .admin-form textarea, .admin-panel textarea, .hd-search-box, .admin-money-input, button.admin-select-trigger, .payment-reason-field textarea, .hd-admin-monitor .hd-form input, .hd-admin-monitor .hd-form select, .hd-admin-monitor .hd-form textarea) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell :is(input, textarea)::placeholder {
+  color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .admin-shell :is(input:focus-visible, select:focus-visible, textarea:focus-visible, .hd-search-box:focus-within, .admin-money-input:focus-within, button.admin-select-trigger[aria-expanded='true'], .payment-reason-field textarea:focus) {
+  background: var(--ops-paper-4);
+  border-color: var(--ops-accent);
+  box-shadow: 0 0 0 3px rgb(95 160 255 / 0.22);
+}
+
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.trip-preset-btn.is-active):not(.trip-mode-btn.is-active) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):hover:not(:disabled) {
+  background: var(--ops-paper-4);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell ul.admin-select-menu {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule-strong);
+  box-shadow: 0 12px 32px rgb(3 7 18 / 0.48);
+}
+
+html[data-mode='dark'] .admin-shell button.admin-select-option {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell button.admin-select-option:hover:not(:disabled) {
+  background: var(--ops-paper-3);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell button.admin-select-option[aria-selected='true'] {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell button.admin-danger {
+  background: var(--ops-danger-soft);
+  border-color: var(--ops-danger-border);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .admin-shell button.admin-danger:hover:not(:disabled) {
+  background: #471c22;
+  border-color: #93333e;
+  color: #fecaca;
+}
+
+html[data-mode='dark'] .admin-shell :is(.admin-modern-table th, .stop-table th) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell :is(.admin-modern-table td, .stop-table td) {
+  border-color: var(--ops-rule);
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell :is(.admin-modern-table td strong, .stop-table td strong, .trip-summary-head h2, .admin-money-input input, .payment-conflict-details dd, .trip-fare-list li strong) {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell :is(.admin-modern-table tbody tr:hover td, .stop-table tbody tr:hover td) {
+  background: var(--ops-paper-3);
+}
+
+html[data-mode='dark'] .admin-shell :is(.admin-modern-table tbody tr.admin-row-highlight td, .stop-table tbody tr.admin-row-highlight td) {
+  background: var(--ops-accent-soft);
+}
+
+html[data-mode='dark'] .admin-shell .admin-page-btn:disabled,
+html[data-mode='dark'] .admin-shell .admin-page-btn.is-disabled {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .admin-shell .dash-bar-fill {
+  background: var(--ops-paper-4);
+}
+
+html[data-mode='dark'] .admin-shell .dash-bar-fill.has-value {
+  background: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .dash-resource-item:hover {
+  border-color: var(--ops-accent);
+  background: var(--ops-paper-4);
+}
+
+html[data-mode='dark'] .admin-shell .dash-agenda-item {
+  border-left-color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .dash-agenda-item:hover {
+  background: var(--ops-paper-4);
+  border-color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .dash-tint-card.is-blue {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+}
+
+html[data-mode='dark'] .admin-shell .dash-tint-card.is-amber {
+  background: var(--ops-amber-soft);
+  border-color: var(--ops-amber-border);
+}
+
+html[data-mode='dark'] .admin-shell .dash-tint-icon {
+  background: var(--ops-paper-2);
+}
+
+html[data-mode='dark'] .admin-shell .admin-callout-info {
+  background: var(--ops-accent-soft);
+  border-left-color: var(--ops-accent);
+  color: var(--ops-ink-2);
+}
+
+html[data-mode='dark'] .admin-shell .admin-quote-result {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .admin-quote-result p {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell .manifest-seat-chip {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .admin-status-pill {
+  background: var(--ops-slate-soft);
+  color: var(--ops-slate);
+}
+
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-purple {
+  background: var(--ops-indigo-soft);
+  color: var(--ops-indigo);
+}
+
+html[data-mode='dark'] .admin-shell .admin-stop-number {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .admin-stop-role {
+  background: var(--ops-slate-soft);
+  color: var(--ops-slate);
+}
+
+html[data-mode='dark'] .admin-shell .admin-stop-role.is-start {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .admin-stop-role.is-end {
+  background: var(--ops-green-soft);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .admin-shell .fleet-brush-btn.is-active {
+  background: var(--ops-primary-fill);
+  border-color: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .admin-shell .seat-cell {
+  background: var(--ops-paper-2) !important;
+  border-color: var(--ops-rule-strong) !important;
+  color: var(--ops-ink-2) !important;
+}
+
+html[data-mode='dark'] .admin-shell .seat-seat {
+  background: var(--ops-accent-soft) !important;
+  border-color: var(--ops-accent-border) !important;
+  color: var(--ops-accent-hover) !important;
+}
+
+html[data-mode='dark'] .admin-shell .seat-driver {
+  background: var(--ops-slate-soft) !important;
+  color: var(--ops-ink) !important;
+}
+
+html[data-mode='dark'] .admin-shell .seat-door,
+html[data-mode='dark'] .admin-shell .seat-facility {
+  background: var(--ops-green-soft) !important;
+  border-color: var(--ops-green-border) !important;
+  color: var(--ops-green) !important;
+}
+
+html[data-mode='dark'] .admin-shell .fleet-legend-item i.is-seat {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .fleet-legend-item i.is-driver {
+  background: var(--ops-slate-soft);
+  border-color: var(--ops-rule-strong);
+}
+
+html[data-mode='dark'] .admin-shell .fleet-legend-item i.is-aisle {
+  background: var(--ops-paper-4);
+  border-color: var(--ops-rule-strong);
+}
+
+html[data-mode='dark'] .admin-shell .fleet-legend-item i.is-door {
+  background: var(--ops-amber-soft);
+  border-color: var(--ops-amber);
+}
+
+html[data-mode='dark'] .admin-shell .fleet-legend-item i.is-facility {
+  background: var(--ops-indigo-soft);
+  border-color: var(--ops-indigo);
+}
+
+html[data-mode='dark'] .admin-shell .fleet-legend-item i.is-empty {
+  background: var(--ops-paper-2);
+}
+
+html[data-mode='dark'] .admin-shell .fleet-conflict {
+  background: var(--ops-amber-soft);
+  border-color: var(--ops-amber-border);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .trip-mode-btn.is-active {
+  background: var(--ops-paper-2);
+  color: var(--ops-accent-hover);
+  box-shadow: none;
+}
+
+html[data-mode='dark'] .admin-shell .trip-preset-btn.is-active {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .trip-recurring-summary.is-ready,
+html[data-mode='dark'] .admin-shell .admin-flash-ok {
+  background: var(--ops-green-soft);
+  border-color: var(--ops-green-border);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .admin-shell .trip-recurring-summary.is-warn {
+  background: var(--ops-amber-soft);
+  border-color: var(--ops-amber-border);
+  color: var(--ops-amber);
+}
+
+html[data-mode='dark'] .admin-shell .admin-flash-error {
+  background: var(--ops-danger-soft);
+  border-color: var(--ops-danger-border);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .admin-shell .admin-toast {
+  border-color: var(--ops-rule-strong);
+  box-shadow: inset 0 0 0 1px var(--ops-rule), 0 16px 36px rgb(3 7 18 / 0.55);
+}
+
+html[data-mode='dark'] .admin-shell .admin-toast.is-ok .admin-toast-icon {
+  background: var(--ops-green-soft);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .admin-shell .admin-toast.is-error .admin-toast-icon {
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .admin-shell .stop-dialog::backdrop,
+html[data-mode='dark'] .admin-shell .hd-preview-dialog::backdrop {
+  background: rgb(4 8 18 / 0.72);
+}
+
+html[data-mode='dark'] .admin-shell :is(.trip-details summary, .hd-admin-monitor .hd-secondary, .hd-download-link, .hd-preview-close, .hd-pdf-zoom-btn) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .hd-preview-btn {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell .hd-timeline li:not(:last-child)::before {
+  background: var(--ops-rule-strong);
+}
+
+html[data-mode='dark'] .admin-shell .hd-timeline li::after {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .admin-shell .hd-timeline li.is-info::after {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell .hd-timeline li.is-warn::after {
+  background: var(--ops-amber-soft);
+  border-color: var(--ops-amber);
+}
+
+html[data-mode='dark'] .admin-shell .hd-timeline li.is-purple::after {
+  background: var(--ops-indigo-soft);
+  border-color: var(--ops-indigo);
+}
+
+html[data-mode='dark'] .admin-shell .hd-timeline li.is-ok::after {
+  background: var(--ops-green-soft);
+  border-color: var(--ops-green);
+}
+
+html[data-mode='dark'] .admin-entry {
+  background: var(--ops-paper);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-entry .admin-header h1,
+html[data-mode='dark'] .admin-entry .admin-entry-name {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-entry .admin-entry-sub,
+html[data-mode='dark'] .admin-entry .admin-header p {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-entry .admin-entry-item,
+html[data-mode='dark'] .admin-entry .admin-entry-back,
+html[data-mode='dark'] .admin-entry .admin-entry-empty {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+  box-shadow: none;
+}
+
+html[data-mode='dark'] .admin-entry .admin-entry-item:hover,
+html[data-mode='dark'] .admin-entry .admin-entry-back:hover:not(:disabled) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-entry .admin-entry-avatar {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+  color: var(--ops-accent);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 2. Super Admin (.super-admin-shell)                                        */
+/* -------------------------------------------------------------------------- */
+html[data-mode='dark'] .super-admin-shell {
+  --super-primary: var(--ops-accent);
+  --super-primary-hover: var(--ops-accent-hover);
+  --super-soft: var(--ops-paper-3);
+  --super-action-hover: var(--ops-paper-4);
+  --super-canvas: var(--ops-paper);
+  --super-surface: var(--ops-paper-2);
+  --super-ink: var(--ops-ink);
+  --super-muted: var(--ops-muted);
+  --super-border: var(--ops-rule);
+  --super-danger: var(--ops-danger);
+  --super-danger-soft: var(--ops-danger-soft);
+  --super-danger-border: var(--ops-danger-border);
+  --super-shadow: none;
+  --super-green: #0a6e4f;
+  --super-orange: #b44711;
+  --super-on-card: #f8fbff;
+  --super-green-soft: var(--ops-green-soft);
+  --super-green-ink: var(--ops-green);
+  --super-disabled-soft: var(--ops-slate-soft);
+}
+
+html[data-mode='dark'] .super-admin-shell .super-metric {
+  background: var(--ops-primary-fill);
+}
+
+html[data-mode='dark'] .super-admin-shell .super-metric-active {
+  background: var(--super-green);
+}
+
+html[data-mode='dark'] .super-admin-shell .super-metric-disabled {
+  background: var(--super-orange);
+}
+
+html[data-mode='dark'] .super-admin-shell :is(.super-nav-group a[aria-current='page'], .super-add-form button[type='submit'], button.super-primary) {
+  background: var(--ops-primary-fill);
+  border-color: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .super-admin-shell :is(.super-nav-group a[aria-current='page']:hover, .super-add-form button[type='submit']:hover, button.super-primary:hover) {
+  background: var(--ops-primary-fill-hover);
+  border-color: var(--ops-primary-fill-hover);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .super-admin-shell :is(.super-inline-form select, .super-form-field :is(input, select), .super-staff-search input[type='search']) {
+  border-color: var(--ops-rule-strong);
+  background: var(--ops-paper-3);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .super-admin-shell .super-account:hover:not(:disabled) {
+  border-color: var(--ops-danger-border);
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3. Helpdesk (.hd-workspace)                                                */
+/* -------------------------------------------------------------------------- */
+html[data-mode='dark'] .hd-workspace {
+  background: var(--ops-paper);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .hd-workspace :is(.hd-sidebar, .hd-mobile-bar, .hd-mobile-nav, .hd-panel, .hd-preview-dialog, .hd-preview-head, .hd-pdf-bar, .hd-preview-state) {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+  box-shadow: none;
+}
+
+html[data-mode='dark'] .hd-workspace .hd {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .hd-workspace :is(.hd p, .hd small, .hd-small, .hd-result dt, .hd-queue p, .hd-activity p, .hd-loading p, .hd-attachment-meta, .hd-pdf-page-info, .hd-timeline-head small) {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .hd-workspace :is(.hd-queue a, .hd-timeline-head strong, .hd-attachment-name, .hd-preview-title strong) {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .hd-workspace :is(.hd a, .hd-code) {
+  color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-side-nav a,
+html[data-mode='dark'] .hd-workspace .hd-side-bottom > a,
+html[data-mode='dark'] .hd-workspace .hd-side-bottom button.hd-logout-btn,
+html[data-mode='dark'] .hd-workspace .hd-side-bottom button.ops-theme-toggle {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-side-nav a:hover,
+html[data-mode='dark'] .hd-workspace .hd-side-bottom > a:hover,
+html[data-mode='dark'] .hd-workspace .hd-side-bottom button.ops-theme-toggle:hover:not(:disabled) {
+  background: var(--ops-paper-3);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-side-nav a[aria-current='page'] {
+  background: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-side-nav a[aria-current='page']:hover {
+  background: var(--ops-primary-fill-hover);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-side-bottom {
+  border-top-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-side-bottom button.hd-logout-btn:hover:not(:disabled) {
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-mobile-bar button {
+  background: var(--ops-paper-3);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-main .hd-stat {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-main .hd-stat span {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-main .hd-stat[data-status='MENUNGGU'] {
+  background: var(--ops-primary-fill);
+  border-color: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-main .hd-stat[data-status='MENUNGGU'] span {
+  color: #dbeafe;
+}
+
+html[data-mode='dark'] .hd-workspace :is(.hd-form input, .hd-form select, .hd-form textarea, .hd-attachment-item, .hd-notice, .hd-empty, .hd-timeline-note, .hd-preview-body) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .hd-workspace :is(.hd-queue li, .hd-activity li, .hd-staff-table th, .hd-staff-table td) {
+  border-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-staff-table th {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-badge {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-attachment-icon,
+html[data-mode='dark'] .hd-workspace .hd-preview-btn {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .hd-workspace :is(.hd-secondary, .hd-download-link, .hd-preview-close, .hd-pdf-zoom-btn) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-primary {
+  background: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-timeline li:not(:last-child)::before {
+  background: var(--ops-rule-strong);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-timeline li::after {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-timeline li.is-info::after {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-timeline li.is-warn::after {
+  background: var(--ops-amber-soft);
+  border-color: var(--ops-amber);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-timeline li.is-purple::after {
+  background: var(--ops-indigo-soft);
+  border-color: var(--ops-indigo);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-timeline li.is-ok::after {
+  background: var(--ops-green-soft);
+  border-color: var(--ops-green);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-preview-dialog::backdrop {
+  background: rgb(4 8 18 / 0.72);
+}
+
+html[data-mode='dark'] .hd-workspace .hd-loading-stats span,
+html[data-mode='dark'] .hd-workspace .hd-loading-panels span {
+  border-color: var(--ops-rule);
+  background: linear-gradient(90deg, var(--ops-paper-2) 25%, var(--ops-paper-3) 50%, var(--ops-paper-2) 75%);
+  background-size: 200% 100%;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 4. Crew PWA (.crew-shell)                                                  */
+/* -------------------------------------------------------------------------- */
+html[data-mode='dark'] .crew-shell {
+  background: var(--ops-paper);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell a {
+  color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .crew-shell .crew-topbar {
+  background: rgb(17 28 48 / 0.94);
+  border-bottom-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .crew-shell nav a {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell nav a:hover {
+  background: var(--ops-paper-3);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-role, .crew-count-pill, .crew-time-badge, .crew-step-chip) {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-panel, .crew-trip-item, .crew-subnav, .crew-state-card) {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+  box-shadow: none;
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-trip-card, .crew-trip-route, .crew-manifest-name, .manifest-name, .manifest-seat strong, .manifest-counters dd, .crew-details summary, .boarding-profile .crew-profile-facts dd, .crew-stop-body) {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-muted, .crew-snack, .manifest-count, .manifest-snack, .manifest-counters dt, .manifest-seat, .crew-seat span, .crew-profile-facts dt, .crew-stop-times dt, .crew-camera-state, .crew-message) {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .crew-shell .manifest-route {
+  color: var(--ops-ink-2);
+}
+
+html[data-mode='dark'] .crew-shell :is(.manifest-counters div, .manifest-passengers li, .seat-grid-region, .boarding-profile .crew-profile-facts) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .crew-shell :is(.manifest-seat, .crew-seat) {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-trip-quick-actions, .crew-stop-body, .crew-details > div, .crew-fares li, .crew-scan-result, .crew-topbar nav) {
+  border-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .crew-shell :is(input, select, .manifest-controls input, .manifest-controls select, .boarding-form select) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-button, button:not(.crew-primary):not(.crew-pill-active):not(.crew-nav-logout)) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell .crew-button-ghost,
+html[data-mode='dark'] .crew-shell .crew-filter-pills .crew-pill {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink-2);
+}
+
+html[data-mode='dark'] .crew-shell .crew-filter-pills .crew-pill-active {
+  background: var(--ops-primary-fill);
+  border-color: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-primary, .crew-subnav-link.crew-subnav-active) {
+  background: var(--ops-primary-fill);
+  border-color: var(--ops-primary-fill);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .crew-shell .crew-primary:not(:disabled):hover {
+  background: var(--ops-primary-fill-hover);
+  border-color: var(--ops-primary-fill-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-subnav-link:not(.crew-subnav-active) {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .crew-shell .crew-subnav-link:not(.crew-subnav-active):hover {
+  background: var(--ops-paper-3);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell nav .crew-nav-logout,
+html[data-mode='dark'] .crew-shell nav .crew-theme-toggle {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell nav .crew-nav-logout:hover:not(:disabled) {
+  border-color: var(--ops-danger-border);
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .crew-shell nav .crew-theme-toggle:hover:not(:disabled) {
+  border-color: var(--ops-accent);
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-state-success {
+  color: var(--ops-green);
+  background: var(--ops-green-soft);
+  border-color: var(--ops-green-border);
+}
+
+html[data-mode='dark'] .crew-shell .crew-state-success .crew-step-chip {
+  background: var(--ops-green-border);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .crew-shell .crew-state-pending {
+  color: var(--ops-amber);
+  background: var(--ops-amber-soft);
+  border-color: var(--ops-amber-border);
+}
+
+html[data-mode='dark'] .crew-shell .crew-state-neutral {
+  color: var(--ops-slate);
+  background: var(--ops-slate-soft);
+  border-color: var(--ops-rule-strong);
+}
+
+html[data-mode='dark'] .crew-shell .crew-callout {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell .seat-cell {
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell .seat-seat {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+}
+
+html[data-mode='dark'] .crew-shell .seat-aisle,
+html[data-mode='dark'] .crew-shell .seat-empty {
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .crew-shell .crew-stop-number {
+  background: var(--ops-accent-soft);
+  border-color: var(--ops-accent-border);
+  color: var(--ops-accent-hover);
+}
+
+/* Toggle alignment helpers inside specific shells (both light & dark modes) */
+.admin-shell button.ops-theme-toggle.admin-topbar-icon-btn {
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.admin-entry-top-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.super-admin-shell .super-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.super-admin-shell .super-theme-toggle {
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.hd-workspace .hd-side-bottom button.ops-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #405a79;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 550;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.hd-workspace .hd-side-bottom button.ops-theme-toggle:hover:not(:disabled) {
+  background: #f0f5fb;
+  color: #005bd1;
+}
+
+.crew-shell nav .crew-theme-toggle {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #d5dfea;
+  border-radius: 8px;
+  background: #f8fafc;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0a2144;
+}
+
+.crew-shell nav .crew-theme-toggle:hover:not(:disabled) {
+  border-color: #9fc2f5;
+  background: #f0f6ff;
+  color: #005bd1;
+}

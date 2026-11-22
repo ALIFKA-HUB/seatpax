@@ -1,7 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell } from '@phosphor-icons/react/ssr';
+import { Bell } from '@phosphor-icons/react/dist/ssr/Bell';
+import ThemeToggle from '@/app/components/theme-toggle';
 
 const SECTION_TITLES: readonly { segment: string; title: string; group: string }[] = [
   { segment: 'trips', title: 'Perjalanan', group: 'Operasional' },
@@ -42,6 +43,7 @@ export default function AdminTopbar({
 
       <div className="admin-topbar-right">
         <span className="admin-topbar-company">{companyName}</span>
+        <ThemeToggle className="admin-topbar-icon-btn" />
         <Link
           href={`${base}/helpdesk`}
           className="admin-topbar-icon-btn"

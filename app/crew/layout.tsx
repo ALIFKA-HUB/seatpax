@@ -1,4 +1,5 @@
 import './crew.css';
+import '../styles/ops-dark.css';
 import {crewData} from './data';
 import CrewShell from './components/crew-shell';
 export default async function Layout({children}:{children:React.ReactNode}) {

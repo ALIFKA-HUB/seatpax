@@ -3,8 +3,10 @@ import { redirect } from 'next/navigation';
 import { adminCompanies } from './data';
 import Brand from '@/app/components/brand';
 import SessionLogoutButton from '@/app/components/session-logout-button';
+import ThemeToggle from '@/app/components/theme-toggle';
 import './admin.css';
 import './admin-refresh.css';
+import '../styles/ops-dark.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,6 +18,7 @@ export default async function AdminPage() {
     <main className="admin-entry">
       <div className="admin-entry-top">
         <Brand href="/admin" />
+        <ThemeToggle className="admin-entry-back" showLabel fullLabel />
       </div>
       <header className="admin-header">
         <p>Admin PO</p>

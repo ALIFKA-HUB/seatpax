@@ -6,6 +6,7 @@ import {adminCompanies} from '../../data';
 import AdminShell from '../../components/admin-shell';
 import '../../admin.css';
 import '../../admin-refresh.css';
+import '../../../styles/ops-dark.css';
 
 export default async function Layout({children,params}:{children:React.ReactNode;params:Promise<{companyId:string}>}) {
  const {companyId}=await params;

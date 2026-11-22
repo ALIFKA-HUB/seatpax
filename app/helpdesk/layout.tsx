@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react';
 import '../pengaduan/pengaduan.css';
 import './helpdesk.css';
+import '../styles/ops-dark.css';
 import HelpdeskShell from './components/helpdesk-shell';
 
 export const metadata={title:'Helpdesk | Seatpax',robots:{index:false,follow:false}};
