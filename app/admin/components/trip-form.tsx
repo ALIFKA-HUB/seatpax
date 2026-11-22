@@ -7,7 +7,12 @@ import type {
   TripDraftInput,
   TripRecord,
 } from '@/modules/trip/types';
-import { expandRecurringSchedule, formatUtcDate, toWibInput } from '@/modules/trip/time';
+import {
+  expandRecurringSchedule,
+  formatUtcDate,
+  parseWibInstant,
+  toWibInput,
+} from '@/modules/trip/time';
 import { DomainError } from '@/modules/access/transaction';
 import {
   deleteTripDraftAction,
@@ -23,6 +28,54 @@ type Choices = {
   vehicles: { id: string; name: string; status: string; defaultServiceClassId: string }[];
   classes: { id: string; name: string; status: string }[];
 };
+
+type CutoffMode = 'auto' | '15' | '30' | '60' | 'custom';
+
+function splitWib(value: string | null | undefined): { date: string; time: string } {
+  if (!value || !value.includes('T')) return { date: '', time: '' };
+  const [date, time] = value.split('T');
+  return { date: date ?? '', time: (time ?? '').slice(0, 5) };
+}
+
+function joinWib(date: string, time: string): string {
+  return date && time ? `${date}T${time}` : '';
+}
+
+function computeCutoffWib(departureWib: string, minutesBefore: number): string | null {
+  if (!departureWib) return null;
+  try {
+    const depMs = Date.parse(parseWibInstant(departureWib));
+    return toWibInput(new Date(depMs - minutesBefore * 60_000).toISOString());
+  } catch {
+    return null;
+  }
+}
+
+function detectCutoffMode(departureWib: string, salesCloseWib: string | null): CutoffMode {
+  if (!salesCloseWib) return 'auto';
+  for (const minutes of [15, 30, 60] as const) {
+    if (computeCutoffWib(departureWib, minutes) === salesCloseWib) {
+      return String(minutes) as CutoffMode;
+    }
+  }
+  return 'custom';
+}
+
+function formatWibReadable(wib: string): string | null {
+  if (!wib) return null;
+  try {
+    const iso = parseWibInstant(wib);
+    return (
+      new Intl.DateTimeFormat('id-ID', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+        timeZone: 'Asia/Jakarta',
+      }).format(new Date(iso)) + ' WIB'
+    );
+  } catch {
+    return null;
+  }
+}
 
 const WEEKDAYS: readonly { id: IsoWeekday; short: string; full: string }[] = [
   { id: 1, short: 'Sen', full: 'Senin' },
@@ -80,6 +133,13 @@ export default function TripForm({
   const [confirming, setConfirming] = useState(false);
 
   const [recurring, setRecurring] = useState(false);
+  const [depDate, setDepDate] = useState(() => splitWib(initialDraft.departureWib).date);
+  const [depTime, setDepTime] = useState(() => splitWib(initialDraft.departureWib).time);
+  const [cutoffDate, setCutoffDate] = useState(() => splitWib(initialDraft.salesCloseWib).date);
+  const [cutoffTime, setCutoffTime] = useState(() => splitWib(initialDraft.salesCloseWib).time);
+  const [cutoffMode, setCutoffMode] = useState<CutoffMode>(() =>
+    detectCutoffMode(initialDraft.departureWib, initialDraft.salesCloseWib),
+  );
   const [weekdays, setWeekdays] = useState<IsoWeekday[]>(WORK_DAYS);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -93,6 +153,63 @@ export default function TripForm({
     setDraft({ ...draft, [key]: value });
     setConfirming(false);
   };
+
+  function updateSingleDeparture(nextDate: string, nextTime: string) {
+    setDepDate(nextDate);
+    setDepTime(nextTime);
+    const nextDep = joinWib(nextDate, nextTime);
+    const nextClose =
+      cutoffMode === '15' || cutoffMode === '30' || cutoffMode === '60'
+        ? computeCutoffWib(nextDep, Number(cutoffMode))
+        : draft.salesCloseWib;
+    if (nextClose) {
+      const splitClose = splitWib(nextClose);
+      setCutoffDate(splitClose.date);
+      setCutoffTime(splitClose.time);
+    }
+    setDraft({
+      ...draft,
+      departureWib: nextDep,
+      salesCloseWib: nextClose,
+    });
+    setConfirming(false);
+  }
+
+  function chooseCutoffMode(mode: CutoffMode) {
+    setCutoffMode(mode);
+    setConfirming(false);
+    if (mode === 'auto') {
+      setDraft({ ...draft, salesCloseWib: null });
+      return;
+    }
+    if (mode === '15' || mode === '30' || mode === '60') {
+      const computed = computeCutoffWib(draft.departureWib, Number(mode));
+      if (computed) {
+        const splitClose = splitWib(computed);
+        setCutoffDate(splitClose.date);
+        setCutoffTime(splitClose.time);
+      }
+      setDraft({
+        ...draft,
+        salesCloseWib: computed,
+      });
+      return;
+    }
+    const seedDate = cutoffDate || depDate;
+    const seedTime = cutoffTime || depTime;
+    setCutoffDate(seedDate);
+    setCutoffTime(seedTime);
+    setDraft({
+      ...draft,
+      salesCloseWib: joinWib(seedDate, seedTime) || null,
+    });
+  }
+
+  function updateCustomCutoff(nextDate: string, nextTime: string) {
+    setCutoffDate(nextDate);
+    setCutoffTime(nextTime);
+    change('salesCloseWib', joinWib(nextDate, nextTime) || null);
+  }
 
   function selectVehicle(vehicleId: string) {
     setDraft({
@@ -345,25 +462,129 @@ export default function TripForm({
 
           <div className="trip-schedule-section">
             {!recurring ? (
-              <div className="admin-fields trip-fields-2col">
-                <label>
-                  Berangkat stop pertama (WIB)
-                  <input
-                    type="datetime-local"
-                    required
-                    value={draft.departureWib}
-                    onChange={e => change('departureWib', e.target.value)}
-                  />
-                </label>
-                <label>
-                  Batas penjualan global (WIB, opsional)
-                  <input
-                    type="datetime-local"
-                    value={draft.salesCloseWib ?? ''}
-                    onChange={e => change('salesCloseWib', e.target.value || null)}
-                  />
-                </label>
-              </div>
+              (() => {
+                const depText = formatWibReadable(draft.departureWib);
+                const cutoffText = formatWibReadable(draft.salesCloseWib ?? '');
+                return (
+                  <div className="trip-recurring-section">
+                    <div className="trip-recurring-head">
+                      <div>
+                        <strong>Jadwal keberangkatan</strong>
+                        <p>
+                          Tentukan tanggal &amp; jam berangkat dari titik awal rute; jadwal stop
+                          berikutnya otomatis mengikuti rute.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="admin-fields trip-fields-2col trip-recurring-fields">
+                      <label>
+                        Tanggal berangkat (WIB)
+                        <input
+                          type="date"
+                          required
+                          value={depDate}
+                          onChange={e => updateSingleDeparture(e.target.value, depTime)}
+                        />
+                      </label>
+                      <label>
+                        Jam berangkat (WIB)
+                        <input
+                          type="time"
+                          required
+                          value={depTime}
+                          onChange={e => updateSingleDeparture(depDate, e.target.value)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="trip-cutoff-block">
+                      <div className="trip-recurring-head">
+                        <div>
+                          <strong>
+                            Batas akhir beli tiket <small>(opsional)</small>
+                          </strong>
+                          <p>
+                            Pilih kapan penjualan tiket online ditutup sebelum bus/shuttle
+                            berangkat.
+                          </p>
+                        </div>
+                        <div className="trip-preset-row" role="group" aria-label="Batas akhir beli tiket">
+                          <button
+                            type="button"
+                            className={`trip-preset-btn${cutoffMode === 'auto' ? ' is-active' : ''}`}
+                            onClick={() => chooseCutoffMode('auto')}
+                          >
+                            Saat berangkat (default)
+                          </button>
+                          <button
+                            type="button"
+                            className={`trip-preset-btn${cutoffMode === '15' ? ' is-active' : ''}`}
+                            onClick={() => chooseCutoffMode('15')}
+                          >
+                            15 mnt sebelum
+                          </button>
+                          <button
+                            type="button"
+                            className={`trip-preset-btn${cutoffMode === '30' ? ' is-active' : ''}`}
+                            onClick={() => chooseCutoffMode('30')}
+                          >
+                            30 mnt sebelum
+                          </button>
+                          <button
+                            type="button"
+                            className={`trip-preset-btn${cutoffMode === '60' ? ' is-active' : ''}`}
+                            onClick={() => chooseCutoffMode('60')}
+                          >
+                            1 jam sebelum
+                          </button>
+                          <button
+                            type="button"
+                            className={`trip-preset-btn${cutoffMode === 'custom' ? ' is-active' : ''}`}
+                            onClick={() => chooseCutoffMode('custom')}
+                          >
+                            Atur tanggal/jam
+                          </button>
+                        </div>
+                      </div>
+
+                      {cutoffMode === 'custom' && (
+                        <div className="admin-fields trip-fields-2col trip-recurring-fields">
+                          <label>
+                            Tanggal tutup penjualan (WIB)
+                            <input
+                              type="date"
+                              required
+                              value={cutoffDate}
+                              onChange={e => updateCustomCutoff(e.target.value, cutoffTime)}
+                            />
+                          </label>
+                          <label>
+                            Jam tutup penjualan (WIB)
+                            <input
+                              type="time"
+                              required
+                              value={cutoffTime}
+                              onChange={e => updateCustomCutoff(cutoffDate, e.target.value)}
+                            />
+                          </label>
+                        </div>
+                      )}
+                    </div>
+
+                    {depText && (
+                      <p className="trip-recurring-summary is-ready" role="status" aria-live="polite">
+                        Berangkat: {depText} ·{' '}
+                        {cutoffMode === 'auto'
+                          ? 'Penjualan tiket otomatis ditutup saat jadwal berangkat tiap titik naik.'
+                          : cutoffText
+                            ? `Penjualan tiket ditutup serentak: ${cutoffText}.`
+                            : 'Menunggu jam tutup penjualan lengkap.'}
+                      </p>
+                    )}
+                  </div>
+                );
+              })()
             ) : (
               !initial && (
                 <div className="trip-recurring-section">
@@ -435,6 +656,7 @@ export default function TripForm({
                         value={salesCloseBeforeMin}
                         onChange={e => setSalesCloseBeforeMin(e.target.value)}
                       />
+                      <small>Kosongkan jika tiket boleh dibeli hingga jam berangkat tiap titik naik.</small>
                     </label>
                     <label>
                       Mulai tanggal (WIB)

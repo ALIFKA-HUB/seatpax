@@ -25,6 +25,8 @@ it('keeps trips list table clean and moves trip creation form to /trips/new',asy
  const newHtml=render(await TripsNewPage({params:Promise.resolve({companyId:'a'})}));
  expect(newHtml).toContain('Perjalanan baru');expect(newHtml).toContain('Simpan draft');expect(newHtml).toContain('/admin/companies/a/trips');
  expect(newHtml).toContain('Sekali jalan');expect(newHtml).toContain('Berulang (pilih hari)');
+ expect(newHtml).toContain('Tanggal berangkat (WIB)');expect(newHtml).toContain('Jam berangkat (WIB)');
+ expect(newHtml).toContain('Batas akhir beli tiket');
  const batchListHtml=render(await TripsListPage({params:Promise.resolve({companyId:'a'}),searchParams:Promise.resolve({created:'5'})}));
  expect(batchListHtml).toContain('5 draft perjalanan');
  const deletedListHtml=render(await TripsListPage({params:Promise.resolve({companyId:'a'}),searchParams:Promise.resolve({deleted:'1'})}));

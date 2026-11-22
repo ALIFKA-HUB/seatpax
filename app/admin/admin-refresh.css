@@ -510,7 +510,9 @@
 .admin-shell .trip-recurring-section{display:grid;gap:16px}
 .admin-shell .trip-recurring-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .admin-shell .trip-recurring-head strong{display:block;font-size:14px;color:var(--admin-ink);font-weight:700}
+.admin-shell .trip-recurring-head strong small{font-weight:400;color:var(--admin-muted);font-size:12px}
 .admin-shell .trip-recurring-head p{margin:3px 0 0;font-size:12.5px;color:var(--admin-muted)}
+.admin-shell .trip-cutoff-block{display:grid;gap:14px;padding-top:16px;border-top:1px dashed #d6e2f2}
 .admin-shell .trip-preset-row{display:flex;flex-wrap:wrap;gap:6px}
 .admin-shell .trip-preset-btn{min-height:32px;padding:5px 11px;border:1px solid var(--admin-line);border-radius:999px;background:#fff;color:var(--admin-muted);font-size:12px;font-weight:600}
 .admin-shell .trip-preset-btn:hover{border-color:#9fc2f5;color:var(--admin-blue)}
