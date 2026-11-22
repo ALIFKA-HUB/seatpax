@@ -31,8 +31,9 @@ export default function PassengerProfile({ profile }: { profile: Profile }) {
         <dt>Trip</dt>
         <dd>{profile.tripName}</dd>
         <dt>Armada</dt>
-        <dd>
-          {profile.vehicleName} · {profile.plateNumber}
+        <dd className="crew-profile-fleet">
+          <span>{profile.vehicleName}</span>
+          <span className="crew-code-pill">{profile.plateNumber}</span>
         </dd>
         <dt>Keberangkatan</dt>
         <dd>{wibTime(profile.departureAt)}</dd>

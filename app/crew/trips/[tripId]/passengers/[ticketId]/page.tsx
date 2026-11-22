@@ -22,30 +22,37 @@ export default async function Page({
   }
 
   return (
-    <>
-      <header className="crew-page-header">
+    <div className="crew-dash-root">
+      <header className="crew-page-header crew-trip-header">
         <Link className="crew-back" href={`/crew/trips/${tripId}/manifest`}>
           <IconArrowLeft size={16} />
           <span>Kembali ke manifest penumpang</span>
         </Link>
-        <p className="crew-eyebrow">Check-in &amp; layanan penumpang</p>
-        <h1>Profil penumpang</h1>
+        <div className="crew-hero">
+          <div className="crew-head-copy">
+            <h1>Profil penumpang</h1>
+            <p className="crew-muted crew-head-sub">
+              Verifikasi kursi, konfirmasi boarding di titik naik, dan catat penyerahan snack.
+            </p>
+          </div>
+          <span className="crew-status-pill is-info">Check-in penumpang</span>
+        </div>
       </header>
 
       <div className="crew-stack">
-        <section className="crew-panel crew-stack">
+        <section className="crew-panel crew-table-card crew-stack">
           <PassengerProfile profile={profile} />
         </section>
 
         <div className="crew-ops-grid">
-          <section className="crew-panel">
+          <section className="crew-panel crew-table-card">
             <BoardingForm tripId={tripId} profile={profile} stops={view.stops} source="MANIFEST" />
           </section>
-          <section className="crew-panel">
+          <section className="crew-panel crew-table-card">
             <SnackForm key={profile.ticketId} tripId={tripId} profile={profile} />
           </section>
         </div>
       </div>
-    </>
+    </div>
   );
 }

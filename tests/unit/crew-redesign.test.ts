@@ -8,8 +8,12 @@ import CrewTopbar, { resolveCrewTopbarTitle } from '@/app/crew/components/crew-t
 import CrewTripTabs from '@/app/crew/components/trip-tabs';
 import CrewTripSummary from '@/app/crew/components/trip-summary';
 import ManifestList from '@/app/crew/components/manifest-list';
+import TicketScanner from '@/app/crew/components/qr-scanner';
+import PassengerProfile from '@/app/crew/components/passenger-profile';
+import BoardingForm from '@/app/crew/components/boarding-form';
+import SnackForm from '@/app/crew/components/snack-form';
 import type { TripDetail, TripRecord } from '@/modules/trip/types';
-import type { ManifestView } from '@/modules/boarding/types';
+import type { ManifestView, PassengerProfile as PassengerProfileType } from '@/modules/boarding/types';
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -82,11 +86,25 @@ const mockTrips: TripRecord[] = [
 ];
 
 const listMineMock = vi.fn(async () => mockTrips);
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh: () => {} }),
+  usePathname: () => '/crew',
+  notFound: () => {
+    throw new Error('NOT_FOUND');
+  },
+}));
 vi.mock('@/app/crew/data', () => ({
   crewData: async () => ({
     actorId: 'actor-1',
     crew: { listMine: listMineMock },
   }),
+}));
+vi.mock('@/app/crew/boarding-actions', () => ({
+  boardPassengerAction: vi.fn(),
+  resolveBoardingAction: vi.fn(),
+}));
+vi.mock('@/app/crew/snack-actions', () => ({
+  claimSnackAction: vi.fn(),
 }));
 
 describe('Task 1: CrewShell, CrewNavigation, CrewTopbar, and Phosphor crew-icons Admin PO layout', () => {
@@ -462,6 +480,190 @@ describe('Task 3: CrewTripSummary & ManifestList Admin PO Card & Table Patterns'
     expect(readOnlyHtml).toContain('Manifest ini hanya untuk dibaca. Boarding dicatat crew yang ditugaskan.');
     expect(readOnlyHtml).not.toContain('/passengers/ticket-1');
     expect(readOnlyHtml).not.toContain('·');
+  });
+});
+
+const mockPassengerProfile: PassengerProfileType = {
+  ticketId: 'ticket-1',
+  name: 'Budi Santoso',
+  seatCode: '01',
+  fromStopId: 'stop-1',
+  fromSequence: 1,
+  fromName: 'Bandung',
+  toName: 'Bogor',
+  tripName: 'Perjalanan Pagi',
+  vehicleName: 'Bus A',
+  plateNumber: 'B 1234 DEM',
+  departureAt: '2026-10-10T01:00:00Z',
+  boarding: null,
+  snack: null,
+};
+
+const manifestServiceMock = vi.fn(async () => ({
+  tripId: 'trip-1',
+  companyId: 'company-1',
+  tripName: 'Perjalanan Pagi',
+  departureAt: '2026-10-10T01:00:00Z',
+  capacity: 30,
+  passengerCount: 1,
+  boardedCount: 0,
+  stops: [{ id: 'stop-1', name: 'Bandung', sequence: 1 }],
+  passengers: [],
+}));
+const profileServiceMock = vi.fn(async () => mockPassengerProfile);
+
+vi.mock('@/app/crew/boarding-data', () => ({
+  boardingData: async () => ({
+    actor: { id: 'actor-1', role: 'CREW', companyId: 'company-1' },
+    service: {
+      manifest: manifestServiceMock,
+      profile: profileServiceMock,
+    },
+  }),
+}));
+
+describe('Task 4: TicketScanner, PassengerProfile, BoardingForm, SnackForm & /passengers/[ticketId] Admin PO Redesign', () => {
+  it('renders /crew/trips/[tripId]/passengers/[ticketId] with crew-dash-root, Admin PO crew-hero header, crew-table-card panels, and zero eyebrows or middle dots', async () => {
+    const { default: PassengerPage } = await import('@/app/crew/trips/[tripId]/passengers/[ticketId]/page');
+    const html = render(await PassengerPage({ params: Promise.resolve({ tripId: 'trip-1', ticketId: 'ticket-1' }) }));
+
+    expect(html).toContain('class="crew-dash-root"');
+    expect(html).toContain('class="crew-page-header crew-trip-header"');
+    expect(html).toContain('class="crew-back"');
+    expect(html).toContain('href="/crew/trips/trip-1/manifest"');
+    expect(html).toContain('Kembali ke manifest penumpang');
+    expect(html).toContain('class="crew-hero"');
+    expect(html).toContain('<h1>Profil penumpang</h1>');
+    expect(html).toContain('Verifikasi kursi, konfirmasi boarding di titik naik, dan catat penyerahan snack.');
+    expect(html).toContain('class="crew-status-pill is-info"');
+    expect(html).toContain('Check-in penumpang');
+    expect(html).toContain('class="crew-panel crew-table-card crew-stack"');
+    expect(html).toContain('class="crew-ops-grid"');
+    expect(html).toContain('class="crew-panel crew-table-card"');
+    expect(html).not.toContain('crew-eyebrow');
+    expect(html).not.toContain('·');
+  });
+
+  it('renders PassengerProfile with separated vehicle name and crew-code-pill plate number, prominent seat, semantic status cards, and zero middle dots', () => {
+    const pendingHtml = render(h(PassengerProfile, { profile: mockPassengerProfile }));
+    expect(pendingHtml).toContain('class="crew-seat"');
+    expect(pendingHtml).toContain('<strong>01</strong>');
+    expect(pendingHtml).toContain('<h2>Budi Santoso</h2>');
+    expect(pendingHtml).toContain('Bandung → Bogor');
+    expect(pendingHtml).toContain('class="crew-profile-fleet"');
+    expect(pendingHtml).toContain('<span>Bus A</span>');
+    expect(pendingHtml).toContain('<span class="crew-code-pill">B 1234 DEM</span>');
+    expect(pendingHtml).toContain('Belum naik');
+    expect(pendingHtml).toContain('Snack belum diserahkan');
+    expect(pendingHtml).not.toContain('·');
+
+    const completedHtml = render(
+      h(PassengerProfile, {
+        profile: {
+          ...mockPassengerProfile,
+          boarding: {
+            id: 'b-1',
+            ticketId: 'ticket-1',
+            tripId: 'trip-1',
+            stopId: 'stop-1',
+            actorId: 'actor-1',
+            source: 'MANIFEST',
+            boardedAt: '2026-10-10T01:03:00Z',
+          },
+          snack: { claimedAt: '2026-10-10T01:04:00Z' },
+        },
+      }),
+    );
+    expect(completedHtml).toContain('Sudah naik');
+    expect(completedHtml).toContain('Snack sudah diserahkan');
+    expect(completedHtml).toContain('08.03 WIB');
+    expect(completedHtml).toContain('08.04 WIB');
+    expect(completedHtml).not.toContain('·');
+  });
+
+  it('renders BoardingForm and SnackForm with crew-step-row separated step pills (zero middle dots) and wires queueAdminToast', () => {
+    const stops = [{ id: 'stop-1', name: 'Bandung', sequence: 1 }];
+
+    const boardingActiveHtml = render(
+      h(BoardingForm, { tripId: 'trip-1', profile: mockPassengerProfile, stops, source: 'MANIFEST' }),
+    );
+    expect(boardingActiveHtml).toContain('class="crew-step-row"');
+    expect(boardingActiveHtml).toContain('<span class="crew-step-chip">Langkah 1</span>');
+    expect(boardingActiveHtml).toContain('<span class="crew-status-pill is-warn">Wajib terlebih dahulu</span>');
+    expect(boardingActiveHtml).toContain('Tandai sudah naik');
+    expect(boardingActiveHtml).not.toContain('·');
+
+    const boardedProfile: PassengerProfileType = {
+      ...mockPassengerProfile,
+      boarding: {
+        id: 'b-1',
+        ticketId: 'ticket-1',
+        tripId: 'trip-1',
+        stopId: 'stop-1',
+        actorId: 'actor-1',
+        source: 'MANIFEST',
+        boardedAt: '2026-10-10T01:03:00Z',
+      },
+    };
+    const boardingDoneHtml = render(
+      h(BoardingForm, { tripId: 'trip-1', profile: boardedProfile, stops, source: 'MANIFEST' }),
+    );
+    expect(boardingDoneHtml).toContain('class="crew-step-row"');
+    expect(boardingDoneHtml).toContain('<span class="crew-step-chip">Langkah 1</span>');
+    expect(boardingDoneHtml).toContain('<span class="crew-status-pill is-ok">Konfirmasi boarding</span>');
+    expect(boardingDoneHtml).toContain('Sudah naik');
+    expect(boardingDoneHtml).not.toContain('<button');
+    expect(boardingDoneHtml).not.toContain('·');
+
+    const snackPendingHtml = render(h(SnackForm, { tripId: 'trip-1', profile: mockPassengerProfile }));
+    expect(snackPendingHtml).toContain('class="crew-step-row"');
+    expect(snackPendingHtml).toContain('<span class="crew-step-chip">Langkah 2</span>');
+    expect(snackPendingHtml).toContain('<span class="crew-status-pill is-neutral">Setelah penumpang naik</span>');
+    expect(snackPendingHtml).toContain('Catat boarding dahulu sebelum menyerahkan snack.');
+    expect(snackPendingHtml).toContain('disabled');
+    expect(snackPendingHtml).not.toContain('·');
+
+    const snackDoneHtml = render(
+      h(SnackForm, {
+        tripId: 'trip-1',
+        profile: { ...boardedProfile, snack: { claimedAt: '2026-10-10T01:04:00Z' } },
+      }),
+    );
+    expect(snackDoneHtml).toContain('class="crew-step-row"');
+    expect(snackDoneHtml).toContain('<span class="crew-step-chip">Langkah 2</span>');
+    expect(snackDoneHtml).toContain('<span class="crew-status-pill is-ok">Layanan snack</span>');
+    expect(snackDoneHtml).toContain('Snack sudah diserahkan');
+    expect(snackDoneHtml).not.toContain('<button');
+    expect(snackDoneHtml).not.toContain('·');
+
+    const boardingSource = readFileSync('app/crew/components/boarding-form.tsx', 'utf8');
+    const snackSource = readFileSync('app/crew/components/snack-form.tsx', 'utf8');
+    expect(boardingSource).toContain('queueAdminToast');
+    expect(snackSource).toContain('queueAdminToast');
+  });
+
+  it('renders /crew/trips/[tripId]/scan and TicketScanner with Admin PO crew-panel-head, live camera status pill, and removes legacy eyebrow rules from crew.css', async () => {
+    const { default: ScanPage } = await import('@/app/crew/trips/[tripId]/scan/page');
+    const pageHtml = render(await ScanPage({ params: Promise.resolve({ tripId: 'trip-1' }) }));
+    expect(pageHtml).toContain('class="crew-dash-root"');
+    expect(pageHtml).toContain('class="crew-panel crew-table-card"');
+    expect(pageHtml).not.toContain('crew-eyebrow');
+    expect(pageHtml).not.toContain('·');
+
+    const scannerHtml = render(h(TicketScanner, { tripId: 'trip-1', stops: [] }));
+    expect(scannerHtml).toContain('class="crew-panel-head"');
+    expect(scannerHtml).toContain('<h2>Pemindai QR tiket</h2>');
+    expect(scannerHtml).toContain('class="crew-status-pill is-neutral"');
+    expect(scannerHtml).toContain('Siap memindai');
+    expect(scannerHtml).toContain('aria-label="Pratinjau kamera scanner"');
+    expect(scannerHtml).toContain('Kamera belum dinyalakan.');
+    expect(scannerHtml).toContain('href="/crew/trips/trip-1/manifest"');
+    expect(scannerHtml).toContain('Cari di manifest →');
+    expect(scannerHtml).not.toContain('·');
+
+    const crewCss = readFileSync('app/crew/crew.css', 'utf8');
+    expect(crewCss).not.toContain('.crew-eyebrow');
+    expect(crewCss).not.toContain('.crew-home-head');
   });
 });
 

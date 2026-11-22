@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { IconCheck } from './crew-icons';
 import type { BoardingRecord, ManifestView, PassengerProfile } from '@/modules/boarding/types';
 import { createSubmissionGate } from '@/modules/boarding/ui-state';
+import { queueAdminToast } from '@/app/admin/admin-toast';
 import { boardPassengerAction } from '../boarding-actions';
 import { wibTime } from './passenger-profile';
 
@@ -41,18 +42,33 @@ export default function BoardingForm({
         });
         if (!result.ok) {
           setMessage(result.message);
+          queueAdminToast({
+            title: 'Gagal mencatat boarding',
+            message: result.message,
+            tone: 'error',
+          });
           return;
         }
         setRecord(result.result.boarding);
         onBoarded?.(result.result.boarding);
-        setMessage(
-          result.result.alreadyBoarded
-            ? 'Boarding sudah tercatat sebelumnya.'
-            : 'Boarding berhasil dicatat.',
-        );
+        const successText = result.result.alreadyBoarded
+          ? 'Boarding sudah tercatat sebelumnya.'
+          : 'Boarding berhasil dicatat.';
+        setMessage(successText);
+        queueAdminToast({
+          title: result.result.alreadyBoarded ? 'Boarding sudah tercatat' : 'Boarding berhasil dicatat',
+          message: `${profile.name} (Kursi ${profile.seatCode}) telah tercatat naik.`,
+          tone: 'ok',
+        });
         router.refresh();
       } catch {
-        setMessage('Koneksi terputus. Coba lagi untuk memeriksa catatan yang sama.');
+        const errorText = 'Koneksi terputus. Coba lagi untuk memeriksa catatan yang sama.';
+        setMessage(errorText);
+        queueAdminToast({
+          title: 'Koneksi terputus',
+          message: errorText,
+          tone: 'error',
+        });
       } finally {
         setPending(false);
       }
@@ -62,7 +78,10 @@ export default function BoardingForm({
   if (record) {
     return (
       <div className="boarding-result crew-state-success" role="status">
-        <span className="crew-step-chip">Langkah 1 · Konfirmasi boarding</span>
+        <div className="crew-step-row">
+          <span className="crew-step-chip">Langkah 1</span>
+          <span className="crew-status-pill is-ok">Konfirmasi boarding</span>
+        </div>
         <strong className="crew-result-title">
           <IconCheck size={18} />
           <span>Sudah naik</span>
@@ -74,7 +93,10 @@ export default function BoardingForm({
 
   return (
     <form className="boarding-form crew-operation" onSubmit={submit} aria-busy={pending}>
-      <span className="crew-step-chip">Langkah 1 · Wajib terlebih dahulu</span>
+      <div className="crew-step-row">
+        <span className="crew-step-chip">Langkah 1</span>
+        <span className="crew-status-pill is-warn">Wajib terlebih dahulu</span>
+      </div>
       <h3>Konfirmasi boarding</h3>
       <label htmlFor={selectId}>Stop boarding</label>
       <select

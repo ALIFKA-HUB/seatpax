@@ -1225,7 +1225,7 @@ html[data-mode='dark'] .crew-shell :is(.crew-role, .crew-count-pill, .crew-time-
   color: var(--ops-accent-hover);
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-trip-card, .crew-trip-route, .crew-manifest-name, .manifest-name, .manifest-seat strong, .manifest-counters dd, .crew-details summary, .boarding-profile .crew-profile-facts dd, .crew-stop-body) {
+html[data-mode='dark'] .crew-shell :is(.crew-trip-card, .crew-trip-route, .crew-manifest-name, .manifest-name, .manifest-seat strong, .manifest-counters dd, .crew-details summary, .boarding-profile .crew-profile-facts dd, .crew-profile-fleet, .crew-stop-body) {
   color: var(--ops-ink);
 }
 

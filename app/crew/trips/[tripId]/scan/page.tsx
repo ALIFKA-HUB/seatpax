@@ -15,16 +15,16 @@ export default async function Page({ params }: { params: Promise<{ tripId: strin
   }
 
   return (
-    <>
+    <div className="crew-dash-root">
       <CrewTripTabs
         tripId={tripId}
         tripName={view.tripName}
         subtitle={`Keberangkatan ${wibTime(view.departureAt)}`}
         active="scan"
       />
-      <section className="crew-panel">
+      <section className="crew-panel crew-table-card">
         <TicketScanner tripId={tripId} stops={view.stops} />
       </section>
-    </>
+    </div>
   );
 }

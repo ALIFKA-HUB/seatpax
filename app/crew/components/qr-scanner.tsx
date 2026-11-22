@@ -74,83 +74,106 @@ export default function TicketScanner({ tripId, stops }: { tripId: string; stops
   }
 
   return (
-    <div className="crew-stack">
-      <div className="crew-callout">
-        <IconInfo size={18} />
-        <p>
-          Scan hanya membuka profil penumpang. Boarding dan penyerahan snack tetap perlu Anda konfirmasi secara eksplisit.
-        </p>
-      </div>
-
-      <div className="crew-camera-frame">
-        <video
-          ref={video}
-          className="boarding-camera"
-          muted
-          playsInline
-          aria-label="Pratinjau kamera scanner"
-        />
-      </div>
-
-      <p className="crew-camera-state">
-        {starting
-          ? 'Membuka kamera…'
-          : running
-            ? 'Kamera aktif. Arahkan ke QR tiket penumpang.'
-            : profile
-              ? 'Scan selesai. Periksa profil di bawah.'
-              : 'Kamera belum dinyalakan.'}
-      </p>
-
-      <div className="boarding-camera-actions crew-actions crew-scan-actions">
-        <button
-          type="button"
-          className="crew-primary"
-          onClick={() => {
-            void start();
-          }}
-          disabled={starting || running}
+    <div className="crew-scanner-panel">
+      <div className="crew-panel-head">
+        <h2>Pemindai QR tiket</h2>
+        <span
+          className={`crew-status-pill ${
+            running ? 'is-ok' : starting ? 'is-warn' : profile ? 'is-info' : 'is-neutral'
+          }`}
         >
-          <IconCamera size={18} />
-          <span>{starting ? 'Membuka kamera…' : profile ? 'Scan tiket berikutnya' : 'Mulai scan'}</span>
-        </button>
-        <button type="button" onClick={close} disabled={!starting && !running}>
-          <IconStop size={18} />
-          <span>Tutup kamera</span>
-        </button>
-        <Link className="crew-button" href={`/crew/trips/${tripId}/manifest`}>
-          <IconClipboard size={18} />
-          <span>Cari di manifest →</span>
-        </Link>
+          {running
+            ? 'Kamera aktif'
+            : starting
+              ? 'Membuka kamera'
+              : profile
+                ? 'Tiket terbaca'
+                : 'Siap memindai'}
+        </span>
       </div>
 
-      {message && (
-        <p className="crew-message crew-scan-feedback" role="status" aria-live="polite">
-          {message}
-        </p>
-      )}
-
-      {profile && (
-        <div className="crew-stack crew-scan-result">
-          <PassengerProfile profile={profile} />
-          <div className="crew-ops-grid">
-            <BoardingForm
-              key={profile.ticketId}
-              tripId={tripId}
-              profile={profile}
-              stops={stops}
-              source="QR"
-              onBoarded={record => setProfile(current => applyBoardingToCurrentProfile(current, record))}
-            />
-            <SnackForm
-              key={`snack-${profile.ticketId}`}
-              tripId={tripId}
-              profile={profile}
-              onClaimed={claim => setProfile(current => applySnackToCurrentProfile(current, claim))}
-            />
-          </div>
+      <div className="crew-stack crew-scanner-body">
+        <div className="crew-callout">
+          <IconInfo size={18} />
+          <p>
+            Scan hanya membuka profil penumpang. Boarding dan penyerahan snack tetap perlu Anda konfirmasi secara eksplisit.
+          </p>
         </div>
-      )}
+
+        <div className="crew-camera-frame">
+          <video
+            ref={video}
+            className="boarding-camera"
+            muted
+            playsInline
+            aria-label="Pratinjau kamera scanner"
+          />
+        </div>
+
+        <p className="crew-camera-state">
+          {starting
+            ? 'Membuka kamera…'
+            : running
+              ? 'Kamera aktif. Arahkan ke QR tiket penumpang.'
+              : profile
+                ? 'Scan selesai. Periksa profil di bawah.'
+                : 'Kamera belum dinyalakan.'}
+        </p>
+
+        <div className="boarding-camera-actions crew-actions crew-scan-actions">
+          <button
+            type="button"
+            className="crew-primary"
+            onClick={() => {
+              void start();
+            }}
+            disabled={starting || running}
+          >
+            <IconCamera size={18} />
+            <span>{starting ? 'Membuka kamera…' : profile ? 'Scan tiket berikutnya' : 'Mulai scan'}</span>
+          </button>
+          <button type="button" onClick={close} disabled={!starting && !running}>
+            <IconStop size={18} />
+            <span>Tutup kamera</span>
+          </button>
+          <Link className="crew-button" href={`/crew/trips/${tripId}/manifest`}>
+            <IconClipboard size={18} />
+            <span>Cari di manifest →</span>
+          </Link>
+        </div>
+
+        {message && (
+          <p className="crew-message crew-scan-feedback" role="status" aria-live="polite">
+            {message}
+          </p>
+        )}
+
+        {profile && (
+          <div className="crew-stack crew-scan-result">
+            <PassengerProfile profile={profile} />
+            <div className="crew-ops-grid">
+              <section className="crew-panel crew-table-card">
+                <BoardingForm
+                  key={profile.ticketId}
+                  tripId={tripId}
+                  profile={profile}
+                  stops={stops}
+                  source="QR"
+                  onBoarded={record => setProfile(current => applyBoardingToCurrentProfile(current, record))}
+                />
+              </section>
+              <section className="crew-panel crew-table-card">
+                <SnackForm
+                  key={`snack-${profile.ticketId}`}
+                  tripId={tripId}
+                  profile={profile}
+                  onClaimed={claim => setProfile(current => applySnackToCurrentProfile(current, claim))}
+                />
+              </section>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

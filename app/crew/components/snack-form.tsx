@@ -5,6 +5,7 @@ import { IconCheck, IconPackage } from './crew-icons';
 import type { PassengerProfile } from '@/modules/boarding/types';
 import type { SnackClaim } from '@/modules/snack/types';
 import { createSubmissionGate } from '@/modules/boarding/ui-state';
+import { queueAdminToast } from '@/app/admin/admin-toast';
 import { claimSnackAction } from '../snack-actions';
 import { wibTime } from './passenger-profile';
 
@@ -34,13 +35,29 @@ export default function SnackForm({
         const result = await claimSnackAction(tripId, { ticketId: profile.ticketId });
         if (!result.ok) {
           setMessage(result.message);
+          queueAdminToast({
+            title: 'Gagal mencatat snack',
+            message: result.message,
+            tone: 'error',
+          });
           return;
         }
         setRecord({ claimedAt: result.result.claim.claimedAt });
         onClaimed?.(result.result.claim);
+        queueAdminToast({
+          title: 'Snack diserahkan',
+          message: `Penyerahan snack untuk ${profile.name} (Kursi ${profile.seatCode}) telah dicatat.`,
+          tone: 'ok',
+        });
         router.refresh();
       } catch {
-        setMessage('Koneksi terputus. Coba lagi untuk memeriksa catatan yang sama.');
+        const errorText = 'Koneksi terputus. Coba lagi untuk memeriksa catatan yang sama.';
+        setMessage(errorText);
+        queueAdminToast({
+          title: 'Koneksi terputus',
+          message: errorText,
+          tone: 'error',
+        });
       } finally {
         setPending(false);
       }
@@ -50,7 +67,10 @@ export default function SnackForm({
   if (snack) {
     return (
       <div className="boarding-result crew-state-success" role="status">
-        <span className="crew-step-chip">Langkah 2 · Layanan snack</span>
+        <div className="crew-step-row">
+          <span className="crew-step-chip">Langkah 2</span>
+          <span className="crew-status-pill is-ok">Layanan snack</span>
+        </div>
         <strong className="crew-result-title">
           <IconCheck size={18} />
           <span>Snack sudah diserahkan</span>
@@ -62,7 +82,10 @@ export default function SnackForm({
 
   return (
     <form className="boarding-form crew-operation" onSubmit={submit} aria-busy={pending}>
-      <span className="crew-step-chip">Langkah 2 · Setelah penumpang naik</span>
+      <div className="crew-step-row">
+        <span className="crew-step-chip">Langkah 2</span>
+        <span className="crew-status-pill is-neutral">Setelah penumpang naik</span>
+      </div>
       <h3>Handover snack</h3>
       <strong>Snack belum diserahkan</strong>
       {!profile.boarding && (
