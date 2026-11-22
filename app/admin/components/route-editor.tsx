@@ -88,8 +88,18 @@ export default function RouteEditor({
   const [revision, setRevision] = useState(route?.revision ?? 1);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageTone, setMessageTone] = useState<'ok' | 'error'>('ok');
   const [conflict, setConflict] = useState(false);
   const [latest, setLatest] = useState<Extract<ActionResult, { ok: true }> | null>(null);
+  const feedbackRef = useRef<HTMLParagraphElement>(null);
+
+  function showMessage(text: string, tone: 'ok' | 'error') {
+    setMessage(text);
+    setMessageTone(tone);
+    requestAnimationFrame(() =>
+      feedbackRef.current?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' }),
+    );
+  }
 
   const update = (i: number, field: keyof Row, value: string) =>
     setRows(rows.map((r, j) => (j === i ? { ...r, [field]: value } : r)));
@@ -150,6 +160,14 @@ export default function RouteEditor({
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (busy.current) return;
+    const trimmedCode = code.trim();
+    if (trimmedCode && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(trimmedCode)) {
+      showMessage(
+        'Kode rute hanya boleh memakai huruf kecil, angka, dan tanda hubung (contoh: cjr-bdg).',
+        'error',
+      );
+      return;
+    }
     busy.current = true;
     setPending(true);
     setMessage('');
@@ -160,7 +178,7 @@ export default function RouteEditor({
         revision: route ? revision : undefined,
         input: {
           name,
-          code: code.trim() || null,
+          code: trimmedCode || null,
           stops: rows.map(s => ({
             stopId: s.stopId,
             arrivalOffsetMin: s.arrival === '' ? null : Number(s.arrival),
@@ -171,15 +189,18 @@ export default function RouteEditor({
       if (r.ok) {
         setRevision(r.revision ?? revision);
         setConflict(false);
-        setMessage('Rute tersimpan.');
-        if (!route && r.routeId) router.push(`/admin/companies/${companyId}/routes/${r.routeId}`);
-        else router.refresh();
+        showMessage('Rute tersimpan.', 'ok');
+        if (!route && r.routeId) {
+          router.push(`/admin/companies/${companyId}/routes/${r.routeId}?saved=1`);
+        } else {
+          router.refresh();
+        }
       } else {
-        setMessage(r.message);
+        showMessage(r.message, 'error');
         setConflict(r.code === 'conflict');
       }
     } catch {
-      setMessage('Koneksi terputus. Coba lagi.');
+      showMessage('Koneksi terputus. Coba lagi.', 'error');
     } finally {
       busy.current = false;
       setPending(false);
@@ -202,9 +223,9 @@ export default function RouteEditor({
       if (r.ok) {
         setRevision(r.revision ?? revision);
         router.refresh();
-        setMessage('Status rute diperbarui.');
+        showMessage('Status rute diperbarui.', 'ok');
       } else {
-        setMessage(r.message);
+        showMessage(r.message, 'error');
         setConflict(r.code === 'conflict');
       }
     } finally {
@@ -230,11 +251,11 @@ export default function RouteEditor({
         router.push(`/admin/companies/${companyId}/routes?deleted=1`);
         router.refresh();
       } else {
-        setMessage(r.message);
+        showMessage(r.message, 'error');
         setConflict(r.code === 'conflict');
       }
     } catch {
-      setMessage('Koneksi terputus. Coba lagi.');
+      showMessage('Koneksi terputus. Coba lagi.', 'error');
     } finally {
       busy.current = false;
       setPending(false);
@@ -251,6 +272,7 @@ export default function RouteEditor({
               id={prefix + 'name'}
               required
               maxLength={120}
+              placeholder="Contoh: Bandung - Bogor"
               value={name}
               onChange={e => setName(e.target.value)}
             />
@@ -266,6 +288,7 @@ export default function RouteEditor({
               onChange={e => setCode(e.target.value)}
               placeholder="bandung-bogor"
             />
+            <small>Huruf kecil, angka, dan tanda hubung (contoh: cjr-bdg).</small>
           </label>
         </div>
 
@@ -401,9 +424,16 @@ export default function RouteEditor({
           </p>
         )}
       </fieldset>
-      <p className="admin-message" role="status">
-        {message}
-      </p>
+      {message && (
+        <p
+          ref={feedbackRef}
+          className={messageTone === 'error' ? 'admin-flash-error' : 'admin-flash-ok'}
+          role={messageTone === 'error' ? 'alert' : 'status'}
+          aria-live="polite"
+        >
+          {message}
+        </p>
+      )}
       {conflict && (
         <button type="button" disabled={pending} onClick={refresh}>
           Muat versi terbaru (pertahankan isian)

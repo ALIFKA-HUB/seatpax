@@ -55,10 +55,12 @@ export default function AdminSelect({
   const currentValue = isControlled ? value : internalValue;
 
   const [open, setOpen] = useState(false);
+  const [invalid, setInvalid] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const nativeRef = useRef<HTMLSelectElement>(null);
   const listboxId = useId();
+  const errorId = useId();
 
   const selected = options.find(opt => opt.value === currentValue);
   const displayLabel = selected?.label ?? placeholder ?? 'Pilih opsi';
@@ -69,6 +71,7 @@ export default function AdminSelect({
     if (!form || isControlled) return;
     const handleReset = () => {
       setInternalValue(fallbackDefault);
+      setInvalid(false);
     };
     form.addEventListener('reset', handleReset);
     return () => form.removeEventListener('reset', handleReset);
@@ -97,6 +100,7 @@ export default function AdminSelect({
 
   function selectValue(nextValue: string) {
     if (!isControlled) setInternalValue(nextValue);
+    setInvalid(false);
     onChange?.(nextValue);
     setOpen(false);
   }
@@ -107,6 +111,7 @@ export default function AdminSelect({
     const idx = Math.max(0, enabled.findIndex(o => o.value === currentValue));
     const next = enabled[(idx + delta + enabled.length) % enabled.length];
     if (!isControlled) setInternalValue(next.value);
+    setInvalid(false);
     onChange?.(next.value);
   }
 
@@ -119,11 +124,12 @@ export default function AdminSelect({
         ref={triggerRef}
         id={id}
         type="button"
-        className="admin-select-trigger"
+        className={invalid ? 'admin-select-trigger is-invalid' : 'admin-select-trigger'}
         aria-label={ariaLabel}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listboxId}
+        aria-describedby={invalid ? errorId : undefined}
         disabled={disabled}
         onClick={() => setOpen(prev => !prev)}
         onKeyDown={event => {
@@ -155,9 +161,16 @@ export default function AdminSelect({
         required={required}
         disabled={disabled}
         value={currentValue}
+        onInvalid={event => {
+          event.preventDefault();
+          setInvalid(true);
+          triggerRef.current?.focus();
+          triggerRef.current?.scrollIntoView?.({ block: 'center', behavior: 'smooth' });
+        }}
         onChange={event => {
           const next = event.target.value;
           if (!isControlled) setInternalValue(next);
+          setInvalid(false);
           onChange?.(next);
         }}
       >
@@ -200,6 +213,11 @@ export default function AdminSelect({
             );
           })}
         </ul>
+      )}
+      {invalid && (
+        <small id={errorId} className="admin-select-error" role="alert">
+          Wajib dipilih sebelum menyimpan.
+        </small>
       )}
     </div>
   );

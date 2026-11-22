@@ -8,10 +8,13 @@ import QuotePreview from '../../../../components/quote-preview';
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ companyId: string; routeId: string }>;
+  searchParams?: Promise<{ saved?: string }>;
 }) {
   const { companyId, routeId } = await params;
+  const query = searchParams ? await searchParams : undefined;
   const services = await companyData(companyId);
   let detail;
   try {
@@ -38,6 +41,12 @@ export default async function Page({
           </span>
         </div>
       </header>
+
+      {query?.saved === '1' && (
+        <p className="admin-flash-ok" role="status">
+          Rute baru berhasil disimpan. Atur tarif per kelas layanan di bagian bawah jika siap.
+        </p>
+      )}
 
       <section className="dash-card admin-panel-modern">
         <div className="admin-panel-head">
