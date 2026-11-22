@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CheckCircle, MapPin, Path, Plus } from '@phosphor-icons/react/ssr';
 import AdminEmptyState from '@/app/admin/components/admin-empty-state';
+import AdminPaginatedTable from '@/app/admin/components/admin-paginated-table';
 import { companyData } from '../../../data';
 
 export default async function Page({
@@ -79,45 +80,44 @@ export default async function Page({
             description="Buat minimal dua titik naik & turun, lalu susun rute pertama."
           />
         ) : (
-          <div className="admin-table-wrap" role="region" aria-label="Daftar rute" tabIndex={0}>
-            <table className="admin-modern-table">
-              <thead>
-                <tr>
-                  <th>Rute</th>
-                  <th>Kode</th>
-                  <th>Status</th>
-                  <th className="admin-col-action">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.routes.map(r => (
-                  <tr key={r.id} data-row-id={r.id} data-row-name={r.name}>
-                    <td>
-                      <strong>{r.name}</strong>
-                    </td>
-                    <td>
-                      <code>{r.code ?? '—'}</code>
-                    </td>
-                    <td>
-                      <span
-                        className={`admin-status-pill ${r.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
-                      >
-                        {r.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
-                      </span>
-                    </td>
-                    <td className="admin-col-action">
-                      <Link
-                        className="admin-row-link"
-                        href={`/admin/companies/${companyId}/routes/${r.id}`}
-                      >
-                        Buka rute →
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <AdminPaginatedTable
+            ariaLabel="Daftar rute"
+            itemLabel="rute"
+            rowMeta={data.routes.map(r => ({ id: r.id, name: r.name }))}
+            head={
+              <tr>
+                <th>Rute</th>
+                <th>Kode</th>
+                <th>Status</th>
+                <th className="admin-col-action">Aksi</th>
+              </tr>
+            }
+            rows={data.routes.map(r => (
+              <tr key={r.id} data-row-id={r.id} data-row-name={r.name}>
+                <td>
+                  <strong>{r.name}</strong>
+                </td>
+                <td>
+                  <code>{r.code ?? '—'}</code>
+                </td>
+                <td>
+                  <span
+                    className={`admin-status-pill ${r.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
+                  >
+                    {r.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
+                  </span>
+                </td>
+                <td className="admin-col-action">
+                  <Link
+                    className="admin-row-link"
+                    href={`/admin/companies/${companyId}/routes/${r.id}`}
+                  >
+                    Buka rute →
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          />
         )}
       </section>
     </div>

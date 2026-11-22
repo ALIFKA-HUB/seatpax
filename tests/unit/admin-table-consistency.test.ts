@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const ADMIN_TABLE_PAGES = [
+const SERVER_PAGINATED_PAGES = [
   'app/admin/companies/[companyId]/trips/page.tsx',
   'app/admin/companies/[companyId]/routes/page.tsx',
   'app/admin/companies/[companyId]/vehicles/page.tsx',
@@ -9,30 +9,39 @@ const ADMIN_TABLE_PAGES = [
   'app/admin/companies/[companyId]/service-classes/page.tsx',
   'app/admin/companies/[companyId]/payment-conflicts/page.tsx',
   'app/admin/companies/[companyId]/helpdesk-staff/page.tsx',
+];
+
+const ALL_TABLE_VIEWS = [
+  ...SERVER_PAGINATED_PAGES,
   'app/admin/components/stop-directory.tsx',
   'app/helpdesk/components/case-list.tsx',
 ];
 
-describe('Admin PO unified table layout contract', () => {
-  it('uses unified admin-table-card, admin-modern-table, and AdminEmptyState across every Admin PO table view', () => {
-    for (const file of ADMIN_TABLE_PAGES) {
+describe('Admin PO unified table layout and pagination contract', () => {
+  it('uses unified admin-table-card, AdminEmptyState, and shared pagination across every Admin PO table view', () => {
+    for (const file of ALL_TABLE_VIEWS) {
       const source = readFileSync(file, 'utf8');
       expect(source).toContain('admin-table-card');
       expect(source).toContain('admin-panel-head');
-      expect(source).toContain('admin-modern-table');
       expect(source).not.toContain('admin-empty-copy');
-      if (file.endsWith('stop-directory.tsx')) {
+      if (SERVER_PAGINATED_PAGES.includes(file)) {
+        expect(source).toContain('AdminPaginatedTable');
+        expect(source).toContain('AdminEmptyState');
+      } else if (file.endsWith('stop-directory.tsx')) {
+        expect(source).toContain('AdminPaginationBar');
+        expect(source).toContain('AdminEmptyState');
+        expect(source).toContain('admin-modern-table');
         expect(source).not.toContain('stop-panel');
         expect(source).not.toContain('stop-table');
-      }
-      if (!file.endsWith('case-list.tsx')) {
-        expect(source).toContain('AdminEmptyState');
+      } else {
+        expect(source).toContain('AdminPaginationBar');
+        expect(source).toContain('admin-modern-table');
       }
     }
   });
 
   it('keeps Status columns free of technical revision/version suffixes and aligns interactive action columns via admin-col-action', () => {
-    for (const file of ADMIN_TABLE_PAGES) {
+    for (const file of ALL_TABLE_VIEWS) {
       const source = readFileSync(file, 'utf8');
       expect(source).not.toContain('Status / revisi');
       expect(source).not.toContain('Status / versi');

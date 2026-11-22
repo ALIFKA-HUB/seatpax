@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Armchair, CheckCircle, Plus, Stack } from '@phosphor-icons/react/ssr';
 import AdminEmptyState from '@/app/admin/components/admin-empty-state';
+import AdminPaginatedTable from '@/app/admin/components/admin-paginated-table';
 import { sourceStatusPresentation } from '@/app/admin/presentation';
 import { fleetData } from '../../../fleet-data';
 
@@ -76,48 +77,45 @@ export default async function Page({
           </h2>
         </div>
         {list.length ? (
-          <div className="admin-table-wrap" role="region" aria-label="Daftar sumber armada" tabIndex={0}>
-            <table className="admin-modern-table">
-              <thead>
-                <tr>
-                  <th>Nama</th>
-                  <th>Ukuran</th>
-                  <th>Kapasitas</th>
-                  <th>Status</th>
-                  <th className="admin-col-action">Aksi</th>
+          <AdminPaginatedTable
+            ariaLabel="Daftar sumber armada"
+            itemLabel="template"
+            rowMeta={list.map(t => ({ id: t.id, name: t.name }))}
+            head={
+              <tr>
+                <th>Nama</th>
+                <th>Ukuran</th>
+                <th>Kapasitas</th>
+                <th>Status</th>
+                <th className="admin-col-action">Aksi</th>
+              </tr>
+            }
+            rows={list.map(t => {
+              const status = sourceStatusPresentation(t.status);
+              return (
+                <tr key={t.id} data-row-id={t.id} data-row-name={t.name}>
+                  <td>
+                    <strong>{t.name}</strong>
+                  </td>
+                  <td className="admin-tabular">
+                    {t.rows} × {t.cols}
+                  </td>
+                  <td className="admin-tabular">{t.capacity} kursi</td>
+                  <td>
+                    <span className={`admin-status-pill is-${status.tone}`}>{status.label}</span>
+                  </td>
+                  <td className="admin-col-action">
+                    <Link
+                      className="admin-row-link"
+                      href={`/admin/companies/${companyId}/seat-templates/${t.id}`}
+                    >
+                      Buka template →
+                    </Link>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {list.map(t => {
-                  const status = sourceStatusPresentation(t.status);
-                  return (
-                    <tr key={t.id} data-row-id={t.id} data-row-name={t.name}>
-                      <td>
-                        <strong>{t.name}</strong>
-                      </td>
-                      <td className="admin-tabular">
-                        {t.rows} × {t.cols}
-                      </td>
-                      <td className="admin-tabular">{t.capacity} kursi</td>
-                      <td>
-                        <span className={`admin-status-pill is-${status.tone}`}>
-                          {status.label}
-                        </span>
-                      </td>
-                      <td className="admin-col-action">
-                        <Link
-                          className="admin-row-link"
-                          href={`/admin/companies/${companyId}/seat-templates/${t.id}`}
-                        >
-                          Buka template →
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+              );
+            })}
+          />
         ) : (
           <AdminEmptyState
             icon={<Armchair size={24} weight="duotone" />}

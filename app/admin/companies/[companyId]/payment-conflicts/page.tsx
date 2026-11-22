@@ -8,6 +8,7 @@ import {
   WarningCircle,
 } from '@phosphor-icons/react/ssr';
 import AdminEmptyState from '@/app/admin/components/admin-empty-state';
+import AdminPaginatedTable from '@/app/admin/components/admin-paginated-table';
 import { paymentConflictData } from '@/app/admin/payment-data';
 
 const date = (s: string) =>
@@ -73,53 +74,47 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           </h2>
         </div>
         {conflicts.length ? (
-          <div
-            className="admin-table-wrap"
-            role="region"
-            aria-label="Daftar pemeriksaan pembayaran"
-            tabIndex={0}
-          >
-            <table className="admin-modern-table">
-              <thead>
-                <tr>
-                  <th>Booking</th>
-                  <th>Penumpang</th>
-                  <th>Perjalanan</th>
-                  <th>Jumlah</th>
-                  <th>Dibuat</th>
-                  <th className="admin-col-action">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {conflicts.map(b => (
-                  <tr key={b.id}>
-                    <td>
-                      <code>{b.id.slice(0, 8).toUpperCase()}</code>
-                    </td>
-                    <td>
-                      <strong>{b.passengerName}</strong>
-                    </td>
-                    <td>
-                      {b.fromName} → {b.toName}
-                      <small>{date(b.departureAt)}</small>
-                    </td>
-                    <td className="admin-tabular">
-                      Rp {BigInt(b.amount).toLocaleString('id-ID')}
-                    </td>
-                    <td className="admin-tabular">{date(b.createdAt)}</td>
-                    <td className="admin-col-action">
-                      <Link
-                        className="admin-row-link"
-                        href={`/admin/companies/${companyId}/payment-conflicts/${b.id}`}
-                      >
-                        Tinjau →
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <AdminPaginatedTable
+            ariaLabel="Daftar pemeriksaan pembayaran"
+            itemLabel="konflik"
+            rowMeta={conflicts.map(b => ({ id: b.id, name: b.passengerName }))}
+            head={
+              <tr>
+                <th>Booking</th>
+                <th>Penumpang</th>
+                <th>Perjalanan</th>
+                <th>Jumlah</th>
+                <th>Dibuat</th>
+                <th className="admin-col-action">Aksi</th>
+              </tr>
+            }
+            rows={conflicts.map(b => (
+              <tr key={b.id} data-row-id={b.id} data-row-name={b.passengerName}>
+                <td>
+                  <code>{b.id.slice(0, 8).toUpperCase()}</code>
+                </td>
+                <td>
+                  <strong>{b.passengerName}</strong>
+                </td>
+                <td>
+                  {b.fromName} → {b.toName}
+                  <small>{date(b.departureAt)}</small>
+                </td>
+                <td className="admin-tabular">
+                  Rp {BigInt(b.amount).toLocaleString('id-ID')}
+                </td>
+                <td className="admin-tabular">{date(b.createdAt)}</td>
+                <td className="admin-col-action">
+                  <Link
+                    className="admin-row-link"
+                    href={`/admin/companies/${companyId}/payment-conflicts/${b.id}`}
+                  >
+                    Tinjau →
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          />
         ) : (
           <AdminEmptyState
             icon={<CheckCircle size={24} weight="duotone" />}
@@ -145,37 +140,30 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           </span>
         </div>
         {reviews.length ? (
-          <div
-            className="admin-table-wrap"
-            role="region"
-            aria-label="Daftar pemeriksaan pembayaran"
-            tabIndex={0}
-          >
-            <table className="admin-modern-table">
-              <thead>
-                <tr>
-                  <th>Booking</th>
-                  <th>Order Midtrans</th>
-                  <th>Status pemeriksaan</th>
-                  <th>Diterima</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reviews.map(item => (
-                  <tr key={item.bookingId + item.receivedAt}>
-                    <td>
-                      <code>{item.bookingId.slice(0, 8).toUpperCase()}</code>
-                    </td>
-                    <td>
-                      <code>{item.orderId}</code>
-                    </td>
-                    <td>{item.reason}</td>
-                    <td className="admin-tabular">{date(item.receivedAt)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <AdminPaginatedTable
+            ariaLabel="Daftar pemeriksaan pembayaran"
+            itemLabel="antrean"
+            head={
+              <tr>
+                <th>Booking</th>
+                <th>Order Midtrans</th>
+                <th>Status pemeriksaan</th>
+                <th>Diterima</th>
+              </tr>
+            }
+            rows={reviews.map(item => (
+              <tr key={item.bookingId + item.receivedAt}>
+                <td>
+                  <code>{item.bookingId.slice(0, 8).toUpperCase()}</code>
+                </td>
+                <td>
+                  <code>{item.orderId}</code>
+                </td>
+                <td>{item.reason}</td>
+                <td className="admin-tabular">{date(item.receivedAt)}</td>
+              </tr>
+            ))}
+          />
         ) : (
           <AdminEmptyState
             icon={<ShieldCheck size={24} weight="duotone" />}

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Users } from '@phosphor-icons/react/ssr';
 import AdminBackLink from '@/app/admin/components/admin-back-link';
 import AdminEmptyState from '@/app/admin/components/admin-empty-state';
+import AdminPaginatedTable from '@/app/admin/components/admin-paginated-table';
 import { helpdeskConfig } from '@/lib/env/helpdesk';
 import { requireAccess } from '@/modules/access/server';
 import { withAdminTransaction } from '@/modules/access/transaction';
@@ -63,32 +64,31 @@ export default async function StaffPage({ params }: { params: Promise<{ companyI
           </h2>
         </div>
         {staff.length ? (
-          <div className="admin-table-wrap" role="region" aria-label="Daftar petugas Helpdesk" tabIndex={0}>
-            <table className="admin-modern-table hd-staff-table">
-              <thead>
-                <tr>
-                  <th>Email petugas</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {staff.map(s => (
-                  <tr key={String(s.email)} data-row-name={String(s.email)}>
-                    <td>
-                      <strong>{String(s.email)}</strong>
-                    </td>
-                    <td>
-                      <span
-                        className={`admin-status-pill ${s.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
-                      >
-                        {s.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <AdminPaginatedTable
+            ariaLabel="Daftar petugas Helpdesk"
+            itemLabel="petugas"
+            rowMeta={staff.map(s => ({ name: String(s.email) }))}
+            head={
+              <tr>
+                <th>Email petugas</th>
+                <th>Status</th>
+              </tr>
+            }
+            rows={staff.map(s => (
+              <tr key={String(s.email)} data-row-name={String(s.email)}>
+                <td>
+                  <strong>{String(s.email)}</strong>
+                </td>
+                <td>
+                  <span
+                    className={`admin-status-pill ${s.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
+                  >
+                    {s.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          />
         ) : (
           <AdminEmptyState
             icon={<Users size={24} weight="duotone" />}

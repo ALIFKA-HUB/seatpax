@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CheckCircle, MinusCircle, Plus, Stack } from '@phosphor-icons/react/ssr';
 import AdminEmptyState from '@/app/admin/components/admin-empty-state';
+import AdminPaginatedTable from '@/app/admin/components/admin-paginated-table';
 import { companyData } from '../../../data';
 
 export default async function Page({
@@ -77,50 +78,44 @@ export default async function Page({
           </h2>
         </div>
         {data.classes.length ? (
-          <div
-            className="admin-table-wrap"
-            role="region"
-            aria-label="Daftar kelas layanan"
-            tabIndex={0}
-          >
-            <table className="admin-modern-table">
-              <thead>
-                <tr>
-                  <th>Nama kelas</th>
-                  <th>Kode</th>
-                  <th>Status</th>
-                  <th className="admin-col-action">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.classes.map(c => (
-                  <tr key={c.id} data-row-id={c.id} data-row-name={c.name}>
-                    <td>
-                      <strong>{c.name}</strong>
-                    </td>
-                    <td>
-                      <code>{c.code ?? '—'}</code>
-                    </td>
-                    <td>
-                      <span
-                        className={`admin-status-pill ${c.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
-                      >
-                        {c.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
-                      </span>
-                    </td>
-                    <td className="admin-col-action">
-                      <Link
-                        className="admin-row-link"
-                        href={`/admin/companies/${companyId}/service-classes/${c.id}`}
-                      >
-                        Kelola kelas →
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <AdminPaginatedTable
+            ariaLabel="Daftar kelas layanan"
+            itemLabel="kelas"
+            rowMeta={data.classes.map(c => ({ id: c.id, name: c.name }))}
+            head={
+              <tr>
+                <th>Nama kelas</th>
+                <th>Kode</th>
+                <th>Status</th>
+                <th className="admin-col-action">Aksi</th>
+              </tr>
+            }
+            rows={data.classes.map(c => (
+              <tr key={c.id} data-row-id={c.id} data-row-name={c.name}>
+                <td>
+                  <strong>{c.name}</strong>
+                </td>
+                <td>
+                  <code>{c.code ?? '—'}</code>
+                </td>
+                <td>
+                  <span
+                    className={`admin-status-pill ${c.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
+                  >
+                    {c.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
+                  </span>
+                </td>
+                <td className="admin-col-action">
+                  <Link
+                    className="admin-row-link"
+                    href={`/admin/companies/${companyId}/service-classes/${c.id}`}
+                  >
+                    Kelola kelas →
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          />
         ) : (
           <AdminEmptyState
             icon={<Stack size={24} weight="duotone" />}

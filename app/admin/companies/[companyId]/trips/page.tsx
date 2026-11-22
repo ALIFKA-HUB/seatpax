@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CalendarBlank, Clock, Plus, Ticket } from '@phosphor-icons/react/ssr';
 import AdminEmptyState from '@/app/admin/components/admin-empty-state';
+import AdminPaginatedTable from '@/app/admin/components/admin-paginated-table';
 import { tripStatusPresentation } from '@/app/admin/presentation';
 import { tripData } from '@/app/admin/trip-data';
 
@@ -84,55 +85,52 @@ export default async function Page({
           </h2>
         </div>
         {list.length ? (
-          <div className="admin-table-wrap" role="region" aria-label="Daftar perjalanan" tabIndex={0}>
-            <table className="admin-modern-table">
-              <thead>
-                <tr>
-                  <th>Perjalanan</th>
-                  <th>Berangkat (WIB)</th>
-                  <th>Status</th>
-                  <th className="admin-col-action">Aksi</th>
+          <AdminPaginatedTable
+            ariaLabel="Daftar perjalanan"
+            itemLabel="perjalanan"
+            rowMeta={list.map(t => ({ id: t.id, name: t.name }))}
+            head={
+              <tr>
+                <th>Perjalanan</th>
+                <th>Berangkat (WIB)</th>
+                <th>Status</th>
+                <th className="admin-col-action">Aksi</th>
+              </tr>
+            }
+            rows={list.map(t => {
+              const status = tripStatusPresentation(t.status);
+              return (
+                <tr key={t.id} data-row-id={t.id} data-row-name={t.name}>
+                  <td>
+                    <strong>{t.name}</strong>
+                    <small>
+                      {t.identity?.routeName}
+                      {t.identity ? ' · ' + t.identity.vehicleName : ''}
+                      {t.identity ? ' · ' + t.identity.className : ''}
+                    </small>
+                  </td>
+                  <td className="admin-tabular">
+                    {new Intl.DateTimeFormat('id-ID', {
+                      timeZone: 'Asia/Jakarta',
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    }).format(new Date(t.departureAt))}
+                  </td>
+                  <td>
+                    <span className={`admin-status-pill is-${status.tone}`}>{status.label}</span>
+                  </td>
+                  <td className="admin-col-action">
+                    <Link
+                      className="admin-row-link"
+                      href={`/admin/companies/${companyId}/trips/${t.id}`}
+                    >
+                      Buka perjalanan →
+                    </Link>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {list.map(t => {
-                  const status = tripStatusPresentation(t.status);
-                  return (
-                    <tr key={t.id} data-row-id={t.id} data-row-name={t.name}>
-                      <td>
-                        <strong>{t.name}</strong>
-                        <small>
-                          {t.identity?.routeName}
-                          {t.identity ? ' · ' + t.identity.vehicleName : ''}
-                          {t.identity ? ' · ' + t.identity.className : ''}
-                        </small>
-                      </td>
-                      <td className="admin-tabular">
-                        {new Intl.DateTimeFormat('id-ID', {
-                          timeZone: 'Asia/Jakarta',
-                          dateStyle: 'medium',
-                          timeStyle: 'short',
-                        }).format(new Date(t.departureAt))}
-                      </td>
-                      <td>
-                        <span className={`admin-status-pill is-${status.tone}`}>
-                          {status.label}
-                        </span>
-                      </td>
-                      <td className="admin-col-action">
-                        <Link
-                          className="admin-row-link"
-                          href={`/admin/companies/${companyId}/trips/${t.id}`}
-                        >
-                          Buka perjalanan →
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+              );
+            })}
+          />
         ) : (
           <AdminEmptyState
             icon={<CalendarBlank size={24} weight="duotone" />}

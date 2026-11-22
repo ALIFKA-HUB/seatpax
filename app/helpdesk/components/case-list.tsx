@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { MagnifyingGlass, ChatCircleText } from '@phosphor-icons/react/ssr';
 import AdminSelect from '@/app/admin/components/admin-select';
+import AdminPaginationBar from '@/app/admin/components/admin-pagination-bar';
 import {
   categoryLabels,
   statusLabels,
@@ -210,17 +211,22 @@ export default function CaseList({
           </div>
         )}
 
-        <div className="hd-table-footer" role="status">
-          <span>
-            Menampilkan {data.rows.length} laporan · {data.count} belum selesai
-          </span>
-          {(page > 1 || (data.hasMore && page < 10000)) && (
-            <nav className="hd-pagination" aria-label="Halaman laporan">
-              {page > 1 && <Link href={pageHref(page - 1)}>Sebelumnya</Link>}
-              {data.hasMore && page < 10000 && <Link href={pageHref(page + 1)}>Berikutnya</Link>}
-            </nav>
-          )}
-        </div>
+        {data.rows.length > 0 || page > 1 ? (
+          <AdminPaginationBar
+            mode="link"
+            ariaLabel="Halaman laporan"
+            summary={`Menampilkan ${data.rows.length} laporan · ${data.count} belum selesai`}
+            currentPage={page}
+            hasNext={data.hasMore && page < 10000}
+            pageHref={pageHref}
+          />
+        ) : (
+          <div className="admin-table-footer" role="status">
+            <span className="admin-table-summary">
+              Menampilkan 0 laporan · {data.count} belum selesai
+            </span>
+          </div>
+        )}
       </section>
     );
   }
