@@ -241,13 +241,13 @@ html[data-mode='dark'] .admin-shell :is(input:focus-visible, select:focus-visibl
   box-shadow: 0 0 0 3px rgb(95 160 255 / 0.22);
 }
 
-html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.trip-preset-btn.is-active):not(.trip-mode-btn.is-active) {
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.hd-preview-btn):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.trip-preset-btn.is-active):not(.trip-mode-btn.is-active) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule-strong);
   color: var(--ops-ink);
 }
 
-html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):hover:not(:disabled) {
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.hd-preview-btn):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):hover:not(:disabled) {
   background: var(--ops-paper-4);
   border-color: var(--ops-accent);
   color: var(--ops-accent-hover);
@@ -800,7 +800,12 @@ html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-form label {
   color: var(--ops-ink);
 }
 
-html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-staff-table th,
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-staff-table th {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-muted);
+}
+
 html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-staff-table td {
   border-color: var(--ops-rule);
 }

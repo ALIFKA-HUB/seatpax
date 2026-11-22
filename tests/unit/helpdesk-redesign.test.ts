@@ -93,4 +93,33 @@ describe('Helpdesk Admin-PO unified shell', () => {
     expect(detailTopbar).toContain('Tutup navigasi');
     expect(detailTopbar).toContain('Pengaduan menunggu (2 belum selesai)');
   });
+
+  it('mounts mobile drawer immediately after HelpdeskTopbar before main and preserves table header & preview button contrast rules', () => {
+    const html = render(
+      h(HelpdeskShell, {
+        pendingCount: 3,
+        defaultMenuOpen: true,
+        children: h('div', null, 'Isi workspace'),
+      }),
+    );
+    const topbarIndex = html.indexOf('hd-topbar');
+    const drawerIndex = html.indexOf('id="hd-mobile-navigation"');
+    const mainIndex = html.indexOf('id="hd-main"');
+    expect(topbarIndex).toBeGreaterThan(-1);
+    expect(drawerIndex).toBeGreaterThan(topbarIndex);
+    expect(mainIndex).toBeGreaterThan(drawerIndex);
+    expect(html).toContain('Mode gelap');
+
+    const helpdeskCss = readFileSync('app/helpdesk/helpdesk.css', 'utf8');
+    expect(helpdeskCss).toContain(
+      ':where(.admin-shell.hd-workspace) .hd-main .hd-staff-table th{background:transparent;color:var(--admin-muted)}',
+    );
+
+    const opsDarkCss = readFileSync('app/styles/ops-dark.css', 'utf8');
+    expect(opsDarkCss).toContain(':not(.hd-preview-btn)');
+    expect(opsDarkCss).toContain(
+      "html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-staff-table th",
+    );
+    expect(opsDarkCss).toContain('background: var(--ops-paper-3);');
+  });
 });

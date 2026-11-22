@@ -21,11 +21,13 @@ const jakarta = Plus_Jakarta_Sans({
 export default function HelpdeskShell({
   children,
   pendingCount,
+  defaultMenuOpen = false,
 }: {
   children: React.ReactNode;
   pendingCount?: number;
+  defaultMenuOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultMenuOpen);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -90,16 +92,6 @@ export default function HelpdeskShell({
         </div>
       </aside>
 
-      {open && (
-        <div className="hd-mobile-drawer" id="hd-mobile-navigation">
-          <HelpdeskNavigation pendingCount={pendingCount} onNavigate={closeMenu} />
-          <div className="hd-mobile-theme-row">
-            <ThemeToggle showLabel fullLabel className="hd-footer-link" />
-          </div>
-          {footerActions}
-        </div>
-      )}
-
       <div className="admin-workspace">
         <HelpdeskTopbar
           pendingCount={pendingCount}
@@ -107,6 +99,15 @@ export default function HelpdeskShell({
           onToggleMenu={() => setOpen(prev => !prev)}
           toggleRef={toggleRef}
         />
+        {open && (
+          <div className="hd-mobile-drawer" id="hd-mobile-navigation">
+            <HelpdeskNavigation pendingCount={pendingCount} onNavigate={closeMenu} />
+            <div className="hd-mobile-theme-row">
+              <ThemeToggle showLabel fullLabel className="hd-footer-link" />
+            </div>
+            {footerActions}
+          </div>
+        )}
         <main className="admin-main hd-main" id="hd-main" tabIndex={-1}>
           {children}
         </main>
