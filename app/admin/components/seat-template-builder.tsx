@@ -8,6 +8,7 @@ import { runFleetAction } from '../fleet-actions';
 import SeatGrid from './seat-grid';
 import { sourceStatusPresentation } from '../presentation';
 import ConflictPanel from './conflict-panel';
+import AdminSelect from './admin-select';
 
 const CELL_LABELS: Record<CellType, string> = {
   SEAT: 'Kursi',
@@ -342,13 +343,11 @@ export default function SeatTemplateBuilder({
             <div className="fleet-inspector-fields">
               <label>
                 Jenis sel
-                <select value={cell.type} onChange={e => updateCell(e.target.value as CellType)}>
-                  {cellTypes.map(type => (
-                    <option key={type} value={type}>
-                      {CELL_LABELS[type]}
-                    </option>
-                  ))}
-                </select>
+                <AdminSelect
+                  value={cell.type}
+                  onChange={next => updateCell(next as CellType)}
+                  options={cellTypes.map(type => ({ value: type, label: CELL_LABELS[type] }))}
+                />
               </label>
 
               {cell.type === 'SEAT' && (

@@ -13,6 +13,7 @@ import {
 import type { MasterRow } from '@/modules/route/repository';
 import type { RegionOptions } from '@/modules/regions/types';
 import MasterForm from './master-form';
+import AdminSelect from './admin-select';
 
 export default function StopDirectory({
   companyId,
@@ -123,15 +124,16 @@ export default function StopDirectory({
           </label>
           <label className="stop-status" htmlFor={prefix + 'status'}>
             Status
-            <select
+            <AdminSelect
               id={prefix + 'status'}
               value={status}
-              onChange={event => setStatus(event.target.value)}
-            >
-              <option value="ALL">Semua status</option>
-              <option value="ACTIVE">Aktif</option>
-              <option value="INACTIVE">Nonaktif</option>
-            </select>
+              onChange={setStatus}
+              options={[
+                { value: 'ALL', label: 'Semua status' },
+                { value: 'ACTIVE', label: 'Aktif' },
+                { value: 'INACTIVE', label: 'Nonaktif' },
+              ]}
+            />
           </label>
         </div>
 

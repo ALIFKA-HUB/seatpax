@@ -16,6 +16,7 @@ import {
   saveTripAction,
 } from '../trip-actions';
 import TripDetail from './trip-detail';
+import AdminSelect from './admin-select';
 
 type Choices = {
   routes: { id: string; name: string; status: string }[];
@@ -253,15 +254,13 @@ export default function TripForm({
     }
   }
 
-  const options = (items: { id: string; name: string; status: string }[], current: string) =>
+  const selectOptions = (items: { id: string; name: string; status: string }[], current: string) =>
     items
       .filter(i => i.status === 'ACTIVE' || i.id === current)
-      .map(i => (
-        <option key={i.id} value={i.id}>
-          {i.name}
-          {i.status !== 'ACTIVE' ? ' · Nonaktif' : ''}
-        </option>
-      ));
+      .map(i => ({
+        value: i.id,
+        label: i.name + (i.status !== 'ACTIVE' ? ' · Nonaktif' : ''),
+      }));
 
   return (
     <>
@@ -310,36 +309,33 @@ export default function TripForm({
             </label>
             <label>
               Rute
-              <select
+              <AdminSelect
                 required
+                placeholder="Pilih rute"
                 value={draft.routeId}
-                onChange={e => change('routeId', e.target.value)}
-              >
-                <option value="">Pilih rute</option>
-                {options(choices.routes, draft.routeId)}
-              </select>
+                onChange={next => change('routeId', next)}
+                options={selectOptions(choices.routes, draft.routeId)}
+              />
             </label>
             <label>
               Armada
-              <select
+              <AdminSelect
                 required
+                placeholder="Pilih armada"
                 value={draft.vehicleId}
-                onChange={e => selectVehicle(e.target.value)}
-              >
-                <option value="">Pilih armada</option>
-                {options(choices.vehicles, draft.vehicleId)}
-              </select>
+                onChange={selectVehicle}
+                options={selectOptions(choices.vehicles, draft.vehicleId)}
+              />
             </label>
             <label>
               Kelas layanan
-              <select
+              <AdminSelect
                 required
+                placeholder="Pilih kelas"
                 value={draft.serviceClassId}
-                onChange={e => change('serviceClassId', e.target.value)}
-              >
-                <option value="">Pilih kelas</option>
-                {options(choices.classes, draft.serviceClassId)}
-              </select>
+                onChange={next => change('serviceClassId', next)}
+                options={selectOptions(choices.classes, draft.serviceClassId)}
+              />
               <small>Kelas bisa berbeda dari default armada; tarif mengikuti pilihan ini.</small>
             </label>
 
