@@ -228,7 +228,7 @@ export default function CaseList({
         <AdminPaginationBar
           mode="link"
           ariaLabel="Halaman laporan"
-          summary={`Menampilkan ${data.rows.length} laporan · ${data.count} belum selesai`}
+          summary={`Menampilkan ${data.rows.length} laporan (${data.count} belum selesai)`}
           currentPage={page}
           hasNext={data.hasMore && page < 10000}
           pageHref={pageHref}
@@ -236,7 +236,7 @@ export default function CaseList({
       ) : (
         <div className="admin-table-footer" role="status">
           <span className="admin-table-summary">
-            Menampilkan 0 laporan · {data.count} belum selesai
+            Menampilkan 0 laporan ({data.count} belum selesai)
           </span>
         </div>
       )}

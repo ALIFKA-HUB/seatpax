@@ -419,11 +419,11 @@ describe('Helpdesk /helpdesk/pengaduan unified CaseList redesign', () => {
     ]) {
       expect(html).toContain(token);
     }
+    expect(html).toContain('Menampilkan 2 laporan (5 belum selesai)');
     expect(html).not.toContain('hd-kicker');
     expect(html).not.toContain('hd-list-controls');
     expect(html).not.toContain('hd-staff-table');
-    expect(html).not.toContain('SPX-ADU-9901 ·');
-    expect(html).not.toContain('SPX-ADU-9902 ·');
+    expect(html).not.toContain(' · ');
   });
 
   it('renders AdminEmptyState on /helpdesk/pengaduan when no rows match and renders Admin PO alert card on failure', async () => {
@@ -446,7 +446,9 @@ describe('Helpdesk /helpdesk/pengaduan unified CaseList redesign', () => {
     );
     expect(emptyHtml).toContain('admin-empty-state');
     expect(emptyHtml).toContain('Belum ada laporan yang sesuai');
+    expect(emptyHtml).toContain('Menampilkan 0 laporan (0 belum selesai)');
     expect(emptyHtml).not.toContain('admin-modern-table');
+    expect(emptyHtml).not.toContain(' · ');
 
     mockHelpdeskContext.mockRejectedValueOnce(new Error('sensitive pg detail'));
     const errorHtml = render(
@@ -484,7 +486,9 @@ describe('Helpdesk /helpdesk/pengaduan unified CaseList redesign', () => {
     expect(standaloneHtml).toContain('hd-code-pill');
     expect(standaloneHtml).toContain('SPX-ADU-1001');
     expect(standaloneHtml).toContain('hd-case-meta');
+    expect(standaloneHtml).toContain('Menampilkan 1 laporan (1 belum selesai)');
     expect(standaloneHtml).not.toContain('hd-list-controls');
+    expect(standaloneHtml).not.toContain(' · ');
 
     const helpdeskCss = readFileSync('app/helpdesk/helpdesk.css', 'utf8');
     expect(helpdeskCss).toContain('.admin-shell .hd-case-meta');
