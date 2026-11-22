@@ -263,9 +263,7 @@ export default function SeatTemplateBuilder({
             <div className="fleet-meta-strip">
               <span className="fleet-meta-chip">{totalSeats} kursi</span>
               <span className="fleet-meta-chip">{statusLabel}</span>
-              <span className="fleet-meta-chip">
-                {draft.version ? `Versi ${draft.version}` : 'Draft baru'}
-              </span>
+              {!draft.version && <span className="fleet-meta-chip">Draft baru</span>}
               {draft.id && typeof draft.vehicleCount === 'number' && draft.vehicleCount > 0 && (
                 <span className="fleet-meta-note">
                   Terhubung ke {draft.vehicleCount} armada (arsipkan jika tidak lagi dipakai)

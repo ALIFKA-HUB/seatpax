@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CheckCircle, MinusCircle, Plus, Stack } from '@phosphor-icons/react/ssr';
+import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import { companyData } from '../../../data';
 
 export default async function Page({
@@ -69,7 +70,7 @@ export default async function Page({
         </div>
       </div>
 
-      <section className="dash-card admin-panel-modern">
+      <section className="dash-card admin-table-card">
         <div className="admin-panel-head">
           <h2>
             Daftar kelas layanan <span className="admin-count">{data.classes.length}</span>
@@ -88,7 +89,7 @@ export default async function Page({
                   <th>Nama kelas</th>
                   <th>Kode</th>
                   <th>Status</th>
-                  <th>Kelola</th>
+                  <th className="admin-col-action">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,7 +108,7 @@ export default async function Page({
                         {c.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
                       </span>
                     </td>
-                    <td>
+                    <td className="admin-col-action">
                       <Link
                         className="admin-row-link"
                         href={`/admin/companies/${companyId}/service-classes/${c.id}`}
@@ -121,9 +122,11 @@ export default async function Page({
             </table>
           </div>
         ) : (
-          <p className="admin-empty-copy">
-            Belum ada kelas layanan. Tambahkan kelas pertama untuk mengatur tarif segmen.
-          </p>
+          <AdminEmptyState
+            icon={<Stack size={24} weight="duotone" />}
+            title="Belum ada kelas layanan"
+            description="Tambahkan kelas layanan pertama untuk mengatur tarif segmen rute."
+          />
         )}
       </section>
     </div>

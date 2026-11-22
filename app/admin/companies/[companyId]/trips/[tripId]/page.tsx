@@ -34,9 +34,7 @@ export default async function Page({
         <div className="dash-hero-copy">
           <AdminBackLink href={`/admin/companies/${companyId}/trips`} label="Daftar perjalanan" />
           <h1>{detail.trip.name}</h1>
-          <p>
-            {status.label} · revisi {detail.trip.revision}
-          </p>
+          <p>{status.label}</p>
         </div>
         <div className="dash-hero-actions">
           <span className={`admin-status-pill is-${status.tone}`}>{status.label}</span>

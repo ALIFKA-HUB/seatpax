@@ -26,7 +26,7 @@ export default async function Page({
           <AdminBackLink href={`/admin/companies/${companyId}/vehicles`} label="Armada" />
           <h1>{detail.name}</h1>
           <p>
-            {detail.plateNumber} · {detail.capacity} kursi · revisi {detail.revision}
+            {detail.plateNumber} · {detail.capacity} kursi
           </p>
         </div>
         <div className="dash-hero-actions">

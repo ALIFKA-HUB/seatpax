@@ -29,7 +29,7 @@ export default async function Page({
           />
           <h1>{detail.name}</h1>
           <p>
-            {detail.rows} × {detail.cols} · {detail.capacity} kursi · versi {detail.version}
+            {detail.rows} × {detail.cols} · {detail.capacity} kursi
           </p>
         </div>
         <div className="dash-hero-actions">

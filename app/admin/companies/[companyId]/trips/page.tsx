@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CalendarBlank, Clock, Plus, Ticket } from '@phosphor-icons/react/ssr';
+import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import { tripStatusPresentation } from '@/app/admin/presentation';
 import { tripData } from '@/app/admin/trip-data';
 
@@ -76,7 +77,7 @@ export default async function Page({
         </div>
       </div>
 
-      <section className="dash-card admin-panel-modern">
+      <section className="dash-card admin-table-card">
         <div className="admin-panel-head">
           <h2>
             Daftar perjalanan <span className="admin-count">{list.length}</span>
@@ -89,8 +90,8 @@ export default async function Page({
                 <tr>
                   <th>Perjalanan</th>
                   <th>Berangkat (WIB)</th>
-                  <th>Status / revisi</th>
-                  <th>Kelola</th>
+                  <th>Status</th>
+                  <th className="admin-col-action">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -115,10 +116,10 @@ export default async function Page({
                       </td>
                       <td>
                         <span className={`admin-status-pill is-${status.tone}`}>
-                          {status.label} · {t.revision}
+                          {status.label}
                         </span>
                       </td>
-                      <td>
+                      <td className="admin-col-action">
                         <Link
                           className="admin-row-link"
                           href={`/admin/companies/${companyId}/trips/${t.id}`}
@@ -133,9 +134,11 @@ export default async function Page({
             </table>
           </div>
         ) : (
-          <p className="admin-empty-copy">
-            Belum ada perjalanan. Gunakan rute dan armada yang sudah disiapkan.
-          </p>
+          <AdminEmptyState
+            icon={<CalendarBlank size={24} weight="duotone" />}
+            title="Belum ada perjalanan"
+            description="Buat jadwal perjalanan pertama menggunakan rute dan armada yang sudah disiapkan."
+          />
         )}
       </section>
     </div>

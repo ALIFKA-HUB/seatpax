@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CheckCircle, MapPin, Path, Plus } from '@phosphor-icons/react/ssr';
+import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import { companyData } from '../../../data';
 
 export default async function Page({
@@ -65,16 +66,18 @@ export default async function Page({
         </div>
       </div>
 
-      <section className="dash-card admin-panel-modern">
+      <section className="dash-card admin-table-card">
         <div className="admin-panel-head">
           <h2>
             Daftar rute <span className="admin-count">{data.routes.length}</span>
           </h2>
         </div>
         {!data.routes.length ? (
-          <p className="admin-empty-copy">
-            Belum ada rute. Buat minimal dua stop, lalu susun rute pertama.
-          </p>
+          <AdminEmptyState
+            icon={<Path size={24} weight="duotone" />}
+            title="Belum ada rute"
+            description="Buat minimal dua titik naik & turun, lalu susun rute pertama."
+          />
         ) : (
           <div className="admin-table-wrap" role="region" aria-label="Daftar rute" tabIndex={0}>
             <table className="admin-modern-table">
@@ -83,7 +86,7 @@ export default async function Page({
                   <th>Rute</th>
                   <th>Kode</th>
                   <th>Status</th>
-                  <th>Kelola</th>
+                  <th className="admin-col-action">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,15 +95,17 @@ export default async function Page({
                     <td>
                       <strong>{r.name}</strong>
                     </td>
-                    <td>{r.code ?? '—'}</td>
+                    <td>
+                      <code>{r.code ?? '—'}</code>
+                    </td>
                     <td>
                       <span
-                        className={`admin-badge admin-status-pill ${r.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
+                        className={`admin-status-pill ${r.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
                       >
                         {r.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
                       </span>
                     </td>
-                    <td>
+                    <td className="admin-col-action">
                       <Link
                         className="admin-row-link"
                         href={`/admin/companies/${companyId}/routes/${r.id}`}

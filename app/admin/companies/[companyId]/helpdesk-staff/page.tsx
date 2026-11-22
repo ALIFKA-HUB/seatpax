@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { Users } from '@phosphor-icons/react/ssr';
 import AdminBackLink from '@/app/admin/components/admin-back-link';
+import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import { helpdeskConfig } from '@/lib/env/helpdesk';
 import { requireAccess } from '@/modules/access/server';
 import { withAdminTransaction } from '@/modules/access/transaction';
@@ -54,19 +56,19 @@ export default async function StaffPage({ params }: { params: Promise<{ companyI
         <HelpdeskStaffForm />
       </div>
 
-      <section className="dash-card admin-panel-modern">
+      <section className="dash-card admin-table-card">
         <div className="admin-panel-head">
           <h2>
             Daftar petugas <span className="admin-count">{staff.length}</span>
           </h2>
         </div>
         {staff.length ? (
-          <div className="admin-table-wrap">
+          <div className="admin-table-wrap" role="region" aria-label="Daftar petugas Helpdesk" tabIndex={0}>
             <table className="admin-modern-table hd-staff-table">
               <thead>
                 <tr>
                   <th>Email petugas</th>
-                  <th>Status akses</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -88,7 +90,11 @@ export default async function StaffPage({ params }: { params: Promise<{ companyI
             </table>
           </div>
         ) : (
-          <p className="admin-empty-copy">Belum ada petugas Helpdesk terdaftar.</p>
+          <AdminEmptyState
+            icon={<Users size={24} weight="duotone" />}
+            title="Belum ada petugas Helpdesk"
+            description="Tambahkan email petugas di formulir atas untuk mengaktifkan akses penanganan pengaduan."
+          />
         )}
       </section>
     </div>

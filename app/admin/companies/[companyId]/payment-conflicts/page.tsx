@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   WarningCircle,
 } from '@phosphor-icons/react/ssr';
+import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import { paymentConflictData } from '@/app/admin/payment-data';
 
 const date = (s: string) =>
@@ -65,7 +66,7 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         </div>
       </div>
 
-      <section className="dash-card admin-panel-modern">
+      <section className="dash-card admin-table-card">
         <div className="admin-panel-head">
           <h2>
             Perlu ditinjau <span className="admin-count">{conflicts.length}</span>
@@ -86,7 +87,7 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
                   <th>Perjalanan</th>
                   <th>Jumlah</th>
                   <th>Dibuat</th>
-                  <th>Kelola</th>
+                  <th className="admin-col-action">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -106,7 +107,7 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
                       Rp {BigInt(b.amount).toLocaleString('id-ID')}
                     </td>
                     <td className="admin-tabular">{date(b.createdAt)}</td>
-                    <td>
+                    <td className="admin-col-action">
                       <Link
                         className="admin-row-link"
                         href={`/admin/companies/${companyId}/payment-conflicts/${b.id}`}
@@ -120,17 +121,16 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             </table>
           </div>
         ) : (
-          <div className="admin-empty-state">
-            <span className="admin-empty-icon is-ok" aria-hidden="true">
-              <CheckCircle size={24} weight="duotone" />
-            </span>
-            <h3>Semua pembayaran aman</h3>
-            <p>Tidak ada konflik pembayaran yang perlu ditinjau.</p>
-          </div>
+          <AdminEmptyState
+            icon={<CheckCircle size={24} weight="duotone" />}
+            tone="ok"
+            title="Semua pembayaran aman"
+            description="Tidak ada konflik pembayaran yang perlu ditinjau."
+          />
         )}
       </section>
 
-      <section className="dash-card admin-panel-modern">
+      <section className="dash-card admin-table-card">
         <div className="admin-panel-head">
           <h2>
             Hasil provider perlu diperiksa <span className="admin-count">{reviews.length}</span>
@@ -177,13 +177,11 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             </table>
           </div>
         ) : (
-          <div className="admin-empty-state">
-            <span className="admin-empty-icon is-blue" aria-hidden="true">
-              <ShieldCheck size={24} weight="duotone" />
-            </span>
-            <h3>Tidak ada antrean provider</h3>
-            <p>Tidak ada hasil provider yang menunggu pemeriksaan.</p>
-          </div>
+          <AdminEmptyState
+            icon={<ShieldCheck size={24} weight="duotone" />}
+            title="Tidak ada antrean provider"
+            description="Tidak ada hasil provider yang menunggu pemeriksaan."
+          />
         )}
       </section>
     </div>

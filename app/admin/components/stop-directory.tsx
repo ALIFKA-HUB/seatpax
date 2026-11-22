@@ -5,7 +5,6 @@ import {
   CheckCircle,
   MagnifyingGlass,
   MapPin,
-  PencilSimple,
   Plus,
   WarningCircle,
   X,
@@ -14,6 +13,7 @@ import type { MasterRow } from '@/modules/route/repository';
 import type { RegionOptions } from '@/modules/regions/types';
 import MasterForm from './master-form';
 import AdminSelect from './admin-select';
+import AdminEmptyState from './admin-empty-state';
 import { queueAdminToast } from '../admin-toast';
 
 export default function StopDirectory({
@@ -123,10 +123,16 @@ export default function StopDirectory({
         {feedback}
       </p>
 
-      <section className="stop-panel" aria-label="Daftar titik naik dan turun">
-        <div className="stop-toolbar">
-          <label className="stop-search" htmlFor={prefix + 'search'}>
-            <MagnifyingGlass size={21} aria-hidden="true" />
+      <section className="dash-card admin-table-card" aria-label="Daftar titik naik dan turun">
+        <div className="admin-panel-head">
+          <h2>
+            Daftar titik <span className="admin-count">{stops.length}</span>
+          </h2>
+        </div>
+
+        <div className="admin-table-toolbar">
+          <label className="hd-search-box" htmlFor={prefix + 'search'}>
+            <MagnifyingGlass size={18} aria-hidden="true" />
             <span className="stop-sr-only">Cari nama lokasi atau kota</span>
             <input
               id={prefix + 'search'}
@@ -136,10 +142,10 @@ export default function StopDirectory({
               onChange={event => setQuery(event.target.value)}
             />
           </label>
-          <label className="stop-status" htmlFor={prefix + 'status'}>
-            Status
+          <div className="admin-table-filter">
             <AdminSelect
               id={prefix + 'status'}
+              ariaLabel="Filter status titik"
               value={status}
               onChange={setStatus}
               options={[
@@ -148,20 +154,18 @@ export default function StopDirectory({
                 { value: 'INACTIVE', label: 'Nonaktif' },
               ]}
             />
-          </label>
+          </div>
         </div>
 
         {visible.length ? (
-          <div className="stop-table-scroll" role="region" aria-label="Tabel lokasi" tabIndex={0}>
-            <table className="stop-table">
+          <div className="admin-table-wrap" role="region" aria-label="Tabel lokasi" tabIndex={0}>
+            <table className="admin-modern-table">
               <thead>
                 <tr>
-                  <th scope="col">Lokasi</th>
-                  <th scope="col">Kota / kabupaten</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">
-                    <span className="stop-sr-only">Aksi</span>
-                  </th>
+                  <th>Lokasi</th>
+                  <th>Kota / kabupaten</th>
+                  <th>Status</th>
+                  <th className="admin-col-action">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -177,19 +181,19 @@ export default function StopDirectory({
                     </td>
                     <td>
                       <span
-                        className={`admin-status-pill ${stop.status === 'ACTIVE' ? 'is-active' : ''}`}
+                        className={`admin-status-pill ${stop.status === 'ACTIVE' ? 'is-ok' : 'is-neutral'}`}
                       >
                         {stop.status === 'ACTIVE' ? 'Aktif' : 'Nonaktif'}
                       </span>
                     </td>
-                    <td>
+                    <td className="admin-col-action">
                       <button
                         type="button"
-                        className="stop-edit"
+                        className="admin-row-action-btn"
                         aria-label={`Edit ${stop.name}`}
                         onClick={() => openForm(stop)}
                       >
-                        <PencilSimple size={20} aria-hidden="true" />
+                        Edit titik →
                       </button>
                     </td>
                   </tr>
@@ -198,33 +202,37 @@ export default function StopDirectory({
             </table>
           </div>
         ) : (
-          <div className="stop-empty">
-            <MapPin size={32} aria-hidden="true" />
-            <h2>{stops.length ? 'Tidak ada titik yang cocok' : 'Mulai dari titik pertama'}</h2>
-            <p>
-              {stops.length
+          <AdminEmptyState
+            icon={<MapPin size={24} weight="duotone" />}
+            title={stops.length ? 'Tidak ada titik yang cocok' : 'Mulai dari titik pertama'}
+            description={
+              stops.length
                 ? 'Coba nama lokasi, kota, atau status lainnya.'
-                : 'Tambahkan terminal, pool, atau lokasi naik dan turun yang dilayani PO Anda.'}
-            </p>
-            {stops.length ? (
-              <button
-                type="button"
-                onClick={() => {
-                  setQuery('');
-                  setStatus('ALL');
-                }}
-              >
-                Reset pencarian
-              </button>
-            ) : (
-              <button type="button" className="admin-primary" onClick={() => openForm()}>
-                Tambah titik
-              </button>
-            )}
-          </div>
+                : 'Tambahkan terminal, pool, atau lokasi naik dan turun yang dilayani PO Anda.'
+            }
+            action={
+              stops.length ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('');
+                    setStatus('ALL');
+                  }}
+                >
+                  Reset pencarian
+                </button>
+              ) : (
+                <button type="button" className="admin-primary" onClick={() => openForm()}>
+                  Tambah titik
+                </button>
+              )
+            }
+          />
         )}
-        <div className="stop-footer" role="status">
-          Menampilkan {visible.length} dari {stops.length} titik
+        <div className="admin-table-footer" role="status">
+          <span>
+            Menampilkan {visible.length} dari {stops.length} titik
+          </span>
         </div>
       </section>
 

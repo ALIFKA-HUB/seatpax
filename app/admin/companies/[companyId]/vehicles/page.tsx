@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Armchair, Bus, CheckCircle, Plus } from '@phosphor-icons/react/ssr';
+import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import { sourceStatusPresentation } from '@/app/admin/presentation';
 import { fleetData } from '../../../fleet-data';
 
@@ -68,7 +69,7 @@ export default async function Page({
         </div>
       </div>
 
-      <section className="dash-card admin-panel-modern">
+      <section className="dash-card admin-table-card">
         <div className="admin-panel-head">
           <h2>
             Daftar armada <span className="admin-count">{list.length}</span>
@@ -82,8 +83,8 @@ export default async function Page({
                   <th>Armada</th>
                   <th>Plat</th>
                   <th>Kursi</th>
-                  <th>Status / revisi</th>
-                  <th>Kelola</th>
+                  <th>Status</th>
+                  <th className="admin-col-action">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -100,10 +101,10 @@ export default async function Page({
                       <td className="admin-tabular">{v.capacity}</td>
                       <td>
                         <span className={`admin-status-pill is-${status.tone}`}>
-                          {status.label} / {v.revision}
+                          {status.label}
                         </span>
                       </td>
-                      <td>
+                      <td className="admin-col-action">
                         <Link
                           className="admin-row-link"
                           href={`/admin/companies/${companyId}/vehicles/${v.id}`}
@@ -118,9 +119,11 @@ export default async function Page({
             </table>
           </div>
         ) : (
-          <p className="admin-empty-copy">
-            Belum ada armada. Siapkan template aktif dan kelas layanan terlebih dahulu.
-          </p>
+          <AdminEmptyState
+            icon={<Bus size={24} weight="duotone" />}
+            title="Belum ada armada"
+            description="Siapkan template kursi aktif dan kelas layanan terlebih dahulu."
+          />
         )}
       </section>
     </div>

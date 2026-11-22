@@ -78,7 +78,12 @@ export default function CaseList({
   if (embedded) {
     const activeStatus = query.status || '';
     return (
-      <section className="dash-card admin-panel-modern hd-admin-card" aria-label="Daftar pengaduan pelanggan">
+      <section className="dash-card admin-table-card hd-admin-card" aria-label="Daftar pengaduan pelanggan">
+        <div className="admin-panel-head">
+          <h2>
+            Daftar pengaduan <span className="admin-count">{totalCount ?? data.count}</span>
+          </h2>
+        </div>
         <nav className="hd-status-tabs" aria-label="Filter cepat status pengaduan">
           {quickTabs.map(tab => {
             const isActive = activeStatus === tab.value;
@@ -149,7 +154,7 @@ export default function CaseList({
                   <th>Status</th>
                   <th>Prioritas</th>
                   <th>Tanggal</th>
-                  <th aria-label="Detail" />
+                  <th className="admin-col-action">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -184,7 +189,7 @@ export default function CaseList({
                         )}
                       </td>
                       <td className="admin-tabular">{new Date(r.created_at).toLocaleDateString('id-ID')}</td>
-                      <td>
+                      <td className="admin-col-action">
                         <Link className="admin-row-link hd-row-detail-link" href={detailBase + '/' + r.id}>
                           Detail →
                         </Link>
