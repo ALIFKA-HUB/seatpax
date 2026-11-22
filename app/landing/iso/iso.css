@@ -1,0 +1,298 @@
+.iso-figure {
+  --anatomy-page: var(--lp-canvas, #f4f7fb);
+  --anatomy-card: var(--lp-surface, #ffffff);
+  --anatomy-text: var(--sp-ink, #0a2144);
+  --anatomy-strong: var(--sp-ink, #0a2144);
+  --anatomy-muted: var(--sp-muted, #526078);
+  --anatomy-border: var(--lp-border, #d5e2f2);
+  --anatomy-primary: var(--sp-primary, #005bd1);
+  --anatomy-accent: var(--lp-accent, #bd4b12);
+  --anatomy-paper: var(--anatomy-card);
+  --anatomy-face: var(--anatomy-card);
+  --anatomy-top: var(--anatomy-card);
+  --anatomy-shade-0: color-mix(in srgb, var(--anatomy-card) 86%, var(--anatomy-text));
+  --anatomy-shade-1: color-mix(in srgb, var(--anatomy-card) 90%, var(--anatomy-text));
+  --anatomy-shade-2: color-mix(in srgb, var(--anatomy-card) 94%, var(--anatomy-text));
+  --anatomy-shade-3: color-mix(in srgb, var(--anatomy-card) 97%, var(--anatomy-text));
+  --anatomy-lit-top: color-mix(in srgb, var(--anatomy-card) 32%, var(--anatomy-accent));
+  --anatomy-lit-shade: color-mix(in srgb, var(--anatomy-card) 52%, var(--anatomy-accent));
+  --anatomy-hi: var(--anatomy-text);
+  --anatomy-mid: var(--anatomy-muted);
+  --anatomy-lo: color-mix(in srgb, var(--anatomy-card) 58%, var(--anatomy-muted));
+  --anatomy-faint: color-mix(in srgb, var(--anatomy-card) 78%, var(--anatomy-muted));
+  --anatomy-lit: var(--anatomy-accent);
+  --anatomy-halo: var(--anatomy-text);
+  --anatomy-halo-opacity: 0.14;
+  --anatomy-dot: var(--anatomy-text);
+  --anatomy-weight: 0.65px;
+  --anatomy-mono: var(--font-geist), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --anatomy-shadow: 0 18px 40px -24px color-mix(in srgb, var(--anatomy-text) 18%, transparent);
+  margin: 0;
+  color-scheme: light;
+}
+
+.iso-plate {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 48px 24px 44px;
+  border: 1px solid var(--anatomy-border);
+  border-radius: 20px;
+  background: var(--anatomy-card);
+  color: var(--anatomy-text);
+  box-shadow: var(--anatomy-shadow);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  appearance: none;
+  transition: transform 180ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.iso-plate:hover {
+  transform: translateY(-2px);
+}
+
+.iso-plate:focus-visible {
+  outline: 3px solid var(--anatomy-primary);
+  outline-offset: 3px;
+}
+
+.iso-plate-corners {
+  position: absolute;
+  inset: 16px 20px;
+  pointer-events: none;
+}
+
+.iso-plate-corner {
+  position: absolute;
+  color: var(--anatomy-muted);
+  font-family: var(--anatomy-mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.iso-plate-corner[data-corner="fig"] {
+  top: 0;
+  left: 0;
+  color: var(--anatomy-text);
+  font-weight: 600;
+}
+
+.iso-plate-corner[data-corner="title"] {
+  top: 0;
+  right: 0;
+  color: var(--anatomy-muted);
+}
+
+.iso-plate-corner[data-corner="hint"] {
+  bottom: 0;
+  left: 0;
+  color: var(--anatomy-muted);
+}
+
+.iso-plate-corner[data-corner="readout"] {
+  right: 0;
+  bottom: 0;
+  color: var(--anatomy-primary);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.iso-plate[data-step="2"] .iso-plate-corner[data-corner="readout"] {
+  color: var(--anatomy-lit);
+}
+
+.iso-stage {
+  display: block;
+  width: 100%;
+}
+
+.iso-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+.iso-svg path,
+.iso-svg circle {
+  vector-effect: non-scaling-stroke;
+}
+
+.iso-fill {
+  fill: var(--anatomy-paper);
+  stroke: none;
+}
+
+.iso-solid[data-lit] > .iso-fill {
+  fill: var(--anatomy-face);
+}
+
+.iso-shade,
+.iso-top {
+  stroke: none;
+}
+
+.iso-shade[data-shade="0"] {
+  fill: var(--anatomy-shade-0);
+}
+
+.iso-shade[data-shade="1"] {
+  fill: var(--anatomy-shade-1);
+}
+
+.iso-shade[data-shade="2"] {
+  fill: var(--anatomy-shade-2);
+}
+
+.iso-shade[data-shade="3"] {
+  fill: var(--anatomy-shade-3);
+}
+
+.iso-top {
+  fill: var(--anatomy-top);
+}
+
+.iso-solid[data-lit] > .iso-top {
+  fill: var(--anatomy-lit-top);
+}
+
+.iso-solid[data-lit] > .iso-shade {
+  fill: var(--anatomy-lit-shade);
+}
+
+.iso-solid[data-lit] > .iso-edge {
+  stroke: var(--anatomy-lit);
+}
+
+.iso-halo {
+  fill: var(--anatomy-halo);
+  stroke: none;
+  filter: blur(9px);
+  opacity: var(--anatomy-halo-opacity);
+  transform: translateY(3px);
+}
+
+.iso-line {
+  fill: none;
+  stroke: var(--anatomy-lo);
+  stroke-width: var(--anatomy-weight);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.iso-line[data-tone="hi"] {
+  stroke: var(--anatomy-hi);
+}
+
+.iso-line[data-tone="mid"] {
+  stroke: var(--anatomy-mid);
+}
+
+.iso-line[data-tone="lo"] {
+  stroke: var(--anatomy-lo);
+}
+
+.iso-line[data-tone="faint"] {
+  stroke: var(--anatomy-faint);
+}
+
+.iso-line[data-tone="lit"] {
+  stroke: var(--anatomy-lit);
+}
+
+.iso-line[data-dotted] {
+  stroke-dasharray: 0.01 3.5;
+  stroke-width: 1;
+}
+
+.iso-line[data-dashed] {
+  stroke-dasharray: 3 3;
+}
+
+.iso-line[data-flow] {
+  stroke-dasharray: 2 6;
+}
+
+.iso-dots circle {
+  fill: var(--anatomy-dot);
+  stroke: none;
+  opacity: 0.32;
+}
+
+.iso-dots[data-tone="hi"] circle {
+  opacity: 0.85;
+}
+
+.iso-dots[data-tone="mid"] circle {
+  opacity: 0.45;
+}
+
+.iso-dots[data-tone="lo"] circle {
+  opacity: 0.22;
+}
+
+@keyframes iso-flow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+@keyframes iso-pulse {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  12% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.18;
+  }
+}
+
+.iso-line[data-flow] {
+  animation: iso-flow 1600ms linear infinite;
+}
+
+.iso-dots circle[data-pulse] {
+  animation: iso-pulse 1600ms steps(1, end) infinite;
+  animation-delay: var(--pulse-at, 0ms);
+}
+
+.iso-stage:not([data-inview]) .iso-line[data-flow],
+.iso-stage:not([data-inview]) .iso-dots circle[data-pulse] {
+  animation-play-state: paused;
+}
+
+@media (max-width: 560px) {
+  .iso-plate {
+    padding: 44px 12px 52px;
+  }
+
+  .iso-plate-corners {
+    inset: 14px 14px;
+  }
+
+  .iso-plate-corner[data-corner="hint"] {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-plate {
+    transition: none;
+  }
+
+  .iso-plate:hover {
+    transform: none;
+  }
+
+  .iso-line[data-flow],
+  .iso-dots circle[data-pulse] {
+    animation: none;
+  }
+}
