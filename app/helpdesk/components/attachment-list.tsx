@@ -1,15 +1,13 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import {
-  ArrowSquareOut,
-  DownloadSimple,
-  Eye,
-  File,
-  FilePdf,
-  Image as ImageIcon,
-  X,
-} from '@phosphor-icons/react';
+import { ArrowSquareOut } from '@phosphor-icons/react/dist/csr/ArrowSquareOut';
+import { DownloadSimple } from '@phosphor-icons/react/dist/csr/DownloadSimple';
+import { Eye } from '@phosphor-icons/react/dist/csr/Eye';
+import { File } from '@phosphor-icons/react/dist/csr/File';
+import { FilePdf } from '@phosphor-icons/react/dist/csr/FilePdf';
+import { Image as ImageIcon } from '@phosphor-icons/react/dist/csr/Image';
+import { X } from '@phosphor-icons/react/dist/csr/X';
 import PdfPreview from './pdf-preview';
 
 export type HelpdeskAttachmentItem = {
@@ -86,7 +84,7 @@ export default function AttachmentList({ files }: { files: HelpdeskAttachmentIte
                 <div className="hd-attachment-text">
                   <strong className="hd-attachment-name">{file.name}</strong>
                   <span className="hd-attachment-meta">
-                    {formatKindLabel(file.mime)} · {kb} KB
+                    {formatKindLabel(file.mime)} ({kb} KB)
                   </span>
                 </div>
               </div>
@@ -126,7 +124,7 @@ export default function AttachmentList({ files }: { files: HelpdeskAttachmentIte
               <div className="hd-preview-title">
                 <strong>{active.name}</strong>
                 <span>
-                  {formatKindLabel(active.mime)} · {Math.max(1, Math.ceil(Number(active.size) / 1024))} KB
+                  {formatKindLabel(active.mime)} ({Math.max(1, Math.ceil(Number(active.size) / 1024))} KB)
                 </span>
               </div>
               <div className="hd-preview-tools">

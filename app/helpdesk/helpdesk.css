@@ -74,6 +74,31 @@
 .admin-shell.hd-workspace .hd-queue-card:hover .hd-queue-cta{text-decoration:underline}
 .admin-shell .hd-case-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:5px}
 .admin-shell .hd-case-meta .hd-case-category{margin-top:0}
+.admin-shell .dash-root .hd-detail-summary{margin-bottom:0}
+.admin-shell .hd-detail-primary,.admin-shell .hd-detail-side{display:grid;gap:16px;min-width:0}
+.admin-shell .hd-detail-grid .hd-section-card{margin-bottom:0;overflow-wrap:anywhere}
+.admin-shell .hd-detail-facts{margin:0}
+.admin-shell .hd-detail-facts dt{color:var(--admin-muted)}
+.admin-shell .hd-fact-note{display:block;margin-top:4px;font-size:12px;font-weight:400;color:var(--admin-muted)}
+.admin-shell .hd-section-card dl+h2,.admin-shell .hd-section-card p+h2{margin-top:20px}
+.admin-shell .hd-section-card>.hd-muted-label:last-child{margin-bottom:0}
+.admin-shell .hd-section-card p.hd-staff-note{color:var(--admin-ink);white-space:pre-wrap;overflow-wrap:anywhere}
+.admin-shell .hd-section-card p.hd-staff-note:not(.hd-timeline-note){margin:0;font-size:13.5px;line-height:1.65}
+.admin-shell .hd-action-forms{display:grid;gap:16px}
+.admin-shell.hd-workspace .admin-form{display:grid;gap:14px}
+.admin-shell .hd-action-form+.hd-action-form{padding-top:16px;border-top:1px solid var(--admin-line)}
+.admin-shell .hd-action-form button[type='submit']{width:100%}
+.admin-shell .admin-secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:8px 14px;border:1px solid #d1dce9;border-radius:10px;background:#fff;color:var(--admin-ink);font-size:13px;font-weight:600;cursor:pointer;transition:border-color 140ms ease,background-color 140ms ease,color 140ms ease}
+.admin-shell .admin-secondary-btn:hover:not(:disabled){border-color:#9fc2f5;background:#f4f8ff;color:var(--admin-blue)}
+.admin-shell .admin-secondary-btn:disabled{opacity:.5;cursor:default}
+.admin-shell .hd-section-card p.hd-mail-disclaimer{margin:0 0 12px;line-height:1.5}
+.admin-shell .hd-mail-job-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.admin-shell .hd-mail-job-row{display:grid;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--admin-line);background:#f9fbff}
+.admin-shell .hd-mail-job-meta{display:grid;justify-items:start;gap:6px}
+.admin-shell .hd-section-card p.hd-mail-job-hint{margin:0;line-height:1.45}
+.admin-shell .hd-mail-retry{display:grid;gap:8px;justify-items:start}
+.admin-shell .hd-mail-retry .admin-message,.admin-shell .hd-section-card>.admin-message{margin:10px 0 0}
+.admin-shell .hd-section-card p.hd-status-note{margin:12px 0 0;line-height:1.5}
 .admin-shell.hd-workspace .hd-timeline-card{flex:1;display:flex;flex-direction:column}
 .admin-shell.hd-workspace a.hd-timeline-link{color:var(--admin-ink);font-weight:700;text-decoration:none}
 .admin-shell.hd-workspace a.hd-timeline-link:hover{color:var(--admin-blue);text-decoration:underline}

@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { DownloadSimple, MagnifyingGlassMinus, MagnifyingGlassPlus } from '@phosphor-icons/react';
+import { DownloadSimple } from '@phosphor-icons/react/dist/csr/DownloadSimple';
+import { MagnifyingGlassMinus } from '@phosphor-icons/react/dist/csr/MagnifyingGlassMinus';
+import { MagnifyingGlassPlus } from '@phosphor-icons/react/dist/csr/MagnifyingGlassPlus';
 
 export default function PdfPreview({
   url,

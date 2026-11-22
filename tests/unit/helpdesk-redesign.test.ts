@@ -16,11 +16,17 @@ vi.mock('next/font/google', () => ({
 vi.mock('next/navigation', () => ({
   usePathname: () => nav.pathname,
   useRouter: () => ({ refresh: vi.fn() }),
+  notFound: vi.fn(() => {
+    throw new Error('NEXT_NOT_FOUND');
+  }),
   redirect: vi.fn((url: string) => {
     throw new Error(`NEXT_REDIRECT:${url}`);
   }),
   unstable_rethrow: (error: unknown) => {
-    if (error instanceof Error && error.message.startsWith('NEXT_REDIRECT:')) {
+    if (
+      error instanceof Error &&
+      (error.message.startsWith('NEXT_REDIRECT:') || error.message === 'NEXT_NOT_FOUND')
+    ) {
       throw error;
     }
   },
@@ -28,6 +34,11 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/app/helpdesk/data', () => ({
   helpdeskContext: mockHelpdeskContext,
+}));
+
+vi.mock('@/app/helpdesk/actions', () => ({
+  changeComplaintAction: vi.fn(),
+  retryComplaintEmailAction: vi.fn(),
 }));
 
 import HelpdeskShell from '@/app/helpdesk/components/helpdesk-shell';
@@ -499,5 +510,206 @@ describe('Helpdesk /helpdesk/pengaduan unified CaseList redesign', () => {
     expect(opsDarkCss).toContain("html[data-mode='dark'] .admin-shell .hd-status-tab");
     expect(opsDarkCss).toContain("html[data-mode='dark'] .admin-shell .hd-reset-link");
     expect(opsDarkCss).toContain("html[data-mode='dark'] .admin-shell .hd-search-box input");
+  });
+});
+
+describe('Helpdesk /helpdesk/[id], CaseDetailView, CaseActions, and AttachmentList redesign', () => {
+  beforeEach(() => {
+    mockHelpdeskContext.mockReset();
+  });
+
+  it('renders /helpdesk/[id] writable detail view with AdminBackLink, status pills, AdminSelect forms, and timeline without middle dots', async () => {
+    mockHelpdeskContext.mockResolvedValue({
+      ctx: { actorId: 'u1', companyId: 'c1' },
+      staff: {
+        detail: async () => ({
+          row: {
+            id: '12345678-1234-4234-8234-123456789abc',
+            code: 'SPX-ADU-5555',
+            title: 'Kendala verifikasi tiket',
+            category: 'PAYMENT',
+            status: 'DIPROSES',
+            priority: 'HIGH',
+            name: 'Siti Aminah',
+            email: 'siti@example.com',
+            booking_reference: 'BK-9001',
+            description: 'Kode booking belum terbaca di gate.',
+            revision: 2,
+          },
+          events: [
+            {
+              id: 'e1',
+              kind: 'DIPROSES',
+              note: 'Sedang dicek oleh tim Helpdesk.',
+              created_at: '2026-11-22T04:00:00Z',
+            },
+          ],
+          files: [{ id: 'f1', name: 'bukti.png', mime: 'image/png', size: 20480 }],
+          jobs: [
+            { id: 'j1', state: 'ACCEPTED', error_code: null },
+            { id: 'j2', state: 'FAILED', error_code: 'configuration' },
+          ],
+          writable: true,
+        }),
+      },
+    });
+
+    const { default: CaseDetail } = await import('@/app/helpdesk/[id]/page');
+    const html = render(
+      await CaseDetail({ params: Promise.resolve({ id: '12345678-1234-4234-8234-123456789abc' }) }),
+    );
+
+    for (const token of [
+      'dash-root',
+      'dash-hero',
+      'admin-back-link',
+      'href="/helpdesk/pengaduan"',
+      'Kembali ke pengaduan',
+      'Detail pengaduan',
+      'hd-detail-summary',
+      'hd-code-pill',
+      'SPX-ADU-5555',
+      'Pembayaran',
+      'admin-status-pill',
+      'hd-detail-grid',
+      'admin-panel-modern',
+      'hd-section-card',
+      'payment-conflict-details',
+      'Siti Aminah',
+      'siti@example.com',
+      'BK-9001',
+      'hd-timeline',
+      'Tindakan petugas',
+      'admin-form',
+      'admin-select',
+      'name="priority"',
+      'name="action"',
+      'name="note"',
+      'Simpan prioritas',
+      'Simpan tindakan',
+      'admin-primary',
+      'admin-secondary-btn',
+      'hd-mail-job-row',
+      'Konfigurasi email belum lengkap',
+      'Coba kirim ulang',
+      '(20 KB)',
+    ]) {
+      expect(html).toContain(token);
+    }
+    expect(html).not.toContain('hd-heading');
+    expect(html).not.toContain(' · ');
+  });
+
+  it('renders /helpdesk/[id] error fallback as Admin PO alert card without leaking internals and calls notFound when missing', async () => {
+    mockHelpdeskContext.mockRejectedValueOnce(new Error('private detail query error'));
+
+    const { default: CaseDetail } = await import('@/app/helpdesk/[id]/page');
+    const html = render(
+      await CaseDetail({ params: Promise.resolve({ id: '12345678-1234-4234-8234-123456789abc' }) }),
+    );
+
+    expect(html).toContain('dash-root');
+    expect(html).toContain('dash-card admin-panel-modern hd-alert-card');
+    expect(html).toContain('role="alert"');
+    expect(html).toContain('Laporan tidak ditemukan');
+    expect(html).toContain('Periksa kembali tautan laporan atau muat ulang halaman.');
+    expect(html).toContain('href="/helpdesk/pengaduan"');
+    expect(html).not.toContain('private detail query error');
+
+    mockHelpdeskContext.mockResolvedValueOnce({
+      ctx: { actorId: 'u1', companyId: 'c1' },
+      staff: { detail: async () => null },
+    });
+    await expect(
+      CaseDetail({ params: Promise.resolve({ id: '12345678-1234-4234-8234-123456789abc' }) }),
+    ).rejects.toThrow('NEXT_NOT_FOUND');
+  });
+
+  it('renders unified CaseDetailView across standalone and embedded readOnly callers without middle dots', async () => {
+    const { default: CaseDetailView } = await import('@/app/helpdesk/components/case-detail-view');
+    const sampleDetail = {
+      row: {
+        id: '12345678-1234-4234-8234-123456789abc',
+        code: 'SPX-ADU-7777',
+        title: 'Jadwal mundur',
+        category: 'JOURNEY',
+        status: 'SELESAI',
+        priority: null,
+        name: 'Budi Santoso',
+        email: 'budi@example.com',
+        booking_reference: null,
+        description: 'Keberangkatan terlambat 30 menit.',
+        revision: 3,
+      },
+      events: [],
+      files: [],
+      jobs: [{ id: 'j3', state: 'FAILED', error_code: 'superseded' }],
+      writable: true,
+    } as unknown as Parameters<typeof CaseDetailView>[0]['data'];
+
+    const standaloneReadOnly = render(
+      h(CaseDetailView, { id: 'case-7', data: sampleDetail, readOnly: true }),
+    );
+    const embeddedReadOnly = render(
+      h(CaseDetailView, { id: 'case-7', data: sampleDetail, readOnly: true, embedded: true }),
+    );
+
+    expect(standaloneReadOnly).toBe(embeddedReadOnly);
+    expect(standaloneReadOnly).toContain('admin-callout-info');
+    expect(standaloneReadOnly).toContain('Mode pemantauan Admin');
+    expect(standaloneReadOnly).toContain('Status penanganan');
+    expect(standaloneReadOnly).toContain('Prioritas belum ditentukan');
+    expect(standaloneReadOnly).toContain('Laporan selesai dan tidak dapat diubah.');
+    expect(standaloneReadOnly).toContain('Permintaan kelengkapan sudah ditindaklanjuti atau diganti');
+    expect(standaloneReadOnly).not.toContain(' · ');
+  });
+
+  it('renders CaseActions transitions across MENUNGGU, PERLU_DILENGKAPI, and SELESAI states with queueAdminToast', async () => {
+    const { default: CaseActions } = await import('@/app/helpdesk/components/case-actions');
+
+    const waitingHtml = render(
+      h(CaseActions, { id: 'c1', revision: 1, status: 'MENUNGGU', priority: null }),
+    );
+    expect(waitingHtml).toContain('Mulai proses');
+    expect(waitingHtml).toContain('Minta kelengkapan');
+    expect(waitingHtml).not.toContain('Selesaikan laporan');
+
+    const needsInfoHtml = render(
+      h(CaseActions, { id: 'c1', revision: 2, status: 'PERLU_DILENGKAPI', priority: 'MEDIUM' }),
+    );
+    expect(needsInfoHtml).toContain('Simpan prioritas');
+    expect(needsInfoHtml).not.toContain('Simpan tindakan');
+
+    const doneHtml = render(
+      h(CaseActions, { id: 'c1', revision: 3, status: 'SELESAI', priority: 'HIGH' }),
+    );
+    expect(doneHtml).toContain('dash-card admin-panel-modern hd-section-card');
+    expect(doneHtml).toContain('Laporan telah selesai dan tidak dapat diubah.');
+    expect(doneHtml).not.toContain('<form');
+
+    const caseActionsSource = readFileSync('app/helpdesk/components/case-actions.tsx', 'utf8');
+    expect(caseActionsSource).toContain('queueAdminToast');
+    expect(caseActionsSource).toContain('export async function retryMailWithRefresh');
+  });
+
+  it('uses direct /dist/csr Phosphor imports in AttachmentList and PdfPreview and covers detail + placeholder dark mode CSS', () => {
+    const attachmentSource = readFileSync('app/helpdesk/components/attachment-list.tsx', 'utf8');
+    expect(attachmentSource).not.toContain("from '@phosphor-icons/react'");
+    expect(attachmentSource).toContain('@phosphor-icons/react/dist/csr/');
+    expect(attachmentSource).not.toContain(' · ');
+
+    const pdfPreviewSource = readFileSync('app/helpdesk/components/pdf-preview.tsx', 'utf8');
+    expect(pdfPreviewSource).not.toContain("from '@phosphor-icons/react'");
+    expect(pdfPreviewSource).toContain('@phosphor-icons/react/dist/csr/');
+
+    const helpdeskCss = readFileSync('app/helpdesk/helpdesk.css', 'utf8');
+    expect(helpdeskCss).toContain('.admin-secondary-btn');
+    expect(helpdeskCss).toContain('.hd-mail-job-row');
+
+    const opsDarkCss = readFileSync('app/styles/ops-dark.css', 'utf8');
+    expect(opsDarkCss).toContain('.hd-mail-job-row');
+    expect(opsDarkCss).toContain('.payment-conflict-details dt');
+    expect(opsDarkCss).toContain('.hd-search-box input::placeholder');
+    expect(opsDarkCss).toContain('color: var(--ops-muted)');
   });
 });
