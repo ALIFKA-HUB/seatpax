@@ -440,6 +440,23 @@
 .admin-shell .hd-section-card h2{margin:0 0 10px;font-size:15.5px;font-weight:700;color:var(--admin-ink)}
 .admin-shell .hd-section-card h3{margin:16px 0 8px;font-size:13.5px;font-weight:700;color:var(--admin-ink)}
 .admin-shell .hd-section-card p+h2{margin-top:18px}
+.admin-shell .hd-timeline{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:0}
+.admin-shell .hd-timeline li{position:relative;padding:0 0 20px 28px;margin:0}
+.admin-shell .hd-timeline li:last-child{padding-bottom:2px}
+.admin-shell .hd-timeline li:not(:last-child)::before{content:'';position:absolute;left:5px;top:18px;bottom:0;width:2px;background:#dce6f4}
+.admin-shell .hd-timeline li::after{content:'';position:absolute;left:0;top:5px;width:12px;height:12px;border-radius:999px;background:#fff;border:2.5px solid #94a3b8;box-sizing:border-box}
+.admin-shell .hd-timeline li.is-info::after{border-color:var(--admin-blue);background:#eaf2ff}
+.admin-shell .hd-timeline li.is-warn::after{border-color:var(--admin-amber);background:#fff7ed}
+.admin-shell .hd-timeline li.is-purple::after{border-color:#7e22ce;background:#f5f3ff}
+.admin-shell .hd-timeline li.is-ok::after{border-color:var(--admin-green);background:#eaf7ef}
+.admin-shell .hd-timeline li:last-child::after{box-shadow:0 0 0 4px rgba(0,91,209,.12)}
+.admin-shell .hd-timeline li.is-ok:last-child::after{box-shadow:0 0 0 4px rgba(6,115,84,.14)}
+.admin-shell .hd-timeline li.is-warn:last-child::after{box-shadow:0 0 0 4px rgba(180,83,9,.14)}
+.admin-shell .hd-timeline li.is-purple:last-child::after{box-shadow:0 0 0 4px rgba(126,34,206,.14)}
+.admin-shell .hd-timeline-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px}
+.admin-shell .hd-timeline-head strong{font-size:13.5px;font-weight:700;color:var(--admin-ink);line-height:1.4}
+.admin-shell .hd-timeline-head small{font-size:12px;font-weight:500;color:var(--admin-muted);font-variant-numeric:tabular-nums;margin:0}
+.admin-shell .hd-timeline-note{margin:8px 0 0;padding:9px 12px;border-radius:0 10px 10px 0;background:#f7fafe;border-left:2px solid #cbd9ec;font-size:13px;line-height:1.55;color:#334a6b}
 .admin-shell .hd-staff-form{display:grid;gap:14px}
 .admin-shell .hd-staff-form .admin-panel-head{margin-bottom:0}
 .admin-shell .hd-staff-form .admin-hint{margin:0}
