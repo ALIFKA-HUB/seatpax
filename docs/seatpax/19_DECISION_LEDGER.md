@@ -4,7 +4,7 @@
 
 The user approved scoped Dark Mode across **Admin PO**, **Super Admin**, **Helpdesk**, and **Crew PWA**, keeping public Passenger pages light-mode only:
 
-- **Anchored Dark Tokens (`app/styles/ops-dark.css`):** Scoped under `html[data-mode='dark']` for `.admin-shell`, `.admin-entry`, `.super-admin-shell`, `.hd-workspace`, and `.crew-shell` only, using navy-slate dark surfaces (`#0b1322` canvas, `#111c30` cards, `#17253e` elevated surfaces, `#e7eef9` ink, `#9cb0cc` muted ink, no drop-shadow glow) and a clean light plate for raster brand logos.
+- **Anchored Dark Tokens (`app/styles/ops-dark.css`):** Scoped under `html[data-mode='dark']` for `.admin-shell`, `.admin-entry`, `.super-admin-shell`, `.hd-workspace`, and `.crew-shell` only, using neutral obsidian-charcoal surfaces (`#0e1015` canvas, `#151821` cards/sidebar, `#1c202a` elevated wells/table headers/inputs, `#f1f4f9` ink, `#949eb0` muted ink, no drop-shadow glow) with restrained Seatpax blue accent and transparent dark-mode logo asset (`public/brand/seatpax-horizontal-dark.png`).
 - **Circular Reveal Transition (`ThemeToggle` + `theme-mode.ts`):** Persists choice in `localStorage` (`seatpax.ops-mode`) read before first paint in `app/layout.tsx`, and animates both Dark and Light transitions with View Transitions (`::view-transition-new(root)` expanding from the toggle coordinates to the furthest viewport corner), falling back cleanly under `prefers-reduced-motion: reduce`.
 
 ## D2026-11-22-01 — Remove standalone /account page UI in favor of direct logout and role redirects

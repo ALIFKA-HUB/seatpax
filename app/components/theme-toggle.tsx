@@ -73,7 +73,8 @@ export default function ThemeToggle({ className, showLabel = false, fullLabel = 
       title={label}
       onClick={handleToggle}
     >
-      {isDark ? <Sun size={18} weight="regular" aria-hidden="true" /> : <Moon size={18} weight="regular" aria-hidden="true" />}
+      <Moon key="moon" className="ops-theme-icon-dark" size={18} weight="regular" aria-hidden="true" />
+      <Sun key="sun" className="ops-theme-icon-light" size={18} weight="regular" aria-hidden="true" />
       {showLabel && <span>{visibleLabel}</span>}
     </button>
   );

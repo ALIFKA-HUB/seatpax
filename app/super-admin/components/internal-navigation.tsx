@@ -30,10 +30,10 @@ export default function InternalNavigation({section='companies'}:{section?:'dash
  return <div className={`super-navigation${open?' is-open':''}`}>
   <div className="super-mobile-bar">
    <button ref={toggle} className="super-menu-toggle" type="button" aria-label={open?'Tutup navigasi':'Buka navigasi'} aria-expanded={open} aria-controls="super-admin-navigation" onClick={()=>open?close():setOpen(true)}>{open?<X size={22} aria-hidden="true"/>:<List size={22} aria-hidden="true"/>}</button>
-   <Brand href="/super-admin"/>
+   <Brand href="/super-admin" darkAware/>
   </div>
   <aside ref={panel} className="super-sidebar" id="super-admin-navigation">
-   <div className="super-sidebar-brand"><Brand href="/super-admin"/></div>
+   <div className="super-sidebar-brand"><Brand href="/super-admin" darkAware/></div>
    <div className="super-identity"><span className="super-avatar" aria-hidden="true">SA</span><div><strong>Super Admin</strong><p>Panel internal Seatpax</p></div></div>
    <nav aria-label="Navigasi administrasi">
    <div className="super-nav-group super-dashboard-nav"><Link href="/super-admin" aria-current={section==='dashboard'?'page':undefined} onClick={close}><SquaresFour size={20} aria-hidden="true"/><span>Dashboard</span></Link></div>

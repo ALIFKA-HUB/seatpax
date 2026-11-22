@@ -167,7 +167,12 @@ describe('Operational + Crew Dark Mode & circular View Transitions', () => {
 
     const opsDarkCss = readFileSync('app/styles/ops-dark.css', 'utf8');
     expect(opsDarkCss).toContain('::view-transition-new(root)');
+    expect(opsDarkCss).toContain('--ops-paper: #0e1015');
+    expect(opsDarkCss).toContain('sp-brand-img-dark');
     expect(opsDarkCss).not.toContain('.passenger-shell');
     expect(opsDarkCss).not.toContain('.lp-hero');
+
+    const superHtmlBrand = render(h(SuperAdminShell, null, 'Body'));
+    expect(superHtmlBrand).toContain('seatpax-horizontal-dark.png');
   });
 });

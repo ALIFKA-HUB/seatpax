@@ -1,45 +1,44 @@
 /* Hallmark · scope: app · modes: light+dark · contrast: verified · v2.0.0 */
-/* Critique: anchored navy-slate dark surfaces for Ops + Crew only; Passenger pages untouched. */
+/* Critique: Obsidian charcoal surfaces (#0e1015/#151821) with restrained Seatpax blue accent & transparent dark brand lockup. */
 
 /* Root tokens scoped to active operational + Crew shells so Passenger public views remain light. */
 html[data-mode='dark']:has(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) {
   color-scheme: dark;
-  --ops-paper: #0b1322;
-  --ops-paper-2: #111c30;
-  --ops-paper-3: #17253e;
-  --ops-paper-4: #1d2f4e;
-  --ops-ink: #e7eef9;
-  --ops-ink-2: #cbd8ec;
-  --ops-muted: #9cb0cc;
-  --ops-soft-ink: #7d94b5;
-  --ops-rule: #253756;
-  --ops-rule-strong: #354d73;
-  --ops-accent: #5fa0ff;
-  --ops-accent-hover: #7fb3ff;
+  --ops-paper: #0e1015;
+  --ops-paper-2: #151821;
+  --ops-paper-3: #1c202a;
+  --ops-paper-4: #242936;
+  --ops-ink: #f1f4f9;
+  --ops-ink-2: #d1d7e2;
+  --ops-muted: #949eb0;
+  --ops-soft-ink: #6d778a;
+  --ops-rule: #232834;
+  --ops-rule-strong: #313746;
+  --ops-accent: #4f96ff;
+  --ops-accent-hover: #76adff;
   --ops-primary-fill: #2563eb;
   --ops-primary-fill-hover: #1d4ed8;
   --ops-primary-ink: #f8fbff;
-  --ops-accent-soft: #162a4a;
-  --ops-accent-border: #2b4f82;
+  --ops-accent-soft: #152236;
+  --ops-accent-border: #284269;
   --ops-green: #34d399;
-  --ops-green-soft: #0d2c24;
-  --ops-green-border: #175240;
+  --ops-green-soft: #112620;
+  --ops-green-border: #1d4639;
   --ops-amber: #fbbf24;
-  --ops-amber-soft: #2c200b;
-  --ops-amber-border: #5c4110;
-  --ops-danger: #fca5a5;
-  --ops-danger-soft: #311519;
-  --ops-danger-border: #6b262e;
+  --ops-amber-soft: #261f12;
+  --ops-amber-border: #523f1b;
+  --ops-danger: #f87171;
+  --ops-danger-soft: #2a1518;
+  --ops-danger-border: #5e272e;
   --ops-indigo: #c4b5fd;
-  --ops-indigo-soft: #221d42;
-  --ops-indigo-border: #42387a;
+  --ops-indigo-soft: #1d1a30;
+  --ops-indigo-border: #3c3468;
   --ops-teal: #5eead4;
-  --ops-teal-soft: #0e2c2e;
-  --ops-orange-soft: #311c11;
-  --ops-orange: #fdba74;
+  --ops-teal-soft: #122526;
+  --ops-orange-soft: #291b14;
+  --ops-orange: #fb923c;
   --ops-slate: #cbd5e1;
-  --ops-slate-soft: #1a2842;
-  --ops-brand-plate: #eef4fb;
+  --ops-slate-soft: #202430;
 }
 
 html[data-mode='dark']:has(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace),
@@ -76,11 +75,29 @@ html[data-theme-transition='expand']::view-transition-new(root) {
   cursor: pointer;
 }
 
-/* Preserve legible Seatpax navy brand plate over dark surfaces without raster inversion. */
-html[data-mode='dark'] :is(.admin-shell .admin-brand .sp-brand, .admin-entry .admin-entry-top .sp-brand, .super-admin-shell .super-sidebar-brand .sp-brand, .super-admin-shell .super-mobile-bar .sp-brand, .hd-workspace .hd-sidebar > .sp-brand, .hd-workspace .hd-mobile-bar > .sp-brand, .crew-shell .crew-identity .sp-brand) {
-  background: var(--ops-brand-plate);
-  border-radius: 10px;
-  padding: 5px 9px;
+.ops-theme-toggle .ops-theme-icon-light {
+  display: none;
+}
+
+html[data-mode='dark'] :is(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) .ops-theme-toggle .ops-theme-icon-dark {
+  display: none;
+}
+
+html[data-mode='dark'] :is(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) .ops-theme-toggle .ops-theme-icon-light {
+  display: block;
+}
+
+/* Transparent Dark Mode Seatpax brand lockup (swaps crisp ivory+azure logo cleanly without container box). */
+:is(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) .sp-brand img.sp-brand-img-dark {
+  display: none;
+}
+
+html[data-mode='dark'] :is(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) .sp-brand img.sp-brand-img-light {
+  display: none;
+}
+
+html[data-mode='dark'] :is(.admin-shell, .admin-entry, .super-admin-shell, .crew-shell, .hd-workspace) .sp-brand img.sp-brand-img-dark {
+  display: block;
 }
 
 /* -------------------------------------------------------------------------- */

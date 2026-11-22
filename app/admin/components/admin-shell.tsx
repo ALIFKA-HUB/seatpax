@@ -28,7 +28,7 @@ export default function AdminShell({
 
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <Brand href="/admin" />
+          <Brand href="/admin" darkAware />
         </div>
 
         <div className="admin-sidebar-body">

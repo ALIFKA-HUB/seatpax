@@ -17,7 +17,7 @@ export default async function AdminPage() {
   return (
     <main className="admin-entry">
       <div className="admin-entry-top">
-        <Brand href="/admin" />
+        <Brand href="/admin" darkAware />
         <ThemeToggle className="admin-entry-back" showLabel fullLabel />
       </div>
       <header className="admin-header">
