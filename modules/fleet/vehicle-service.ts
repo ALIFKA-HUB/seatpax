@@ -5,7 +5,7 @@ import { parseVehicle } from './validation';
 import { expectedCounter, resourceId } from './template-service';
 
 async function vehicle(tx: DomainTx, ctx: Context, id: string, lock = false): Promise<VehicleDetail> {
-  const rows = await tx<VehicleDetail[]>`select v.id,v.name,v.plate_number as "plateNumber",v.fleet_number as "fleetNumber",v.seat_template_id as "seatTemplateId",v.default_service_class_id as "defaultServiceClassId",v.status,v.revision,t.status as "templateStatus",c.status as "classStatus",(select count(*)::int from public.seat_template_cells sc where sc.seat_template_id=t.id and sc.company_id=v.company_id and sc.type='SEAT') as capacity from public.vehicles v join public.seat_templates t on t.id=v.seat_template_id and t.company_id=v.company_id join public.service_classes c on c.id=v.default_service_class_id and c.company_id=v.company_id where v.id=${id} and v.company_id=${ctx.companyId} ${lock ? tx`for update of v` : tx``}`;
+  const rows = await tx<VehicleDetail[]>`select v.id,v.name,v.plate_number as "plateNumber",v.fleet_number as "fleetNumber",v.seat_template_id as "seatTemplateId",v.default_service_class_id as "defaultServiceClassId",v.status,v.revision,t.status as "templateStatus",c.status as "classStatus",(select count(*)::int from public.seat_template_cells sc where sc.seat_template_id=t.id and sc.company_id=v.company_id and sc.type='SEAT') as capacity,(select count(*)::int from public.trips tr where tr.vehicle_id=v.id and tr.company_id=v.company_id) as "tripCount" from public.vehicles v join public.seat_templates t on t.id=v.seat_template_id and t.company_id=v.company_id join public.service_classes c on c.id=v.default_service_class_id and c.company_id=v.company_id where v.id=${id} and v.company_id=${ctx.companyId} ${lock ? tx`for update of v` : tx``}`;
   if (rows.length !== 1) throw new DomainError('forbidden', 'Armada tidak tersedia.');
   return rows[0];
 }
@@ -46,6 +46,22 @@ export function createVehicleService(repo: FleetRepository) {
           if (error instanceof Error && 'code' in error && error.code === '23505') throw new DomainError('validation', 'Plat nomor sudah digunakan pada PO ini.');
           throw error;
         }
+      });
+    },
+    remove(ctx: Context, id: string, expectedRevision: number) {
+      resourceId(id);
+      return repo.run(ctx, async tx => {
+        const current = await vehicle(tx, ctx, id, true);
+        expectedCounter(expectedRevision, current.revision);
+        const used = await tx<{ id: string }[]>`select id from public.trips where company_id=${ctx.companyId} and vehicle_id=${id} limit 1 for share`;
+        if (used.length > 0) throw new DomainError('conflict', 'Armada masih terhubung ke perjalanan. Ubah status menjadi Nonaktif sebagai gantinya.');
+        try {
+          await tx`delete from public.vehicles where id=${id} and company_id=${ctx.companyId}`;
+        } catch (error) {
+          if (error instanceof Error && 'code' in error && error.code === '23503') throw new DomainError('conflict', 'Armada masih terhubung ke perjalanan. Ubah status menjadi Nonaktif sebagai gantinya.');
+          throw error;
+        }
+        return { deleted: true as const };
       });
     },
   };

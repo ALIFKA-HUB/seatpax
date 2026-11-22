@@ -54,6 +54,10 @@ export default function StopDirectory({
     dialog.current?.close();
     setFeedback(editing ? 'Perubahan titik tersimpan.' : 'Titik baru berhasil ditambahkan.');
   }
+  function deleted() {
+    dialog.current?.close();
+    setFeedback('Titik berhasil dihapus permanen.');
+  }
 
   return (
     <div className="dash-root stop-directory">
@@ -241,6 +245,7 @@ export default function StopDirectory({
           initial={editing}
           regionOptions={regionOptions}
           onSaved={saved}
+          onDeleted={deleted}
           onPendingChange={setPending}
           onCancel={closeForm}
         />

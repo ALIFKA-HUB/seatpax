@@ -1,15 +1,15 @@
 import type {Sql} from 'postgres';
 import {withAdminTransaction,type Context,type DomainTx,DomainError} from '@/modules/access/transaction';
-export type MasterRow={id:string;name:string;status:'ACTIVE'|'INACTIVE';city?:string;address?:string|null;code?:string;regionRegencyId?:string|null;regionProvinceId?:string|null};
-export type RouteRow={id:string;name:string;code:string|null;status:'ACTIVE'|'INACTIVE';revision:number};
+export type MasterRow={id:string;name:string;status:'ACTIVE'|'INACTIVE';city?:string;address?:string|null;code?:string;regionRegencyId?:string|null;regionProvinceId?:string|null;canDelete?:boolean};
+export type RouteRow={id:string;name:string;code:string|null;status:'ACTIVE'|'INACTIVE';revision:number;canDelete?:boolean};
 export type OrderedStop={id:string;stopId:string;name:string;sequence:number;arrivalOffsetMin:number|null;departureOffsetMin:number|null;status:'ACTIVE'|'INACTIVE'};
 export function createRouteRepository(client:Sql){return {
   run<T>(ctx:Context,fn:(tx:DomainTx)=>Promise<T>){return withAdminTransaction(client,ctx,fn);},
-  async listStops(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select id,name,city,address,status,region_regency_id as "regionRegencyId" from public.stops where company_id=${companyId} order by name`;},
-  async listClasses(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select id,name,code,status from public.service_classes where company_id=${companyId} order by name`;},
-  async listRoutes(tx:DomainTx,companyId:string):Promise<RouteRow[]>{return await tx<RouteRow[]>`select id,name,code,status,revision from public.routes where company_id=${companyId} order by name`;},
+  async listStops(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select s.id,s.name,s.city,s.address,s.status,s.region_regency_id as "regionRegencyId",not exists(select 1 from public.route_stops rs where rs.stop_id=s.id and rs.company_id=s.company_id) as "canDelete" from public.stops s where s.company_id=${companyId} order by s.name`;},
+  async listClasses(tx:DomainTx,companyId:string):Promise<MasterRow[]>{return await tx<MasterRow[]>`select c.id,c.name,c.code,c.status,(not exists(select 1 from public.vehicles v where v.default_service_class_id=c.id and v.company_id=c.company_id) and not exists(select 1 from public.segment_fares sf where sf.service_class_id=c.id and sf.company_id=c.company_id) and not exists(select 1 from public.trips tr where tr.service_class_id=c.id and tr.company_id=c.company_id)) as "canDelete" from public.service_classes c where c.company_id=${companyId} order by c.name`;},
+  async listRoutes(tx:DomainTx,companyId:string):Promise<RouteRow[]>{return await tx<RouteRow[]>`select r.id,r.name,r.code,r.status,r.revision,not exists(select 1 from public.trips tr where tr.route_id=r.id and tr.company_id=r.company_id) as "canDelete" from public.routes r where r.company_id=${companyId} order by r.name`;},
   async route(tx:DomainTx,ctx:Context,id:string,lock=false):Promise<RouteRow>{
-    const rows=await tx<RouteRow[]>`select id,name,code,status,revision from public.routes where id=${id} and company_id=${ctx.companyId} ${lock?tx`for update`:tx``}`;
+    const rows=await tx<RouteRow[]>`select r.id,r.name,r.code,r.status,r.revision,not exists(select 1 from public.trips tr where tr.route_id=r.id and tr.company_id=r.company_id) as "canDelete" from public.routes r where r.id=${id} and r.company_id=${ctx.companyId} ${lock?tx`for update of r`:tx``}`;
     if(rows.length!==1)throw new DomainError('forbidden','Rute tidak tersedia.');return rows[0];
   },
   async orderedStops(tx:DomainTx,ctx:Context,routeId:string):Promise<OrderedStop[]>{return await tx<OrderedStop[]>`select rs.id,rs.stop_id as "stopId",s.name,rs.sequence,rs.arrival_offset_min as "arrivalOffsetMin",rs.departure_offset_min as "departureOffsetMin",s.status from public.route_stops rs join public.stops s on s.id=rs.stop_id and s.company_id=rs.company_id where rs.route_id=${routeId} and rs.company_id=${ctx.companyId} order by rs.sequence`;},

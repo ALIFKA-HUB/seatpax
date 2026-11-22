@@ -36,3 +36,17 @@ it('persists recurring trip drafts atomically by weekday, blocks foreign tenants
  await expect(service.saveRecurring(f.a,recurringInput)).rejects.toMatchObject({code:'validation'});
  expect(await service.list(f.a)).toHaveLength(3);
 }));
+it('deletes DRAFT trips (including crew assignments) while blocking published trips and foreign deletes',async()=>tripFixture(client,async f=>{
+ const {createCrewService}=await import('@/modules/trip/crew-service');
+ const {createPublicationService}=await import('@/modules/trip/publication-service');
+ const repo=createTripRepository(client);
+ const drafts=createDraftService(repo),crew=createCrewService(repo),pub=createPublicationService(repo);
+ const d1=await drafts.save(f.a,f.input),d2=await drafts.save(f.a,{...f.input,name:'Published Trip'});
+ await crew.setAssignment(f.a,d1.tripId,f.crewId,'ACTIVE');
+ await expect(drafts.remove(f.b,d1.tripId,1)).rejects.toMatchObject({code:'forbidden'});
+ await expect(drafts.remove(f.a,d1.tripId,99)).rejects.toMatchObject({code:'conflict'});
+ expect(await drafts.remove(f.a,d1.tripId,1)).toEqual({deleted:true});
+ await expect(drafts.detail(f.a,d1.tripId)).rejects.toMatchObject({code:'forbidden'});
+ const published=await pub.publish(f.a,d2.tripId,1);
+ await expect(drafts.remove(f.a,d2.tripId,published.revision)).rejects.toMatchObject({code:'conflict'});
+}));

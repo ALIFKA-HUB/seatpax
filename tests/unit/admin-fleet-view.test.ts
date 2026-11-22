@@ -38,3 +38,12 @@ it('keeps vehicles and seat-templates list pages clean and routes creation to /n
  expect(tList).toContain('/admin/companies/a/seat-templates/new');expect(tList).not.toContain('Template baru');
  expect(render(await TemplatesNew({params:Promise.resolve({companyId:'a'})}))).toContain('Template baru');
 });
+it('shows conditional hard delete for unlinked templates and vehicles and hides it when linked',()=>{
+ expect(render(h(Builder,{companyId:'a',initial:{...template,vehicleCount:0}}))).toContain('Hapus permanen');
+ const linkedT=render(h(Builder,{companyId:'a',initial:{...template,vehicleCount:2}}));
+ expect(linkedT).not.toContain('Hapus permanen');expect(linkedT).toContain('Terhubung ke 2 armada');
+ const initialV:VehicleDetail={id:'v',revision:1,name:'Bus',plateNumber:'B 1 AA',fleetNumber:null,seatTemplateId:'t',defaultServiceClassId:'c',status:'ACTIVE',capacity:1,templateStatus:'ACTIVE',classStatus:'ACTIVE',tripCount:0};
+ expect(render(h(VehicleForm,{companyId:'a',initial:initialV,templates:[template],classes:[{id:'c',name:'Kelas',status:'ACTIVE'}]}))).toContain('Hapus permanen');
+ const linkedV=render(h(VehicleForm,{companyId:'a',initial:{...initialV,tripCount:3},templates:[template],classes:[{id:'c',name:'Kelas',status:'ACTIVE'}]}));
+ expect(linkedV).not.toContain('Hapus permanen');expect(linkedV).toContain('Terhubung ke 3 perjalanan');
+});

@@ -47,6 +47,29 @@ export function createTemplateService(repo: FleetRepository) {
         return { templateId: id, version };
       });
     },
+    remove(ctx: Context, id: string, expectedVersion: number) {
+      resourceId(id);
+      return repo.run(ctx, async tx => {
+        const current = await repo.template(tx, ctx, id, true);
+        expectedCounter(expectedVersion, current.version);
+        const used = await tx<{ id: string }[]>`
+          select id from public.vehicles where company_id=${ctx.companyId} and seat_template_id=${id} limit 1 for share
+        `;
+        if (used.length > 0) {
+          throw new DomainError('conflict', 'Template masih terhubung ke armada. Arsipkan sebagai gantinya.');
+        }
+        try {
+          await tx`delete from public.seat_template_cells where seat_template_id=${id} and company_id=${ctx.companyId}`;
+          await tx`delete from public.seat_templates where id=${id} and company_id=${ctx.companyId}`;
+        } catch (error) {
+          if (error instanceof Error && 'code' in error && error.code === '23503') {
+            throw new DomainError('conflict', 'Template masih terhubung ke armada. Arsipkan sebagai gantinya.');
+          }
+          throw error;
+        }
+        return { deleted: true as const };
+      });
+    },
   };
 }
 

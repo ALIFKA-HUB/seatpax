@@ -7,12 +7,15 @@ import {createRouteRepository} from '@/modules/route/repository';
 import {createRouteService} from '@/modules/route/service';
 import {createPricingService} from '@/modules/pricing/service';
 import {DomainError} from '@/modules/access/transaction';
-export type ActionResult={ok:true;revision?:number;routeId?:string;stopIds?:string[];latestRoute?:{name:string;code:string|null;stops:{stopId:string;name:string;arrivalOffsetMin:number|null;departureOffsetMin:number|null}[]};quote?:{currency:'IDR';total:string}}|{ok:false;code:'validation'|'forbidden'|'conflict'|'unavailable';message:string};
+export type ActionResult={ok:true;revision?:number;routeId?:string;deleted?:boolean;stopIds?:string[];latestRoute?:{name:string;code:string|null;stops:{stopId:string;name:string;arrivalOffsetMin:number|null;departureOffsetMin:number|null}[]};quote?:{currency:'IDR';total:string}}|{ok:false;code:'validation'|'forbidden'|'conflict'|'unavailable';message:string};
 const uuid=z.uuid();
 const commandSchema=z.discriminatedUnion('kind',[
   z.object({kind:z.literal('stop'),id:uuid.optional(),input:z.unknown()}),
+  z.object({kind:z.literal('deleteStop'),id:uuid}),
   z.object({kind:z.literal('class'),id:uuid.optional(),input:z.unknown()}),
+  z.object({kind:z.literal('deleteClass'),id:uuid}),
   z.object({kind:z.literal('route'),id:uuid.optional(),revision:z.number().int().positive().optional(),input:z.unknown()}),
+  z.object({kind:z.literal('deleteRoute'),id:uuid,revision:z.number().int().positive()}),
   z.object({kind:z.literal('status'),id:uuid,revision:z.number().int().positive(),status:z.enum(['ACTIVE','INACTIVE'])}),
   z.object({kind:z.literal('fare'),routeId:uuid,serviceClassId:uuid,revision:z.number().int().positive(),prices:z.array(z.string()).max(49),remove:z.boolean().optional()}),
   z.object({kind:z.literal('quote'),routeId:uuid,serviceClassId:uuid,fromRouteStopId:uuid,toRouteStopId:uuid}),
@@ -25,8 +28,11 @@ export async function runAdminAction(companyId:string,raw:unknown):Promise<Actio
     const context={actorId:user.id,companyId};const repo=createRouteRepository(getDatabase().$client);const route=createRouteService(repo);const pricing=createPricingService(repo);
     let result:ActionResult={ok:true};
     if(cmd.kind==='stop')await route.saveStop(context,cmd.input,cmd.id);
+    if(cmd.kind==='deleteStop')result={ok:true,...await route.deleteStop(context,cmd.id)};
     if(cmd.kind==='class')await route.saveClass(context,cmd.input,cmd.id);
+    if(cmd.kind==='deleteClass')result={ok:true,...await route.deleteClass(context,cmd.id)};
     if(cmd.kind==='route')result={ok:true,...await route.saveRoute(context,cmd.input,cmd.id,cmd.revision)};
+    if(cmd.kind==='deleteRoute')result={ok:true,...await route.deleteRoute(context,cmd.id,cmd.revision)};
     if(cmd.kind==='status')result={ok:true,...await route.setRouteStatus(context,cmd.id,cmd.revision,cmd.status)};
     if(cmd.kind==='fare')result={ok:true,...await pricing.save(context,{routeId:cmd.routeId,serviceClassId:cmd.serviceClassId,expectedRevision:cmd.revision,prices:cmd.prices},cmd.remove)};
     if(cmd.kind==='quote')return {ok:true,quote:await pricing.preview(context,{routeId:cmd.routeId,serviceClassId:cmd.serviceClassId,fromRouteStopId:cmd.fromRouteStopId,toRouteStopId:cmd.toRouteStopId})};

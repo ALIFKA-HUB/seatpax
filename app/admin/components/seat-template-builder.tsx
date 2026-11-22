@@ -31,6 +31,7 @@ export default function SeatTemplateBuilder({ companyId, initial }: { companyId:
   const [latest, setLatest] = useState<TemplateDetail | null>(null);
 
   const cell = draft.cells.find(c => `${c.rowIndex}:${c.colIndex}` === selected) ?? draft.cells[0];
+  const canDelete = Boolean(draft.id) && draft.vehicleCount === 0;
   const updateCell = (type: CellType, label = cell.label, code?: string | null) =>
     setDraft(current => ({ ...current, ...setCell(current, cell.rowIndex, cell.colIndex, type, label, code) }));
 
@@ -76,6 +77,32 @@ export default function SeatTemplateBuilder({ companyId, initial }: { companyId:
       const result = await runFleetAction(companyId, { kind: 'refreshTemplate', id: draft.id });
       if (result.ok && result.latestTemplate) setLatest(result.latestTemplate);
       else if (!result.ok) setMessage(result.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function removeTemplate() {
+    if (busy || !draft.id) return;
+    if (!window.confirm('Hapus template ini secara permanen? Tindakan ini tidak dapat dibatalkan.')) return;
+    setBusy(true);
+    setMessage('');
+    try {
+      const result = await runFleetAction(companyId, {
+        kind: 'deleteTemplate',
+        id: draft.id,
+        version: draft.version,
+      });
+      if (!result.ok) {
+        setMessage(result.message);
+        if (result.code === 'conflict') {
+          setConflict(true);
+          setLatest(null);
+        }
+        return;
+      }
+      router.push(`/admin/companies/${companyId}/seat-templates`);
+      router.refresh();
     } finally {
       setBusy(false);
     }
@@ -211,7 +238,7 @@ export default function SeatTemplateBuilder({ companyId, initial }: { companyId:
           </button>
           {draft.id && (
             <button
-              className={draft.status === 'ACTIVE' ? 'admin-danger' : undefined}
+              className={!canDelete && draft.status === 'ACTIVE' ? 'admin-danger' : undefined}
               disabled={conflict}
               type="button"
               onClick={() => {
@@ -222,7 +249,22 @@ export default function SeatTemplateBuilder({ companyId, initial }: { companyId:
               {draft.status === 'ACTIVE' ? 'Arsipkan template' : 'Aktifkan template'}
             </button>
           )}
+          {canDelete && (
+            <button
+              className="admin-danger"
+              disabled={conflict}
+              type="button"
+              onClick={() => void removeTemplate()}
+            >
+              Hapus permanen
+            </button>
+          )}
         </div>
+        {draft.id && typeof draft.vehicleCount === 'number' && draft.vehicleCount > 0 && (
+          <p className="admin-hint">
+            Terhubung ke {draft.vehicleCount} armada — gunakan Arsipkan jika tidak lagi dipakai untuk armada baru.
+          </p>
+        )}
 
         {conflict && (
           <ConflictPanel

@@ -9,7 +9,12 @@ import type {
 } from '@/modules/trip/types';
 import { expandRecurringSchedule, formatUtcDate, toWibInput } from '@/modules/trip/time';
 import { DomainError } from '@/modules/access/transaction';
-import { publishTripAction, saveRecurringTripsAction, saveTripAction } from '../trip-actions';
+import {
+  deleteTripDraftAction,
+  publishTripAction,
+  saveRecurringTripsAction,
+  saveTripAction,
+} from '../trip-actions';
 import TripDetail from './trip-detail';
 
 type Choices = {
@@ -222,6 +227,27 @@ export default function TripForm({
       router.refresh();
     } catch {
       setMessage('Hasil belum diterima. Coba buka kembali perjalanan; publikasi ulang aman.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function removeDraft() {
+    if (!initial || counter === undefined || busy) return;
+    if (!window.confirm('Hapus draft perjalanan ini secara permanen? Tindakan ini tidak dapat dibatalkan.')) return;
+    setBusy(true);
+    setMessage('');
+    try {
+      const result = await deleteTripDraftAction(companyId, { id: initial.id, revision: counter });
+      if (!result.ok) {
+        setMessage(result.message);
+        setConflict(result.code === 'conflict');
+        return;
+      }
+      router.push(base);
+      router.refresh();
+    } catch {
+      setMessage('Koneksi terputus. Coba lagi.');
     } finally {
       setBusy(false);
     }
@@ -456,13 +482,25 @@ export default function TripForm({
                   : 'Simpan draft'}
             </button>
             {initial && (
-              <button
-                type="button"
-                disabled={dirty || conflict || Boolean(preview?.blockers.length)}
-                onClick={() => setConfirming(true)}
-              >
-                Buka penjualan
-              </button>
+              <>
+                <button
+                  type="button"
+                  disabled={dirty || conflict || Boolean(preview?.blockers.length)}
+                  onClick={() => setConfirming(true)}
+                >
+                  Buka penjualan
+                </button>
+                {initial.status === 'DRAFT' && (
+                  <button
+                    type="button"
+                    className="admin-danger"
+                    disabled={conflict}
+                    onClick={() => void removeDraft()}
+                  >
+                    Hapus draft
+                  </button>
+                )}
+              </>
             )}
           </div>
 

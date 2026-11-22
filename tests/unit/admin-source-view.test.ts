@@ -38,3 +38,14 @@ it('keeps revision conflict choices explicit',()=>{
  const html=render(h(ConflictPanel,{latest:{name:'Baru'},onRefresh(){},onAdopt(){},onOverwrite(){}}));
  for(const s of ['Muat data terbaru','Gunakan data terbaru','Pertahankan draft untuk mengganti','<details','fleet-conflict'])expect(html).toContain(s);
 });
+it('shows hard delete only when route, stop, or class has zero relations',async()=>{
+ const {default:RouteEditor}=await import('@/app/admin/components/route-editor');
+ const {default:MasterForm}=await import('@/app/admin/components/master-form');
+ expect(render(h(RouteEditor,{companyId:'a',choices:[],route:{id:'r',name:'Rute',code:null,status:'ACTIVE',revision:1,canDelete:true}}))).toContain('Hapus permanen');
+ const linkedR=render(h(RouteEditor,{companyId:'a',choices:[],route:{id:'r',name:'Rute',code:null,status:'ACTIVE',revision:1,canDelete:false}}));
+ expect(linkedR).not.toContain('Hapus permanen');expect(linkedR).toContain('Nonaktifkan rute');
+ expect(render(h(MasterForm,{companyId:'a',kind:'class',initial:{id:'c',name:'Kelas',code:'kelas',status:'ACTIVE',canDelete:true}}))).toContain('Hapus permanen');
+ expect(render(h(MasterForm,{companyId:'a',kind:'class',initial:{id:'c',name:'Kelas',code:'kelas',status:'ACTIVE',canDelete:false}}))).not.toContain('Hapus permanen');
+ expect(render(h(MasterForm,{companyId:'a',kind:'stop',initial:{id:'s',name:'Stop',status:'ACTIVE',canDelete:true}}))).toContain('Hapus permanen');
+ expect(render(h(MasterForm,{companyId:'a',kind:'stop',initial:{id:'s',name:'Stop',status:'ACTIVE',canDelete:false}}))).not.toContain('Hapus permanen');
+});

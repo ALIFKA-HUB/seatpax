@@ -9,5 +9,6 @@ async function command<T,C>(companyId:string,raw:unknown,schema:z.ZodType<C>,wor
 }
 export async function saveTripAction(companyId:string,raw:unknown){return command(companyId,raw,z.object({input:z.unknown(),id:id.optional(),revision:revision.optional()}),(ctx,repo,c)=>createDraftService(repo).save(ctx,c.input,c.id,c.revision));}
 export async function saveRecurringTripsAction(companyId:string,raw:unknown){return command(companyId,raw,z.object({input:z.unknown()}),(ctx,repo,c)=>createDraftService(repo).saveRecurring(ctx,c.input));}
+export async function deleteTripDraftAction(companyId:string,raw:unknown){return command(companyId,raw,z.object({id,revision}),(ctx,repo,c)=>createDraftService(repo).remove(ctx,c.id,c.revision));}
 export async function publishTripAction(companyId:string,raw:unknown){return command(companyId,raw,z.object({id,revision}),(ctx,repo,c)=>createPublicationService(repo).publish(ctx,c.id,c.revision));}
 export async function setTripCrewAction(companyId:string,raw:unknown){return command(companyId,raw,z.object({id,userId:id,status:z.enum(['ACTIVE','REVOKED'])}),(ctx,repo,c)=>createCrewService(repo).setAssignment(ctx,c.id,c.userId,c.status));}

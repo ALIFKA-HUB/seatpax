@@ -1,10 +1,10 @@
 import { beforeEach, it, expect, vi } from 'vitest';
-const f = vi.hoisted(() => ({ identity: vi.fn(), template: vi.fn(), status: vi.fn(), vehicle: vi.fn(), detailTemplate: vi.fn(), detailVehicle: vi.fn(), revalidate: vi.fn() }));
+const f = vi.hoisted(() => ({ identity: vi.fn(), template: vi.fn(), status: vi.fn(), removeTemplate: vi.fn(), vehicle: vi.fn(), removeVehicle: vi.fn(), detailTemplate: vi.fn(), detailVehicle: vi.fn(), revalidate: vi.fn() }));
 vi.mock('@/modules/auth/identity', () => ({ getVerifiedUser: f.identity }));
 vi.mock('@/lib/db', () => ({ getDatabase: () => ({ $client: {} }) }));
 vi.mock('@/modules/fleet/repository', () => ({ createFleetRepository: () => ({}) }));
-vi.mock('@/modules/fleet/template-service', () => ({ createTemplateService: () => ({ save: f.template, setStatus: f.status, detail: f.detailTemplate }) }));
-vi.mock('@/modules/fleet/vehicle-service', () => ({ createVehicleService: () => ({ save: f.vehicle, detail: f.detailVehicle }) }));
+vi.mock('@/modules/fleet/template-service', () => ({ createTemplateService: () => ({ save: f.template, setStatus: f.status, remove: f.removeTemplate, detail: f.detailTemplate }) }));
+vi.mock('@/modules/fleet/vehicle-service', () => ({ createVehicleService: () => ({ save: f.vehicle, remove: f.removeVehicle, detail: f.detailVehicle }) }));
 vi.mock('next/cache', () => ({ revalidatePath: f.revalidate }));
 import { runFleetAction } from '@/app/admin/fleet-actions';
 import { DomainError } from '@/modules/access/transaction';
@@ -36,4 +36,12 @@ it('returns complete latest states and preserves safe conflicts', async () => {
   expect(await runFleetAction(cid, { kind: 'saveTemplate', input: {} })).toMatchObject({ ok: false, code: 'conflict' });
   f.template.mockRejectedValue(Error('SQL secret'));
   expect(JSON.stringify(await runFleetAction(cid, { kind: 'saveTemplate', input: {} }))).not.toContain('secret');
+});
+it('forwards hard delete commands for unlinked templates and vehicles', async () => {
+  f.removeTemplate.mockResolvedValue({ deleted: true });
+  f.removeVehicle.mockResolvedValue({ deleted: true });
+  expect(await runFleetAction(cid, { kind: 'deleteTemplate', id: cid, version: 2 })).toEqual({ ok: true, deleted: true });
+  expect(f.removeTemplate).toHaveBeenCalledWith({ actorId, companyId: cid }, cid, 2);
+  expect(await runFleetAction(cid, { kind: 'deleteVehicle', id: cid, revision: 3 })).toEqual({ ok: true, deleted: true });
+  expect(f.removeVehicle).toHaveBeenCalledWith({ actorId, companyId: cid }, cid, 3);
 });

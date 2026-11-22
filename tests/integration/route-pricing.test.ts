@@ -82,3 +82,19 @@ it('cross tenant composite FK and browser privileges reject direct access',async
     await expect(client.begin(async tx=>{await tx.unsafe(`SET LOCAL ROLE ${role}`);await tx.unsafe(`SELECT * FROM public.${table}`);})).rejects.toMatchObject({code:'42501'});
   }
 }));
+it('hard deletes unlinked route, class, and stop while rejecting linked or foreign deletions',async()=>fixture(async({a,b,route,pricing})=>{
+  const s1=await route.saveStop(a,stopInput('S1')),s2=await route.saveStop(a,stopInput('S2')),s3=await route.saveStop(a,stopInput('S3'));
+  const c1=await route.saveClass(a,{name:'Exec',code:'exec',status:'ACTIVE'}),c2=await route.saveClass(a,{name:'Eco',code:'eco',status:'ACTIVE'});
+  const created=await route.saveRoute(a,{name:'R1',code:null,stops:[s1,s2].map(stopId=>({stopId,arrivalOffsetMin:0,departureOffsetMin:0}))});
+  await pricing.save(a,{routeId:created.routeId,serviceClassId:c1,expectedRevision:1,prices:['50000']});
+  await expect(route.deleteStop(b,s3)).rejects.toMatchObject({code:'forbidden'});
+  await expect(route.deleteStop(a,s1)).rejects.toMatchObject({code:'conflict'});
+  await expect(route.deleteClass(a,c1)).rejects.toMatchObject({code:'conflict'});
+  expect(await route.deleteStop(a,s3)).toEqual({deleted:true});
+  expect(await route.deleteClass(a,c2)).toEqual({deleted:true});
+  expect(await route.deleteRoute(a,created.routeId,2)).toEqual({deleted:true});
+  // After route + fares are deleted, s1, s2, and c1 are unlinked and can now be deleted cleanly.
+  expect(await route.deleteClass(a,c1)).toEqual({deleted:true});
+  expect(await route.deleteStop(a,s1)).toEqual({deleted:true});
+  expect(await route.deleteStop(a,s2)).toEqual({deleted:true});
+}));

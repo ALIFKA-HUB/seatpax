@@ -128,3 +128,23 @@ it('archive and revoke locks serialize assignment and reject subsequent writes',
   await guarded; await revoke;
   await expect(service.save(a, data)).rejects.toMatchObject({ code: 'forbidden' });
 }));
+it('hard deletes unlinked seat templates and vehicles while blocking linked or foreign deletes', async () => fixture(async (a, b, templates) => {
+  const vehicles = createVehicleService(createFleetRepository(client));
+  const t1 = await templates.save(a, input()), t2 = await templates.save(a, { ...input(), name: 'Layout 2' });
+  const classId = randomUUID();
+  await client`insert into public.service_classes(id,company_id,name,code) values(${classId},${a.companyId},'Class','class')`;
+  const v = await vehicles.save(a, { name: 'Bus', plateNumber: 'B 901 AA', fleetNumber: null, seatTemplateId: t1.templateId, defaultServiceClassId: classId, status: 'ACTIVE' });
+  expect((await templates.detail(a, t1.templateId)).vehicleCount).toBe(1);
+  expect((await templates.detail(a, t2.templateId)).vehicleCount).toBe(0);
+  expect((await vehicles.detail(a, v.vehicleId)).tripCount).toBe(0);
+  await expect(templates.remove(b, t2.templateId, 1)).rejects.toMatchObject({ code: 'forbidden' });
+  await expect(templates.remove(a, t1.templateId, 1)).rejects.toMatchObject({ code: 'conflict' });
+  await expect(templates.remove(a, t2.templateId, 99)).rejects.toMatchObject({ code: 'conflict' });
+  expect(await templates.remove(a, t2.templateId, 1)).toEqual({ deleted: true });
+  await expect(templates.detail(a, t2.templateId)).rejects.toMatchObject({ code: 'forbidden' });
+  await vehicles.remove(a, v.vehicleId, 1);
+  await expect(vehicles.detail(a, v.vehicleId)).rejects.toMatchObject({ code: 'forbidden' });
+  // Once the vehicle is removed, the previously linked template now has 0 vehicles and can be hard deleted (even if archived).
+  await templates.setStatus(a, t1.templateId, 1, 'ARCHIVED');
+  expect(await templates.remove(a, t1.templateId, 2)).toEqual({ deleted: true });
+}));

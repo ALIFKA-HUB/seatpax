@@ -117,5 +117,25 @@ export function createDraftService(repo: TripRepository) {
         };
       });
     },
+    remove(ctx: Context, id: string, expectedRevision: number): Promise<{ deleted: true }> {
+      resourceId(id);
+      return repo.runAdmin(ctx, async tx => {
+        const current = await repo.trip(tx, ctx, id, true);
+        expectedCounter(expectedRevision, current.revision);
+        if (current.status !== 'DRAFT' || current.publishedAt !== null) {
+          throw new DomainError('conflict', 'Perjalanan yang sudah dibuka tidak dapat dihapus.');
+        }
+        const stops = await tx<{ id: string }[]>`
+          select id from public.trip_stops where trip_id=${id} and company_id=${ctx.companyId} limit 1
+        `;
+        if (stops.length > 0) {
+          throw new DomainError('conflict', 'Perjalanan yang sudah memiliki snapshot tidak dapat dihapus.');
+        }
+        await tx`delete from public.trip_audit_events where trip_id=${id} and company_id=${ctx.companyId}`;
+        await tx`delete from public.trip_crew_assignments where trip_id=${id} and company_id=${ctx.companyId}`;
+        await tx`delete from public.trips where id=${id} and company_id=${ctx.companyId}`;
+        return { deleted: true };
+      });
+    },
   };
 }
