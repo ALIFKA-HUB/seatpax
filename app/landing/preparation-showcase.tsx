@@ -32,7 +32,6 @@ const PREP_STEPS = [
 /** Synchronizes the 3 pre-boarding preparation steps with the isometric Boarding Stand figure. */
 export default function PreparationShowcase(): React.JSX.Element {
   const [activeStep, setActiveStep] = React.useState<PrepStepIndex>(0);
-  const baseId = React.useId();
 
   return (
     <section className="lp-experience" aria-labelledby="experience-title">
@@ -47,8 +46,7 @@ export default function PreparationShowcase(): React.JSX.Element {
         >
           {PREP_STEPS.map(({ index, title, description, Icon }) => {
             const isActive = activeStep === index;
-            const triggerId = `${baseId}-step-${index}-trigger`;
-            const panelId = `${baseId}-step-${index}-panel`;
+            const stepNum = String(index + 1).padStart(2, "0");
 
             return (
               <div
@@ -58,10 +56,8 @@ export default function PreparationShowcase(): React.JSX.Element {
               >
                 <button
                   type="button"
-                  id={triggerId}
                   className="lp-prep-trigger"
-                  aria-expanded={isActive}
-                  aria-controls={panelId}
+                  aria-pressed={isActive}
                   onClick={() => setActiveStep(index)}
                 >
                   <Icon
@@ -71,13 +67,10 @@ export default function PreparationShowcase(): React.JSX.Element {
                   />
                   <span className="lp-prep-title">{title}</span>
                   <span className="lp-prep-indicator" aria-hidden="true">
-                    {isActive ? "−" : "+"}
+                    {stepNum}
                   </span>
                 </button>
                 <div
-                  id={panelId}
-                  role="region"
-                  aria-labelledby={triggerId}
                   className="lp-prep-panel"
                   data-active={isActive ? "true" : undefined}
                 >

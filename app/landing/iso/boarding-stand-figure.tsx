@@ -34,12 +34,18 @@ const STEP_READOUTS: Record<PrepStepIndex, string> = {
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 function subscribeReducedMotion(onChange: () => void): () => void {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return () => {};
+  }
   const media = window.matchMedia(REDUCED_MOTION_QUERY);
   media.addEventListener("change", onChange);
   return () => media.removeEventListener("change", onChange);
 }
 
 function getReducedMotionSnapshot(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
   return window.matchMedia(REDUCED_MOTION_QUERY).matches;
 }
 
@@ -259,8 +265,7 @@ export default function BoardingStandFigure({
           <svg
             className="iso-svg"
             viewBox={GEOMETRY.viewBox}
-            role="img"
-            aria-label="Ilustrasi isometrik Boarding & QR Verification Stand Seatpax"
+            aria-hidden="true"
             focusable="false"
           >
             {BACK_SOLIDS.map((solid) =>

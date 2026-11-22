@@ -1186,15 +1186,18 @@ html:has(.sp-landing) {
 }
 
 .lp-prep-indicator {
-  display: grid;
+  display: inline-grid;
   place-items: center;
-  width: 24px;
+  min-width: 28px;
   height: 24px;
-  border-radius: 50%;
+  padding: 0 7px;
+  border-radius: 999px;
   background: var(--lp-tint);
   color: var(--sp-primary);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
   line-height: 1;
   flex: none;
 }
@@ -1202,7 +1205,7 @@ html:has(.sp-landing) {
 .lp-prep-item.is-active .lp-prep-indicator,
 .lp-prep-item[data-active='true'] .lp-prep-indicator {
   background: var(--sp-primary);
-  color: var(--lp-on-dark);
+  color: var(--lp-surface);
 }
 
 /* Keep all 3 descriptions readable in SSR/no-JS without animating height */

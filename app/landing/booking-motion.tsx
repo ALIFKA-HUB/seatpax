@@ -73,12 +73,18 @@ function getVisibilityServerSnapshot(): boolean {
 }
 
 function subscribeNarrowDeck(onChange: () => void): () => void {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return () => {};
+  }
   const media = window.matchMedia(NARROW_DECK_QUERY);
   media.addEventListener('change', onChange);
   return () => media.removeEventListener('change', onChange);
 }
 
 function getNarrowDeckSnapshot(): boolean {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return false;
+  }
   return window.matchMedia(NARROW_DECK_QUERY).matches;
 }
 
@@ -268,11 +274,16 @@ function SeatShowcase(): JSX.Element {
   const [autoPlayed, setAutoPlayed] = useState(false);
   const clickTimerRef = useRef<number | null>(null);
 
+  const clearClickTimer = () => {
+    if (clickTimerRef.current !== null) {
+      window.clearTimeout(clickTimerRef.current);
+      clickTimerRef.current = null;
+    }
+  };
+
   useEffect(() => {
     return () => {
-      if (clickTimerRef.current !== null) {
-        window.clearTimeout(clickTimerRef.current);
-      }
+      clearClickTimer();
     };
   }, []);
 
@@ -304,10 +315,7 @@ function SeatShowcase(): JSX.Element {
   ]);
 
   const handleSelectSeat = (seat: string) => {
-    if (clickTimerRef.current !== null) {
-      window.clearTimeout(clickTimerRef.current);
-      clickTimerRef.current = null;
-    }
+    clearClickTimer();
     setUserInteracted(true);
     setSelectedSeat(seat);
 
@@ -323,12 +331,15 @@ function SeatShowcase(): JSX.Element {
   };
 
   const handleReselect = () => {
-    if (clickTimerRef.current !== null) {
-      window.clearTimeout(clickTimerRef.current);
-      clickTimerRef.current = null;
-    }
+    clearClickTimer();
     setUserInteracted(true);
     setPhase('select');
+  };
+
+  const handleShowTicket = () => {
+    clearClickTimer();
+    setUserInteracted(true);
+    setPhase('ticket');
   };
 
   return (
@@ -375,10 +386,7 @@ function SeatShowcase(): JSX.Element {
                       <button
                         type="button"
                         className="lpm-preview-ticket-btn"
-                        onClick={() => {
-                          setUserInteracted(true);
-                          setPhase('ticket');
-                        }}
+                        onClick={handleShowTicket}
                       >
                         Lihat tiket
                       </button>
@@ -510,8 +518,10 @@ function DeckShowcase(): JSX.Element {
   const isNarrow = useNarrowDeck();
 
   const [activeIndex, setActiveIndex] = useState<0 | 1 | 2>(0);
-  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
   const [cycleNonce, setCycleNonce] = useState(0);
+  const paused = hovered || focused;
 
   useEffect(() => {
     if (shouldReduceMotion || !isInView || paused || documentHidden) {
@@ -532,7 +542,7 @@ function DeckShowcase(): JSX.Element {
 
   const handleBlurCapture = (event: FocusEvent<HTMLDivElement>) => {
     if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-      setPaused(false);
+      setFocused(false);
     }
   };
 
@@ -542,9 +552,9 @@ function DeckShowcase(): JSX.Element {
         className="lpm-field lpm-deck-field"
         role="group"
         aria-label="Alur tiga langkah pemesanan Seatpax: Kursi, Pembayaran, dan Tiket"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocusCapture={() => setPaused(true)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocusCapture={() => setFocused(true)}
         onBlurCapture={handleBlurCapture}
       >
         {shouldReduceMotion ? (
