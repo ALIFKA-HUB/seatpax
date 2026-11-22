@@ -1,100 +1,814 @@
-/* Illustration layers stay local: paper/map 0, ticket 1, travelling numeral 2.
-   The deck uses parallel 3D planes; opacity on those planes would flatten them. */
-.lpm-root {--lpm-blue:var(--sp-primary,#005bd1); --lpm-ink:var(--sp-ink,#0a2144); --lpm-muted:var(--sp-muted,#526078); --lpm-line:var(--sp-border,#dce5ef); container-type:inline-size; min-width:0; color:var(--lpm-ink); font-family:var(--font-passenger-jakarta),sans-serif}
-.lpm-root * {box-sizing:border-box}
-.lpm-field {height:410px; position:relative; isolation:isolate; perspective:1100px; min-width:0}
-.lpm-field svg {flex:none; stroke-width:1.5}
-.lpm-shadow {position:absolute; left:18%; right:18%; bottom:20px; height:20px; border-radius:50%; background:radial-gradient(ellipse,#214f9314,transparent 70%); pointer-events:none}
-.lpm-map {position:absolute; top:50%; left:50%; width:min(68%,290px); padding:22px; border:1px solid var(--lpm-line); background:#fdfefe; border-radius:24px; box-shadow:0 18px 0 -12px #d5e4fa,0 25px 42px -15px #16375a2a; transform:translate(-50%,-50%) rotate(-2deg); opacity:0}
-.lpm-map-heading {display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:15px}
-.lpm-map-heading svg {color:var(--lpm-blue)}
-.lpm-front {display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--lpm-line); padding-bottom:9px; margin:16px 0 18px; font-size:11px; color:var(--lpm-muted)}
-.lpm-front span {width:15px; height:15px; border-radius:50%; border:1px solid var(--lpm-line)}
-.lpm-seats {display:grid; grid-template-columns:1fr 1fr .25fr 1fr; gap:13px}
-.lpm-seat {position:relative; display:grid; place-items:center; aspect-ratio:1.05; border:1px solid var(--lpm-line); border-radius:11px; background:linear-gradient(160deg,#fff,#eff4fc); color:#526b90; box-shadow:0 5px 0 -1px #d2def0; font-size:16px; font-weight:650}
-.lpm-seat::after {content:''; position:absolute; left:10%; right:10%; bottom:5px; height:4px; border-radius:6px; background:#cad9ed}
-.lpm-seats .lpm-seat:nth-child(3n) {grid-column:4}
-.lpm-seat.lpm-chosen {border-color:var(--lpm-blue); background:var(--lpm-blue); color:#fff; box-shadow:0 5px 0 -1px #0047b6}
-.lpm-chosen::after {background:#ffffff73}
-.lpm-map-legend {display:flex; justify-content:space-between; gap:12px; margin-top:20px; font-size:11px; color:var(--lpm-muted)}
-.lpm-map-legend span:last-child {color:var(--lpm-blue)}
-.lpm-focus {position:absolute; top:50%; left:50%; width:70px; height:68px; border:2px solid color-mix(in srgb,var(--lpm-blue) 36%,transparent); border-radius:18px; opacity:0; pointer-events:none}
-.lpm-morph-paper {position:absolute; top:50%; left:50%; width:290px; height:232px; border:1px solid var(--lpm-line); background:#fff; opacity:0; pointer-events:none; transform:translate(-50%,-50%); transform-origin:center}
-.lpm-seat-rail {position:absolute; left:10%; right:10%; bottom:5px; height:4px; border-radius:6px; background:#ffffff73}
-.lpm-ticket {position:absolute; top:50%; left:50%; width:min(78%,290px); transform:translate(-50%,-50%); pointer-events:none}
-.lpm-ticket-paper {min-height:232px; border:1px solid var(--lpm-line); border-bottom:0; border-radius:20px 20px 0 0; background:#fff; overflow:hidden}
-.lpm-ticket-content {padding:23px}
-.lpm-ticket-brand {display:flex; justify-content:space-between; align-items:center; gap:14px; color:var(--lpm-blue)}
-.lpm-ticket-brand img {width:100px; height:auto; flex:none}
-.lpm-ticket-seat {display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:28px}
-.lpm-ticket-seat>span {font-size:12px; color:var(--lpm-muted)}
-.lpm-ticket-seat>strong {font-size:59px; font-weight:750; letter-spacing:-3px; line-height:1}
-.lpm-confirmed {display:flex; align-items:center; gap:7px; margin-top:25px; font-size:11px; color:#3c658b}
-.lpm-confirmed svg {color:var(--lpm-blue)}
-.lpm-stub {position:relative; display:flex; align-items:center; gap:16px; min-height:96px; padding:19px 23px; border:1px solid var(--lpm-line); border-top:1px dashed var(--lpm-line); border-radius:0 0 20px 20px; background:#f1f6ff; box-shadow:0 22px 35px -20px #163a6b3b}
-.lpm-stub>svg {color:var(--lpm-blue)}
-.lpm-stub strong,.lpm-stub span {display:block; font-size:12px}
-.lpm-stub span {font-size:11px; color:var(--lpm-muted); margin-top:6px}
-.lpm-stub::before,.lpm-stub::after {content:''; position:absolute; top:-9px; width:18px; height:18px; border:1px solid var(--lpm-line); border-radius:50%; background:#fff}
-.lpm-stub::before {left:-10px}.lpm-stub::after {right:-10px}
-.lpm-seal {position:absolute; display:grid; place-items:center; top:-18px; right:-18px; width:55px; height:55px; border:5px solid #fff; border-radius:50%; background:var(--lpm-blue); color:#fff; box-shadow:0 6px 18px #0055c526}
-.lpm-number {position:absolute; top:50%; left:50%; display:block; text-align:center; white-space:nowrap; opacity:0; pointer-events:none}
-.lpm-cursor {position:absolute; top:50%; left:50%; color:var(--lpm-ink); opacity:0; pointer-events:none; filter:drop-shadow(2px 3px 2px #15345b28)}
-.lpm-root[data-motion-ready=true] .lpm-ticket-paper {background:transparent; border-color:transparent}
-.lpm-root[data-motion-ready=true] [data-part=destination] {opacity:0}
-.lpm-root[data-motion-ready=true] .lpm-map,.lpm-root[data-motion-ready=true] .lpm-ticket,.lpm-root[data-motion-ready=true] .lpm-morph-paper,.lpm-root[data-motion-ready=true] .lpm-number {will-change:transform}
-
-.lpm-root:not([data-motion-ready=true]) .lpm-deck-field {height:auto; min-height:410px}
-.lpm-deck {position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:center; gap:18px; min-height:100%; transform-style:preserve-3d; perspective:1000px}
-.lpm-card {position:relative; width:100%; max-width:220px; height:280px; padding:20px; margin:auto; border:1px solid var(--lpm-line); border-radius:20px; background:#fff; color:var(--lpm-ink); box-shadow:0 4px 0 -1px #d5e1f3,0 26px 45px -17px #143d7624; backface-visibility:hidden; overflow:hidden; text-align:left}
-.lpm-card-payment {background:#f8fbff}
-.lpm-card-heading {display:flex; align-items:center; justify-content:space-between; gap:9px; color:var(--lpm-blue); font-size:12px; font-weight:650}
-.lpm-card-heading img {width:96px; height:auto}
-.lpm-mini-seats {display:grid; grid-template-columns:1fr 1fr; gap:12px 20px; max-width:110px; margin:22px auto 0}
-.lpm-mini-seats .lpm-seat {font-size:14px}
-.lpm-card-foot {display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; font-size:11px; color:var(--lpm-muted)}
-.lpm-card-foot strong {font-size:20px; color:var(--lpm-blue)}
-.lpm-confirm-symbol {position:relative; display:grid; place-items:center; margin:33px auto 19px; width:82px; height:82px}
-.lpm-confirm-symbol>[data-part=ring] {position:absolute; inset:0; border:1px solid var(--lpm-line); border-radius:50%; opacity:0}
-.lpm-confirm-symbol>[data-part=check] {display:grid; place-items:center; width:61px; height:61px; border-radius:50%; background:var(--lpm-blue); color:#fff; box-shadow:0 9px 15px #0055cf21}
-.lpm-card-title {display:block; text-align:center; font-size:18px; letter-spacing:-.7px}
-.lpm-card-subtitle {display:block; margin-top:9px; font-size:11px; color:var(--lpm-muted); text-align:center}
-.lpm-card-subhead {display:block; margin-top:25px; font-size:11px; color:var(--lpm-muted)}
-.lpm-card-number {display:block; margin-top:4px; font-size:64px; line-height:1.1; letter-spacing:-4px; font-weight:750}
-.lpm-card-ticket>.lpm-card-subtitle {text-align:left; margin:0}
-.lpm-perforation {border-top:1px dashed var(--lpm-line); margin:17px -20px}
-.lpm-card-bottom {display:flex; align-items:center; gap:14px; font-size:11px; line-height:1.6; color:var(--lpm-muted)}
-.lpm-card-bottom svg {color:var(--lpm-blue)}
-.sp-landing .lpm-card-hit {display:none; position:absolute; inset:0; width:100%; height:100%; padding:0; margin:0; border:0; border-radius:inherit; background:transparent; cursor:pointer}
-.sp-landing .lpm-root .lpm-card-hit,.sp-landing .lpm-root .lpm-card-hit:hover:not(:disabled) {background:transparent; border:0; padding:0; box-shadow:none; opacity:1}
-.lpm-root[data-motion-ready=true] .lpm-deck {position:absolute; inset:0; display:block; min-height:0}
-.lpm-root[data-motion-ready=true] .lpm-card {position:absolute; top:50%; left:50%; width:min(58%,220px); margin:0; transform:translate(-50%,-50%); will-change:transform}
-.lpm-root[data-motion-ready=true] .lpm-card-hit {display:block}
-.lpm-card-hit:focus-visible {outline:3px solid var(--lpm-blue);outline-offset:-4px}
-@container(max-width:440px) {
-  .lpm-field {height:370px; perspective:850px}
-  .lpm-map {width:min(70%,290px); padding:17px; border-radius:20px}
-  .lpm-seats {gap:10px}
-  .lpm-seat {font-size:14px; border-radius:8px}
-  .lpm-front {margin:14px 0}
-  .lpm-ticket {width:min(78%,290px)}
-  .lpm-ticket-content {padding:20px}
-  .lpm-ticket-seat>strong {font-size:54px}
-  .lpm-ticket-brand img {width:95px}
-  .lpm-stub {padding:17px 20px; gap:12px}
-  .lpm-stub>svg {width:32px; height:32px}
-  .lpm-stub strong {font-size:11px}
-  .lpm-deck {grid-template-columns:minmax(0,1fr); padding-block:24px}
-  .lpm-root[data-motion-ready=true] .lpm-deck {padding:0}
-  .lpm-card {width:min(80%,220px)}
-}
-@media(prefers-reduced-motion:reduce) {
-  .lpm-root [style] {will-change:auto}
-  .lpm-card-hit {display:none!important}
+/* Scoped motion tokens & layout for BookingMotion (seat morph + 3D spring deck).
+   All colors live strictly inside the .lpm-root token block below. */
+.lpm-root {
+  --lpm-blue: var(--sp-primary, #005bd1);
+  --lpm-blue-hover: var(--sp-hover, #0049aa);
+  --lpm-ink: var(--sp-ink, #0a2144);
+  --lpm-muted: var(--sp-muted, #526078);
+  --lpm-border: var(--lp-border, var(--sp-border, #d5e2f2));
+  --lpm-surface: var(--lp-surface, #ffffff);
+  --lpm-canvas: var(--lp-canvas, #f4f7fb);
+  --lpm-stub: var(--lp-stub, #f8fbff);
+  --lpm-tint: var(--lp-tint, #edf4ff);
+  --lpm-navy-deep: var(--lp-navy-deep, #071936);
+  --lpm-navy: var(--lp-navy, #0a2144);
+  --lpm-on-primary: #ffffff;
+  --lpm-shadow: color-mix(in srgb, var(--lpm-ink) 14%, transparent);
+  --lpm-shadow-blue: color-mix(in srgb, var(--lpm-blue) 28%, transparent);
+  --lpm-seat-face-end: color-mix(in srgb, var(--lpm-tint) 82%, var(--lpm-surface));
+  --lpm-seat-lip: color-mix(in srgb, var(--lpm-border) 84%, var(--lpm-ink));
+  --lpm-rail-on-blue: color-mix(in srgb, var(--lpm-on-primary) 46%, transparent);
+  --lpm-tab-track: var(--lpm-navy);
+  --lpm-tab-border: color-mix(in srgb, var(--lpm-on-primary) 18%, transparent);
+  --lpm-tab-muted: color-mix(in srgb, var(--lpm-on-primary) 82%, transparent);
+  --lpm-tab-hover: color-mix(in srgb, var(--lpm-on-primary) 12%, transparent);
+  container-type: inline-size;
+  min-width: 0;
+  color: var(--lpm-ink);
+  font-family: var(--font-passenger-jakarta), sans-serif;
 }
 
-@media(max-width:767px) {
-  .lpm-root:not([data-motion-ready=true]) .lpm-deck {display:block; padding:0}
-  .lpm-root:not([data-motion-ready=true]) .lpm-card:not(.lpm-card-ticket) {display:none}
-  .lpm-root:not([data-motion-ready=true]) .lpm-card-ticket {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.lp-checkout-band .lpm-root[data-kind='deck'] {
+  --lpm-tab-track: color-mix(in srgb, var(--lpm-on-primary) 10%, transparent);
+}
+
+.lpm-root * {
+  box-sizing: border-box;
+}
+
+.lpm-field {
+  position: relative;
+  min-width: 0;
+}
+
+.lpm-field svg {
+  flex: none;
+  stroke-width: 1.5;
+}
+
+/* Seat-to-Boarding-Pass Stage */
+.lpm-seat-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 416px;
+  padding: 28px 24px;
+  border: 1px solid var(--lpm-border);
+  border-radius: 24px;
+  background: var(--lpm-canvas);
+  overflow-x: clip;
+}
+
+.lpm-seat-stage--static {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 24px;
+  min-height: 0;
+}
+
+.lpm-seat-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.lpm-map {
+  width: min(100%, 306px);
+  padding: 22px;
+  border: 1px solid var(--lpm-border);
+  border-radius: 22px;
+  background: var(--lpm-surface);
+  box-shadow: 0 18px 36px -18px var(--lpm-shadow);
+}
+
+.lpm-map-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--lpm-ink);
+}
+
+.lpm-map-heading svg {
+  color: var(--lpm-blue);
+}
+
+.lpm-front {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--lpm-border);
+  padding-bottom: 9px;
+  margin: 14px 0 18px;
+  font-size: 11px;
+  color: var(--lpm-muted);
+}
+
+.lpm-wheel {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid var(--lpm-border);
+}
+
+.lpm-seats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.28fr 1fr;
+  gap: 12px;
+}
+
+.lpm-seats .lpm-seat-btn:nth-child(3n) {
+  grid-column: 4;
+}
+
+.sp-landing .lpm-root .lpm-seat-btn,
+.lpm-root .lpm-seat-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 44px;
+  min-height: 46px;
+  aspect-ratio: 1.05;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--lpm-border);
+  border-radius: 11px;
+  background: linear-gradient(160deg, var(--lpm-surface), var(--lpm-seat-face-end));
+  color: var(--lpm-muted);
+  box-shadow: 0 4px 0 -1px var(--lpm-border);
+  font-family: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
+  font-size: 15px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lpm-root .lpm-seat-btn::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 5px;
+  height: 4px;
+  border-radius: 6px;
+  background: var(--lpm-seat-lip);
+  pointer-events: none;
+}
+
+.sp-landing .lpm-root .lpm-seat-btn:hover:not(:disabled),
+.lpm-root .lpm-seat-btn:hover:not(:disabled) {
+  border-color: var(--lpm-blue);
+  background: var(--lpm-tint);
+  color: var(--lpm-blue);
+  transform: translateY(-2px);
+}
+
+.sp-landing .lpm-root .lpm-seat-btn.is-chosen,
+.lpm-root .lpm-seat-btn.is-chosen,
+.sp-landing .lpm-root .lpm-seat-btn.is-chosen:hover:not(:disabled),
+.lpm-root .lpm-seat-btn.is-chosen:hover:not(:disabled) {
+  border-color: var(--lpm-blue);
+  background: var(--lpm-blue);
+  color: var(--lpm-on-primary);
+  box-shadow: 0 5px 0 -1px var(--lpm-blue-hover);
+}
+
+.lpm-root .lpm-seat-btn.is-chosen::after {
+  background: var(--lpm-rail-on-blue);
+  z-index: 2;
+}
+
+.lpm-seat-chip-bg {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: var(--lpm-blue);
+  z-index: 1;
+}
+
+.lpm-seat-num {
+  position: relative;
+  z-index: 2;
+}
+
+.lpm-root .lpm-seat-btn:focus-visible {
+  outline: 3px solid var(--lpm-blue);
+  outline-offset: 3px;
+}
+
+.lpm-map-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  font-size: 11px;
+  color: var(--lpm-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lpm-map-legend span:last-child {
+  color: var(--lpm-blue);
+  font-weight: 600;
+}
+
+.lpm-seat-preview-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 12px;
+  max-width: 100%;
+}
+
+.lpm-seat-preview-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--lpm-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lpm-seat-preview-text svg {
+  color: var(--lpm-blue);
+}
+
+.sp-landing .lpm-root .lpm-preview-ticket-btn,
+.lpm-root .lpm-preview-ticket-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--lpm-border);
+  border-radius: 999px;
+  background: var(--lpm-surface);
+  color: var(--lpm-blue);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sp-landing .lpm-root .lpm-preview-ticket-btn:hover:not(:disabled),
+.lpm-root .lpm-preview-ticket-btn:hover:not(:disabled) {
+  border-color: var(--lpm-blue);
+  background: var(--lpm-tint);
+  transform: translateY(-1px);
+}
+
+.lpm-root .lpm-preview-ticket-btn:focus-visible {
+  outline: 3px solid var(--lpm-blue);
+  outline-offset: 3px;
+}
+
+/* Boarding-Pass Ticket Card */
+.lpm-ticket-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.lpm-ticket {
+  position: relative;
+  width: min(100%, 300px);
+}
+
+.lpm-ticket-paper {
+  border: 1px solid var(--lpm-border);
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  background: var(--lpm-surface);
+}
+
+.lpm-ticket-content {
+  padding: 22px;
+}
+
+.lpm-ticket-brand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  color: var(--lpm-blue);
+}
+
+.lpm-ticket-brand img {
+  width: 98px;
+  height: auto;
+  flex: none;
+}
+
+.lpm-ticket-seat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.lpm-ticket-seat > span {
+  font-size: 12px;
+  color: var(--lpm-muted);
+}
+
+.lpm-ticket-seat-chip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 82px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: var(--lpm-blue);
+  color: var(--lpm-on-primary);
+  box-shadow: 0 8px 18px -6px var(--lpm-shadow-blue);
+}
+
+.lpm-ticket-seat-num {
+  font-family: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
+  font-size: 38px;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.lpm-confirmed {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 22px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lpm-ink);
+}
+
+.lpm-confirmed svg {
+  color: var(--lpm-blue);
+}
+
+.lpm-stub {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 92px;
+  padding: 18px 22px;
+  border: 1px solid var(--lpm-border);
+  border-top: 1px dashed var(--lpm-border);
+  border-radius: 0 0 20px 20px;
+  background: var(--lpm-stub);
+  box-shadow: 0 22px 35px -20px var(--lpm-shadow);
+}
+
+.lpm-stub > svg {
+  color: var(--lpm-blue);
+}
+
+.lpm-stub strong,
+.lpm-stub span {
+  display: block;
+  font-size: 12px;
+}
+
+.lpm-stub span {
+  font-size: 11px;
+  color: var(--lpm-muted);
+  margin-top: 4px;
+}
+
+.lpm-stub::before,
+.lpm-stub::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--lpm-border);
+  border-radius: 50%;
+  background: var(--lpm-canvas);
+}
+
+.lpm-stub::before {
+  left: -10px;
+}
+
+.lpm-stub::after {
+  right: -10px;
+}
+
+.lpm-seal {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  top: -16px;
+  right: -14px;
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--lpm-surface);
+  border-radius: 50%;
+  background: var(--lpm-blue);
+  color: var(--lpm-on-primary);
+  box-shadow: 0 8px 18px var(--lpm-shadow-blue);
+}
+
+.sp-landing .lpm-root .lpm-reselect-btn,
+.lpm-root .lpm-reselect-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid var(--lpm-border);
+  border-radius: 999px;
+  background: var(--lpm-surface);
+  color: var(--lpm-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sp-landing .lpm-root .lpm-reselect-btn:hover:not(:disabled),
+.lpm-root .lpm-reselect-btn:hover:not(:disabled) {
+  border-color: var(--lpm-blue);
+  background: var(--lpm-tint);
+  color: var(--lpm-blue);
+  transform: translateY(-1px);
+}
+
+.lpm-root .lpm-reselect-btn:focus-visible {
+  outline: 3px solid var(--lpm-blue);
+  outline-offset: 3px;
+}
+
+/* 3D Spring Step Deck */
+.lpm-deck-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  overflow-x: clip;
+  padding-block: 10px 4px;
+}
+
+.lpm-deck {
+  position: relative;
+  width: 100%;
+}
+
+.lpm-deck--animated {
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  perspective: 1100px;
+}
+
+.lpm-deck--animated .lpm-card {
+  grid-area: 1 / 1;
+}
+
+.lpm-deck--static {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 16px;
+}
+
+.lpm-card {
+  position: relative;
+  width: min(74%, 224px);
+  height: 282px;
+  padding: 20px;
+  border: 1px solid var(--lpm-border);
+  border-radius: 20px;
+  background: var(--lpm-surface);
+  color: var(--lpm-ink);
+  box-shadow: 0 22px 42px -18px var(--lpm-shadow);
+  overflow: hidden;
+  text-align: left;
+  will-change: transform;
+}
+
+.lpm-deck--static .lpm-card {
+  width: 100%;
+  max-width: 240px;
+  margin: auto;
+  will-change: auto;
+}
+
+.lpm-card--payment {
+  background: var(--lpm-stub);
+}
+
+.lpm-card.is-active {
+  border-color: color-mix(in srgb, var(--lpm-blue) 45%, var(--lpm-border));
+}
+
+.lpm-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  color: var(--lpm-blue);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.lpm-card-heading img {
+  width: 94px;
+  height: auto;
+}
+
+.lpm-mini-seats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  max-width: 112px;
+  margin: 22px auto 0;
+}
+
+.lpm-mini-seat {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.05;
+  border: 1px solid var(--lpm-border);
+  border-radius: 9px;
+  background: var(--lpm-surface);
+  color: var(--lpm-muted);
+  font-family: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
+  font-size: 13px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.lpm-mini-seat.is-chosen {
+  border-color: var(--lpm-blue);
+  background: var(--lpm-blue);
+  color: var(--lpm-on-primary);
+}
+
+.lpm-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  font-size: 11px;
+  color: var(--lpm-muted);
+}
+
+.lpm-card-foot strong {
+  font-family: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
+  font-size: 20px;
+  color: var(--lpm-blue);
+  font-variant-numeric: tabular-nums;
+}
+
+.lpm-confirm-symbol {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 34px auto 18px;
+  width: 80px;
+  height: 80px;
+}
+
+.lpm-confirm-ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--lpm-border);
+  border-radius: 50%;
+}
+
+.lpm-confirm-check {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--lpm-blue);
+  color: var(--lpm-on-primary);
+  box-shadow: 0 10px 18px -4px var(--lpm-shadow-blue);
+}
+
+.lpm-card-title {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+}
+
+.lpm-card-subtitle {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--lpm-muted);
+  text-align: center;
+}
+
+.lpm-card-subtitle--left {
+  text-align: left;
+  margin-top: 0;
+}
+
+.lpm-card-subhead {
+  display: block;
+  margin-top: 22px;
+  font-size: 11px;
+  color: var(--lpm-muted);
+}
+
+.lpm-card-number {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
+  font-size: 58px;
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.lpm-perforation {
+  border-top: 1px dashed var(--lpm-border);
+  margin: 16px -20px;
+}
+
+.lpm-card-bottom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--lpm-muted);
+}
+
+.lpm-card-bottom svg {
+  color: var(--lpm-blue);
+}
+
+.sp-landing .lpm-root .lpm-card-hit,
+.lpm-root .lpm-card-hit,
+.sp-landing .lpm-root .lpm-card-hit:hover:not(:disabled),
+.lpm-root .lpm-card-hit:hover:not(:disabled) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.lpm-root .lpm-card-hit:focus-visible {
+  outline: 3px solid var(--lpm-blue);
+  outline-offset: -4px;
+}
+
+/* Interactive Step Tabs (high-contrast for Deep Navy band) */
+.lpm-step-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--lpm-tab-border);
+  border-radius: 999px;
+  background: var(--lpm-tab-track);
+  max-width: 100%;
+}
+
+.sp-landing .lpm-root .lpm-step-tab,
+.lpm-root .lpm-step-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--lpm-tab-muted);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sp-landing .lpm-root .lpm-step-tab:hover:not(:disabled),
+.lpm-root .lpm-step-tab:hover:not(:disabled) {
+  background: var(--lpm-tab-hover);
+  color: var(--lpm-on-primary);
+}
+
+.sp-landing .lpm-root .lpm-step-tab.is-active,
+.lpm-root .lpm-step-tab.is-active,
+.sp-landing .lpm-root .lpm-step-tab.is-active:hover:not(:disabled),
+.lpm-root .lpm-step-tab.is-active:hover:not(:disabled) {
+  background: var(--lpm-surface);
+  color: var(--lpm-ink);
+  box-shadow: 0 6px 16px -6px var(--lpm-shadow);
+}
+
+.lpm-step-tab-num {
+  font-family: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.72;
+}
+
+.lpm-step-tab.is-active .lpm-step-tab-num {
+  color: var(--lpm-blue);
+  opacity: 1;
+}
+
+.lpm-root .lpm-step-tab:focus-visible {
+  outline: 3px solid var(--lpm-on-primary);
+  outline-offset: 3px;
+}
+
+@container (max-width: 500px) {
+  .lpm-seat-stage {
+    min-height: 388px;
+    padding: 20px 14px;
+    border-radius: 20px;
+  }
+
+  .lpm-seat-stage--static {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .lpm-map {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .lpm-seats {
+    gap: 10px;
+  }
+
+  .lpm-ticket-content {
+    padding: 18px;
+  }
+
+  .lpm-stub {
+    padding: 16px 18px;
+    gap: 12px;
+  }
+
+  .lpm-deck--animated {
+    min-height: 300px;
+  }
+
+  .lpm-card {
+    width: min(72%, 212px);
+    height: 268px;
+    padding: 18px;
+  }
+
+  .lpm-card-number {
+    font-size: 52px;
+  }
+
+  .sp-landing .lpm-root .lpm-step-tab,
+  .lpm-root .lpm-step-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .lpm-deck--static {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lpm-root .lpm-seat-btn,
+  .lpm-root .lpm-preview-ticket-btn,
+  .lpm-root .lpm-reselect-btn,
+  .lpm-root .lpm-step-tab {
+    transition: none;
+  }
+
+  .lpm-card {
+    will-change: auto;
+  }
 }
