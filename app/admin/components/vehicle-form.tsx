@@ -31,7 +31,7 @@ export default function VehicleForm({ companyId, initial, templates, classes }: 
     try {
       const result = await runFleetAction(companyId, { kind: 'deleteVehicle', id: draft.id, revision: draft.revision });
       if (!result.ok) { setMessage(result.message); if (result.code === 'conflict') { setConflict(true); setLatest(null); } return; }
-      router.push(`/admin/companies/${companyId}/vehicles`);
+      router.push(`/admin/companies/${companyId}/vehicles?deleted=1`);
       router.refresh();
     } finally { setBusy(false); }
   }

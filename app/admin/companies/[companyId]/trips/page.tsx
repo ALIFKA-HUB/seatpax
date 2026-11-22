@@ -8,11 +8,12 @@ export default async function Page({
   searchParams,
 }: {
   params: Promise<{ companyId: string }>;
-  searchParams?: Promise<{ created?: string }>;
+  searchParams?: Promise<{ created?: string; deleted?: string }>;
 }) {
   const { companyId } = await params;
   const resolvedSearch = searchParams ? await searchParams : undefined;
   const createdCount = Number(resolvedSearch?.created);
+  const deleted = resolvedSearch?.deleted === '1';
   const { context, trips } = await tripData(companyId);
   const list = await trips.list(context);
   const openCount = list.filter(t => t.status === 'OPEN_FOR_SALE').length;
@@ -37,6 +38,11 @@ export default async function Page({
         <div className="admin-flash-ok" role="status">
           Berhasil membuat <strong>{createdCount} draft perjalanan</strong>. Buka tiap perjalanan
           untuk menugaskan crew dan membuka penjualan.
+        </div>
+      )}
+      {deleted && (
+        <div className="admin-flash-ok" role="status">
+          Data berhasil dihapus permanen.
         </div>
       )}
 

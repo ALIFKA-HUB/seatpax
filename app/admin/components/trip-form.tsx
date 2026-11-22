@@ -244,7 +244,7 @@ export default function TripForm({
         setConflict(result.code === 'conflict');
         return;
       }
-      router.push(base);
+      router.push(`${base}?deleted=1`);
       router.refresh();
     } catch {
       setMessage('Koneksi terputus. Coba lagi.');

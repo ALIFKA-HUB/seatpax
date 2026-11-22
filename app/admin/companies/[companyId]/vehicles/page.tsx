@@ -3,8 +3,15 @@ import { Armchair, Bus, CheckCircle, Plus } from '@phosphor-icons/react/ssr';
 import { sourceStatusPresentation } from '@/app/admin/presentation';
 import { fleetData } from '../../../fleet-data';
 
-export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams?: Promise<{ deleted?: string }>;
+}) {
   const { companyId } = await params;
+  const deleted = (searchParams ? await searchParams : undefined)?.deleted === '1';
   const { context, vehicles } = await fleetData(companyId);
   const list = await vehicles.list(context);
   const activeCount = list.filter(v => v.status === 'ACTIVE').length;
@@ -24,6 +31,12 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           </Link>
         </div>
       </header>
+
+      {deleted && (
+        <div className="admin-flash-ok" role="status">
+          Data berhasil dihapus permanen.
+        </div>
+      )}
 
       <div className="admin-stat-grid" role="region" aria-label="Ringkasan armada">
         <div className="admin-stat-card">

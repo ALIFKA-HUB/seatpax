@@ -16,7 +16,7 @@ export default function MasterForm({companyId,kind,initial,regionOptions=emptyRe
     try{
       const result=await runAdminAction(companyId,{kind:kind==='stop'?'deleteStop':'deleteClass',id:initial.id});
       if(!result.ok){setMessage(result.message);return;}
-      if(redirectTo)router.push(redirectTo);
+      if(redirectTo)router.push(redirectTo.includes('?')?`${redirectTo}&deleted=1`:`${redirectTo}?deleted=1`);
       router.refresh();
       onDeleted?.();
     }catch{setMessage('Koneksi terputus. Coba lagi.');}

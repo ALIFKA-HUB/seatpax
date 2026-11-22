@@ -101,7 +101,7 @@ export default function SeatTemplateBuilder({ companyId, initial }: { companyId:
         }
         return;
       }
-      router.push(`/admin/companies/${companyId}/seat-templates`);
+      router.push(`/admin/companies/${companyId}/seat-templates?deleted=1`);
       router.refresh();
     } finally {
       setBusy(false);

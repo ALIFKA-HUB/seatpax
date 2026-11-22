@@ -2,8 +2,15 @@ import Link from 'next/link';
 import { CheckCircle, MapPin, Path, Plus } from '@phosphor-icons/react/ssr';
 import { companyData } from '../../../data';
 
-export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams?: Promise<{ deleted?: string }>;
+}) {
   const { companyId } = await params;
+  const deleted = (searchParams ? await searchParams : undefined)?.deleted === '1';
   const { data } = await companyData(companyId);
   const activeCount = data.routes.filter(r => r.status === 'ACTIVE').length;
 
@@ -21,6 +28,12 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
           </Link>
         </div>
       </header>
+
+      {deleted && (
+        <div className="admin-flash-ok" role="status">
+          Data berhasil dihapus permanen.
+        </div>
+      )}
 
       <div className="admin-stat-grid" role="region" aria-label="Ringkasan rute">
         <div className="admin-stat-card">
