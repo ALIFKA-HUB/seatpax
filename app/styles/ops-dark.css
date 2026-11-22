@@ -1026,6 +1026,17 @@ html[data-mode='dark'] .admin-shell.hd-workspace .hd-skeleton-shimmer {
 /* 4. Crew PWA (.crew-shell)                                                  */
 /* -------------------------------------------------------------------------- */
 html[data-mode='dark'] .crew-shell {
+  --crew-ink: var(--ops-ink);
+  --crew-muted: var(--ops-muted);
+  --crew-line: var(--ops-rule);
+  --crew-blue: var(--ops-accent);
+  --crew-blue-soft: var(--ops-accent-soft);
+  --crew-green: var(--ops-green);
+  --crew-green-soft: var(--ops-green-soft);
+  --crew-amber: var(--ops-amber);
+  --crew-amber-soft: var(--ops-amber-soft);
+  --crew-danger: var(--ops-danger);
+  --crew-danger-soft: var(--ops-danger-soft);
   background: var(--ops-paper);
   color: var(--ops-ink);
 }
@@ -1034,31 +1045,134 @@ html[data-mode='dark'] .crew-shell a {
   color: var(--ops-accent);
 }
 
-html[data-mode='dark'] .crew-shell .crew-topbar {
-  background: rgb(17 28 48 / 0.94);
-  border-bottom-color: var(--ops-rule);
+html[data-mode='dark'] .crew-shell :is(.crew-sidebar, .crew-brand, .crew-topbar, .crew-panel, .crew-trip-item, .crew-subnav, .crew-state-card, .admin-toast) {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+  box-shadow: none;
 }
 
-html[data-mode='dark'] .crew-shell nav a {
+html[data-mode='dark'] .crew-shell :is(.crew-company-card, .manifest-counters div, .manifest-passengers li, .seat-grid-region, .boarding-profile .crew-profile-facts) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
   color: var(--ops-ink);
 }
 
-html[data-mode='dark'] .crew-shell nav a:hover {
+html[data-mode='dark'] .crew-shell .crew-company-avatar {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-nav-caption, .crew-topbar-sep) {
+  color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .crew-shell .crew-sidebar nav a,
+html[data-mode='dark'] .crew-shell .crew-mobile-drawer nav a {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .crew-shell .crew-sidebar nav a:hover,
+html[data-mode='dark'] .crew-shell .crew-mobile-drawer nav a:hover {
   background: var(--ops-paper-3);
   color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-sidebar nav a[aria-current='page'],
+html[data-mode='dark'] .crew-shell .crew-mobile-drawer nav a[aria-current='page'] {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-sidebar nav a[aria-current='page']::before,
+html[data-mode='dark'] .crew-shell .crew-mobile-drawer nav a[aria-current='page']::before {
+  background: var(--ops-accent);
+}
+
+html[data-mode='dark'] .crew-shell .crew-account-wrap,
+html[data-mode='dark'] .crew-shell .crew-mobile-drawer .crew-mobile-theme-row {
+  border-top-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .crew-shell .crew-footer-link,
+html[data-mode='dark'] .crew-shell button.ops-theme-toggle.crew-footer-link {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .crew-shell .crew-footer-link:hover,
+html[data-mode='dark'] .crew-shell button.ops-theme-toggle.crew-footer-link:hover:not(:disabled) {
+  background: var(--ops-paper-3);
+  border-color: transparent;
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell button.crew-account {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .crew-shell button.crew-account strong {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell button.crew-account:hover:not(:disabled) {
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .crew-shell button.crew-account:hover:not(:disabled) strong {
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .crew-shell .crew-topbar-role {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell button.crew-topbar-icon-btn,
+html[data-mode='dark'] .crew-shell button.crew-theme-toggle {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell button.crew-topbar-icon-btn:hover:not(:disabled),
+html[data-mode='dark'] .crew-shell button.crew-theme-toggle:hover:not(:disabled) {
+  border-color: var(--ops-accent);
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-mobile-drawer {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+  box-shadow: 0 16px 36px rgb(3 7 18 / 0.55);
+}
+
+html[data-mode='dark'] .crew-shell .admin-toast {
+  border-color: var(--ops-rule-strong);
+  box-shadow: inset 0 0 0 1px var(--ops-rule), 0 16px 36px rgb(3 7 18 / 0.55);
+}
+
+html[data-mode='dark'] .crew-shell .admin-toast.is-ok .admin-toast-icon {
+  background: var(--ops-green-soft);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .crew-shell .admin-toast.is-error .admin-toast-icon {
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
 }
 
 html[data-mode='dark'] .crew-shell :is(.crew-role, .crew-count-pill, .crew-time-badge, .crew-step-chip) {
   background: var(--ops-accent-soft);
   border-color: var(--ops-accent-border);
   color: var(--ops-accent-hover);
-}
-
-html[data-mode='dark'] .crew-shell :is(.crew-panel, .crew-trip-item, .crew-subnav, .crew-state-card) {
-  background: var(--ops-paper-2);
-  border-color: var(--ops-rule);
-  color: var(--ops-ink);
-  box-shadow: none;
 }
 
 html[data-mode='dark'] .crew-shell :is(.crew-trip-card, .crew-trip-route, .crew-manifest-name, .manifest-name, .manifest-seat strong, .manifest-counters dd, .crew-details summary, .boarding-profile .crew-profile-facts dd, .crew-stop-body) {
@@ -1071,11 +1185,6 @@ html[data-mode='dark'] .crew-shell :is(.crew-muted, .crew-snack, .manifest-count
 
 html[data-mode='dark'] .crew-shell .manifest-route {
   color: var(--ops-ink-2);
-}
-
-html[data-mode='dark'] .crew-shell :is(.manifest-counters div, .manifest-passengers li, .seat-grid-region, .boarding-profile .crew-profile-facts) {
-  background: var(--ops-paper-3);
-  border-color: var(--ops-rule);
 }
 
 html[data-mode='dark'] .crew-shell :is(.manifest-seat, .crew-seat) {
@@ -1093,7 +1202,7 @@ html[data-mode='dark'] .crew-shell :is(input, select, .manifest-controls input, 
   color: var(--ops-ink);
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-button, button:not(.crew-primary):not(.crew-pill-active):not(.crew-nav-logout)) {
+html[data-mode='dark'] .crew-shell :is(.crew-button, button:not(.crew-primary):not(.crew-pill-active):not(.crew-nav-logout):not(.crew-account):not(.crew-footer-link):not(.crew-topbar-icon-btn):not(.crew-theme-toggle):not(.admin-toast-close)) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule-strong);
   color: var(--ops-ink);
@@ -1130,25 +1239,6 @@ html[data-mode='dark'] .crew-shell .crew-subnav-link:not(.crew-subnav-active) {
 html[data-mode='dark'] .crew-shell .crew-subnav-link:not(.crew-subnav-active):hover {
   background: var(--ops-paper-3);
   color: var(--ops-ink);
-}
-
-html[data-mode='dark'] .crew-shell nav .crew-nav-logout,
-html[data-mode='dark'] .crew-shell nav .crew-theme-toggle {
-  background: var(--ops-paper-3);
-  border-color: var(--ops-rule);
-  color: var(--ops-ink);
-}
-
-html[data-mode='dark'] .crew-shell nav .crew-nav-logout:hover:not(:disabled) {
-  border-color: var(--ops-danger-border);
-  background: var(--ops-danger-soft);
-  color: var(--ops-danger);
-}
-
-html[data-mode='dark'] .crew-shell nav .crew-theme-toggle:hover:not(:disabled) {
-  border-color: var(--ops-accent);
-  background: var(--ops-accent-soft);
-  color: var(--ops-accent-hover);
 }
 
 html[data-mode='dark'] .crew-shell .crew-state-success {
@@ -1251,22 +1341,5 @@ html[data-mode='dark'] .crew-shell .crew-stop-number {
 
 .hd-workspace .hd-side-bottom button.ops-theme-toggle:hover:not(:disabled) {
   background: #f0f5fb;
-  color: #005bd1;
-}
-
-.crew-shell nav .crew-theme-toggle {
-  min-height: 44px;
-  padding: 8px 14px;
-  border: 1px solid #d5dfea;
-  border-radius: 8px;
-  background: #f8fafc;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #0a2144;
-}
-
-.crew-shell nav .crew-theme-toggle:hover:not(:disabled) {
-  border-color: #9fc2f5;
-  background: #f0f6ff;
   color: #005bd1;
 }
