@@ -7,9 +7,10 @@ import JourneySummary from '@/app/components/journey-summary';
 import StatePanel from '@/app/components/state-panel';
 it('keeps named navigation and marks the current route',()=>{
  const html=render(h(PassengerShell,{active:'tickets',children:'Content'}));
- expect(html).toContain('aria-current="page"');for(const path of ['/trips','/tickets','/account'])expect(html).toContain(`href="${path}"`);
+ expect(html).toContain('aria-current="page"');for(const path of ['/trips','/tickets','/login'])expect(html).toContain(`href="${path}"`);
+ expect(html).not.toContain('href="/account"');
  expect(html).toContain('Content');expect(render(h(PassengerShell,{focused:true,children:'Login'}))).toContain('aria-label="Seatpax"');
- for(const label of ['Perjalanan','Pesanan saya','Akun'])expect(html).toContain(label);
+ for(const label of ['Perjalanan','Pesanan saya'])expect(html).toContain(label);
  expect(render(h(PassengerShell,{focused:true,children:'Login'}))).not.toContain('Navigasi penumpang');
 });
 it('renders semantic status, long journey data and recovery',()=>{

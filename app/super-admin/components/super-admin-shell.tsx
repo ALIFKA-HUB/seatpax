@@ -1,8 +1,7 @@
 import type {ReactNode} from 'react';
-import Link from 'next/link';
 import {Inter} from 'next/font/google';
-import {ArrowUpRight} from '@phosphor-icons/react/dist/ssr/ArrowUpRight';
-import {UserCircle} from '@phosphor-icons/react/dist/ssr/UserCircle';
+import {SignOut} from '@phosphor-icons/react/dist/ssr/SignOut';
+import SessionLogoutButton from '@/app/components/session-logout-button';
 import InternalNavigation from './internal-navigation';
 import '../super-admin.css';
 const inter=Inter({subsets:['latin'],weight:['400','500','600','700'],variable:'--font-internal-inter',display:'swap'});
@@ -13,7 +12,14 @@ export default function SuperAdminShell({children,section='companies'}:{children
   <div className="super-workspace">
    <header className="super-header">
     <div className="super-breadcrumb"><span>Panel internal</span><span aria-hidden="true">/</span><strong>{section==='dashboard'?'Dashboard':'Perusahaan'}</strong></div>
-    <Link className="super-account" href="/account"><UserCircle size={20} aria-hidden="true"/><span>Akun & keluar</span><ArrowUpRight size={16} aria-hidden="true"/></Link>
+    <div className="super-account-wrap">
+     <SessionLogoutButton
+      className="super-account"
+      errorClassName="super-account-error"
+      idleContent={<><SignOut size={18} aria-hidden="true"/><span>Keluar</span></>}
+      pendingContent={<><SignOut size={18} aria-hidden="true"/><span>Keluar…</span></>}
+     />
+    </div>
    </header>
    <main id="super-admin-main" tabIndex={-1}>{children}</main>
   </div>

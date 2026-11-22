@@ -6,9 +6,10 @@ vi.mock('next/font/google',()=>({Plus_Jakarta_Sans:()=>({variable:'test-jakarta'
 vi.mock('next/navigation',()=>({usePathname:()=>'/admin/companies/a/trips/t/manifest',redirect:(url:string)=>{throw Error(url);}}));
 const companies=vi.fn(async()=>[{id:'a',name:'PO <A>'}]);
 vi.mock('@/app/admin/data',()=>({adminCompanies:companies}));
-it('renders company context brand skip target and account',async()=>{
+it('renders company context brand skip target and direct logout',async()=>{
  const html=render(h(Shell,{companyId:'a',companyName:'PO <A>',children:'Isi'}));
- for(const text of ['href="/admin"','PO &lt;A&gt;','href="#admin-main"','id="admin-main"','href="/account"','Isi','aria-current="page"'])expect(html).toContain(text);
+ for(const text of ['href="/admin"','PO &lt;A&gt;','href="#admin-main"','id="admin-main"','Keluar dari akun','class="admin-account"','Isi','aria-current="page"'])expect(html).toContain(text);
+ expect(html).not.toContain('href="/account"');
  for(const section of ['trips','routes','stops','service-classes','seat-templates','vehicles','payment-conflicts'])expect(html).toContain(`/admin/companies/a/${section}`);
 });
 it('matches nested sections without prefix collision',async()=>{

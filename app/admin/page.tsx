@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { adminCompanies } from './data';
 import Brand from '@/app/components/brand';
+import SessionLogoutButton from '@/app/components/session-logout-button';
 import './admin.css';
 import './admin-refresh.css';
 
@@ -44,9 +45,17 @@ export default async function AdminPage() {
       ) : (
         <p className="admin-entry-empty">Akun ini belum memiliki akses admin PO.</p>
       )}
-      <Link className="admin-entry-back" href="/account">
-        ← Kembali ke akun
-      </Link>
+      <div className="admin-entry-actions">
+        <Link className="admin-entry-back" href="/trips">
+          ← Lihat perjalanan
+        </Link>
+        <SessionLogoutButton
+          className="admin-entry-back admin-entry-logout"
+          errorClassName="admin-message"
+          idleContent="Keluar dari akun"
+          pendingContent="Keluar…"
+        />
+      </div>
     </main>
   );
 }

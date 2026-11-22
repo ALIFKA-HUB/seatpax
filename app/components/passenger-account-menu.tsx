@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import {useEffect,useRef,useState,useTransition} from 'react';
-import {CaretDown,SignOut,UserCircle} from '@phosphor-icons/react';
+import {CaretDown} from '@phosphor-icons/react/dist/csr/CaretDown';
+import {SignOut} from '@phosphor-icons/react/dist/csr/SignOut';
+import {Ticket} from '@phosphor-icons/react/dist/csr/Ticket';
+import {UserCircle} from '@phosphor-icons/react/dist/csr/UserCircle';
 import {createBrowserSupabaseClient} from '@/lib/supabase/browser';
 
 type Status='unknown'|'guest'|'signed-in';
@@ -16,12 +19,12 @@ export function AccountControl({status,pending,message,onLogout}:Props){
   document.addEventListener('pointerdown',outside);
   return()=>document.removeEventListener('pointerdown',outside);
  },[status]);
- if(status!=='signed-in')return <Link className={`sp-account-trigger${status==='guest'?' sp-account-login':''}`} href={status==='guest'?'/login':'/account'}>{status==='guest'?'Masuk':'Akun'}</Link>;
+ if(status!=='signed-in')return <Link className={`sp-account-trigger${status==='guest'?' sp-account-login':''}`} href="/login">{status==='guest'?'Masuk':'Akun'}</Link>;
  return <details className="sp-account-disclosure" ref={disclosure} onKeyDown={event=>{
   if(event.key==='Escape'&&disclosure.current){disclosure.current.open=false;disclosure.current.querySelector('summary')?.focus();}
  }} onBlur={event=>{if(event.relatedTarget instanceof Node&&!event.currentTarget.contains(event.relatedTarget))event.currentTarget.open=false;}}>
   <summary className="sp-account-trigger"><UserCircle size={19} aria-hidden="true"/>Akun<CaretDown size={13} aria-hidden="true"/></summary>
-  <div className="sp-account-popover"><Link href="/account" onClick={()=>{if(disclosure.current)disclosure.current.open=false;}}><UserCircle size={18} aria-hidden="true"/>Profil saya</Link><button type="button" onClick={onLogout} disabled={pending}><SignOut size={18} aria-hidden="true"/>{pending?'Keluar…':'Keluar'}</button>{message&&<p className="sp-menu-error" role="status">{message}</p>}</div>
+  <div className="sp-account-popover"><Link href="/tickets" onClick={()=>{if(disclosure.current)disclosure.current.open=false;}}><Ticket size={18} aria-hidden="true"/>Pesanan saya</Link><button type="button" onClick={onLogout} disabled={pending}><SignOut size={18} aria-hidden="true"/>{pending?'Keluar…':'Keluar'}</button>{message&&<p className="sp-menu-error" role="status">{message}</p>}</div>
  </details>;
 }
 

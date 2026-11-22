@@ -12,10 +12,13 @@ it('frames the complaint supplement workspace with return links and tracking nav
  expect(html).toContain('SPX-2026-0001');
 });
 
-it('unifies cross-workspace navigation across account, super-admin, passenger, and admin helpdesk views',()=>{
+it('unifies cross-workspace navigation across super-admin, passenger, and admin helpdesk views without /account hub',()=>{
+ const superNav=readFileSync('app/super-admin/components/internal-navigation.tsx','utf8');
+ expect(superNav).toContain('href="/super-admin"');
+ expect(superNav).toContain('href="/super-admin/companies"');
  const account=readFileSync('app/account/page.tsx','utf8');
- expect(account).toContain('href="/super-admin"');
- expect(account).toContain('href="/super-admin/companies"');
+ expect(account).toContain('resolveEntryDestination');
+ expect(account).not.toContain('Anda sudah masuk');
 
  const companies=readFileSync('app/super-admin/companies/page.tsx','utf8');
  expect(companies).toContain('super-page-heading');
@@ -34,7 +37,7 @@ it('unifies cross-workspace navigation across account, super-admin, passenger, a
  expect(ticket).toContain('/pengaduan/buat');
 
  const adminHelpdesk=readFileSync('app/admin/companies/[companyId]/helpdesk/page.tsx','utf8');
- expect(adminHelpdesk).toContain('hd-panel');
+ expect(adminHelpdesk).toContain('admin-panel-modern');
  expect(adminHelpdesk).toContain('helpdesk-staff');
 
  const adminDetail=readFileSync('app/admin/companies/[companyId]/helpdesk/[id]/page.tsx','utf8');
@@ -43,6 +46,6 @@ it('unifies cross-workspace navigation across account, super-admin, passenger, a
  expect(adminDetail).toContain('helpdesk-staff');
 
  const adminStaff=readFileSync('app/admin/companies/[companyId]/helpdesk-staff/page.tsx','utf8');
- expect(adminStaff).toContain('hd-back-link');
- expect(adminStaff).toContain('hd-staff-table');
+ expect(adminStaff).toContain('AdminBackLink');
+ expect(adminStaff).toContain('AdminPaginatedTable');
 });

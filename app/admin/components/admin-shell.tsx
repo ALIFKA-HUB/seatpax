@@ -1,10 +1,10 @@
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 import Brand from '@/app/components/brand';
+import SessionLogoutButton from '@/app/components/session-logout-button';
 import AdminNavigation from './admin-navigation';
 import AdminTopbar from './admin-topbar';
 import AdminToastViewport from './admin-toast';
-import { UserCircle } from '@phosphor-icons/react/ssr';
+import { SignOut } from '@phosphor-icons/react/dist/ssr/SignOut';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta', display: 'swap' });
@@ -35,13 +35,28 @@ export default function AdminShell({
           <AdminNavigation complaintCount={complaintCount} base={`/admin/companies/${companyId}`} />
 
           <div className="admin-account-wrap">
-            <Link href="/account" className="admin-account">
-              <UserCircle size={20} aria-hidden="true" />
-              <span>
-                <strong>Akun &amp; keluar</strong>
-                <small>Kelola sesi Anda</small>
-              </span>
-            </Link>
+            <SessionLogoutButton
+              className="admin-account"
+              errorClassName="admin-account-error"
+              idleContent={
+                <>
+                  <SignOut size={20} aria-hidden="true" />
+                  <span>
+                    <strong>Keluar dari akun</strong>
+                    <small>Akhiri sesi Admin PO</small>
+                  </span>
+                </>
+              }
+              pendingContent={
+                <>
+                  <SignOut size={20} aria-hidden="true" />
+                  <span>
+                    <strong>Keluar…</strong>
+                    <small>Mengakhiri sesi</small>
+                  </span>
+                </>
+              }
+            />
           </div>
         </div>
       </aside>

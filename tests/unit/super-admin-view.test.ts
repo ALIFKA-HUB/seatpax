@@ -2,7 +2,7 @@ import {it,expect,vi} from 'vitest';import {createElement as h} from 'react';imp
 vi.mock('next/navigation',()=>({useRouter:()=>({refresh(){}})}));vi.mock('@/app/super-admin/actions',()=>({changeCompanyStatusAction:vi.fn()}));const company={id:'a',name:'PO <panjang>',slug:'po-a',status:'ACTIVE' as const,statusRevision:1,updatedAt:'2026-10-09'};let failure:string|null=null;
 vi.mock('next/font/google',()=>({Inter:()=>({variable:'font-internal-inter'})}));
 vi.mock('@/app/super-admin/data',()=>({companyData:async()=>{if(failure)throw new DomainError(failure as 'forbidden','failure');return [];}}));
-it('renders independent brand role and account shell',async()=>{const {default:Shell}=await import('@/app/super-admin/components/super-admin-shell');const html=render(h(Shell,{children:h('h1',null,'Daftar PO')}));for(const s of ['/super-admin/companies','/account','#super-admin-main','Super Admin','seatpax-horizontal.png'])expect(html).toContain(s);expect(html).not.toContain('/admin/companies/');});
+it('renders independent brand role and direct logout shell',async()=>{const {default:Shell}=await import('@/app/super-admin/components/super-admin-shell');const html=render(h(Shell,{children:h('h1',null,'Daftar PO')}));for(const s of ['/super-admin/companies','super-account','Keluar','#super-admin-main','Super Admin','seatpax-horizontal.png'])expect(html).toContain(s);expect(html).not.toContain('/admin/companies/');expect(html).not.toContain('href="/account"');});
 it('renders scoped internal navigation with a mobile toggle and real destinations only',async()=>{
  const {default:Shell}=await import('@/app/super-admin/components/super-admin-shell');
  const html=render(h(Shell,{children:h('h1',null,'Perusahaan')}));

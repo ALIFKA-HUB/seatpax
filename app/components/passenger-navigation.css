@@ -22,7 +22,6 @@
 .passenger-shell:not(.sp-focused) .sp-header nav a[aria-current=page]>span::after{transform:scaleX(1)}
 @media(hover:hover){.passenger-shell:not(.sp-focused) .sp-header nav a:hover>span::after{transform:scaleX(1)}}
 @media(prefers-reduced-motion:no-preference){.passenger-shell:not(.sp-focused) .sp-header nav a>span::after{transition:transform 180ms cubic-bezier(.22,1,.36,1)}}
-.passenger-shell:not(.sp-focused) .sp-header nav .sp-account-mobile{display:none}
 .passenger-shell:not(.sp-focused) .sp-header nav a svg{display:none}
 .sp-header-account{justify-self:end;position:relative;min-width:74px}
 .passenger-shell .sp-account-trigger{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 17px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap;color:var(--sp-ink);background:#f3f7fd;list-style:none;text-decoration:none}
@@ -51,8 +50,8 @@
  .passenger-shell:not(.sp-focused) .sp-header-inner{display:flex;justify-content:space-between;min-height:64px;padding:8px 20px;border-radius:0;box-shadow:none;gap:16px}
  .passenger-shell:not(.sp-focused) .sp-header-inner::before{content:none}
  .passenger-shell:not(.sp-focused) .sp-header .sp-brand{width:132px}
- .passenger-shell:not(.sp-focused) .sp-header nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:4px;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--sp-border)}
- .passenger-shell:not(.sp-focused) .sp-header nav a,.passenger-shell:not(.sp-focused) .sp-header nav .sp-account-mobile{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;min-height:54px;padding:6px 4px;gap:4px}
+ .passenger-shell:not(.sp-focused) .sp-header nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:4px;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--sp-border)}
+ .passenger-shell:not(.sp-focused) .sp-header nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;min-height:54px;padding:6px 4px;gap:4px}
  .passenger-shell:not(.sp-focused) .sp-header nav a svg{display:block}
  .passenger-shell .sp-account-trigger{font-size:12px;padding:10px 15px}
  .sp-account-trigger svg{display:none}

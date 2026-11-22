@@ -14,7 +14,7 @@ export default function PassengerFooter() {
         <h2>Jelajahi</h2>
         <Link href="/trips">Perjalanan</Link>
         <Link href="/tickets">Pesanan saya</Link>
-        <Link href="/account">Akun</Link>
+        <Link href="/login">Masuk</Link>
       </nav>
       <nav className="sp-footer-links" aria-label="Panduan Seatpax">
         <h2>Panduan</h2>

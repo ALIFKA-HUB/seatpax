@@ -6,4 +6,4 @@ export function validatedReturnPath(raw:unknown):string|null{
   return url.pathname+url.search;
  }catch{return null;}
 }
-export function safeReturnPath(raw:unknown):string{return validatedReturnPath(raw)??'/account';}
+export function safeReturnPath(raw:unknown):string{return validatedReturnPath(raw)??'/trips';}

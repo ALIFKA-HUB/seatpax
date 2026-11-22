@@ -1,5 +1,12 @@
 # Seatpax — Decision Ledger & Historical Direction
 
+## D2026-11-22-01 — Remove standalone /account page UI in favor of direct logout and role redirects
+
+The user explicitly requested removing the standalone `/account` hub page (`"hilangkan halaman ini. buat apa juga jir."`) and confirmed direct workspace logout and automatic route redirection:
+
+- **Direct Logout Controls:** Replaced `/account` navigation in Admin PO (`AdminShell` and `/admin` entry), Super Admin (`SuperAdminShell`), Crew (`CrewShell`), Helpdesk (`HelpdeskShell`), and `/workspaces` with a shared client `SessionLogoutButton` calling `logoutAction()`. Removed `"Profil saya"` (`/account`) and the mobile `/account` tab from Passenger navigation/footer, retaining the header `Akun` disclosure (`Pesanan saya` + `Keluar`) and `/login`.
+- **Silent Route Redirect & Fallback:** `/account` (`app/account/page.tsx`) renders no UI and redirects unauthenticated visitors to `/login` and verified users via `resolveEntryDestination` (falling back to `/trips`). `safeReturnPath` falls back to `/trips`.
+
 ## D2026-11-10-01 — Single-company Super Admin staff management (ADM-STAFF-01)
 
 The user approved staff provisioning and access management (`ADM-STAFF-01`) on 10 November 2026 with **"sikat"**.

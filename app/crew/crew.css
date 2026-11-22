@@ -18,8 +18,11 @@
 .crew-shell .sp-brand { display:block; width:136px; flex-shrink:0; }
 .crew-shell .sp-brand img { display:block; width:100%; height:auto; }
 .crew-shell .crew-role { display:inline-flex; align-items:center; padding:4px 10px; border-radius:999px; background:#EDF3FB; border:1px solid #B7CBE5; font-size:.8125rem; font-weight:700; color:#005BD1; }
-.crew-shell nav { display:flex; flex-wrap:wrap; gap:6px 16px; }
+.crew-shell nav { display:flex; flex-wrap:wrap; align-items:center; gap:6px 16px; }
 .crew-shell nav a { display:inline-flex; align-items:center; min-height:48px; font-weight:600; color:#0A2144; padding:0 8px; border-radius:8px; }
+.crew-shell nav .crew-nav-logout { min-height:44px; padding:8px 14px; border:1px solid #D5DFEA; border-radius:8px; background:#F8FAFC; font-size:.9375rem; font-weight:600; color:#0A2144; }
+.crew-shell nav .crew-nav-logout:hover:not(:disabled) { border-color:#FCA5A5; background:#FEF2F2; color:#B91C1C; }
+.crew-shell nav .crew-nav-error { width:100%; font-size:.8125rem; color:#B91C1C; }
 .crew-shell .crew-skip { position:absolute; left:16px; top:-100px; padding:12px; background:white; z-index:20; }
 .crew-shell .crew-skip:focus { top:8px; }
 
