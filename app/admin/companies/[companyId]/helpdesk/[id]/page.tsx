@@ -67,6 +67,7 @@ export default async function AdminCaseDetail({
         id={id}
         data={data}
         readOnly
+        embedded
         backHref={`/admin/companies/${companyId}/helpdesk`}
       />
     </div>

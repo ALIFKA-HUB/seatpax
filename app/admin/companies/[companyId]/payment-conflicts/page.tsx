@@ -1,5 +1,12 @@
 import Link from 'next/link';
-import { ClipboardText, CreditCard, WarningCircle } from '@phosphor-icons/react/ssr';
+import {
+  CheckCircle,
+  ClipboardText,
+  CreditCard,
+  Info,
+  ShieldCheck,
+  WarningCircle,
+} from '@phosphor-icons/react/ssr';
 import { paymentConflictData } from '@/app/admin/payment-data';
 
 const date = (s: string) =>
@@ -12,6 +19,7 @@ const date = (s: string) =>
 export default async function Page({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const { conflicts, reviews } = await paymentConflictData(companyId);
+  const totalQueue = conflicts.length + reviews.length;
 
   return (
     <div className="dash-root">
@@ -19,6 +27,11 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
         <div className="dash-hero-copy">
           <h1>Konflik pembayaran</h1>
           <p>Periksa pembayaran PAID yang datang setelah kursi tidak lagi dapat dikonfirmasi.</p>
+        </div>
+        <div className="dash-hero-actions">
+          <span className={`admin-status-pill ${totalQueue === 0 ? 'is-ok' : 'is-warn'}`}>
+            {totalQueue === 0 ? 'Antrean bersih' : `${totalQueue} perlu pemeriksaan`}
+          </span>
         </div>
       </header>
 
@@ -46,7 +59,7 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             <ClipboardText size={20} weight="duotone" />
           </span>
           <div className="admin-stat-meta">
-            <strong className="admin-stat-value">{conflicts.length + reviews.length}</strong>
+            <strong className="admin-stat-value">{totalQueue}</strong>
             <span className="admin-stat-label">Total antrean pemeriksaan</span>
           </div>
         </div>
@@ -107,7 +120,13 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             </table>
           </div>
         ) : (
-          <p className="admin-empty-copy">Tidak ada konflik pembayaran yang perlu ditinjau.</p>
+          <div className="admin-empty-state">
+            <span className="admin-empty-icon is-ok" aria-hidden="true">
+              <CheckCircle size={24} weight="duotone" />
+            </span>
+            <h3>Semua pembayaran aman</h3>
+            <p>Tidak ada konflik pembayaran yang perlu ditinjau.</p>
+          </div>
         )}
       </section>
 
@@ -117,10 +136,14 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             Hasil provider perlu diperiksa <span className="admin-count">{reviews.length}</span>
           </h2>
         </div>
-        <p className="admin-hint">
-          Daftar ini hanya untuk pemeriksaan. Cocokkan status dengan Midtrans sebelum tindakan lain;
-          status challenge atau refund tidak dapat diselesaikan sebagai tiket/refund mock dari sini.
-        </p>
+        <div className="admin-callout-info">
+          <Info size={18} weight="duotone" aria-hidden="true" />
+          <span>
+            Daftar ini hanya untuk pemeriksaan. Cocokkan status dengan Midtrans sebelum tindakan
+            lain; status challenge atau refund tidak dapat diselesaikan sebagai tiket/refund mock
+            dari sini.
+          </span>
+        </div>
         {reviews.length ? (
           <div
             className="admin-table-wrap"
@@ -154,7 +177,13 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
             </table>
           </div>
         ) : (
-          <p className="admin-empty-copy">Tidak ada hasil provider yang menunggu pemeriksaan.</p>
+          <div className="admin-empty-state">
+            <span className="admin-empty-icon is-blue" aria-hidden="true">
+              <ShieldCheck size={24} weight="duotone" />
+            </span>
+            <h3>Tidak ada antrean provider</h3>
+            <p>Tidak ada hasil provider yang menunggu pemeriksaan.</p>
+          </div>
         )}
       </section>
     </div>

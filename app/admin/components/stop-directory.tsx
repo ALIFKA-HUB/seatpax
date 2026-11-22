@@ -224,7 +224,6 @@ export default function StopDirectory({
       >
         <div className="stop-dialog-header">
           <div>
-            <p>Lokasi PO</p>
             <h2 id={prefix + 'title'}>{editing ? 'Edit titik' : 'Tambah titik'}</h2>
           </div>
           <button

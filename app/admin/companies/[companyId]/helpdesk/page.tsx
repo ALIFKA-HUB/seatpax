@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Clock, Funnel, ListBullets } from '@phosphor-icons/react/ssr';
 import { IconArrowRight } from '@/app/admin/components/admin-back-link';
 import { helpdeskContext } from '@/app/helpdesk/data';
 import CaseList from '@/app/helpdesk/components/case-list';
@@ -25,9 +26,9 @@ export default async function AdminComplaints({
   if (!data) {
     return (
       <div className="dash-root hd hd-admin-monitor">
-        <section className="dash-card hd-panel" role="alert">
+        <section className="dash-card admin-panel-modern" role="alert">
           <h1>Pengaduan belum tersedia</h1>
-          <p>
+          <p className="admin-hint">
             Pengaduan belum dikonfigurasi untuk perusahaan ini atau Anda belum memiliki akses
             pemantauan.
           </p>
@@ -39,13 +40,15 @@ export default async function AdminComplaints({
     );
   }
 
+  const activeFilters = [query.search, query.status, query.priority].filter(Boolean).length;
+
   return (
     <div className="dash-root hd hd-admin-monitor">
       <header className="dash-hero">
         <div className="dash-hero-copy">
           <h1>Pengaduan pelanggan</h1>
           <p>
-            Admin perusahaan memantau pengaduan dalam mode baca. Pengelolaan status dilakukan oleh
+            Pantau laporan penumpang secara real-time dalam mode baca. Penanganan dilakukan oleh
             petugas Helpdesk.
           </p>
         </div>
@@ -57,7 +60,40 @@ export default async function AdminComplaints({
         </div>
       </header>
 
+      <div className="admin-stat-grid" role="region" aria-label="Ringkasan pengaduan pelanggan">
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-amber" aria-hidden="true">
+            <Clock size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{data.count}</strong>
+            <span className="admin-stat-label">Laporan belum selesai</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-blue" aria-hidden="true">
+            <ListBullets size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{data.rows.length}</strong>
+            <span className="admin-stat-label">Ditampilkan di halaman ini</span>
+          </div>
+        </div>
+        <div className="admin-stat-card">
+          <span className="dash-icon-badge is-slate" aria-hidden="true">
+            <Funnel size={20} weight="duotone" />
+          </span>
+          <div className="admin-stat-meta">
+            <strong className="admin-stat-value">{activeFilters || 'Semua'}</strong>
+            <span className="admin-stat-label">
+              {activeFilters ? 'Filter aktif' : 'Filter laporan'}
+            </span>
+          </div>
+        </div>
+      </div>
+
       <CaseList
+        embedded
         data={data}
         query={query}
         base={`/admin/companies/${companyId}/helpdesk`}
