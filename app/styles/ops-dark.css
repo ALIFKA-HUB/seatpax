@@ -136,7 +136,7 @@ html[data-mode='dark'] .admin-shell :is(.admin-sidebar, .admin-brand, .admin-top
   box-shadow: none;
 }
 
-html[data-mode='dark'] .admin-shell :is(.admin-company, .dash-pill-muted, .dash-bar-track, .dash-resource-item, .dash-week-strip, .dash-agenda-item, .dash-agenda-empty, .admin-stop-list > li, .seat-grid-region, .fleet-inspector, .fleet-brush-bar, .fleet-meta-chip, .trip-details, .trip-mode-bar, .admin-fares label, .payment-conflict-details > div, .dash-activity-note, .hd-admin-monitor .hd-tab-count, .hd-admin-monitor .hd-code-pill, .hd-timeline-note, .hd-attachment-item, .hd-preview-body) {
+html[data-mode='dark'] .admin-shell :is(.admin-company, .dash-pill-muted, .dash-bar-track, .dash-resource-item, .dash-week-strip, .dash-agenda-item, .dash-agenda-empty, .admin-stop-list > li, .seat-grid-region, .fleet-inspector, .fleet-brush-bar, .fleet-meta-chip, .trip-details, .trip-mode-bar, .admin-fares label, .payment-conflict-details > div, .dash-activity-note, .hd-admin-monitor .hd-tab-count, .hd-code-pill, .hd-timeline-note, .hd-attachment-item, .hd-preview-body) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule);
   color: var(--ops-ink);
@@ -378,6 +378,30 @@ html[data-mode='dark'] .admin-shell .manifest-seat-chip {
 html[data-mode='dark'] .admin-shell .admin-status-pill {
   background: var(--ops-slate-soft);
   color: var(--ops-slate);
+}
+
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-ok,
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-active,
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-success {
+  background: var(--ops-green-soft);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-warn,
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-draft {
+  background: var(--ops-amber-soft);
+  color: var(--ops-amber);
+}
+
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-danger,
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-error {
+  background: var(--ops-danger-soft);
+  color: var(--ops-danger);
+}
+
+html[data-mode='dark'] .admin-shell .admin-status-pill.is-info {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
 }
 
 html[data-mode='dark'] .admin-shell .admin-status-pill.is-purple {
@@ -899,6 +923,61 @@ html[data-mode='dark'] .hd-workspace .hd-loading-stats span,
 html[data-mode='dark'] .hd-workspace .hd-loading-panels span {
   border-color: var(--ops-rule);
   background: linear-gradient(90deg, var(--ops-paper-2) 25%, var(--ops-paper-3) 50%, var(--ops-paper-2) 75%);
+  background-size: 200% 100%;
+}
+
+html[data-mode='dark'] .admin-shell .dash-kpi-foot,
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-skeleton-kpi-foot {
+  border-top-color: var(--ops-rule-strong);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace a.dash-kpi-card.hd-kpi-link {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace a.dash-kpi-card.hd-kpi-link:hover {
+  border-color: var(--ops-accent);
+  background: var(--ops-paper-3);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-queue-card {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-queue-card:hover {
+  background: var(--ops-paper-4);
+  border-color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-queue-title,
+html[data-mode='dark'] .admin-shell .hd-case-title-link,
+html[data-mode='dark'] .admin-shell.hd-workspace a.hd-timeline-link {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell .hd-case-title-link:hover,
+html[data-mode='dark'] .admin-shell.hd-workspace a.hd-timeline-link:hover {
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-queue-cta {
+  color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-timeline-empty {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-timeline-empty svg {
+  color: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-skeleton-shimmer {
+  background: linear-gradient(90deg, var(--ops-paper-3) 25%, var(--ops-paper-4) 50%, var(--ops-paper-3) 75%);
   background-size: 200% 100%;
 }
 
