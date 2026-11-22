@@ -38,13 +38,11 @@
   --lp-nav-shadow: 0 16px 40px rgba(10, 33, 68, 0.12);
   --lp-badge-bg: #edf4ff;
   --lp-badge-ink: #2c4a73;
-  --lp-route-ring: #f7faff;
   --lp-icon-bg: #eaf3ff;
   --lp-icon-ring: #f7faff;
   --lp-arrow-tint: #e2edfc;
   --lp-white-20: rgba(255, 255, 255, 0.2);
   --lp-white-16: rgba(255, 255, 255, 0.16);
-  --lp-dark-border: rgba(255, 255, 255, 0.14);
   --lp-mask-white: #ffffff;
   --lp-disabled-bg: #e8edf4;
   --lp-arc-stroke: rgba(255, 255, 255, 0.26);
@@ -54,7 +52,6 @@
 
   /* Layout & typography tokens */
   --lp-font-sans: var(--font-passenger-jakarta), sans-serif;
-  --lp-font-mono: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
   --lp-header-flow: 88px;
   --lp-nav-offset: 104px;
 
@@ -86,7 +83,7 @@ html:has(.sp-landing) {
   outline-offset: 3px;
 }
 
-.sp-landing .lp-checkout-band :is(a, button, summary):focus-visible {
+.sp-landing .lp-checkout-band :is(a, button, summary):not(.lpm-card-hit):focus-visible {
   outline: 3px solid var(--lp-on-dark);
   outline-offset: 3px;
 }
