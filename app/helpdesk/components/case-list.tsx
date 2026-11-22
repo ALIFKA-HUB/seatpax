@@ -101,7 +101,11 @@ export default function CaseList({
           })}
         </nav>
 
-        <form className="hd-admin-toolbar" method="get">
+        <form
+          key={`${query.search || ''}|${query.priority || ''}`}
+          className="hd-admin-toolbar"
+          method="get"
+        >
           {activeStatus && <input type="hidden" name="status" value={activeStatus} />}
           <label className="hd-search-box">
             <MagnifyingGlass size={18} aria-hidden="true" />
