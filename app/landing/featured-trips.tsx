@@ -18,15 +18,24 @@ export default function FeaturedTrips() {
     <p className="lp-demo-note" id="network-demo-note"><span>Data demo</span>Contoh tampilan. Rute, jadwal, dan tarif di bawah belum bisa dipesan.</p>
     <ul className="lp-featured-trips" aria-label="Contoh perjalanan">
       {demoTrips.map(trip => <li key={trip.id}>
-        <article className="lp-featured-trip" aria-labelledby={`${trip.id}-title`}>
-          <div className="lp-featured-trip-top"><span><Armchair size={18} weight="light" aria-hidden="true"/>Shuttle antarkota</span><span>Contoh</span></div>
-          <h3 id={`${trip.id}-title`}>{trip.from}<ArrowRight size={19} aria-hidden="true"/><span>{trip.to}</span></h3>
-          <div className="lp-trip-timeline">
-            <div><strong>{trip.departure}</strong><span>Berangkat</span></div>
-            <div className="lp-trip-duration"><Clock size={15} aria-hidden="true"/><span>{trip.duration}</span></div>
-            <div><strong>{trip.arrival}</strong><span>Tiba</span></div>
+        <article className="lp-pass-card" aria-labelledby={`${trip.id}-title`}>
+          <div className="lp-pass-main">
+            <div className="lp-pass-top"><span><Armchair size={18} weight="light" aria-hidden="true"/>Shuttle antarkota</span><span className="lp-pass-badge">Contoh</span></div>
+            <h3 id={`${trip.id}-title`}>{trip.from}<ArrowRight size={19} aria-hidden="true"/><span>{trip.to}</span></h3>
+            <div className="lp-pass-timeline">
+              <div><strong className="sp-numbers">{trip.departure}</strong><span>Berangkat</span></div>
+              <div className="lp-pass-connector">
+                <span className="lp-pass-duration"><Clock size={14} aria-hidden="true"/><span>{trip.duration}</span></span>
+                <span className="lp-pass-track" aria-hidden="true"/>
+              </div>
+              <div><strong className="sp-numbers">{trip.arrival}</strong><span>Tiba</span></div>
+            </div>
           </div>
-          <div className="lp-trip-example-fare"><span>Tarif contoh<strong>{rupiah.format(trip.fare)}</strong></span><span>/ penumpang</span></div>
+          <div className="lp-pass-stub">
+            <span className="lp-pass-fare-label">Tarif contoh</span>
+            <strong className="sp-numbers">{rupiah.format(trip.fare)}</strong>
+            <span className="lp-pass-fare-unit">/ penumpang</span>
+          </div>
         </article>
       </li>)}
     </ul>
