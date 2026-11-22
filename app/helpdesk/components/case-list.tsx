@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import { MagnifyingGlass, ChatCircleText } from '@phosphor-icons/react/ssr';
 import AdminSelect from '@/app/admin/components/admin-select';
-import { statusLabels, priorityLabels, type ComplaintStatus, type Priority } from '@/modules/helpdesk/types';
+import {
+  categoryLabels,
+  statusLabels,
+  priorityLabels,
+  type Category,
+  type ComplaintStatus,
+  type Priority,
+} from '@/modules/helpdesk/types';
 import type { createHelpdeskStaff } from '@/modules/helpdesk/staff';
 import { normalizeHelpdeskPage } from '@/modules/helpdesk/staff';
 
@@ -20,18 +27,28 @@ const priorityTone: Record<Priority, string> = {
   LOW: 'is-neutral',
 };
 
+const quickTabs: { value: '' | ComplaintStatus; label: string }[] = [
+  { value: '', label: 'Semua' },
+  { value: 'MENUNGGU', label: 'Menunggu' },
+  { value: 'DIPROSES', label: 'Diproses' },
+  { value: 'PERLU_DILENGKAPI', label: 'Perlu dilengkapi' },
+  { value: 'SELESAI', label: 'Selesai' },
+];
+
 export default function CaseList({
   data,
   query,
   base = '/helpdesk/pengaduan',
   detailBase = '/helpdesk',
   embedded = false,
+  statusCounts,
 }: {
   data: ListResult;
   query: { search?: string; status?: string; priority?: string; page?: string };
   base?: string;
   detailBase?: string;
   embedded?: boolean;
+  statusCounts?: Record<ComplaintStatus, number>;
 }) {
   const page = normalizeHelpdeskPage(query.page);
   const search = new URLSearchParams(
@@ -42,33 +59,60 @@ export default function CaseList({
     params.set('page', String(value));
     return base + '?' + params;
   };
+  const statusHref = (nextStatus: '' | ComplaintStatus) => {
+    const params = new URLSearchParams();
+    if (query.search) params.set('search', query.search);
+    if (query.priority) params.set('priority', query.priority);
+    if (nextStatus) params.set('status', nextStatus);
+    const qs = params.toString();
+    return qs ? `${base}?${qs}` : base;
+  };
   const hasFilter = Boolean(query.search || query.status || query.priority);
+  const totalCount = statusCounts
+    ? statusCounts.MENUNGGU +
+      statusCounts.DIPROSES +
+      statusCounts.PERLU_DILENGKAPI +
+      statusCounts.SELESAI
+    : undefined;
 
   if (embedded) {
+    const activeStatus = query.status || '';
     return (
       <section className="dash-card admin-panel-modern hd-admin-card" aria-label="Daftar pengaduan pelanggan">
+        <nav className="hd-status-tabs" aria-label="Filter cepat status pengaduan">
+          {quickTabs.map(tab => {
+            const isActive = activeStatus === tab.value;
+            const tabCount = statusCounts
+              ? tab.value === ''
+                ? totalCount
+                : statusCounts[tab.value]
+              : undefined;
+            return (
+              <Link
+                key={tab.value || 'ALL'}
+                href={statusHref(tab.value)}
+                className={isActive ? 'hd-status-tab is-active' : 'hd-status-tab'}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <span>{tab.label}</span>
+                {typeof tabCount === 'number' && <span className="hd-tab-count">{tabCount}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+
         <form className="hd-admin-toolbar" method="get">
+          {activeStatus && <input type="hidden" name="status" value={activeStatus} />}
           <label className="hd-search-box">
             <MagnifyingGlass size={18} aria-hidden="true" />
             <span className="stop-sr-only">Cari laporan</span>
             <input
               name="search"
               defaultValue={query.search}
-              placeholder="Cari nomor atau judul laporan..."
+              placeholder="Cari judul atau kode laporan..."
               maxLength={160}
             />
           </label>
-          <div className="hd-toolbar-select">
-            <AdminSelect
-              name="status"
-              ariaLabel="Filter status pengaduan"
-              defaultValue={query.status || ''}
-              options={[
-                { value: '', label: 'Semua status' },
-                ...Object.entries(statusLabels).map(([value, label]) => ({ value, label })),
-              ]}
-            />
-          </div>
           <div className="hd-toolbar-select">
             <AdminSelect
               name="priority"
@@ -108,12 +152,16 @@ export default function CaseList({
                 {data.rows.map(r => {
                   const statusKey = r.status as ComplaintStatus;
                   const priorityKey = r.priority as Priority | null;
+                  const categoryKey = r.category as Category;
                   return (
                     <tr key={String(r.id)}>
                       <td>
                         <Link className="hd-case-title-link" href={detailBase + '/' + r.id}>
                           {String(r.title)}
                         </Link>
+                        <span className="hd-case-category">
+                          {categoryLabels[categoryKey] ?? String(r.category)}
+                        </span>
                       </td>
                       <td>
                         <span className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}>
@@ -126,12 +174,14 @@ export default function CaseList({
                             {priorityLabels[priorityKey]}
                           </span>
                         ) : (
-                          <span className="hd-muted-label">Belum ditentukan</span>
+                          <span className="hd-muted-dash" aria-label="Prioritas belum ditentukan">
+                            —
+                          </span>
                         )}
                       </td>
                       <td className="admin-tabular">{new Date(r.created_at).toLocaleDateString('id-ID')}</td>
                       <td>
-                        <Link className="admin-row-link" href={detailBase + '/' + r.id}>
+                        <Link className="admin-row-link hd-row-detail-link" href={detailBase + '/' + r.id}>
                           Detail →
                         </Link>
                       </td>

@@ -404,6 +404,14 @@
 .admin-shell .hd-admin-monitor .hd-primary{min-height:40px;padding:8px 16px;border-radius:10px;background:var(--admin-blue);border-color:var(--admin-blue);color:#fff;font-size:13px;font-weight:600}
 .admin-shell .hd-admin-monitor .hd-primary:hover:not(:disabled){background:#004aab;border-color:#004aab;color:#fff}
 .admin-shell .hd-admin-card{padding:0;overflow:visible}
+.admin-shell .hd-status-tabs{display:flex;align-items:center;gap:4px;padding:12px 18px 0;border-bottom:1px solid var(--admin-line);overflow-x:auto;scrollbar-width:none}
+.admin-shell .hd-status-tabs::-webkit-scrollbar{display:none}
+.admin-shell .hd-status-tab{position:relative;display:inline-flex;align-items:center;gap:7px;padding:9px 12px 11px;font-size:13px;font-weight:600;color:var(--admin-muted);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 140ms ease,border-color 140ms ease}
+.admin-shell .hd-status-tab:hover{color:var(--admin-ink);text-decoration:none}
+.admin-shell .hd-status-tab.is-active{color:var(--admin-blue);border-bottom-color:var(--admin-blue)}
+.admin-shell .hd-status-tab:focus-visible{outline:2px solid var(--admin-blue);outline-offset:-2px;border-radius:6px}
+.admin-shell .hd-tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f1f5f9;color:var(--admin-muted);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+.admin-shell .hd-status-tab.is-active .hd-tab-count{background:var(--admin-blue-soft);color:var(--admin-blue)}
 .admin-shell .hd-admin-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--admin-line)}
 .admin-shell .hd-search-box{display:flex;align-items:center;gap:10px;flex:1 1 240px;min-width:0;min-height:42px;padding:0 12px;border:1px solid #d1dce9;border-radius:11px;background:#fbfdff;color:#7990b1;transition:border-color 140ms ease,background-color 140ms ease,box-shadow 140ms ease}
 .admin-shell .hd-search-box:focus-within{border-color:var(--admin-blue);background:#fff;box-shadow:0 0 0 3px #005bd11a}
@@ -416,7 +424,11 @@
 .admin-shell .hd-reset-link:hover{color:var(--admin-blue)}
 .admin-shell .hd-case-title-link{display:inline-block;font-size:13.5px;font-weight:600;color:var(--admin-ink);text-decoration:none;overflow-wrap:anywhere}
 .admin-shell .hd-case-title-link:hover{color:var(--admin-blue);text-decoration:underline}
+.admin-shell .hd-case-category{display:block;margin-top:3px;font-size:12px;font-weight:500;color:var(--admin-muted)}
 .admin-shell .hd-muted-label{font-size:12.5px;color:var(--admin-muted)}
+.admin-shell .hd-muted-dash{font-size:13px;color:#94a3b8;font-weight:500}
+.admin-shell .hd-row-detail-link{color:#687b97;transition:color 140ms ease}
+.admin-shell .admin-modern-table tbody tr:hover .hd-row-detail-link,.admin-shell .hd-row-detail-link:hover,.admin-shell .hd-row-detail-link:focus-visible{color:var(--admin-blue)}
 .admin-shell .hd-table-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-top:1px solid var(--admin-line);font-size:12.5px;color:var(--admin-muted)}
 .admin-shell .hd-table-footer .hd-pagination{margin:0;padding:0;display:flex;gap:8px}
 .admin-shell .hd-detail-summary{display:grid;gap:14px;margin-bottom:16px}
@@ -550,6 +562,7 @@
   .admin-shell .stop-dialog{max-height:calc(100dvh - 32px);overflow:auto}
   .admin-shell .master-fields-2col{grid-template-columns:1fr}
   .admin-shell .hd-admin-toolbar{flex-direction:column;align-items:stretch}
+  .admin-shell .hd-search-box{flex:none;width:100%}
   .admin-shell .hd-toolbar-select{flex:none;width:100%}
   .admin-shell .hd-toolbar-actions{width:100%}
   .admin-shell .hd-toolbar-actions .admin-primary{flex:1}
