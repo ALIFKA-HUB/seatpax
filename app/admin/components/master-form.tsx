@@ -4,23 +4,28 @@ import {useRouter} from 'next/navigation';
 import {runAdminAction} from '../actions';
 import RegionFields from './region-fields';
 import AdminSelect from './admin-select';
+import {queueAdminToast} from '../admin-toast';
 import {emptyRegionOptions,type RegionOptions} from '@/modules/regions/types';
 import type {MasterRow} from '@/modules/route/repository';
-export default function MasterForm({companyId,kind,initial,regionOptions=emptyRegionOptions,onSaved,onDeleted,onPendingChange,onCancel,redirectTo}:{companyId:string;kind:'stop'|'class';initial?:MasterRow;regionOptions?:RegionOptions;onSaved?:()=>void;onDeleted?:()=>void;onPendingChange?:(pending:boolean)=>void;onCancel?:()=>void;redirectTo?:string}){
-  const prefix=useId(),router=useRouter(),busy=useRef(false);const [pending,setPending]=useState(false),[message,setMessage]=useState('');
-  async function submit(event:React.FormEvent<HTMLFormElement>){event.preventDefault();if(busy.current)return;const form=event.currentTarget;const data=new FormData(form);if(initial?.status==='ACTIVE'&&data.get('status')==='INACTIVE'&&!window.confirm('Nonaktifkan '+initial.name+'? Referensi lama tetap tersimpan.'))return;busy.current=true;setPending(true);onPendingChange?.(true);setMessage('');
-    try{const input=kind==='stop'?{name:data.get('name'),regionRegencyId:String(data.get('regionRegencyId')??'')||null,address:String(data.get('address')??'').trim()||null,status:data.get('status')}:{name:data.get('name'),code:data.get('code'),status:data.get('status')};const result=await runAdminAction(companyId,{kind,id:initial?.id,input});setMessage(result.ok?'Data tersimpan.':result.message);if(result.ok){if(!initial)form.reset();if(redirectTo)router.push(redirectTo);router.refresh();onSaved?.();}}catch{setMessage('Koneksi terputus. Coba lagi.');}finally{busy.current=false;setPending(false);onPendingChange?.(false);}
+export default function MasterForm({companyId,kind,initial,regionOptions=emptyRegionOptions,onSaved,onDeleted,onPendingChange,onCancel,redirectTo}:{companyId:string;kind:'stop'|'class';initial?:MasterRow;regionOptions?:RegionOptions;onSaved?:(savedName?:string)=>void;onDeleted?:()=>void;onPendingChange?:(pending:boolean)=>void;onCancel?:()=>void;redirectTo?:string}){
+  const prefix=useId(),router=useRouter(),busy=useRef(false);const [pending,setPending]=useState(false),[message,setMessage]=useState(''),[messageTone,setMessageTone]=useState<'ok'|'error'>('ok');
+  function fail(text:string){setMessageTone('error');setMessage(text);queueAdminToast({title:'Gagal menyimpan data',message:text,tone:'error'});}
+  async function submit(event:React.FormEvent<HTMLFormElement>){event.preventDefault();if(busy.current)return;const form=event.currentTarget;const data=new FormData(form);const savedName=String(data.get('name')??'').trim();if(initial?.status==='ACTIVE'&&data.get('status')==='INACTIVE'&&!window.confirm('Nonaktifkan '+initial.name+'? Referensi lama tetap tersimpan.'))return;busy.current=true;setPending(true);onPendingChange?.(true);setMessage('');
+    try{const input=kind==='stop'?{name:data.get('name'),regionRegencyId:String(data.get('regionRegencyId')??'')||null,address:String(data.get('address')??'').trim()||null,status:data.get('status')}:{name:data.get('name'),code:data.get('code'),status:data.get('status')};const result=await runAdminAction(companyId,{kind,id:initial?.id,input});if(!result.ok){fail(result.message);return;}setMessageTone('ok');if(!initial)form.reset();if(redirectTo){queueAdminToast({title:initial?(kind==='stop'?'Perubahan titik tersimpan':'Perubahan kelas layanan tersimpan'):(kind==='stop'?'Titik baru ditambahkan':'Kelas layanan baru ditambahkan'),message:savedName?(initial?`${savedName} telah diperbarui.`:`${savedName} kini tampil di daftar.`):undefined,tone:'ok',highlightId:initial?.id,highlightName:savedName||undefined});router.push(redirectTo);router.refresh();}else{router.refresh();}onSaved?.(savedName||undefined);}catch{fail('Koneksi terputus. Coba lagi.');}finally{busy.current=false;setPending(false);onPendingChange?.(false);}
   }
   async function remove(){
     if(!initial||busy.current||!window.confirm(`Hapus ${kind==='stop'?'titik':'kelas layanan'} "${initial.name}" secara permanen?`))return;
     busy.current=true;setPending(true);onPendingChange?.(true);setMessage('');
     try{
       const result=await runAdminAction(companyId,{kind:kind==='stop'?'deleteStop':'deleteClass',id:initial.id});
-      if(!result.ok){setMessage(result.message);return;}
-      if(redirectTo)router.push(redirectTo.includes('?')?`${redirectTo}&deleted=1`:`${redirectTo}?deleted=1`);
+      if(!result.ok){fail(result.message);return;}
+      if(redirectTo){
+        queueAdminToast({title:kind==='stop'?'Titik dihapus permanen':'Kelas layanan dihapus permanen',message:`${initial.name} telah dihapus dari daftar.`,tone:'ok'});
+        router.push(redirectTo);
+      }
       router.refresh();
       onDeleted?.();
-    }catch{setMessage('Koneksi terputus. Coba lagi.');}
+    }catch{fail('Koneksi terputus. Coba lagi.');}
     finally{busy.current=false;setPending(false);onPendingChange?.(false);}
   }
   return (
@@ -118,9 +123,11 @@ export default function MasterForm({companyId,kind,initial,regionOptions=emptyRe
           </p>
         )}
       </fieldset>
-      <p className="admin-message" role="status">
-        {message}
-      </p>
+      {message && (
+        <p className={messageTone === 'error' ? 'admin-flash-error' : 'admin-flash-ok'} role={messageTone === 'error' ? 'alert' : 'status'}>
+          {message}
+        </p>
+      )}
     </form>
   );
 }

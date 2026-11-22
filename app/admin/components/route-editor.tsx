@@ -5,6 +5,7 @@ import { Info } from '@phosphor-icons/react/ssr';
 import type { MasterRow, OrderedStop, RouteRow } from '@/modules/route/repository';
 import { runAdminAction, type ActionResult } from '../actions';
 import AdminSelect from './admin-select';
+import { queueAdminToast } from '../admin-toast';
 
 type Row = { stopId: string; arrival: string; departure: string };
 
@@ -94,11 +95,17 @@ export default function RouteEditor({
   const feedbackRef = useRef<HTMLParagraphElement>(null);
 
   function showMessage(text: string, tone: 'ok' | 'error') {
-    setMessage(text);
-    setMessageTone(tone);
-    requestAnimationFrame(() =>
-      feedbackRef.current?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' }),
-    );
+    if (tone === 'error') {
+      setMessage(text);
+      setMessageTone('error');
+      queueAdminToast({ title: 'Periksa pengisian rute', message: text, tone: 'error' });
+      requestAnimationFrame(() =>
+        feedbackRef.current?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' }),
+      );
+      return;
+    }
+    setMessage('');
+    setMessageTone('ok');
   }
 
   const update = (i: number, field: keyof Row, value: string) =>
@@ -189,10 +196,20 @@ export default function RouteEditor({
       if (r.ok) {
         setRevision(r.revision ?? revision);
         setConflict(false);
-        showMessage('Rute tersimpan.', 'ok');
+        setMessage('');
         if (!route && r.routeId) {
-          router.push(`/admin/companies/${companyId}/routes/${r.routeId}?saved=1`);
+          queueAdminToast({
+            title: 'Rute baru tersimpan',
+            message: `${name.trim()} siap — lanjutkan atur tarif per kelas di bawah jika diperlukan.`,
+            tone: 'ok',
+          });
+          router.push(`/admin/companies/${companyId}/routes/${r.routeId}`);
         } else {
+          queueAdminToast({
+            title: 'Perubahan rute tersimpan',
+            message: `${name.trim()} telah diperbarui.`,
+            tone: 'ok',
+          });
           router.refresh();
         }
       } else {
@@ -211,6 +228,7 @@ export default function RouteEditor({
     if (!route || busy.current || !window.confirm('Ubah status rute? Tiket/trip lama tidak dihapus.')) {
       return;
     }
+    const nextStatus = route.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
     busy.current = true;
     setPending(true);
     try {
@@ -218,16 +236,23 @@ export default function RouteEditor({
         kind: 'status',
         id: route.id,
         revision,
-        status: route.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE',
+        status: nextStatus,
       });
       if (r.ok) {
         setRevision(r.revision ?? revision);
+        setMessage('');
+        queueAdminToast({
+          title: nextStatus === 'INACTIVE' ? 'Rute dinonaktifkan' : 'Rute diaktifkan',
+          message: `${route.name} kini berstatus ${nextStatus === 'INACTIVE' ? 'nonaktif' : 'aktif'}.`,
+          tone: 'ok',
+        });
         router.refresh();
-        showMessage('Status rute diperbarui.', 'ok');
       } else {
         showMessage(r.message, 'error');
         setConflict(r.code === 'conflict');
       }
+    } catch {
+      showMessage('Koneksi terputus. Coba lagi.', 'error');
     } finally {
       busy.current = false;
       setPending(false);
@@ -248,7 +273,12 @@ export default function RouteEditor({
     try {
       const r = await runAdminAction(companyId, { kind: 'deleteRoute', id: route.id, revision });
       if (r.ok) {
-        router.push(`/admin/companies/${companyId}/routes?deleted=1`);
+        queueAdminToast({
+          title: 'Rute dihapus permanen',
+          message: `${route.name} telah dihapus dari daftar rute.`,
+          tone: 'ok',
+        });
+        router.push(`/admin/companies/${companyId}/routes`);
         router.refresh();
       } else {
         showMessage(r.message, 'error');

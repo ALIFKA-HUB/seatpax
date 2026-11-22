@@ -71,7 +71,7 @@ export default async function StaffPage({ params }: { params: Promise<{ companyI
               </thead>
               <tbody>
                 {staff.map(s => (
-                  <tr key={String(s.email)}>
+                  <tr key={String(s.email)} data-row-name={String(s.email)}>
                     <td>
                       <strong>{String(s.email)}</strong>
                     </td>

@@ -22,6 +22,7 @@ import {
 } from '../trip-actions';
 import TripDetail from './trip-detail';
 import AdminSelect from './admin-select';
+import { queueAdminToast } from '../admin-toast';
 
 type Choices = {
   routes: { id: string; name: string; status: string }[];
@@ -281,6 +282,11 @@ export default function TripForm({
     }
   })();
 
+  function showError(text: string) {
+    setMessage(text);
+    queueAdminToast({ title: 'Perjalanan belum tersimpan', message: text, tone: 'error' });
+  }
+
   async function save() {
     setBusy(true);
     setMessage('');
@@ -300,10 +306,15 @@ export default function TripForm({
           },
         });
         if (!result.ok) {
-          setMessage(result.message);
+          showError(result.message);
           return;
         }
-        router.push(`${base}?created=${result.data.count}`);
+        queueAdminToast({
+          title: `${result.data.count} draft perjalanan dibuat`,
+          message: 'Buka tiap perjalanan di daftar untuk menugaskan crew dan mempublikasikan.',
+          tone: 'ok',
+        });
+        router.push(base);
         router.refresh();
         return;
       }
@@ -314,17 +325,30 @@ export default function TripForm({
         revision: counter,
       });
       if (!result.ok) {
-        setMessage(result.message);
+        showError(result.message);
         setConflict(result.code === 'conflict');
         return;
       }
       setSaved({ ...draft });
       setCounter(result.data.revision);
-      setMessage('Draft tersimpan.');
-      if (!initial) router.push(base + '/' + result.data.tripId);
-      else router.refresh();
+      setMessage('');
+      if (!initial) {
+        queueAdminToast({
+          title: 'Draft perjalanan dibuat',
+          message: `${draft.name.trim()} siap dilengkapi crew & dipublikasikan.`,
+          tone: 'ok',
+        });
+        router.push(base + '/' + result.data.tripId);
+      } else {
+        queueAdminToast({
+          title: 'Draft perjalanan tersimpan',
+          message: `${draft.name.trim()} telah diperbarui.`,
+          tone: 'ok',
+        });
+        router.refresh();
+      }
     } catch {
-      setMessage('Koneksi terputus. Draft tetap tersedia; coba lagi.');
+      showError('Koneksi terputus. Draft tetap tersedia; coba lagi.');
     } finally {
       setBusy(false);
     }
@@ -337,14 +361,19 @@ export default function TripForm({
     try {
       const result = await publishTripAction(companyId, { id: initial.id, revision: counter });
       if (!result.ok) {
-        setMessage(result.message);
+        showError(result.message);
         setConflict(result.code === 'conflict');
         return;
       }
       setConfirming(false);
+      queueAdminToast({
+        title: 'Perjalanan dipublikasikan',
+        message: 'Jadwal kini aktif dan terbuka untuk penjualan tiket.',
+        tone: 'ok',
+      });
       router.refresh();
     } catch {
-      setMessage('Hasil belum diterima. Coba buka kembali perjalanan; publikasi ulang aman.');
+      showError('Hasil belum diterima. Coba buka kembali perjalanan; publikasi ulang aman.');
     } finally {
       setBusy(false);
     }
@@ -358,14 +387,19 @@ export default function TripForm({
     try {
       const result = await deleteTripDraftAction(companyId, { id: initial.id, revision: counter });
       if (!result.ok) {
-        setMessage(result.message);
+        showError(result.message);
         setConflict(result.code === 'conflict');
         return;
       }
-      router.push(`${base}?deleted=1`);
+      queueAdminToast({
+        title: 'Draft perjalanan dihapus permanen',
+        message: `${draft.name.trim()} telah dihapus dari daftar perjalanan.`,
+        tone: 'ok',
+      });
+      router.push(base);
       router.refresh();
     } catch {
-      setMessage('Koneksi terputus. Coba lagi.');
+      showError('Koneksi terputus. Coba lagi.');
     } finally {
       setBusy(false);
     }
@@ -756,9 +790,11 @@ export default function TripForm({
             </p>
           )}
         </fieldset>
-        <p role="status" aria-live="polite">
-          {message}
-        </p>
+        {message && (
+          <p className="admin-flash-error" role="alert" aria-live="polite">
+            {message}
+          </p>
+        )}
       </form>
 
       {preview && (

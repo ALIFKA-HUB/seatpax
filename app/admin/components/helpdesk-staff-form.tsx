@@ -1,9 +1,12 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { manageHelpdeskStaff } from '../helpdesk-actions';
 import AdminSelect from './admin-select';
+import { queueAdminToast } from '../admin-toast';
 
 export default function HelpdeskStaffForm() {
+  const router = useRouter();
   const [message, setMessage] = useState('');
   const [busy, start] = useTransition();
 
@@ -12,10 +15,29 @@ export default function HelpdeskStaffForm() {
       className="admin-form hd-staff-form"
       onSubmit={e => {
         e.preventDefault();
-        const f = new FormData(e.currentTarget);
+        const form = e.currentTarget;
+        const f = new FormData(form);
+        const email = String(f.get('email') ?? '').trim().toLowerCase();
+        setMessage('');
         start(async () => {
           const r = await manageHelpdeskStaff(f);
-          setMessage(r.message);
+          if (r.ok) {
+            form.reset();
+            queueAdminToast({
+              title: 'Akses petugas Helpdesk diperbarui',
+              message: email ? `${email} telah diperbarui.` : r.message,
+              tone: 'ok',
+              highlightName: email || undefined,
+            });
+            router.refresh();
+          } else {
+            setMessage(r.message);
+            queueAdminToast({
+              title: 'Akses petugas belum tersimpan',
+              message: r.message,
+              tone: 'error',
+            });
+          }
         });
       }}
     >
@@ -49,7 +71,7 @@ export default function HelpdeskStaffForm() {
         </button>
       </div>
       {message && (
-        <p className="admin-message" role="status">
+        <p className="admin-flash-error" role="alert">
           {message}
         </p>
       )}

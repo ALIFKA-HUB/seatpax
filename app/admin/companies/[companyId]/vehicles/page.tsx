@@ -90,7 +90,7 @@ export default async function Page({
                 {list.map(v => {
                   const status = sourceStatusPresentation(v.status);
                   return (
-                    <tr key={v.id}>
+                    <tr key={v.id} data-row-id={v.id} data-row-name={v.name}>
                       <td>
                         <strong>{v.name}</strong>
                       </td>

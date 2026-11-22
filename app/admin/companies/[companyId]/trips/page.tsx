@@ -97,7 +97,7 @@ export default async function Page({
                 {list.map(t => {
                   const status = tripStatusPresentation(t.status);
                   return (
-                    <tr key={t.id}>
+                    <tr key={t.id} data-row-id={t.id} data-row-name={t.name}>
                       <td>
                         <strong>{t.name}</strong>
                         <small>

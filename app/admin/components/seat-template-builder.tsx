@@ -9,6 +9,7 @@ import SeatGrid from './seat-grid';
 import { sourceStatusPresentation } from '../presentation';
 import ConflictPanel from './conflict-panel';
 import AdminSelect from './admin-select';
+import { queueAdminToast } from '../admin-toast';
 
 const CELL_LABELS: Record<CellType, string> = {
   SEAT: 'Kursi',
@@ -36,8 +37,19 @@ export default function SeatTemplateBuilder({
   const [brush, setBrush] = useState<CellType | null>(initial ? null : 'SEAT');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageTone, setMessageTone] = useState<'ok' | 'error'>('ok');
   const [conflict, setConflict] = useState(false);
   const [latest, setLatest] = useState<TemplateDetail | null>(null);
+
+  function showError(text: string, isConflict = false) {
+    setMessageTone('error');
+    setMessage(text);
+    queueAdminToast({
+      title: isConflict ? 'Konflik versi template' : 'Template belum tersimpan',
+      message: text,
+      tone: 'error',
+    });
+  }
 
   const cell = draft.cells.find(c => `${c.rowIndex}:${c.colIndex}` === selected) ?? draft.cells[0];
   const canDelete = Boolean(draft.id) && draft.vehicleCount === 0;
@@ -57,6 +69,8 @@ export default function SeatTemplateBuilder({
     if (busy) return;
     setBusy(true);
     setMessage('');
+    const isCreate = !draft.id;
+    const trimmedName = draft.name.trim();
     try {
       const result = await runFleetAction(
         companyId,
@@ -70,7 +84,7 @@ export default function SeatTemplateBuilder({
             },
       );
       if (!result.ok) {
-        setMessage(result.message);
+        showError(result.message, result.code === 'conflict');
         if (result.code === 'conflict') {
           setConflict(true);
           setLatest(null);
@@ -79,15 +93,37 @@ export default function SeatTemplateBuilder({
       }
       setConflict(false);
       setLatest(null);
+      const nextId = result.templateId ?? draft.id;
       setDraft({
         ...draft,
-        id: result.templateId!,
+        id: nextId,
         version: result.version!,
         status: status ?? draft.status,
       });
-      setMessage('Template tersimpan.');
-      if (!draft.id) router.push(`/admin/companies/${companyId}/seat-templates/${result.templateId}`);
+      const toastCopy =
+        status === 'ARCHIVED'
+          ? { title: 'Template kursi diarsipkan', message: `${trimmedName} kini berstatus arsip.` }
+          : status === 'ACTIVE'
+            ? { title: 'Template kursi diaktifkan', message: `${trimmedName} kini aktif kembali.` }
+            : isCreate
+              ? {
+                  title: 'Template kursi baru ditambahkan',
+                  message: `${trimmedName} kini tampil di daftar template.`,
+                }
+              : {
+                  title: 'Perubahan template kursi tersimpan',
+                  message: `${trimmedName} telah diperbarui.`,
+                };
+      queueAdminToast({
+        ...toastCopy,
+        tone: 'ok',
+        highlightId: nextId,
+        highlightName: trimmedName,
+      });
+      router.push(`/admin/companies/${companyId}/seat-templates`);
       router.refresh();
+    } catch {
+      showError('Koneksi terputus. Coba lagi.');
     } finally {
       setBusy(false);
     }
@@ -98,7 +134,9 @@ export default function SeatTemplateBuilder({
     try {
       const result = await runFleetAction(companyId, { kind: 'refreshTemplate', id: draft.id });
       if (result.ok && result.latestTemplate) setLatest(result.latestTemplate);
-      else if (!result.ok) setMessage(result.message);
+      else if (!result.ok) showError(result.message);
+    } catch {
+      showError('Koneksi terputus. Coba lagi.');
     } finally {
       setBusy(false);
     }
@@ -117,15 +155,22 @@ export default function SeatTemplateBuilder({
         version: draft.version,
       });
       if (!result.ok) {
-        setMessage(result.message);
+        showError(result.message, result.code === 'conflict');
         if (result.code === 'conflict') {
           setConflict(true);
           setLatest(null);
         }
         return;
       }
-      router.push(`/admin/companies/${companyId}/seat-templates?deleted=1`);
+      queueAdminToast({
+        title: 'Template kursi dihapus permanen',
+        message: `${draft.name.trim()} telah dihapus dari daftar template.`,
+        tone: 'ok',
+      });
+      router.push(`/admin/companies/${companyId}/seat-templates`);
       router.refresh();
+    } catch {
+      showError('Koneksi terputus. Coba lagi.');
     } finally {
       setBusy(false);
     }
@@ -142,6 +187,7 @@ export default function SeatTemplateBuilder({
     }
     setConflict(false);
     setLatest(null);
+    setMessageTone('ok');
     setMessage('Pilihan diterapkan. Periksa form sebelum menyimpan.');
   }
 
@@ -280,7 +326,11 @@ export default function SeatTemplateBuilder({
         </div>
 
         {message && (
-          <p className="admin-message" role="status" aria-live="polite">
+          <p
+            className={messageTone === 'error' ? 'admin-flash-error' : 'admin-flash-ok'}
+            role={messageTone === 'error' ? 'alert' : 'status'}
+            aria-live="polite"
+          >
             {message}
           </p>
         )}

@@ -93,7 +93,7 @@ export default async function Page({
               </thead>
               <tbody>
                 {data.classes.map(c => (
-                  <tr key={c.id}>
+                  <tr key={c.id} data-row-id={c.id} data-row-name={c.name}>
                     <td>
                       <strong>{c.name}</strong>
                     </td>

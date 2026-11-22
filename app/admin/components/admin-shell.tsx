@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import Brand from '@/app/components/brand';
 import AdminNavigation from './admin-navigation';
 import AdminTopbar from './admin-topbar';
+import AdminToastViewport from './admin-toast';
 import { UserCircle } from '@phosphor-icons/react/ssr';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
@@ -54,6 +55,7 @@ export default function AdminShell({
         <main className="admin-main" id="admin-main" tabIndex={-1}>
           {children}
         </main>
+        <AdminToastViewport />
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import type { MasterRow } from '@/modules/route/repository';
 import type { RegionOptions } from '@/modules/regions/types';
 import MasterForm from './master-form';
 import AdminSelect from './admin-select';
+import { queueAdminToast } from '../admin-toast';
 
 export default function StopDirectory({
   companyId,
@@ -51,13 +52,26 @@ export default function StopDirectory({
   function closeForm() {
     if (!pending) dialog.current?.close();
   }
-  function saved() {
+  function saved(savedName?: string) {
+    const label = savedName || editing?.name || 'Titik';
     dialog.current?.close();
-    setFeedback(editing ? 'Perubahan titik tersimpan.' : 'Titik baru berhasil ditambahkan.');
+    setFeedback('');
+    queueAdminToast({
+      title: editing ? 'Perubahan titik tersimpan' : 'Titik baru ditambahkan',
+      message: editing ? `${label} telah diperbarui.` : `${label} kini tampil di daftar titik.`,
+      tone: 'ok',
+      highlightId: editing?.id,
+      highlightName: label,
+    });
   }
   function deleted() {
     dialog.current?.close();
-    setFeedback('Titik berhasil dihapus permanen.');
+    setFeedback('');
+    queueAdminToast({
+      title: 'Titik dihapus permanen',
+      message: `${editing?.name ?? 'Titik'} telah dihapus dari daftar titik.`,
+      tone: 'ok',
+    });
   }
 
   return (
@@ -152,7 +166,7 @@ export default function StopDirectory({
               </thead>
               <tbody>
                 {visible.map(stop => (
-                  <tr key={stop.id}>
+                  <tr key={stop.id} data-row-id={stop.id} data-row-name={stop.name}>
                     <td>
                       <strong>{stop.name}</strong>
                       <small>{stop.address || 'Alamat belum ditambahkan'}</small>

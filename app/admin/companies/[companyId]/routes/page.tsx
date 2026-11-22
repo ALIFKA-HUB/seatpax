@@ -88,7 +88,7 @@ export default async function Page({
               </thead>
               <tbody>
                 {data.routes.map(r => (
-                  <tr key={r.id}>
+                  <tr key={r.id} data-row-id={r.id} data-row-name={r.name}>
                     <td>
                       <strong>{r.name}</strong>
                     </td>
