@@ -18,9 +18,6 @@ export default async function Page({ params }: { params: Promise<{ companyId: st
       </header>
 
       <section className="dash-card admin-panel-modern">
-        <div className="admin-panel-head">
-          <h2>Detail perjalanan</h2>
-        </div>
         <TripForm companyId={companyId} choices={choices} />
       </section>
     </div>

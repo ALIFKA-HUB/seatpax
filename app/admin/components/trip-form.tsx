@@ -273,30 +273,33 @@ export default function TripForm({
       >
         <fieldset disabled={busy} className="fleet-fieldset">
           {!initial && (
-            <div className="trip-mode-bar" role="group" aria-label="Pola jadwal keberangkatan">
-              <button
-                type="button"
-                className={`trip-mode-btn${!recurring ? ' is-active' : ''}`}
-                aria-pressed={!recurring}
-                onClick={() => {
-                  setRecurring(false);
-                  setMessage('');
-                }}
-              >
-                Sekali jalan
-              </button>
-              <button
-                type="button"
-                className={`trip-mode-btn${recurring ? ' is-active' : ''}`}
-                aria-pressed={recurring}
-                onClick={enableRecurring}
-              >
-                Berulang (pilih hari)
-              </button>
+            <div className="trip-form-head">
+              <h2>Detail perjalanan</h2>
+              <div className="trip-mode-bar" role="group" aria-label="Pola jadwal keberangkatan">
+                <button
+                  type="button"
+                  className={`trip-mode-btn${!recurring ? ' is-active' : ''}`}
+                  aria-pressed={!recurring}
+                  onClick={() => {
+                    setRecurring(false);
+                    setMessage('');
+                  }}
+                >
+                  Sekali jalan
+                </button>
+                <button
+                  type="button"
+                  className={`trip-mode-btn${recurring ? ' is-active' : ''}`}
+                  aria-pressed={recurring}
+                  onClick={enableRecurring}
+                >
+                  Berulang (pilih hari)
+                </button>
+              </div>
             </div>
           )}
 
-          <div className="admin-fields">
+          <div className="admin-fields trip-fields-2col">
             <label>
               Nama perjalanan
               <input
@@ -338,9 +341,11 @@ export default function TripForm({
               />
               <small>Kelas bisa berbeda dari default armada; tarif mengikuti pilihan ini.</small>
             </label>
+          </div>
 
-            {!recurring && (
-              <>
+          <div className="trip-schedule-section">
+            {!recurring ? (
+              <div className="admin-fields trip-fields-2col">
                 <label>
                   Berangkat stop pertama (WIB)
                   <input
@@ -358,110 +363,110 @@ export default function TripForm({
                     onChange={e => change('salesCloseWib', e.target.value || null)}
                   />
                 </label>
-              </>
+              </div>
+            ) : (
+              !initial && (
+                <div className="trip-recurring-section">
+                  <div className="trip-recurring-head">
+                    <div>
+                      <strong>Hari beroperasi</strong>
+                      <p>Pilih hari keberangkatan seperti pengingat alarm, lalu tentukan rentang tanggal.</p>
+                    </div>
+                    <div className="trip-preset-row" role="group" aria-label="Preset hari beroperasi">
+                      <button
+                        type="button"
+                        className={`trip-preset-btn${sameDays(weekdays, ALL_DAYS) ? ' is-active' : ''}`}
+                        onClick={() => setWeekdays(ALL_DAYS)}
+                      >
+                        Setiap hari
+                      </button>
+                      <button
+                        type="button"
+                        className={`trip-preset-btn${sameDays(weekdays, WORK_DAYS) ? ' is-active' : ''}`}
+                        onClick={() => setWeekdays(WORK_DAYS)}
+                      >
+                        Hari kerja
+                      </button>
+                      <button
+                        type="button"
+                        className={`trip-preset-btn${sameDays(weekdays, WEEKEND_DAYS) ? ' is-active' : ''}`}
+                        onClick={() => setWeekdays(WEEKEND_DAYS)}
+                      >
+                        Akhir pekan
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="trip-weekday-row" role="group" aria-label="Pilih hari dalam seminggu">
+                    {WEEKDAYS.map(day => {
+                      const active = weekdays.includes(day.id);
+                      return (
+                        <button
+                          key={day.id}
+                          type="button"
+                          className={`trip-weekday-pill${active ? ' is-selected' : ''}`}
+                          aria-pressed={active}
+                          aria-label={day.full}
+                          onClick={() => toggleWeekday(day.id)}
+                        >
+                          {day.short}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="admin-fields trip-fields-2col trip-recurring-fields">
+                    <label>
+                      Jam berangkat (WIB)
+                      <input
+                        type="time"
+                        required
+                        value={departureTime}
+                        onChange={e => setDepartureTime(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Tutup penjualan (menit sebelum berangkat)
+                      <input
+                        type="number"
+                        min={0}
+                        max={10080}
+                        placeholder="Opsional (default: saat berangkat)"
+                        value={salesCloseBeforeMin}
+                        onChange={e => setSalesCloseBeforeMin(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Mulai tanggal (WIB)
+                      <input
+                        type="date"
+                        required
+                        value={startDate}
+                        onChange={e => setStartDate(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Sampai tanggal (WIB)
+                      <input
+                        type="date"
+                        required
+                        value={endDate}
+                        onChange={e => setEndDate(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <p
+                    className={`trip-recurring-summary${schedulePreview.ok ? ' is-ready' : ' is-warn'}`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {schedulePreview.hint}
+                  </p>
+                </div>
+              )
             )}
           </div>
-
-          {!initial && recurring && (
-            <div className="trip-recurring-panel">
-              <div className="trip-recurring-head">
-                <div>
-                  <strong>Hari beroperasi</strong>
-                  <p>Pilih hari keberangkatan seperti pengingat alarm, lalu tentukan rentang tanggal.</p>
-                </div>
-                <div className="trip-preset-row" role="group" aria-label="Preset hari beroperasi">
-                  <button
-                    type="button"
-                    className={`trip-preset-btn${sameDays(weekdays, ALL_DAYS) ? ' is-active' : ''}`}
-                    onClick={() => setWeekdays(ALL_DAYS)}
-                  >
-                    Setiap hari
-                  </button>
-                  <button
-                    type="button"
-                    className={`trip-preset-btn${sameDays(weekdays, WORK_DAYS) ? ' is-active' : ''}`}
-                    onClick={() => setWeekdays(WORK_DAYS)}
-                  >
-                    Hari kerja
-                  </button>
-                  <button
-                    type="button"
-                    className={`trip-preset-btn${sameDays(weekdays, WEEKEND_DAYS) ? ' is-active' : ''}`}
-                    onClick={() => setWeekdays(WEEKEND_DAYS)}
-                  >
-                    Akhir pekan
-                  </button>
-                </div>
-              </div>
-
-              <div className="trip-weekday-row" role="group" aria-label="Pilih hari dalam seminggu">
-                {WEEKDAYS.map(day => {
-                  const active = weekdays.includes(day.id);
-                  return (
-                    <button
-                      key={day.id}
-                      type="button"
-                      className={`trip-weekday-pill${active ? ' is-selected' : ''}`}
-                      aria-pressed={active}
-                      aria-label={day.full}
-                      onClick={() => toggleWeekday(day.id)}
-                    >
-                      {day.short}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="admin-fields trip-recurring-fields">
-                <label>
-                  Jam berangkat (WIB)
-                  <input
-                    type="time"
-                    required
-                    value={departureTime}
-                    onChange={e => setDepartureTime(e.target.value)}
-                  />
-                </label>
-                <label>
-                  Mulai tanggal (WIB)
-                  <input
-                    type="date"
-                    required
-                    value={startDate}
-                    onChange={e => setStartDate(e.target.value)}
-                  />
-                </label>
-                <label>
-                  Sampai tanggal (WIB)
-                  <input
-                    type="date"
-                    required
-                    value={endDate}
-                    onChange={e => setEndDate(e.target.value)}
-                  />
-                </label>
-                <label>
-                  Tutup penjualan (menit sebelum berangkat)
-                  <input
-                    type="number"
-                    min={0}
-                    max={10080}
-                    placeholder="Opsional (default: saat berangkat)"
-                    value={salesCloseBeforeMin}
-                    onChange={e => setSalesCloseBeforeMin(e.target.value)}
-                  />
-                </label>
-              </div>
-
-              <p
-                className={`trip-recurring-summary${schedulePreview.ok ? ' is-ready' : ' is-warn'}`}
-                role="status"
-                aria-live="polite"
-              >
-                {schedulePreview.hint}
-              </p>
-            </div>
-          )}
 
           <div className="admin-buttons">
             <button
