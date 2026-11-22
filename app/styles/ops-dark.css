@@ -241,13 +241,13 @@ html[data-mode='dark'] .admin-shell :is(input:focus-visible, select:focus-visibl
   box-shadow: 0 0 0 3px rgb(95 160 255 / 0.22);
 }
 
-html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.trip-preset-btn.is-active):not(.trip-mode-btn.is-active) {
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.trip-preset-btn.is-active):not(.trip-mode-btn.is-active) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule-strong);
   color: var(--ops-ink);
 }
 
-html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):hover:not(:disabled) {
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):hover:not(:disabled) {
   background: var(--ops-paper-4);
   border-color: var(--ops-accent);
   color: var(--ops-accent-hover);
@@ -781,9 +781,80 @@ html[data-mode='dark'] .hd-workspace :is(.hd-secondary, .hd-download-link, .hd-p
   color: var(--ops-ink);
 }
 
-html[data-mode='dark'] .hd-workspace .hd-primary {
+html[data-mode='dark'] .hd-workspace .hd-primary,
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-primary,
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main button.hd-primary {
   background: var(--ops-primary-fill);
+  border-color: var(--ops-primary-fill);
   color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-primary:hover:not(:disabled),
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main button.hd-primary:hover:not(:disabled) {
+  background: var(--ops-primary-fill-hover);
+  border-color: var(--ops-primary-fill-hover);
+  color: var(--ops-primary-ink);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-form label {
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-staff-table th,
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-main .hd-staff-table td {
+  border-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule);
+  color: var(--ops-ink);
+  box-shadow: 0 16px 36px rgb(3 7 18 / 0.55);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer .admin-nav-caption {
+  color: var(--ops-soft-ink);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer nav a {
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer nav a:hover {
+  background: var(--ops-paper-3);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer nav a[aria-current='page'] {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer nav a[aria-current='page']::before {
+  background: var(--ops-accent);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer .admin-nav-badge {
+  background: var(--ops-orange-soft);
+  color: var(--ops-orange);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-mobile-drawer .hd-mobile-theme-row {
+  border-top-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-footer-link,
+html[data-mode='dark'] .admin-shell.hd-workspace button.ops-theme-toggle.hd-footer-link {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ops-muted);
+}
+
+html[data-mode='dark'] .admin-shell.hd-workspace .hd-footer-link:hover,
+html[data-mode='dark'] .admin-shell.hd-workspace button.ops-theme-toggle.hd-footer-link:hover:not(:disabled) {
+  background: var(--ops-paper-3);
+  border-color: transparent;
+  color: var(--ops-accent-hover);
 }
 
 html[data-mode='dark'] .hd-workspace .hd-timeline li:not(:last-child)::before {

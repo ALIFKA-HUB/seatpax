@@ -158,7 +158,7 @@ describe('Operational + Crew Dark Mode & circular View Transitions', () => {
 
     const helpdeskHtml = render(h(HelpdeskShell, null, 'Helpdesk body'));
     expect(helpdeskHtml).toContain('ops-theme-toggle');
-    expect(helpdeskHtml).toContain('Mode gelap');
+    expect(helpdeskHtml).toContain('Aktifkan mode gelap');
 
     const rootLayout = readFileSync('app/layout.tsx', 'utf8');
     expect(rootLayout).toContain('THEME_STORAGE_KEY');

@@ -8,6 +8,10 @@ const f = vi.hoisted(() => ({
   listWorkspaces: vi.fn(),
 }));
 
+vi.mock('next/font/google', () => ({
+  Plus_Jakarta_Sans: () => ({ variable: 'test-jakarta' }),
+}));
+
 vi.mock('next/navigation', () => ({
   redirect: (url: string) => {
     throw new Error(`REDIRECT:${url}`);
