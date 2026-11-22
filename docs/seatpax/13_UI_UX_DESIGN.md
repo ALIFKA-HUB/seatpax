@@ -1,5 +1,9 @@
 # Seatpax — UI/UX & Visual Design
 
+## Latest public landing page visual & motion direction — 22 November 2026
+
+The user approved `UI-LANDING-01` ([spec](../superpowers/specs/2026-11-22-landing-redesign-design.md), [plan](../superpowers/plans/2026-11-22-landing-redesign.md)): aligns the `/` passenger landing page with `/trips` (`UI-TRIPS-01`) using the 60–30–10 palette (`#f4f7fb` canvas, `#071936`/`#0a2144` Deep Navy hero & `#alur-pemesanan` contrast band, `#005bd1` Seatpax Blue, `#bd4b12` burnt-orange conversion CTAs), removes Unsplash road photos and tracked-uppercase eyebrows, preserves the `BookingRoute` Bézier track line in `#cara-memesan`, upgrades `BookingMotion` to interactive `motion/react` spring physics, and introduces a light-theme `/anatomy` isometric `Boarding Stand` instrument (`PreparationShowcase`) in `#persiapan`.
+
 ## Latest internal dashboard visual direction — 2 November 2026
 
 The user approved the [v5 dashboard appearance](../superpowers/specs/2026-11-02-internal-dashboard-visual-design.md), approval `ADM-DESIGN-05`: solid Seatpax blue/green/orange summary cards, panel-scoped Inter (400 body, 500 labels/navigation, 600 actions/section headings, 700 page heading/summary numbers), white content cards, grouped sidebar and clearly bordered action controls. This supplements the internal panel's visual direction only; public/customer typography and existing product/access rules remain unchanged. Preview staff/counts/activity are illustrative, not production data. See the [implementation plan and data dependencies](../superpowers/plans/2026-11-02-internal-dashboard-visual.md).

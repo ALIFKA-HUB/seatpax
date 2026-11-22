@@ -1,5 +1,9 @@
 # Seatpax Documentation Index
 
+## Landing page visual, motion & `/anatomy` redesign — 22 November 2026
+
+The user approved `UI-LANDING-01` (Deep Navy architectural hero + floating `JourneyPlanner`, 60–30–10 palette aligned with `/trips` using burnt-orange `#bd4b12` CTAs, boarding-pass `FeaturedTrips`, preserved SVG Bézier track line `BookingRoute`, upgraded `motion/react` spring choreography in `BookingMotion` for interactive seats `01`–`09` and 3-step deck inside a Deep Navy band, plus light-theme `/anatomy` isometric `Boarding Stand` figure in `PreparationShowcase`), preserving all search URL/validation contracts and non-landing flows. See [spec](../superpowers/specs/2026-11-22-landing-redesign-design.md) and [plan](../superpowers/plans/2026-11-22-landing-redesign.md).
+
 ## `/trips` discovery visual refresh — 16 November 2026
 
 The user approved `UI-TRIPS-01` (Compact Deep Navy Hero, floating search card, 60–30–10 palette with burnt-orange `#bd4b12` CTAs, boarding-pass `TripCard` stub, 2-line quick date chips, segmented sort, and toggle-chip filter dialog), preserving all existing discovery queries, availability rules, and test contracts. See [spec](../superpowers/specs/2026-11-16-trips-discovery-visual-design.md) and [plan](../superpowers/plans/2026-11-16-trips-discovery-visual.md).
