@@ -21,15 +21,17 @@ export default function CrewTripTabs({
   ];
 
   return (
-    <header className="crew-page-header">
+    <header className="crew-page-header crew-trip-header">
       <Link className="crew-back" href="/crew">
         <IconArrowLeft size={16} />
         <span>Daftar perjalanan tugas</span>
       </Link>
-      <div className="crew-head-copy">
-        <p className="crew-eyebrow">Operasional perjalanan kru</p>
-        <h1>{tripName}</h1>
-        {subtitle && <p className="crew-muted crew-head-sub">{subtitle}</p>}
+      <div className="crew-hero">
+        <div className="crew-head-copy">
+          <h1>{tripName}</h1>
+          {subtitle && <p className="crew-muted crew-head-sub">{subtitle}</p>}
+        </div>
+        <span className="crew-status-pill is-info">Operasional Crew</span>
       </div>
       <nav className="crew-subnav" aria-label="Menu operasional perjalanan">
         {tabs.map(tab => {

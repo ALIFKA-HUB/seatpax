@@ -80,21 +80,54 @@
 .crew-shell button.admin-toast-close:hover:not(:disabled) { background:#F1F5F9; color:var(--crew-ink); }
 .crew-shell .admin-toast-progress { position:absolute; left:0; right:0; bottom:0; height:3px; transform-origin:left center; opacity:.85; }
 
-.crew-shell .crew-page-header { display:grid; gap:10px; margin-bottom:24px; }
+.crew-shell .crew-dash-root { display:grid; gap:18px; min-width:0; }
+.crew-shell .crew-dash-root > * { min-width:0; max-width:100%; }
+.crew-shell .crew-hero { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px 20px; }
+.crew-shell .crew-hero-copy { min-width:0; max-width:100%; display:grid; gap:4px; }
+.crew-shell .crew-hero-copy h1 { margin:0; font-size:clamp(22px,2.2vw,28px); font-weight:800; letter-spacing:-.035em; line-height:1.2; color:var(--crew-ink); }
+.crew-shell .crew-hero-copy p { margin:0; font-size:13.5px; color:var(--crew-muted); line-height:1.55; }
+.crew-shell .crew-hero-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+.crew-shell .crew-date-pill { display:inline-flex; align-items:center; gap:7px; min-height:38px; padding:6px 12px; border-radius:10px; border:1px solid var(--crew-line); background:#FFFFFF; color:var(--crew-ink); font-size:12.5px; font-weight:600; white-space:nowrap; }
+.crew-shell .crew-date-pill svg { color:var(--crew-blue); flex-shrink:0; }
+
+.crew-shell .crew-stat-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0; padding:0; }
+.crew-shell .crew-stat-card { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:#FFFFFF; border:1px solid var(--crew-line); border-radius:16px; min-width:0; }
+.crew-shell .crew-stat-meta { display:grid; gap:2px; min-width:0; }
+.crew-shell .crew-stat-value { font-size:24px; font-weight:800; line-height:1.1; letter-spacing:-.03em; color:var(--crew-ink); font-variant-numeric:tabular-nums; }
+.crew-shell .crew-stat-label { font-size:12.5px; font-weight:500; color:var(--crew-muted); line-height:1.35; }
+.crew-shell .crew-icon-badge { display:grid; place-items:center; width:42px; height:42px; border-radius:11px; flex-shrink:0; }
+.crew-shell .crew-icon-badge.is-blue { background:var(--crew-blue-soft); color:var(--crew-blue); }
+.crew-shell .crew-icon-badge.is-indigo { background:#EEF2FF; color:#3730A3; }
+.crew-shell .crew-icon-badge.is-green { background:var(--crew-green-soft); color:var(--crew-green); }
+.crew-shell .crew-icon-badge.is-amber { background:var(--crew-amber-soft); color:var(--crew-amber); }
+
+.crew-shell .crew-page-header { display:grid; gap:12px; margin-bottom:24px; }
+.crew-shell .crew-trip-header { gap:14px; }
 .crew-shell .crew-home-head { gap:12px; }
 .crew-shell .crew-home-head-top { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px 20px; }
-.crew-shell .crew-head-copy { display:grid; gap:6px; }
-.crew-shell .crew-head-sub { font-size:.9375rem; }
+.crew-shell .crew-head-copy { display:grid; gap:4px; min-width:0; }
+.crew-shell .crew-head-sub { font-size:.9375rem; font-variant-numeric:tabular-nums; }
 .crew-shell .crew-eyebrow { text-transform:uppercase; letter-spacing:.09em; font-size:.75rem; font-weight:700; color:#005BD1; }
 .crew-shell .crew-muted { color:#526078; }
-.crew-shell .crew-count-pill { display:inline-flex; align-items:center; padding:6px 12px; border-radius:999px; background:#EDF3FB; border:1px solid #B7CBE5; color:#0A2144; font-size:.875rem; font-weight:650; }
-.crew-shell .crew-back { min-height:48px; display:inline-flex; align-items:center; gap:8px; width:fit-content; font-weight:600; color:#005BD1; }
+.crew-shell .crew-count-pill { display:inline-flex; align-items:center; min-height:38px; padding:6px 12px; border-radius:999px; background:#EDF3FB; border:1px solid #B7CBE5; color:#0A2144; font-size:12.5px; font-weight:650; font-variant-numeric:tabular-nums; }
+.crew-shell .crew-back { min-height:38px; display:inline-flex; align-items:center; gap:7px; width:fit-content; padding:6px 12px; border-radius:10px; border:1px solid var(--crew-line); background:#FFFFFF; font-size:13px; font-weight:600; color:var(--crew-muted); }
+.crew-shell .crew-back:hover { border-color:#9FC2F5; background:#F4F8FF; color:var(--crew-blue); }
 
-.crew-shell .crew-subnav { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:6px; padding:6px; background:white; border:1px solid var(--crew-line); border-radius:12px; }
+.crew-shell .crew-subnav { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:2px; padding:6px; background:white; border:1px solid var(--crew-line); border-radius:12px; }
 .crew-shell .crew-subnav-link { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:48px; padding:10px 14px; border-radius:8px; font-size:.9375rem; font-weight:650; color:#526078; text-align:center; }
 .crew-shell .crew-subnav-link.crew-subnav-active { background:#005BD1; color:white; }
 
 .crew-shell .crew-panel { background:white; border:1px solid var(--crew-line); border-radius:16px; padding:20px 22px; min-width:0; box-shadow:none; }
+.crew-shell .crew-panel.crew-table-card { padding:0; overflow:visible; }
+.crew-shell .crew-panel-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid var(--crew-line); }
+.crew-shell .crew-panel-head h2 { margin:0; font-size:15.5px; font-weight:700; letter-spacing:-.02em; color:var(--crew-ink); display:inline-flex; align-items:center; gap:8px; }
+.crew-shell .crew-count { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; padding:0 8px; border-radius:999px; background:var(--crew-blue-soft); color:var(--crew-blue); font-size:11.5px; font-weight:700; font-variant-numeric:tabular-nums; }
+.crew-shell .crew-code-pill { display:inline-flex; align-items:center; padding:3px 9px; border-radius:8px; background:#F1F5F9; border:1px solid var(--crew-line); color:#334A6B; font-size:11.5px; font-weight:700; letter-spacing:.02em; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.crew-shell .crew-status-pill { display:inline-flex; align-items:center; padding:4px 10px; border-radius:999px; font-size:11.5px; font-weight:600; white-space:nowrap; background:#F1F5F9; color:#475569; }
+.crew-shell .crew-status-pill.is-info { background:var(--crew-blue-soft); color:var(--crew-blue); }
+.crew-shell .crew-status-pill.is-ok { background:var(--crew-green-soft); color:var(--crew-green); }
+.crew-shell .crew-status-pill.is-warn { background:var(--crew-amber-soft); color:var(--crew-amber); }
+
 .crew-shell .crew-stack { display:grid; gap:18px; min-width:0; }
 .crew-shell .crew-actions { display:flex; flex-wrap:wrap; gap:12px; }
 .crew-shell .crew-button,.crew-shell button { display:inline-flex; justify-content:center; align-items:center; gap:8px; min-height:48px; padding:11px 18px; border:1px solid #D1DCE9; border-radius:10px; font:inherit; font-weight:650; color:var(--crew-ink); background:white; cursor:pointer; text-align:center; overflow-wrap:anywhere; }
@@ -107,11 +140,12 @@
 .crew-shell .crew-message { color:#526078; font-size:.875rem; overflow-wrap:anywhere; }
 
 .crew-shell .crew-trip-list { display:grid; gap:16px; padding:0; list-style:none; }
-.crew-shell .crew-trip-item { display:grid; gap:16px; padding:20px 24px; }
+.crew-shell .crew-table-card .crew-trip-list { padding:18px 20px; }
+.crew-shell .crew-trip-item { display:grid; gap:16px; padding:20px 24px; background:#FAFBFD; }
 .crew-shell .crew-trip-card { display:flex; gap:16px; align-items:center; justify-content:space-between; color:var(--crew-ink); }
 .crew-shell .crew-trip-meta { display:grid; gap:8px; min-width:0; }
 .crew-shell .crew-time-badge { display:inline-flex; align-items:center; gap:6px; width:fit-content; padding:4px 10px; border-radius:999px; background:#EDF3FB; color:#005BD1; font-size:.8125rem; font-weight:700; font-variant-numeric:tabular-nums; }
-.crew-shell .crew-trip-route,.crew-shell .crew-trip-fleet { display:flex; align-items:center; gap:8px; font-size:.9375rem; }
+.crew-shell .crew-trip-route,.crew-shell .crew-trip-fleet { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:.9375rem; }
 .crew-shell .crew-trip-route { font-weight:600; color:var(--crew-ink); }
 .crew-shell .crew-card-arrow { color:#005BD1; font-size:1.35rem; font-weight:700; flex-shrink:0; }
 .crew-shell .crew-trip-quick-actions { display:flex; flex-wrap:wrap; gap:10px; padding-top:14px; border-top:1px solid #E5ECF4; }
@@ -171,7 +205,10 @@
 .crew-shell .crew-state-pending { color:#92400E; background:#FFFBEB; border:1px solid #FDE68A; }
 .crew-shell .crew-state-neutral { color:#475569; background:#F1F5F9; border:1px solid #E2E8F0; }
 .crew-shell .crew-empty { padding:24px 0; text-align:center; color:#526078; }
-.crew-shell .crew-empty-panel { text-align:center; display:grid; gap:8px; padding:36px 24px; }
+.crew-shell .crew-empty-panel { text-align:center; display:grid; justify-items:center; gap:8px; padding:36px 24px; }
+.crew-shell .crew-empty-icon { width:46px; height:46px; border-radius:999px; display:grid; place-items:center; margin-bottom:2px; background:var(--crew-blue-soft); color:var(--crew-blue); }
+.crew-shell .crew-empty-icon.is-blue { background:var(--crew-blue-soft); color:var(--crew-blue); }
+.crew-shell .crew-empty-icon.is-ok { background:var(--crew-green-soft); color:var(--crew-green); }
 
 .crew-shell .boarding-profile { display:grid; gap:20px; }
 .crew-shell .crew-profile-heading { display:flex; align-items:center; gap:18px; }
@@ -241,6 +278,11 @@
  .crew-shell .crew-mobile-drawer .crew-account-wrap { margin-top:0; padding-top:8px; }
  .crew-shell .crew-main { padding:20px 16px 40px; }
  .crew-shell .admin-toast-viewport { top:10px; left:12px; right:12px; width:auto; transform:none; }
+ .crew-shell .crew-hero { align-items:flex-start; }
+ .crew-shell .crew-stat-grid { grid-template-columns:minmax(0,1fr); }
+ .crew-shell .crew-panel.crew-table-card { padding:0; }
+ .crew-shell .crew-panel-head { padding:14px 16px; }
+ .crew-shell .crew-table-card .crew-trip-list { padding:14px 16px; }
  .crew-shell .crew-subnav { grid-template-columns:minmax(0,1fr); }
  .crew-shell .crew-ops-grid { grid-template-columns:minmax(0,1fr); }
 }

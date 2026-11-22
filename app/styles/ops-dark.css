@@ -1045,17 +1045,67 @@ html[data-mode='dark'] .crew-shell a {
   color: var(--ops-accent);
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-sidebar, .crew-brand, .crew-topbar, .crew-panel, .crew-trip-item, .crew-subnav, .crew-state-card, .admin-toast) {
+html[data-mode='dark'] .crew-shell :is(.crew-sidebar, .crew-brand, .crew-topbar, .crew-panel, .crew-table-card, .crew-stat-card, .crew-date-pill, .crew-back, .crew-subnav, .crew-state-card, .admin-toast) {
   background: var(--ops-paper-2);
   border-color: var(--ops-rule);
   color: var(--ops-ink);
   box-shadow: none;
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-company-card, .manifest-counters div, .manifest-passengers li, .seat-grid-region, .boarding-profile .crew-profile-facts) {
+html[data-mode='dark'] .crew-shell :is(.crew-company-card, .crew-trip-item, .crew-code-pill, .manifest-counters div, .manifest-passengers li, .seat-grid-region, .boarding-profile .crew-profile-facts) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule);
   color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell .crew-back:hover {
+  border-color: var(--ops-accent);
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-panel-head {
+  border-bottom-color: var(--ops-rule);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-icon-badge.is-blue, .crew-empty-icon, .crew-empty-icon.is-blue, .crew-count) {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-icon-badge.is-indigo {
+  background: var(--ops-indigo-soft);
+  color: var(--ops-indigo);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-icon-badge.is-green, .crew-empty-icon.is-ok) {
+  background: var(--ops-green-soft);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .crew-shell .crew-icon-badge.is-amber {
+  background: var(--ops-amber-soft);
+  color: var(--ops-amber);
+}
+
+html[data-mode='dark'] .crew-shell .crew-status-pill {
+  background: var(--ops-slate-soft);
+  color: var(--ops-slate);
+}
+
+html[data-mode='dark'] .crew-shell .crew-status-pill.is-info {
+  background: var(--ops-accent-soft);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell .crew-status-pill.is-ok {
+  background: var(--ops-green-soft);
+  color: var(--ops-green);
+}
+
+html[data-mode='dark'] .crew-shell .crew-status-pill.is-warn {
+  background: var(--ops-amber-soft);
+  color: var(--ops-amber);
 }
 
 html[data-mode='dark'] .crew-shell .crew-company-avatar {

@@ -1,10 +1,12 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createElement as h } from 'react';
 import { renderToStaticMarkup as render } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import CrewShell from '@/app/crew/components/crew-shell';
 import CrewNavigation, { isCrewTripsActive } from '@/app/crew/components/crew-navigation';
 import CrewTopbar, { resolveCrewTopbarTitle } from '@/app/crew/components/crew-topbar';
+import CrewTripTabs from '@/app/crew/components/trip-tabs';
+import type { TripRecord } from '@/modules/trip/types';
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -22,6 +24,67 @@ import {
   IconStop,
   IconVan,
 } from '@/app/crew/components/crew-icons';
+
+const mockTrips: TripRecord[] = [
+  {
+    id: 'trip-1',
+    companyId: 'company-1',
+    name: 'Perjalanan Pagi',
+    routeId: 'route-1',
+    vehicleId: 'vehicle-1',
+    serviceClassId: 'class-1',
+    departureAt: '2026-10-10T01:00:00Z',
+    salesCloseAt: null,
+    revision: 1,
+    status: 'OPEN_FOR_SALE',
+    publishedAt: '2026-10-09T01:00:00Z',
+    identity: {
+      routeName: 'Bandung → Bogor',
+      routeCode: null,
+      routeRevision: 1,
+      vehicleName: 'Bus A',
+      plateNumber: 'B 1234 DEM',
+      vehicleRevision: 1,
+      className: 'Eksekutif',
+      classCode: 'E',
+      templateId: 'layout-1',
+      templateVersion: 1,
+    },
+  },
+  {
+    id: 'trip-2',
+    companyId: 'company-1',
+    name: 'Perjalanan Siang',
+    routeId: 'route-2',
+    vehicleId: 'vehicle-1',
+    serviceClassId: 'class-1',
+    departureAt: '2026-10-10T06:00:00Z',
+    salesCloseAt: null,
+    revision: 1,
+    status: 'OPEN_FOR_SALE',
+    publishedAt: '2026-10-09T01:00:00Z',
+    identity: {
+      routeName: 'Jakarta → Bandung',
+      routeCode: null,
+      routeRevision: 1,
+      vehicleName: 'Bus A',
+      plateNumber: 'B 1234 DEM',
+      vehicleRevision: 1,
+      className: 'VIP',
+      classCode: 'V',
+      templateId: 'layout-1',
+      templateVersion: 1,
+    },
+  },
+];
+
+const listMineMock = vi.fn(async () => mockTrips);
+vi.mock('@/app/crew/data', () => ({
+  crewData: async () => ({
+    actorId: 'actor-1',
+    crew: { listMine: listMineMock },
+  }),
+}));
 
 describe('Task 1: CrewShell, CrewNavigation, CrewTopbar, and Phosphor crew-icons Admin PO layout', () => {
   it('renders 2-column Admin PO workspace shell with sticky sidebar, role summary card, topbar, toast viewport, and skip link', () => {
@@ -132,5 +195,109 @@ describe('Task 1: CrewShell, CrewNavigation, CrewTopbar, and Phosphor crew-icons
       expect(markup).toContain('<svg');
       expect(markup).toContain('viewBox="0 0 256 256"');
     }
+  });
+});
+
+describe('Task 2: /crew Assigned Trips Dashboard & CrewTripTabs Admin PO Hero & Bento Geometry', () => {
+  it('renders /crew populated dashboard with crew-dash-root, crew-hero, WIB date pill, 3-card KPI stat strip, crew-table-card, and zero eyebrows or middle dots', async () => {
+    listMineMock.mockResolvedValueOnce(mockTrips);
+    const { default: CrewPage } = await import('@/app/crew/page');
+    const html = render(await CrewPage());
+
+    expect(html).toContain('class="crew-dash-root"');
+    expect(html).toContain('class="crew-hero"');
+    expect(html).toContain('<h1>Perjalanan saya</h1>');
+    expect(html).toContain('class="crew-date-pill"');
+    expect(html).toContain('WIB');
+    expect(html).toContain('class="crew-count-pill"');
+    expect(html).toContain('2 jadwal aktif ditugaskan');
+
+    // 3-card Admin PO KPI stat strip
+    expect(html).toContain('class="crew-stat-grid"');
+    expect(html).toContain('aria-label="Ringkasan penugasan perjalanan"');
+    expect(html).toContain('crew-icon-badge is-blue');
+    expect(html).toContain('crew-icon-badge is-indigo');
+    expect(html).toContain('crew-icon-badge is-green');
+    expect(html).toContain('Jadwal aktif ditugaskan');
+    expect(html).toContain('Armada bertugas');
+    expect(html).toContain('Rute beroperasi');
+
+    // Table card wrapper & structured trip cards with separated pills (zero · middle dot)
+    expect(html).toContain('class="crew-panel crew-table-card"');
+    expect(html).toContain('Daftar perjalanan tugas');
+    expect(html).toContain('class="crew-count"');
+    expect(html).toContain('class="crew-code-pill"');
+    expect(html).toContain('B 1234 DEM');
+    expect(html).toContain('Eksekutif');
+    expect(html).toContain('VIP');
+    expect(html).toContain('Manifest &amp; Check-in');
+    expect(html).toContain('Scan QR');
+    expect(html).toContain('Rute &amp; Denah →');
+
+    // Hallmark Floor compliance: zero crew-eyebrow and zero middle-dot joiners
+    expect(html).not.toContain('crew-eyebrow');
+    expect(html).not.toContain('Ruang kerja Crew');
+    expect(html).not.toContain('·');
+  });
+
+  it('renders /crew empty state with duotone icon badge and preserves empty state copy', async () => {
+    listMineMock.mockResolvedValueOnce([]);
+    const { default: CrewPage } = await import('@/app/crew/page');
+    const html = render(await CrewPage());
+
+    expect(html).toContain('class="crew-dash-root"');
+    expect(html).toContain('class="crew-panel crew-empty-panel"');
+    expect(html).toContain('crew-empty-icon');
+    expect(html).toContain('Belum ada perjalanan yang ditugaskan');
+    expect(html).toContain('Admin PO akan menambahkan penugasan perjalanan untuk akun Crew ini.');
+    expect(html).not.toContain('class="crew-stat-grid"');
+    expect(html).not.toContain('crew-eyebrow');
+    expect(html).not.toContain('·');
+  });
+
+  it('renders CrewTripTabs with Admin PO back pill, crew-hero title + status pill, 3-tab subnav across all active tabs, and zero eyebrows', () => {
+    const manifestHtml = render(
+      h(CrewTripTabs, {
+        tripId: 'trip-1',
+        tripName: 'Perjalanan Pagi',
+        subtitle: 'Keberangkatan 08:00 WIB',
+        active: 'manifest',
+      }),
+    );
+
+    expect(manifestHtml).toContain('class="crew-page-header crew-trip-header"');
+    expect(manifestHtml).toContain('class="crew-back"');
+    expect(manifestHtml).toContain('Daftar perjalanan tugas');
+    expect(manifestHtml).toContain('class="crew-hero"');
+    expect(manifestHtml).toContain('<h1>Perjalanan Pagi</h1>');
+    expect(manifestHtml).toContain('Keberangkatan 08:00 WIB');
+    expect(manifestHtml).toContain('crew-status-pill is-info');
+    expect(manifestHtml).toContain('Operasional Crew');
+    expect(manifestHtml).toContain('aria-label="Menu operasional perjalanan"');
+    expect(manifestHtml).toContain('Manifest &amp; Check-in');
+    expect(manifestHtml).toContain('Scan QR Tiket');
+    expect(manifestHtml).toContain('Info Rute &amp; Denah');
+    expect(manifestHtml).not.toContain('crew-eyebrow');
+    expect(manifestHtml).not.toContain('Operasional perjalanan kru');
+
+    const scanHtml = render(
+      h(CrewTripTabs, {
+        tripId: 'trip-1',
+        tripName: 'Perjalanan Pagi',
+        active: 'scan',
+      }),
+    );
+    expect(scanHtml).toContain('class="crew-subnav-link crew-subnav-active" aria-current="page" href="/crew/trips/trip-1/scan"');
+    expect(scanHtml).not.toContain('crew-eyebrow');
+
+    const summaryHtml = render(
+      h(CrewTripTabs, {
+        tripId: 'trip-1',
+        tripName: 'Perjalanan Pagi',
+        active: 'summary',
+      }),
+    );
+    expect(summaryHtml).toContain('class="crew-subnav-link crew-subnav-active" aria-current="page" href="/crew/trips/trip-1"');
+    expect(summaryHtml).not.toContain('crew-eyebrow');
   });
 });
