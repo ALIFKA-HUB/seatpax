@@ -200,7 +200,7 @@ export default function RouteEditor({
         if (!route && r.routeId) {
           queueAdminToast({
             title: 'Rute baru tersimpan',
-            message: `${name.trim()} siap — lanjutkan atur tarif per kelas di bawah jika diperlukan.`,
+            message: `${name.trim()} siap. Lanjutkan mengatur tarif per kelas di bawah.`,
             tone: 'ok',
           });
           router.push(`/admin/companies/${companyId}/routes/${r.routeId}`);

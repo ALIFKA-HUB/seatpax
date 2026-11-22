@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { type CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { CheckCircle, WarningCircle, X } from '@phosphor-icons/react/ssr';
 import {
@@ -23,6 +23,9 @@ type ActiveToast = {
   durationMs: number;
 };
 
+const DEFAULT_OK_DURATION_MS = 3_400;
+const DEFAULT_ERROR_DURATION_MS = 5_000;
+const EXIT_ANIMATION_MS = 240;
 const ROW_HIGHLIGHT_MS = 4_200;
 
 function findTargetRow(root: HTMLElement, target: PendingHighlight): HTMLTableRowElement | null {
@@ -48,22 +51,44 @@ function ToastCard({
   toast: ActiveToast;
   onDismiss: (id: string) => void;
 }) {
-  const [paused, setPaused] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const dismissRef = useRef(onDismiss);
+  const removeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (paused) return;
-    const timer = window.setTimeout(() => onDismiss(toast.id), toast.durationMs);
-    return () => window.clearTimeout(timer);
-  }, [paused, toast.durationMs, toast.id, onDismiss]);
+    dismissRef.current = onDismiss;
+  }, [onDismiss]);
+
+  const startExit = useCallback(() => {
+    setLeaving(current => {
+      if (current) return true;
+      removeTimerRef.current = window.setTimeout(() => {
+        dismissRef.current(toast.id);
+      }, EXIT_ANIMATION_MS);
+      return true;
+    });
+  }, [toast.id]);
+
+  useEffect(() => {
+    const autoTimer = window.setTimeout(startExit, toast.durationMs);
+    return () => {
+      window.clearTimeout(autoTimer);
+      if (removeTimerRef.current !== null) {
+        window.clearTimeout(removeTimerRef.current);
+        removeTimerRef.current = null;
+      }
+    };
+  }, [toast.durationMs, toast.id, startExit]);
+
+  const style = {
+    '--toast-duration': `${toast.durationMs}ms`,
+  } as CSSProperties;
 
   return (
     <div
-      className={`admin-toast is-${toast.tone}`}
+      className={`admin-toast is-${toast.tone}${leaving ? ' is-leaving' : ''}`}
+      style={style}
       role={toast.tone === 'error' ? 'alert' : 'status'}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
     >
       <span className="admin-toast-icon" aria-hidden="true">
         {toast.tone === 'error' ? (
@@ -80,16 +105,17 @@ function ToastCard({
         type="button"
         className="admin-toast-close"
         aria-label="Tutup notifikasi"
-        onClick={() => onDismiss(toast.id)}
+        onClick={startExit}
       >
-        <X size={16} weight="bold" aria-hidden="true" />
+        <X size={15} weight="bold" aria-hidden="true" />
       </button>
+      <span className="admin-toast-progress" aria-hidden="true" />
     </div>
   );
 }
 
 /**
- * Floating viewport anchored inside AdminShell for temporary Admin PO notifications
+ * Floating top-center viewport inside AdminShell for temporary Admin PO notifications
  * and post-save/post-redirect table row highlighting.
  */
 export default function AdminToastViewport() {
@@ -109,7 +135,9 @@ export default function AdminToastViewport() {
       title: stored.title,
       message: stored.message,
       tone,
-      durationMs: stored.durationMs ?? (tone === 'error' ? 6_500 : 4_500),
+      durationMs:
+        stored.durationMs ??
+        (tone === 'error' ? DEFAULT_ERROR_DURATION_MS : DEFAULT_OK_DURATION_MS),
     };
     setToasts(current => {
       if (current.some(item => item.id === next.id)) return current;
@@ -149,9 +177,8 @@ export default function AdminToastViewport() {
       if (Date.now() - pending.createdAt <= TOAST_TTL_MS) {
         const frame = window.requestAnimationFrame(() => showToast(pending));
         return () => window.cancelAnimationFrame(frame);
-      } else {
-        clearToastStorage(TOAST_STORAGE_KEY);
       }
+      clearToastStorage(TOAST_STORAGE_KEY);
     }
   }, [showToast]);
 

@@ -617,23 +617,31 @@
   .admin-shell .dash-kpi-grid,.admin-shell .admin-stat-grid,.admin-shell .dash-detail-grid{grid-template-columns:1fr}
   .admin-shell .dash-resource-grid{grid-template-columns:1fr}
 }
-@keyframes adminToastIn{from{opacity:0;transform:translate3d(0,12px,0) scale(.98)}to{opacity:1;transform:none}}
-.admin-shell .admin-toast-viewport{position:fixed;bottom:24px;right:24px;z-index:80;display:grid;gap:10px;width:min(390px,calc(100vw - 32px));pointer-events:none}
-.admin-shell .admin-toast{pointer-events:auto;display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:start;gap:11px;padding:13px 13px 13px 15px;border-radius:14px;background:#fff;border:1px solid #d5e4f7;color:var(--admin-ink);box-shadow:0 18px 40px rgba(16,39,70,.18),0 4px 12px rgba(16,39,70,.08);animation:adminToastIn 160ms cubic-bezier(.22,1,.36,1) both}
-.admin-shell .admin-toast.is-ok{border-color:#a7e3c2;border-left:4px solid #16a34a}
-.admin-shell .admin-toast.is-ok .admin-toast-icon{color:#16a34a}
-.admin-shell .admin-toast.is-error{border-color:#fecaca;border-left:4px solid #dc2626}
-.admin-shell .admin-toast.is-error .admin-toast-icon{color:#dc2626}
-.admin-shell .admin-toast-icon{display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
-.admin-shell .admin-toast-body{display:grid;gap:2px;min-width:0}
-.admin-shell .admin-toast-body strong{font-size:13.5px;font-weight:700;line-height:1.35;color:var(--admin-ink)}
-.admin-shell .admin-toast-body p{margin:0;font-size:12.5px;line-height:1.45;color:var(--admin-muted);overflow-wrap:anywhere}
+@keyframes adminToastIn{0%{opacity:0;transform:translate3d(0,-18px,0) scale(.92)}65%{opacity:1;transform:translate3d(0,3px,0) scale(1.01)}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@keyframes adminToastOut{0%{opacity:1;transform:translate3d(0,0,0) scale(1)}100%{opacity:0;transform:translate3d(0,-14px,0) scale(.95)}}
+@keyframes adminToastIconPop{0%{opacity:0;transform:scale(.55)}70%{opacity:1;transform:scale(1.1)}100%{opacity:1;transform:scale(1)}}
+@keyframes adminToastProgress{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.admin-shell .admin-toast-viewport{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(430px,calc(100vw - 32px));pointer-events:none}
+.admin-shell .admin-toast{position:relative;overflow:hidden;pointer-events:auto;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 12px 15px 14px;border-radius:14px;background:#fff;border:1px solid #d5e4f7;color:var(--admin-ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 18px 40px rgba(16,39,70,.16),0 4px 12px rgba(16,39,70,.06);animation:adminToastIn 380ms cubic-bezier(.16,1,.3,1) both}
+.admin-shell .admin-toast.is-leaving{pointer-events:none;animation:adminToastOut 240ms cubic-bezier(.4,0,1,1) both}
+.admin-shell .admin-toast.is-ok{border-color:#bde5ce}
+.admin-shell .admin-toast.is-ok .admin-toast-icon{background:#eaf7f0;color:#16a34a}
+.admin-shell .admin-toast.is-ok .admin-toast-progress{background:#16a34a}
+.admin-shell .admin-toast.is-error{border-color:#fecaca}
+.admin-shell .admin-toast.is-error .admin-toast-icon{background:#fef2f2;color:#dc2626}
+.admin-shell .admin-toast.is-error .admin-toast-progress{background:#dc2626}
+.admin-shell .admin-toast-icon{width:34px;height:34px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;animation:adminToastIconPop 420ms cubic-bezier(.34,1.56,.64,1) 60ms both}
+.admin-shell .admin-toast-body{display:grid;gap:1px;min-width:0}
+.admin-shell .admin-toast-body strong{font-size:13.5px;font-weight:700;line-height:1.3;color:var(--admin-ink)}
+.admin-shell .admin-toast-body p{margin:0;font-size:12.5px;line-height:1.4;color:var(--admin-muted);overflow-wrap:anywhere}
 .admin-shell .admin-toast-close{min-height:28px;width:28px;padding:0;border-radius:8px;border:0;background:transparent;color:#74859e;cursor:pointer;flex-shrink:0}
 .admin-shell .admin-toast-close:hover{background:#f1f5f9;color:var(--admin-ink)}
+.admin-shell .admin-toast-close:active{transform:scale(.94)}
+.admin-shell .admin-toast-progress{position:absolute;left:0;right:0;bottom:0;height:3px;transform-origin:left center;opacity:.85;animation:adminToastProgress var(--toast-duration,3400ms) linear both}
 .admin-shell .admin-modern-table tbody tr.admin-row-highlight td,.admin-shell .stop-table tbody tr.admin-row-highlight td{background:#e9f2ff;transition:background-color 900ms ease}
 .admin-shell .admin-modern-table tbody tr.admin-row-highlight td:first-child,.admin-shell .stop-table tbody tr.admin-row-highlight td:first-child{box-shadow:inset 3px 0 0 var(--admin-blue)}
 @media(max-width:760px){
-  .admin-shell .admin-toast-viewport{top:auto;bottom:16px;right:14px;left:14px;width:auto}
+  .admin-shell .admin-toast-viewport{top:10px;left:12px;right:12px;width:auto;transform:none}
   .admin-shell .admin-sidebar nav a[aria-current=page]::before{display:none}
   .admin-shell .dash-hero,.admin-shell .stop-page-heading{align-items:flex-start}
   .admin-shell .dash-hero-actions{width:100%}
