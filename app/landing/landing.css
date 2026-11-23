@@ -267,8 +267,7 @@ html:has(.sp-landing) {
   color: var(--sp-ink);
 }
 
-.sp-landing .lp-section-title > p,
-.sp-landing .lp-experience-copy > p {
+.sp-landing .lp-section-title > p {
   color: var(--sp-muted);
   font-size: 14px;
   line-height: 1.8;
@@ -1096,33 +1095,51 @@ html:has(.sp-landing) {
 /* 5. PreparationShowcase (#persiapan) */
 .sp-landing .lp-experience {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  align-items: center;
-  gap: 48px;
+  gap: 30px;
   padding: 0;
   background: transparent;
   min-width: 0;
 }
 
-.lp-experience-copy {
+.lp-experience-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
   min-width: 0;
 }
 
-.sp-landing .lp-experience-copy > p {
-  max-width: 36ch;
-  margin-bottom: 24px;
+.lp-experience-head .lp-section-title {
+  min-width: 0;
+}
+
+.lp-experience-head .lp-section-title > p {
+  max-width: 56ch;
+}
+
+.lp-experience-body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: stretch;
+  gap: 32px;
+  min-width: 0;
 }
 
 .lp-preparation-guide {
   display: grid;
-  gap: 10px;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
 }
 
 .lp-prep-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border: 1px solid var(--lp-border);
   border-radius: 16px;
   background: var(--lp-stub);
-  padding: 4px 18px 14px;
+  padding: 12px 18px 16px;
 }
 
 .lp-prep-item.is-active,
@@ -1137,8 +1154,8 @@ html:has(.sp-landing) {
   align-items: center;
   gap: 12px;
   width: 100%;
-  min-height: 48px;
-  padding: 12px 0 8px;
+  min-height: 44px;
+  padding: 4px 0 8px;
   border: 0;
   border-radius: 10px;
   background: transparent;
@@ -1146,7 +1163,7 @@ html:has(.sp-landing) {
   font: inherit;
   font-size: 14px;
   font-weight: 650;
-  line-height: 1.5;
+  line-height: 1.45;
   text-align: left;
   cursor: pointer;
 }
@@ -1210,7 +1227,7 @@ html:has(.sp-landing) {
   line-height: 1.75;
   color: var(--sp-muted);
   margin: 0;
-  max-width: 44ch;
+  max-width: 48ch;
 }
 
 .lp-prep-item.is-active .lp-prep-panel > p,
@@ -1219,12 +1236,15 @@ html:has(.sp-landing) {
 }
 
 .sp-landing .lp-preparation-cta {
-  margin-top: 26px;
+  flex: none;
   min-height: 50px;
 }
 
 .lp-experience-figure {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  height: 100%;
 }
 
 /* 6. Deep Navy Contrast Band (#alur-pemesanan) */
@@ -1521,9 +1541,14 @@ html:has(.sp-landing) {
   .sp-landing .lp-booking-flow p {
     max-width: 460px;
   }
-  .sp-landing .lp-experience {
+  .lp-experience-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .lp-experience-body {
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+    gap: 28px;
   }
   .lp-checkout-band {
     padding: 36px 28px;
@@ -1621,8 +1646,7 @@ html:has(.sp-landing) {
     margin-bottom: 14px;
   }
   .sp-landing .lp-section-title > p,
-  .sp-landing .lp-feature-copy > p,
-  .sp-landing .lp-experience-copy > p {
+  .sp-landing .lp-feature-copy > p {
     font-size: 13px;
     line-height: 1.7;
   }
@@ -1684,11 +1708,22 @@ html:has(.sp-landing) {
     line-height: 1.7;
   }
   .sp-landing .lp-experience {
+    gap: 22px;
+  }
+  .lp-experience-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .lp-experience-body {
     grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
+    gap: 22px;
+  }
+  .lp-preparation-guide {
+    grid-template-rows: none;
   }
   .lp-prep-item {
-    padding: 4px 14px 12px;
+    padding: 8px 14px 14px;
   }
   .lp-prep-panel {
     padding-left: 28px;

@@ -51,8 +51,8 @@ const PHONE_TRAVEL_3D: Point3 = [-99, 0, 21];
 export function buildBoardingStandGeometry(): BoardingStandGeometry {
   const bounds = boxCorners({ x: -120, y: -62, w: 234, d: 130, r: 0 }, -10, 90);
   const P: Projection = fitProjection(bounds, VIEW_W, VIEW_H, {
-    pad: 24,
-    headroom: 8,
+    pad: 12,
+    headroom: 4,
     azimuth: 46,
     elevation: 30,
   });

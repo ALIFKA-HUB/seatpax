@@ -126,11 +126,13 @@ function renderSolid(solid: IsoSolid, litOverride?: boolean) {
 
 export interface BoardingStandFigureProps {
   activeStep: PrepStepIndex;
+  accelerated?: boolean;
   onSelectStep?: (step: PrepStepIndex) => void;
 }
 
 export default function BoardingStandFigure({
   activeStep,
+  accelerated = false,
   onSelectStep,
 }: BoardingStandFigureProps) {
   const plateRef = React.useRef<HTMLButtonElement>(null);
@@ -181,12 +183,14 @@ export default function BoardingStandFigure({
     let rafId = 0;
     let lastTime = 0;
 
+    const tau = accelerated ? 0.065 : 0.16;
+
     const tick = (now: number) => {
       const dt = lastTime ? Math.min((now - lastTime) / 1000, 1 / 30) : 1 / 60;
       lastTime = now;
 
       const current = currentTRef.current;
-      const next = current + (targetT - current) * (1 - Math.exp(-dt / 0.16));
+      const next = current + (targetT - current) * (1 - Math.exp(-dt / tau));
 
       if (Math.abs(targetT - next) < 0.001) {
         currentTRef.current = targetT;
@@ -207,7 +211,7 @@ export default function BoardingStandFigure({
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [activeStep, inView, reducedMotion]);
+  }, [activeStep, accelerated, inView, reducedMotion]);
 
   const handleCycle = React.useCallback(() => {
     const next = ((activeStep + 1) % 3) as PrepStepIndex;
@@ -247,7 +251,7 @@ export default function BoardingStandFigure({
         data-step={activeStep}
         onClick={handleCycle}
         onKeyDown={handleKeyDown}
-        aria-label={`QR Boarding Gate, ${STEP_READOUTS[activeStep]}. Klik untuk pindah langkah.`}
+        aria-label={`QR Boarding Gate, ${STEP_READOUTS[activeStep]}. Berputar otomatis, klik untuk mempercepat ke langkah berikutnya.`}
       >
         <span className="iso-plate-corners" aria-hidden="true">
           <span className="iso-plate-corner" data-corner="fig">
@@ -257,7 +261,7 @@ export default function BoardingStandFigure({
             QR Boarding Gate
           </span>
           <span className="iso-plate-corner" data-corner="hint">
-            Pilih langkah atau klik figur
+            Otomatis · Klik untuk percepat
           </span>
           <span className="iso-plate-corner" data-corner="readout" data-readout="">
             {STEP_READOUTS[activeStep]}
