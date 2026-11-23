@@ -126,7 +126,7 @@ export default function SeatSelection({
      <span>Sisa waktu {Math.floor(holdSeconds/60)}:{String(holdSeconds%60).padStart(2,'0')} (berakhir {formatDepartureWib(ownedHold.expiresAt)})</span>
     </div>
     <div className="pf-action-row">
-     <Link className="sp-primary" href={`/checkout/${ownedHold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
+     <Link className="sp-primary pf-cta-primary" href={`/checkout/${ownedHold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
      <button className="sp-secondary pf-danger-btn" type="button" disabled={pending} onClick={()=>void releaseOwned()}><Trash size={15} aria-hidden="true" style={{marginRight:5}}/>{pending?'Melepas...':'Lepaskan kursi'}</button>
     </div>
    </div>}
@@ -201,10 +201,10 @@ export default function SeatSelection({
      ?<Link className="sp-primary" href={`/login?next=${encodeURIComponent(path)}`}>Masuk untuk menahan kursi</Link>
      :ownedHold
       ?<>
-       <Link className="sp-primary" href={`/checkout/${ownedHold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
+       <Link className="sp-primary pf-cta-primary" href={`/checkout/${ownedHold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
        <button className="sp-secondary pf-danger-btn" type="button" disabled={pending} onClick={()=>void releaseOwned()}><Trash size={15} aria-hidden="true" style={{marginRight:5}}/>{pending?'Melepas...':'Lepaskan kursi'}</button>
       </>
-      :<button className="sp-primary" type="button" onClick={()=>void hold()} disabled={pending||!selectedAvailable||!view.saleOpen}>{pending?'Mengunci kursi...':'Tahan kursi 10 menit'}</button>}
+      :<button className="sp-primary pf-cta-primary" type="button" onClick={()=>void hold()} disabled={pending||!selectedAvailable||!view.saleOpen}>{pending?'Mengunci kursi...':'Tahan kursi 10 menit'}</button>}
     {message&&<p role="status" aria-live="polite" className="auth-message" style={{margin:0}}>{message}</p>}
    </div>
 

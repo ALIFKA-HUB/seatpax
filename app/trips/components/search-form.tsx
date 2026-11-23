@@ -2,14 +2,9 @@
 
 import Link from 'next/link';
 import {useState} from 'react';
-import {ArrowsLeftRight, CalendarBlank, MagnifyingGlass, MapPin} from '@phosphor-icons/react';
+import {ArrowsLeftRight, CalendarBlank, MagnifyingGlass, MapPin, X} from '@phosphor-icons/react';
 import AdminSelect, {type AdminSelectOption} from '@/app/admin/components/admin-select';
 import type {LocationPoint} from '@/modules/inventory/types';
-
-function formatStopSubtitle(location?: LocationPoint): string | null {
-  if (!location) return null;
-  return location.address ? `${location.city}, ${location.address}` : location.city;
-}
 
 export default function SearchForm({
   locations,
@@ -44,20 +39,11 @@ export default function SearchForm({
 
   const selectedFrom = locations.find(location => location.id === from);
   const selectedTo = locations.find(location => location.id === to);
-  const fromSub = formatStopSubtitle(selectedFrom) ?? 'Tampilkan semua titik jemput';
-  const toSub = formatStopSubtitle(selectedTo) ?? 'Tampilkan semua titik turun';
 
   return (
-    <section className="tp-card-panel tp-search-panel" aria-label="Pencarian jadwal perjalanan">
-      <div className="tp-panel-head">
-        <div>
-          <h2>Cari jadwal dan rute</h2>
-          <p>Pilih titik jemput dan tujuan, atau kosongkan tanggal untuk melihat seluruh keberangkatan.</p>
-        </div>
-        {locations.length > 0 && <span className="tp-count-pill">{locations.length} titik aktif</span>}
-      </div>
+    <section className="tp-search-section" aria-label="Pencarian jadwal perjalanan">
       <form
-        className="tp-search-grid"
+        className="tp-search-bar"
         action="/trips"
         onSubmit={event => {
           if ((from && !to) || (!from && to)) {
@@ -92,8 +78,9 @@ export default function SearchForm({
             }}
             options={fromOptions}
           />
-          <span className="tp-field-sub">{fromSub}</span>
+          {selectedFrom && <span className="tp-field-city">{selectedFrom.city}</span>}
         </div>
+
         <button
           className={`tp-swap${swapped ? ' is-rotated' : ''}`}
           type="button"
@@ -105,8 +92,9 @@ export default function SearchForm({
             setError('');
           }}
         >
-          <ArrowsLeftRight size={18} aria-hidden="true" />
+          <ArrowsLeftRight size={17} aria-hidden="true" />
         </button>
+
         <div className="tp-field">
           <label className="tp-field-label" htmlFor="trips-to">
             <MapPin size={15} aria-hidden="true" />
@@ -123,8 +111,9 @@ export default function SearchForm({
             }}
             options={toOptions}
           />
-          <span className="tp-field-sub">{toSub}</span>
+          {selectedTo && <span className="tp-field-city">{selectedTo.city}</span>}
         </div>
+
         <label className="tp-field tp-field-date">
           <span>
             <CalendarBlank size={15} aria-hidden="true" />
@@ -139,17 +128,23 @@ export default function SearchForm({
               setError('');
             }}
           />
-          <span className="tp-field-sub">{date ? 'Tanggal berangkat dipilih' : 'Kosongkan untuk semua tanggal'}</span>
         </label>
+
         <button className="tp-cta-accent tp-search-submit" type="submit" disabled={pending}>
           <MagnifyingGlass size={18} aria-hidden="true" />
           {pending ? 'Mencari…' : 'Cari jadwal'}
         </button>
       </form>
-      <div className="tp-search-meta">
-        <span>Kosongkan tanggal untuk menampilkan seluruh jadwal shuttle mendatang.</span>
-        {hasFilters && <Link href="/trips">Reset pencarian</Link>}
-      </div>
+
+      {hasFilters && (
+        <div className="tp-search-reset-row">
+          <Link className="tp-reset-link" href="/trips">
+            <X size={14} aria-hidden="true" />
+            Reset pencarian
+          </Link>
+        </div>
+      )}
+
       {error && (
         <p className="tp-search-error" role="alert">
           {error}

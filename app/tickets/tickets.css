@@ -1,20 +1,22 @@
-/* Hallmark · v2.0.0 · stamp: modern-minimal · scope: app · hero: none · accent: var(--tk-primary) · polish: Step 3 Split Boarding Pass & Ticket Center */
-/* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V4 · weakest: R, dropped middle dots and uppercase labels to unify with Step 1-2 */
+/* Hallmark · v2.0.0 · stamp: modern-minimal · scope: app · hero: none · accent: var(--tk-cta) · redesign: full · UI-CUSTOMER-01 */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 · weakest: V, dropped mini KPI dashboard header in favor of clean filter bar and perforated boarding pass cards */
 
 :root {
   --tk-ink: #0a2144;
-  --tk-muted: #4b5d78;
+  --tk-muted: #52627a;
   --tk-primary: #005bd1;
-  --tk-primary-ink: #fdfefe;
-  --tk-surface: #fdfefe;
-  --tk-tint: #f4f7fc;
-  --tk-tint-blue: #eaf2ff;
-  --tk-border: #d5e0ee;
+  --tk-primary-ink: #ffffff;
+  --tk-cta: #bd4b12;
+  --tk-cta-hover: #9f3d0d;
+  --tk-surface: #ffffff;
+  --tk-tint: #f6f8fb;
+  --tk-tint-blue: #edf4ff;
+  --tk-border: #e2e8f0;
   --tk-warn-bg: #fffdf5;
-  --tk-warn-border: #f3d285;
+  --tk-warn-border: #fde68a;
   --tk-radius-sm: 10px;
-  --tk-radius-md: 14px;
-  --tk-radius-lg: 18px;
+  --tk-radius-md: 12px;
+  --tk-radius-lg: 16px;
 }
 
 .passenger-shell .tk-page {
@@ -23,20 +25,18 @@
 }
 
 .passenger-shell .tk-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 18px;
-  flex-wrap: wrap;
-  padding-bottom: 18px;
+  display: grid;
+  gap: 6px;
+  padding-bottom: 16px;
   border-bottom: 1px solid var(--tk-border);
 }
 
 .passenger-shell .tk-head h1 {
-  margin: 0 0 6px;
-  font-size: clamp(24px, 2.8vw, 32px);
+  margin: 0;
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 800;
   line-height: 1.18;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   color: var(--tk-ink);
   overflow-wrap: break-word;
   min-width: 0;
@@ -45,37 +45,9 @@
 
 .passenger-shell .tk-head-sub {
   margin: 0;
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--tk-muted);
   max-width: 58ch;
-}
-
-.passenger-shell .tk-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.passenger-shell .tk-stat {
-  display: grid;
-  gap: 2px;
-  min-width: 104px;
-  padding: 10px 14px;
-  border-radius: var(--tk-radius-md);
-  border: 1px solid var(--tk-border);
-  background: var(--tk-surface);
-}
-
-.passenger-shell .tk-stat strong {
-  font-size: 20px;
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  color: var(--tk-ink);
-}
-
-.passenger-shell .tk-stat span {
-  font-size: 12px;
-  color: var(--tk-muted);
 }
 
 .passenger-shell .tk-progress-section {
@@ -212,15 +184,139 @@
   font-size: 13px;
 }
 
-.passenger-shell .tk-sort-select {
-  width: auto;
+.passenger-shell .tk-sort-wrap {
+  flex: 0 0 216px;
+  min-width: 196px;
+}
+
+.passenger-shell .tk-controls .admin-select {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.passenger-shell .tk-controls .admin-select-native {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.passenger-shell .tk-controls button.admin-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
   min-height: 40px;
+  height: 40px;
   padding: 8px 12px;
   border: 1px solid var(--tk-border);
   border-radius: var(--tk-radius-sm);
   background: var(--tk-tint);
+  color: var(--tk-ink);
+  font: inherit;
   font-size: 13px;
   font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.passenger-shell .tk-controls button.admin-select-trigger:hover:not(:disabled):not([aria-expanded='true']) {
+  border-color: #94a3b8;
+  background: var(--tk-surface);
+}
+
+.passenger-shell .tk-controls button.admin-select-trigger[aria-expanded='true'] {
+  border-color: var(--tk-primary);
+  background: var(--tk-surface);
+  box-shadow: 0 0 0 3px rgba(0, 91, 209, 0.12);
+}
+
+.passenger-shell .tk-controls .admin-select-value {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.passenger-shell .tk-controls .admin-select-caret {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  color: var(--tk-muted);
+  transition: transform 150ms ease, color 150ms ease;
+}
+
+.passenger-shell .tk-controls button.admin-select-trigger[aria-expanded='true'] .admin-select-caret {
+  transform: rotate(180deg);
+  color: var(--tk-primary);
+}
+
+.passenger-shell .tk-controls ul.admin-select-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  min-width: 100%;
+  z-index: 45;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: var(--tk-radius-md);
+  background: var(--tk-surface);
+  border: 1px solid var(--tk-border);
+  box-shadow: 0 18px 36px -12px rgba(10, 33, 68, 0.18);
+}
+
+.passenger-shell .tk-controls ul.admin-select-menu > li {
+  margin: 0;
+  padding: 0;
+}
+
+.passenger-shell .tk-controls button.admin-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--tk-radius-sm);
+  background: transparent;
+  color: var(--tk-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.passenger-shell .tk-controls button.admin-select-option:hover:not(:disabled),
+.passenger-shell .tk-controls button.admin-select-option[aria-selected='true'] {
+  background: var(--tk-tint-blue);
+  color: var(--tk-primary);
+}
+
+.passenger-shell .tk-controls .admin-select-option-text strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.passenger-shell .tk-controls .admin-select-check {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  color: var(--tk-primary);
 }
 
 .passenger-shell .tk-list {
@@ -289,6 +385,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.passenger-shell .tk-meta-row .sp-passenger-name {
+  margin-top: 0 !important;
 }
 
 .passenger-shell .tk-card-stub {
@@ -554,9 +654,15 @@
 @media (max-width: 639px) {
   .passenger-shell .tk-search-tools {
     width: 100%;
+    flex-wrap: wrap;
   }
   .passenger-shell .tk-search-box {
     max-width: none;
+    flex: 1 1 100%;
+  }
+  .passenger-shell .tk-sort-wrap {
+    flex: 1 1 100%;
+    min-width: 0;
   }
   .passenger-shell .tk-pass-main,
   .passenger-shell .tk-pass-qr {

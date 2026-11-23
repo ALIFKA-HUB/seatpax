@@ -119,7 +119,7 @@ export default function CheckoutForm({holdId,profile,email,payment}:{holdId:stri
     <strong>{email}</strong>
    </p>
 
-   <button className="sp-primary" type="submit" disabled={busy||Boolean(bookingId)}>
+   <button className="sp-primary pf-cta-primary" type="submit" disabled={busy||Boolean(bookingId)}>
     {busy?'Menyiapkan pembayaran...':'Lanjutkan ke pembayaran'}
     {!busy&&<ArrowRight size={17} aria-hidden="true"/>}
    </button>

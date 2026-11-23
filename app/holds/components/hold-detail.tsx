@@ -64,7 +64,7 @@ export default function HoldDetail({initial}:{initial:HoldView}){
     <strong className="pf-countdown-time">{Math.floor(seconds/60)}:{String(seconds%60).padStart(2,'0')}</strong>
    </div>
    <div className="pf-action-row">
-    <Link className="sp-primary" href={`/checkout/${h.id}`}>Lanjutkan checkout<ArrowRight size={17} aria-hidden="true"/></Link>
+    <Link className="sp-primary pf-cta-primary" href={`/checkout/${h.id}`}>Lanjutkan checkout<ArrowRight size={17} aria-hidden="true"/></Link>
     <button className="sp-secondary pf-danger-btn" disabled={pending} onClick={()=>void release()}><Trash size={16} aria-hidden="true" style={{marginRight:6}}/>{pending?'Memproses…':'Lepaskan kursi'}</button>
    </div>
   </div>}

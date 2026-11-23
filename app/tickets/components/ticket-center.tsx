@@ -8,6 +8,7 @@ import type {ActiveHoldSummary,PendingBookingSummary} from '../data';
 import {formatDepartureWib,formatIdr} from '@/app/presentation';
 import TicketCard from '@/app/components/ticket-card';
 import StatusBadge from '@/app/components/status-badge';
+import AdminSelect from '@/app/admin/components/admin-select';
 
 type FilterTab='ALL'|'CONFIRMED'|'HISTORY';
 
@@ -55,13 +56,8 @@ export default function TicketCenter({
  return <div className="tk-page">
   <header className="tk-head" aria-labelledby="tickets-title">
    <div>
-    <h1 id="tickets-title">Tiket saya</h1>
-    <p className="tk-head-sub">Kelola kursi yang sedang dikunci, lanjutkan pembayaran tertunda, dan buka e-tiket QR Anda saat keberangkatan.</p>
-   </div>
-   <div className="tk-stats" aria-label="Ringkasan pesanan">
-    <div className="tk-stat"><strong>{confirmedCount}</strong><span>Tiket aktif</span></div>
-    <div className="tk-stat"><strong>{inProgressCount}</strong><span>Sedang diproses</span></div>
-    <div className="tk-stat"><strong>{historyCount}</strong><span>Riwayat</span></div>
+    <h1 id="tickets-title">Pesanan saya</h1>
+    <p className="tk-head-sub">Lanjutkan pemesanan yang sedang berjalan dan buka e-tiket QR Anda saat keberangkatan.</p>
    </div>
   </header>
 
@@ -75,7 +71,7 @@ export default function TicketCenter({
      </div>
      <h3>{hold.fromName} ke {hold.toName}</h3>
      <p className="tk-progress-meta"><Clock size={14} aria-hidden="true"/><span>{hold.tripName}, batas hold {formatDepartureWib(hold.expiresAt)}</span></p>
-     <Link className="sp-primary" href={`/checkout/${hold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
+     <Link className="sp-primary pf-cta-primary" href={`/checkout/${hold.id}`}>Lanjutkan checkout<ArrowRight size={16} aria-hidden="true"/></Link>
     </article>)}
     {pendingBookings.map(booking=><article key={booking.id} className="tk-progress-card">
      <div className="tk-progress-top">
@@ -84,7 +80,7 @@ export default function TicketCenter({
      </div>
      <h3>{booking.fromName} ke {booking.toName}</h3>
      <p className="tk-progress-meta"><CreditCard size={14} aria-hidden="true"/><span>Kursi {booking.seatCode}, berangkat {formatDepartureWib(booking.departureAt)}</span></p>
-     <Link className="sp-primary" href={`/bookings/${booking.id}`}>Lanjutkan pembayaran<ArrowRight size={16} aria-hidden="true"/></Link>
+     <Link className="sp-primary pf-cta-primary" href={`/bookings/${booking.id}`}>Lanjutkan pembayaran<ArrowRight size={16} aria-hidden="true"/></Link>
     </article>)}
    </div>
   </section>}
@@ -122,10 +118,17 @@ export default function TicketCenter({
       <MagnifyingGlass size={16} aria-hidden="true"/>
       <input type="search" placeholder="Cari rute, kursi, penumpang" value={query} onChange={e=>setQuery(e.target.value)}/>
      </label>
-     <select aria-label="Urutkan tiket" className="tk-sort-select" value={sort} onChange={e=>setSort(e.target.value as 'upcoming'|'recent')}>
-      <option value="upcoming">Berangkat paling awal</option>
-      <option value="recent">Berangkat paling akhir</option>
-     </select>
+     <div className="tk-sort-wrap">
+      <AdminSelect
+       ariaLabel="Urutkan tiket"
+       value={sort}
+       onChange={next=>setSort(next as 'upcoming'|'recent')}
+       options={[
+        {value:'upcoming',label:'Berangkat paling awal'},
+        {value:'recent',label:'Berangkat paling akhir'},
+       ]}
+      />
+     </div>
     </div>
    </div>
 
@@ -147,14 +150,14 @@ export default function TicketCenter({
     <h2>Belum ada tiket aktif</h2>
     <p>Setelah Anda memilih kursi dan menyelesaikan pembayaran, e-tiket dan QR boarding akan langsung muncul di halaman ini.</p>
     <div className="sp-actions" style={{marginTop:'6px',justifyContent:'center'}}>
-     <Link className="sp-primary" href="/trips">Cari perjalanan<ArrowRight size={17} aria-hidden="true"/></Link>
+     <Link className="sp-primary pf-cta-primary" href="/trips">Cari perjalanan<ArrowRight size={17} aria-hidden="true"/></Link>
      <Link className="sp-secondary" href="/pengaduan">Pusat pengaduan</Link>
     </div>
    </div>
    <div className="tk-guide-grid">
-    <div className="tk-guide-step"><strong>1. Pilih jadwal dan kursi</strong><p>Buka menu Perjalanan, pilih rute tujuan, lalu kunci kursi yang tersedia.</p></div>
-    <div className="tk-guide-step"><strong>2. Isi data dan bayar</strong><p>Masukkan nama penumpang aktif dan selesaikan pembayaran dalam 10 menit.</p></div>
-    <div className="tk-guide-step"><strong>3. Tunjukkan QR saat naik</strong><p>Buka e-tiket dari halaman ini untuk dipindai petugas shuttle sebelum berangkat.</p></div>
+    <div className="tk-guide-step"><strong>Pilih jadwal dan kursi</strong><p>Buka menu Perjalanan, pilih rute tujuan, lalu kunci kursi yang tersedia.</p></div>
+    <div className="tk-guide-step"><strong>Isi data dan bayar</strong><p>Masukkan nama penumpang aktif dan selesaikan pembayaran dalam 10 menit.</p></div>
+    <div className="tk-guide-step"><strong>Tunjukkan QR saat naik</strong><p>Buka e-tiket dari halaman ini untuk dipindai petugas shuttle sebelum berangkat.</p></div>
    </div>
   </section>}
  </div>;

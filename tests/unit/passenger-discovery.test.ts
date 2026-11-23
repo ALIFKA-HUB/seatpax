@@ -5,10 +5,9 @@ import {renderToStaticMarkup as render} from 'react-dom/server';
 import {filterAndSortTrips,readDiscoveryQuery} from '@/modules/inventory/discovery-presentation';
 import type {SearchResult} from '@/modules/inventory/types';
 import TripCard from '@/app/components/trip-card';
-import TripDiscovery, {type WeekCalendarDay} from '@/app/trips/components/trip-discovery';
+import TripDiscovery from '@/app/trips/components/trip-discovery';
 import SearchForm from '@/app/trips/components/search-form';
 import TripsLoading from '@/app/trips/loading';
-import type {NetworkRouteCorridor} from '@/modules/inventory/types';
 const base={tripId:'a',name:'Trip',companyName:'PO',fromStopId:'origin',toStopId:'end',originName:'Bandung',destinationName:'Bogor',departureAt:'2026-10-20T01:00:00Z',className:'Ekonomi',fare:'10000',availableCount:1};
 const trips:SearchResult[]=[base,{...base,tripId:'b',className:'Eksekutif',fare:'9000',departureAt:'2026-10-20T02:00:00Z'}];
 it('flags repeated search parameters and tracks explicit date presence',()=>{
@@ -120,31 +119,7 @@ it('styles sp-journey-tags in passenger.css and preserves SearchForm label and o
  expect(tripsCss).toContain('.passenger-shell .tp-field > span');
  expect(tripsCss).toContain("button.admin-select-trigger:hover:not(:disabled):not([aria-expanded='true'])");
 });
-it('renders Bento sidebar, 7-day calendar links preserving from/to, and #direktori-titik even when trips are empty',()=>{
- const weekCalendar:WeekCalendarDay[]=[
-  {dateWib:'2026-10-20',dayShort:'Sel',dateNum:20,isToday:true,isSelected:false,tripCount:2},
-  {dateWib:'2026-10-21',dayShort:'Rab',dateNum:21,isToday:false,isSelected:true,tripCount:0},
-  {dateWib:'2026-10-22',dayShort:'Kam',dateNum:22,isToday:false,isSelected:false,tripCount:1},
-  {dateWib:'2026-10-23',dayShort:'Jum',dateNum:23,isToday:false,isSelected:false,tripCount:0},
-  {dateWib:'2026-10-24',dayShort:'Sab',dateNum:24,isToday:false,isSelected:false,tripCount:3},
-  {dateWib:'2026-10-25',dayShort:'Min',dateNum:25,isToday:false,isSelected:false,tripCount:0},
-  {dateWib:'2026-10-26',dayShort:'Sen',dateNum:26,isToday:false,isSelected:false,tripCount:1},
- ];
- const corridors:NetworkRouteCorridor[]=[
-  {
-   id:'route-1',
-   companyName:'PO Nusantara',
-   name:'Koridor Pasteur Bogor',
-   code:'BDG-BGR',
-   stops:[
-    {stopId:'stopA',name:'Pool Pasteur',city:'Bandung',address:'Jl. Pasteur 10'},
-    {stopId:'stopB',name:'Pool Cianjur',city:'Cianjur',address:'Jl. KH Abdullah 4'},
-    {stopId:'stopC',name:'Pool Baranangsiang',city:'Bogor',address:'Jl. Pajajaran 12'},
-   ],
-   minSegmentFare:'45000',
-   openTripCount:2,
-  },
- ];
+it('renders clean consumer trip discovery without Admin-PO Bento sidebar or KPI dashboard cards',()=>{
  const html=render(
   h(TripDiscovery,{
    trips:[],
@@ -153,9 +128,6 @@ it('renders Bento sidebar, 7-day calendar links preserving from/to, and #direkto
     {id:'stopA',name:'Pool Pasteur',city:'Bandung',address:'Jl. Pasteur 10'},
     {id:'stopC',name:'Pool Baranangsiang',city:'Bogor',address:'Jl. Pajajaran 12'},
    ],
-   corridors,
-   serviceClasses:[{name:'Eksekutif',code:'EXC'}],
-   weekCalendar,
    quickDates:[],
    candidateLimitReached:false,
    dateWib:'2026-10-21',
@@ -165,62 +137,21 @@ it('renders Bento sidebar, 7-day calendar links preserving from/to, and #direkto
   }),
  );
  expect(html).toContain('Belum ada jadwal perjalanan terbuka');
- expect(html).toContain('Kalender keberangkatan');
- expect(html).toContain('Keberangkatan terdekat');
- expect(html).toContain('Alur kunci kursi &amp; e-tiket');
- expect(html).toContain('Bantuan &amp; status pesanan');
- expect(html).toContain('tp-week-strip');
- expect(html).toContain('href="/trips?from=stopA&amp;to=stopC&amp;date=2026-10-20"');
- expect(html).toContain('id="direktori-titik"');
- expect(html).toContain('Koridor Pasteur Bogor');
- expect(html).toContain('Pool Pasteur');
- expect(html).toContain('Jl. Pasteur 10');
- expect(html).toContain('Eksekutif');
- expect(html).toContain('href="/trips?from=stopA&amp;to=stopC"');
- expect(html).toContain('Cari rute ini');
+ expect(html).toContain('Pool Pasteur (Bandung)');
+ expect(html).toContain('Pool Baranangsiang (Bogor)');
+ expect(html).toContain('Tampilkan semua jadwal');
+ expect(html).not.toContain('tp-dash-bento');
+ expect(html).not.toContain('tp-kpi-grid');
+ expect(html).not.toContain('Kalender keberangkatan');
  expect(html).not.toContain(' · ');
  expect(html).not.toContain('—');
  expect(html).not.toContain('tp-eyebrow');
 });
-it('skips route search links in #direktori-titik when a corridor has fewer than 2 active stops',()=>{
- const corridors:NetworkRouteCorridor[]=[
-  {
-   id:'route-single',
-   companyName:'PO Tunggal',
-   name:'Koridor Satu Titik',
-   code:null,
-   stops:[{stopId:'only-one',name:'Pool Tunggal',city:'Bandung',address:'Jl. Satu'}],
-   minSegmentFare:null,
-   openTripCount:0,
-  },
- ];
- const html=render(
-  h(TripDiscovery,{
-   trips:[],
-   fallbackTrips:[],
-   locations:[],
-   corridors,
-   serviceClasses:[],
-   weekCalendar:[],
-   quickDates:[],
-   candidateLimitReached:false,
-   dateWib:'2026-10-20',
-   hasExplicitDate:false,
-  }),
- );
- expect(html).toContain('Pool Tunggal');
- expect(html).not.toContain('/trips?from=only-one');
- expect(html).not.toContain('Cari rute ini');
- expect(html).not.toContain(' · ');
- expect(html).not.toContain('—');
-});
-it('renders populated Bento workspace with agenda items and zero middle dots or em-dashes',()=>{
+it('renders populated consumer trip list directly without nested Bento sidebar and zero middle dots or em-dashes',()=>{
  const fiveTrips:SearchResult[]=[
   base,
   {...base,tripId:'b',name:'Trip B',departureAt:'2026-10-20T02:00:00Z'},
   {...base,tripId:'c',name:'Trip C',departureAt:'2026-10-20T03:00:00Z'},
-  {...base,tripId:'d',name:'Trip D',departureAt:'2026-10-20T04:00:00Z'},
-  {...base,tripId:'e',name:'Trip E',departureAt:'2026-10-20T05:00:00Z'},
  ];
  const html=render(
   h(TripDiscovery,{
@@ -233,26 +164,27 @@ it('renders populated Bento workspace with agenda items and zero middle dots or 
    hasExplicitDate:true,
   }),
  );
- expect(html).toContain('tp-dash-bento');
- expect(html).toContain('tp-primary-col');
- expect(html).toContain('tp-side-col');
- expect(html).toContain('tp-agenda-list');
- expect(html).toContain('tp-agenda-item');
- expect(html).toContain('tp-tint-card is-blue');
- expect(html).toContain('tp-tint-card is-amber');
+ expect(html).toContain('tp-results');
+ expect(html).toContain('tp-list');
+ expect(html).toContain('3 perjalanan tersedia');
+ expect(html).not.toContain('tp-dash-bento');
+ expect(html).not.toContain('tp-side-col');
+ expect(html).not.toContain('tp-seat-dot');
  expect(html).not.toContain(' · ');
  expect(html).not.toContain('—');
  expect(html).not.toContain('tp-eyebrow');
 });
-it('renders accessible Bento skeleton in TripsLoading with zero middle dots or tp-eyebrow',()=>{
+it('renders accessible consumer skeleton in TripsLoading without KPI or Bento dashboard blocks',()=>{
  const html=render(h(TripsLoading));
  expect(html).toContain('aria-busy="true"');
  expect(html).toContain('role="status"');
- expect(html).toContain('tp-workspace');
+ expect(html).toContain('tp-page');
  expect(html).toContain('tp-loading');
  expect(html).toContain('tp-skeleton-shimmer');
- expect(html).toContain('tp-dash-bento');
- expect(html).toContain('tp-kpi-grid');
+ expect(html).toContain('tp-skeleton-search');
+ expect(html).toContain('tp-skeleton-list');
+ expect(html).not.toContain('tp-dash-bento');
+ expect(html).not.toContain('tp-kpi-grid');
  expect(html).not.toContain('tp-eyebrow');
  expect(html).not.toContain(' · ');
  expect(html).not.toContain('—');

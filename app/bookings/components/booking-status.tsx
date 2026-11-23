@@ -62,7 +62,7 @@ export default function BookingStatus({initial,clientKey}:{initial:BookingView;c
   <JourneySummary fromName={booking.snapshot.fromName} toName={booking.snapshot.toName} departureAt={booking.snapshot.departureAt} seatCode={booking.snapshot.seatCode} fare={booking.amount} operator={booking.snapshot.tripName}/>
   <BookingOutcome booking={booking}/>
   <div className="pf-action-row" style={{paddingTop:'16px',borderTop:'1px solid var(--pf-border)'}}>
-   {booking.status==='PENDING_PAYMENT'&&clientKey&&<button className="sp-primary" type="button" disabled={busy} onClick={()=>void pay()}><CreditCard size={17} aria-hidden="true" style={{marginRight:6}}/>{busy?'Menyiapkan…':'Buka pembayaran'}</button>}
+   {booking.status==='PENDING_PAYMENT'&&clientKey&&<button className="sp-primary pf-cta-primary" type="button" disabled={busy} onClick={()=>void pay()}><CreditCard size={17} aria-hidden="true" style={{marginRight:6}}/>{busy?'Menyiapkan…':'Buka pembayaran'}</button>}
    <button className="sp-secondary" type="button" onClick={()=>void refresh()}><ArrowsClockwise size={16} aria-hidden="true" style={{marginRight:6}}/>Perbarui status</button>
    <Link className="sp-secondary" href="/tickets">Lihat semua tiket</Link>
   </div>
