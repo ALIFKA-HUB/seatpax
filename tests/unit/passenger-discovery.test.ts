@@ -1,4 +1,5 @@
 import {expect,it} from 'vitest';
+import {readFileSync} from 'node:fs';
 import {createElement as h} from 'react';
 import {renderToStaticMarkup as render} from 'react-dom/server';
 import {filterAndSortTrips,readDiscoveryQuery} from '@/modules/inventory/discovery-presentation';
@@ -99,4 +100,21 @@ it('surfaces optional vehicle, intermediate stops, city, capacity, and cutoff on
  const directHtml=render(h(TripCard,{trip:{...base,stopCount:2,intermediateStops:[]}}));
  expect(directHtml).toContain('Langsung');
  expect(directHtml).not.toContain(' · ');
+});
+it('renders 0 / capacity kursi with is-full when seatCapacity > 0 and availableCount === 0',()=>{
+ const html=render(h(TripCard,{trip:{...base,availableCount:0,seatCapacity:14}}));
+ expect(html).toContain('0 / 14 kursi');
+ expect(html).toContain('tp-seat-pill is-full');
+ expect(html).not.toContain('0 kursi tersedia');
+});
+it('styles sp-journey-tags in passenger.css and preserves SearchForm label and open trigger specificity in trips.css',()=>{
+ const passengerCss=readFileSync(new URL('../../app/passenger.css',import.meta.url),'utf8');
+ expect(passengerCss).toContain('.passenger-shell .sp-journey-tags');
+ expect(passengerCss).toContain('.passenger-shell .sp-journey-tag');
+ expect(passengerCss).toMatch(/\.passenger-shell \.seat-cell\{[^}]*overflow-wrap:anywhere/);
+
+ const tripsCss=readFileSync(new URL('../../app/trips/trips.css',import.meta.url),'utf8');
+ expect(tripsCss).toContain('.passenger-shell .tp-field-label');
+ expect(tripsCss).toContain('.passenger-shell .tp-field > span');
+ expect(tripsCss).toContain("button.admin-select-trigger:hover:not(:disabled):not([aria-expanded='true'])");
 });

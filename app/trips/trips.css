@@ -463,27 +463,30 @@ body {
   margin: 0;
 }
 
-.tp-field-label,
-.tp-field > span {
+.passenger-shell .tp-field-label,
+.passenger-shell .tp-field > span {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 18px;
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   line-height: 1.4;
-  color: var(--tp-ink);
+  color: var(--tp-muted);
   margin: 0;
 }
 
-.tp-field-label svg,
-.tp-field > span svg {
+.passenger-shell .tp-field-label svg,
+.passenger-shell .tp-field > span svg {
   color: var(--tp-primary);
   flex-shrink: 0;
 }
 
-.tp-field-sub {
+.passenger-shell .tp-field > .tp-field-sub {
+  display: block;
+  min-height: 0;
   font-size: 11.5px;
+  font-weight: 400;
   line-height: 1.35;
   color: var(--tp-muted);
   white-space: nowrap;
@@ -570,7 +573,7 @@ body {
   color: var(--tp-danger);
 }
 
-.passenger-shell :is(.tp-workspace, .tp-page) button.admin-select-trigger:hover:not(:disabled) {
+.passenger-shell :is(.tp-workspace, .tp-page) button.admin-select-trigger:hover:not(:disabled):not([aria-expanded='true']) {
   border-color: #8fa6c4;
   background: #fafcff;
   color: var(--tp-ink);
@@ -1707,27 +1710,6 @@ body {
   gap: 6px;
 }
 
-/* JourneySummary Separated Tags */
-.passenger-shell .sp-journey-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 6px 0 0;
-}
-
-.passenger-shell .sp-journey-tag {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--tp-surface-soft, #f7fafe);
-  border: 1px solid var(--tp-border, #e4ebf5);
-  color: var(--tp-ink, #102746);
-  font-size: 12px;
-  font-weight: 600;
-}
-
 /* Filter Dialog Toggle Chips & Fare Presets */
 .sp-chip-grid {
   display: flex;
@@ -1869,8 +1851,17 @@ body {
     padding: 18px 16px;
   }
   .tp-card-route {
-    grid-template-columns: minmax(0, 1fr) 86px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(88px, auto) minmax(0, 1fr);
     gap: 8px;
+  }
+  .tp-connector {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .tp-duration-pill {
+    padding: 3px 8px;
+    font-size: 10.5px;
+    max-width: 100%;
   }
   .tp-time {
     font-size: 20px;
@@ -1914,6 +1905,13 @@ body {
 @media (max-width: 560px) {
   .passenger-shell .tp-kpi-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 359px) {
+  .tp-duration-pill {
+    white-space: normal;
+    line-height: 1.25;
   }
 }
 
