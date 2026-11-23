@@ -29,7 +29,7 @@ export default function HelpdeskTopbar({
   onToggleMenu?: () => void;
   toggleRef?: RefObject<HTMLButtonElement | null>;
 }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '/helpdesk';
   const { group, title } = resolveTitle(pathname);
 
   return (

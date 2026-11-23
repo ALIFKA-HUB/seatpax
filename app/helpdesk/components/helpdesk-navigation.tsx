@@ -16,7 +16,7 @@ export default function HelpdeskNavigation({
   pendingCount?: number;
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '/helpdesk';
   const isDashboard = pathname === '/helpdesk';
   const isCases = isHelpdeskCasesActive(pathname);
 

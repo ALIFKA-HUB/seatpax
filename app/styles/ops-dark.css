@@ -241,13 +241,13 @@ html[data-mode='dark'] .admin-shell :is(input:focus-visible, select:focus-visibl
   box-shadow: 0 0 0 3px rgb(95 160 255 / 0.22);
 }
 
-html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.hd-preview-btn):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.trip-preset-btn.is-active):not(.trip-mode-btn.is-active) {
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.hd-preview-btn):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.trip-preset-btn.is-active):not(.trip-mode-btn.is-active):not(.admin-select-trigger):not(.admin-select-option) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule-strong);
   color: var(--ops-ink);
 }
 
-html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.hd-preview-btn):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):hover:not(:disabled) {
+html[data-mode='dark'] .admin-shell button:not(.admin-primary):not(.hd-primary):not(.hd-footer-link):not(.hd-preview-btn):not(.admin-danger):not(.admin-account):not(.admin-row-action-btn):not(.admin-toast-close):not(.admin-page-num.is-active):not(.trip-weekday-pill.is-selected):not(.fleet-brush-btn.is-active):not(.seat-cell):not(.admin-topbar-icon-btn):not(.admin-select-trigger):not(.admin-select-option):hover:not(:disabled) {
   background: var(--ops-paper-4);
   border-color: var(--ops-accent);
   color: var(--ops-accent-hover);
@@ -1021,8 +1021,8 @@ html[data-mode='dark'] .admin-shell .hd-search-box svg {
   color: var(--ops-muted);
 }
 
-html[data-mode='dark'] .admin-shell .hd-search-box input,
-html[data-mode='dark'] .admin-shell .hd-search-box input:focus-visible {
+html[data-mode='dark'] .admin-shell .hd-admin-toolbar .hd-search-box input,
+html[data-mode='dark'] .admin-shell .hd-admin-toolbar .hd-search-box input:focus-visible {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -1091,6 +1091,11 @@ html[data-mode='dark'] .crew-shell :is(.crew-company-card, .crew-trip-item, .cre
   background: var(--ops-paper-3);
   border-color: var(--ops-rule);
   color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell :is(.crew-trip-item, .crew-profile-facts) .crew-code-pill {
+  background: var(--ops-paper-2);
+  border-color: var(--ops-rule-strong);
 }
 
 html[data-mode='dark'] .crew-shell .crew-back:hover {
@@ -1301,10 +1306,28 @@ html[data-mode='dark'] .crew-shell :is(select, .manifest-controls select, .board
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%239FB2CA' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-html[data-mode='dark'] .crew-shell :is(.crew-button, button:not(.crew-primary):not(.crew-pill-active):not(.crew-nav-logout):not(.crew-account):not(.crew-footer-link):not(.crew-topbar-icon-btn):not(.crew-theme-toggle):not(.admin-toast-close):not(.admin-select-trigger):not(.admin-select-option)) {
+html[data-mode='dark'] .crew-shell .crew-button:not(.crew-primary):not(.crew-button-ghost) {
   background: var(--ops-paper-3);
   border-color: var(--ops-rule-strong);
   color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell button:not(.crew-primary):not(.crew-button-ghost):not(.crew-pill-active):not(.crew-nav-logout):not(.crew-account):not(.crew-footer-link):not(.crew-topbar-icon-btn):not(.crew-theme-toggle):not(.admin-toast-close):not(.admin-select-trigger):not(.admin-select-option) {
+  background: var(--ops-paper-3);
+  border-color: var(--ops-rule-strong);
+  color: var(--ops-ink);
+}
+
+html[data-mode='dark'] .crew-shell .crew-button:not(.crew-primary):not(:disabled):hover {
+  background: var(--ops-paper-4);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent-hover);
+}
+
+html[data-mode='dark'] .crew-shell button:not(.crew-primary):not(.crew-button-ghost):not(.crew-pill-active):not(.crew-nav-logout):not(.crew-account):not(.crew-footer-link):not(.crew-topbar-icon-btn):not(.crew-theme-toggle):not(.admin-toast-close):not(.admin-select-trigger):not(.admin-select-option):hover:not(:disabled) {
+  background: var(--ops-paper-4);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent-hover);
 }
 
 html[data-mode='dark'] .crew-shell button.admin-select-trigger {
@@ -1358,6 +1381,15 @@ html[data-mode='dark'] .crew-shell .admin-select-check {
   color: var(--ops-accent);
 }
 
+html[data-mode='dark'] .crew-shell button.admin-select-trigger.is-invalid {
+  border-color: var(--ops-danger);
+  box-shadow: 0 0 0 3px rgb(248 113 113 / 0.22);
+}
+
+html[data-mode='dark'] .crew-shell .admin-select-error {
+  color: var(--ops-danger);
+}
+
 html[data-mode='dark'] .crew-shell .crew-button-ghost,
 html[data-mode='dark'] .crew-shell .crew-filter-pills .crew-pill {
   background: var(--ops-paper-3);
@@ -1397,7 +1429,8 @@ html[data-mode='dark'] .crew-shell .crew-state-success {
   border-color: var(--ops-green-border);
 }
 
-html[data-mode='dark'] .crew-shell .crew-state-success .crew-step-chip {
+html[data-mode='dark'] .crew-shell .crew-state-success .crew-step-chip,
+html[data-mode='dark'] .crew-shell .crew-state-success .crew-status-pill.is-ok {
   background: var(--ops-green-border);
   color: var(--ops-green);
 }

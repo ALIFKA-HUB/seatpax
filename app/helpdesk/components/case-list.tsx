@@ -30,6 +30,10 @@ const priorityTone: Record<Priority, string> = {
   LOW: 'is-neutral',
 };
 
+const wibDateFormatter = new Intl.DateTimeFormat('id-ID', {
+  timeZone: 'Asia/Jakarta',
+});
+
 const quickTabs: { value: '' | ComplaintStatus; label: string }[] = [
   { value: '', label: 'Semua' },
   { value: 'MENUNGGU', label: 'Menunggu' },
@@ -199,7 +203,7 @@ export default function CaseList({
                       )}
                     </td>
                     <td className="admin-tabular">
-                      {new Date(r.created_at).toLocaleDateString('id-ID')}
+                      {wibDateFormatter.format(new Date(r.created_at))}
                     </td>
                     <td className="admin-col-action">
                       <Link

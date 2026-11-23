@@ -138,12 +138,14 @@
 .crew-shell select::picker-icon { display:none; }
 .crew-shell .admin-select { position:relative; width:100%; min-width:0; }
 .crew-shell .admin-select-native { position:absolute; inset:0; width:100%; height:100%; opacity:0; pointer-events:none; margin:0; padding:0; border:0; }
-.crew-shell button.admin-select-trigger { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:48px; height:48px; margin:0; padding:10px 14px; border:1px solid #D1DCE9; border-radius:10px; background:#FFFFFF; color:var(--crew-ink); font:inherit; font-weight:500; text-align:left; transition:border-color 140ms ease,background-color 140ms ease,box-shadow 140ms ease; }
+.crew-shell button.admin-select-trigger { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:48px; height:48px; margin:0; padding:10px 14px; border:1px solid #D1DCE9; border-radius:10px; background:#FFFFFF; color:var(--crew-ink); font:inherit; font-weight:500; text-align:left; }
+.crew-shell button.admin-select-trigger.is-invalid { border-color:#DC2626; box-shadow:0 0 0 3px rgba(220,38,38,.12); }
+.crew-shell .admin-select-error { display:block; margin-top:4px; font-size:12px; font-weight:500; color:#B91C1C; }
 .crew-shell button.admin-select-trigger:hover:not(:disabled) { border-color:#8FA6C4; background:#FAFCFF; }
 .crew-shell button.admin-select-trigger[aria-expanded='true'] { border-color:var(--crew-blue); background:#FFFFFF; box-shadow:0 0 0 3px #005bd11a; }
 .crew-shell .admin-select-value { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .crew-shell .admin-select-value.is-placeholder { color:var(--crew-muted); font-weight:400; }
-.crew-shell .admin-select-caret { flex:none; display:inline-flex; align-items:center; color:var(--crew-muted); transition:transform 140ms ease,color 140ms ease; }
+.crew-shell .admin-select-caret { flex:none; display:inline-flex; align-items:center; color:var(--crew-muted); }
 .crew-shell button.admin-select-trigger[aria-expanded='true'] .admin-select-caret { transform:rotate(180deg); color:var(--crew-blue); }
 .crew-shell ul.admin-select-menu { position:absolute; top:calc(100% + 6px); left:0; right:0; min-width:100%; z-index:45; margin:0; padding:6px; list-style:none; max-height:240px; overflow-y:auto; border-radius:14px; background:#FFFFFF; border:1px solid var(--crew-line); box-shadow:0 18px 40px rgba(10,33,68,.14); }
 .crew-shell ul.admin-select-menu > li { margin:0; padding:0; display:block; border:0; background:transparent; }
@@ -180,7 +182,7 @@
 .crew-shell .crew-schedule li:last-child .crew-stop-body { padding-bottom:0; border-bottom:0; }
 .crew-shell .crew-stop-location { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
 .crew-shell .crew-stop-city { font-weight:500; }
-.crew-shell .crew-stop-address { font-weight:600; }
+.crew-shell .crew-stop-address { font-weight:600; white-space:normal; max-width:100%; overflow-wrap:anywhere; }
 .crew-shell .crew-stop-times { margin:8px 0 0; display:flex; flex-wrap:wrap; gap:12px 32px; font-size:.875rem; }
 .crew-shell .crew-stop-times dt { color:#526078; }
 .crew-shell .crew-stop-times dd { margin:0; font-weight:600; font-variant-numeric:tabular-nums; }
@@ -288,7 +290,7 @@
  .crew-shell .crew-subnav-link:not(.crew-subnav-active):hover { background:#F1F5F9; color:var(--crew-ink); }
 }
 @media (prefers-reduced-motion:no-preference) {
- .crew-shell .crew-button,.crew-shell button,.crew-shell .crew-trip-card,.crew-shell .crew-card-arrow,.crew-shell .crew-subnav-link,.crew-shell .crew-sidebar nav a,.crew-shell .crew-footer-link { transition:background-color 150ms,border-color 150ms,color 150ms,transform 150ms; }
+ .crew-shell .crew-button,.crew-shell button,.crew-shell button.admin-select-trigger,.crew-shell .admin-select-caret,.crew-shell .crew-trip-card,.crew-shell .crew-card-arrow,.crew-shell .crew-subnav-link,.crew-shell .crew-sidebar nav a,.crew-shell .crew-footer-link { transition:background-color 150ms,border-color 150ms,color 150ms,box-shadow 150ms,transform 150ms; }
 }
 @media (max-width:1000px) {
  .crew-shell { grid-template-columns:204px minmax(0,1fr); }
