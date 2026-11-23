@@ -1,7 +1,7 @@
 import {z} from 'zod';
 import {DomainError} from '@/modules/access/transaction';
 import type {InventoryRepository,Snapshot} from './repository';
-import type {AvailabilityView,DiscoveryInput,SearchInput,SearchResult} from './types';
+import type {AvailabilityView,DiscoveryInput,NetworkCatalog,SearchInput,SearchResult} from './types';
 import {overlaps,resolveInterval,wibDayBounds} from './interval';
 import {quoteInterval} from './fare';
 import {searchInputSchema} from './validation';
@@ -23,12 +23,37 @@ export function createAvailabilityService(repo:InventoryRepository){
    if(!view.saleOpen)return null;
    const from=snapshot.stops.find(stop=>stop.id===row.fromStopId)!;
    const to=snapshot.stops.find(stop=>stop.id===row.toStopId)!;
-   return {...row,name:snapshot.trip.name,companyName:snapshot.companyName,originName:from.name,destinationName:to.name,departureAt:from.departureAt,arrivalAt:to.arrivalAt??null,className:snapshot.trip.identity!.className,fare:view.fare,availableCount:view.seats.filter(seat=>seat.status==='AVAILABLE').length};
+   const intervalStops=snapshot.stops.filter(stop=>stop.sequence>=from.sequence&&stop.sequence<=to.sequence).sort((a,b)=>a.sequence-b.sequence);
+   const identity=snapshot.trip.identity;
+   return {
+    ...row,
+    name:snapshot.trip.name,
+    companyName:snapshot.companyName,
+    originName:from.name,
+    destinationName:to.name,
+    departureAt:from.departureAt,
+    arrivalAt:to.arrivalAt??null,
+    className:identity!.className,
+    fare:view.fare,
+    availableCount:view.seats.filter(seat=>seat.status==='AVAILABLE').length,
+    routeName:identity?.routeName??null,
+    vehicleName:identity?.vehicleName??null,
+    plateNumber:identity?.plateNumber??null,
+    seatCapacity:snapshot.seats.length,
+    stopCount:intervalStops.length,
+    intermediateStops:intervalStops.slice(1,-1).map(stop=>stop.name),
+    originCity:from.city??null,
+    originAddress:from.address??null,
+    destinationCity:to.city??null,
+    destinationAddress:to.address??null,
+    cutoff:view.cutoff,
+   };
   }));
   return resolved.filter((item):item is SearchResult=>item!==null);
  }
  return {
  locations:()=>repo.locations(),
+ networkCatalog:async():Promise<NetworkCatalog>=>typeof repo.networkCatalog==='function'?repo.networkCatalog():{routes:[],classes:[]},
  async discover(input:DiscoveryInput){const bounds=wibDayBounds(input.dateWib),rows=await repo.discoveryCandidates(bounds.start,bounds.end,51);return {trips:await resultsFor(rows.slice(0,50)),candidateLimitReached:rows.length>50};},
  async discoverUpcoming(limit=50){const cap=Math.max(1,Math.min(limit,50));const rows=await repo.upcomingCandidates(cap+1);return {trips:await resultsFor(rows.slice(0,cap)),candidateLimitReached:rows.length>cap};},
  async detail(tripId:string,fromStopId:string,toStopId:string){if(![tripId,fromStopId,toStopId].every(x=>z.uuid().safeParse(x).success))throw new DomainError('validation','Pilihan perjalanan tidak valid.');return availability(await repo.snapshot(repo.client,tripId),fromStopId,toStopId);},

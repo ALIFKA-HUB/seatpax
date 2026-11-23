@@ -51,6 +51,7 @@ export async function activeHoldForTrip(userId:string,tripId:string):Promise<Tri
 export const passengerServices=()=>({
  availability:{
   locations:()=>readAvailability(service=>service.locations()),
+  networkCatalog:()=>readAvailability(service=>service.networkCatalog()),
   discover:(input:DiscoveryInput)=>readAvailability(service=>service.discover(input)),
   discoverUpcoming:(limit?:number)=>readAvailability(service=>service.discoverUpcoming(limit)),
   detail:(tripId:string,fromStopId:string,toStopId:string)=>readAvailability(service=>service.detail(tripId,fromStopId,toStopId)),
