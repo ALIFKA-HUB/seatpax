@@ -48,3 +48,55 @@ it('renders orange accent submit button in search form',()=>{
  expect(html).toContain('tp-cta-accent');
  expect(html).toContain('Cari jadwal');
 });
+it('renders AdminSelect stop pickers with city subtitles and zero middle dots in SearchForm',()=>{
+ const html=render(
+  h(SearchForm,{
+   locations:[
+    {id:'a',name:'Pool Pasteur',city:'Bandung',address:'Jl. Pasteur 10'},
+    {id:'b',name:'Pool Cianjur',city:'Cianjur',address:'Jl. Raya 2'},
+   ],
+   initial:{from:'a'},
+  }),
+ );
+ expect(html).toContain('admin-select-trigger');
+ expect(html).toContain('Pool Pasteur');
+ expect(html).toContain('Bandung');
+ expect(html).toContain('tp-cta-accent');
+ expect(html).toContain('Cari jadwal');
+ expect(html).toContain('name="from"');
+ expect(html).toContain('name="to"');
+ expect(html.match(/<option value=""/g)).toHaveLength(2);
+ expect(html).not.toContain(' · ');
+ expect(html).not.toContain('—');
+});
+it('surfaces optional vehicle, intermediate stops, city, capacity, and cutoff on enriched TripCard without middle dots',()=>{
+ const enriched:SearchResult={
+  ...base,
+  arrivalAt:'2026-10-20T03:30:00Z',
+  vehicleName:'HiAce Premio',
+  seatCapacity:14,
+  stopCount:3,
+  intermediateStops:['Cianjur'],
+  originCity:'Bandung',
+  destinationCity:'Bogor',
+  cutoff:'2026-10-20T00:45:00Z',
+ };
+ const html=render(h(TripCard,{trip:enriched}));
+ expect(html).toContain('HiAce Premio');
+ expect(html).toContain('1 / 14 kursi');
+ expect(html).toContain('Via Cianjur');
+ expect(html).toContain('Bandung');
+ expect(html).toContain('Bogor');
+ expect(html).toContain('Pesan sebelum');
+ expect(html).toContain('tp-card-purchase');
+ expect(html).toContain('tp-cta-accent');
+ expect(html).toContain('tp-duration-pill');
+ expect(html).toContain('2j 30m');
+ expect(html).not.toContain('Bandung → Bogor');
+ expect(html).not.toContain(' · ');
+ expect(html).not.toContain('—');
+
+ const directHtml=render(h(TripCard,{trip:{...base,stopCount:2,intermediateStops:[]}}));
+ expect(directHtml).toContain('Langsung');
+ expect(directHtml).not.toContain(' · ');
+});

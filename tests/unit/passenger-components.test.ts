@@ -19,3 +19,15 @@ it('renders semantic status, long journey data and recovery',()=>{
  expect(render(h(StatusBadge,{label:'Menunggu pembayaran',tone:'warning'}))).toContain('Menunggu pembayaran');
  const panel=render(h(StatePanel,{title:'Belum ada tiket',action:h('a',{href:'/trips'},'Cari perjalanan')}));expect(panel).toContain('Belum ada tiket');expect(panel).toContain('href="/trips"');
 });
+it('renders separated operator and class tags in JourneySummary without middle dots',()=>{
+ const html=render(h(JourneySummary,{fromName:'Pool Pasteur',toName:'Pool Bogor',departureAt:'2026-10-09T01:00:00Z',seatCode:'02',fare:'75000',operator:'PO Nusantara',className:'Eksekutif'}));
+ expect(html).toContain('sp-journey-tags');
+ expect(html).toContain('sp-journey-tag');
+ expect(html).toContain('PO Nusantara');
+ expect(html).toContain('Eksekutif');
+ expect(html).toContain('Kursi');
+ expect(html).toContain('02');
+ expect(html).toContain('Rp 75.000');
+ expect(html).not.toContain(' · ');
+ expect(html).not.toContain('—');
+});
