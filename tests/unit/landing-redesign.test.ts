@@ -36,11 +36,14 @@ describe('UI-LANDING-01 contracts', () => {
     expect(html).toContain('lp-route-traveller');
   });
 
-  it('renders interactive seat grid (01-09) in BookingMotion seat mode and 3-step controls in deck mode', () => {
+  it('renders side-by-side interactive seat grid (01-09) and live ticket in BookingMotion seat mode and 3-step controls in deck mode', () => {
     const seatHtml = render(h(BookingMotion, {kind: 'seat'}));
     expect(seatHtml).toContain('03');
     expect(seatHtml).toContain('09');
     expect(seatHtml).toContain('lpm-seat-btn');
+    expect(seatHtml).toContain('lpm-seat-pair');
+    expect(seatHtml).toContain('Tiket siap dibuka.');
+    expect(seatHtml).toContain('Pembayaran dikonfirmasi');
 
     const deckHtml = render(h(BookingMotion, {kind: 'deck'}));
     expect(deckHtml).toContain('Kursi');
@@ -49,14 +52,14 @@ describe('UI-LANDING-01 contracts', () => {
     expect(deckHtml).toContain('lpm-step-tabs');
   });
 
-  it('builds a dense isometric Boarding Stand geometry (45+ parts) and renders Fig 01 in PreparationShowcase', () => {
+  it('builds a dense isometric QR Boarding Gate geometry (45+ parts) and renders Fig 01 in PreparationShowcase', () => {
     const geo = buildBoardingStandGeometry();
     expect(geo.partCount).toBeGreaterThanOrEqual(45);
     expect(geo.staticSolids.length).toBeGreaterThan(25);
 
     const html = render(h(PreparationShowcase));
     expect(html).toContain('Fig 01');
-    expect(html).toContain('Boarding Stand');
+    expect(html).toContain('QR Boarding Gate');
     expect(html).toContain('Tahu harus naik di mana');
     expect(html).toContain('Waktunya sudah sesuai');
     expect(html).toContain('Tiket tinggal ditunjukkan');

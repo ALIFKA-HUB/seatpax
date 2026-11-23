@@ -49,7 +49,7 @@ export default function Home() {
       <div className="lp-screen" id="pilihan-perjalanan" data-landing-section><FeaturedTrips/></div>
 
       <div className="lp-screen" id="pilih-kursi" data-landing-section>
-        <section className="lp-seat-feature lp-seat-stage" aria-labelledby="seat-feature-title">
+        <section className="lp-seat-feature" aria-labelledby="seat-feature-title">
           <div className="lp-feature-copy">
             <h2 id="seat-feature-title">Pilih tempat<br/>nyaman Anda.</h2>
             <p>Lihat susunan kursi sebelum memesan. Pilih yang masih tersedia, lalu lanjutkan perjalanan sesuai rencana Anda.</p>

@@ -7,24 +7,58 @@
   --anatomy-border: var(--lp-border, #d5e2f2);
   --anatomy-primary: var(--sp-primary, #005bd1);
   --anatomy-accent: var(--lp-accent, #bd4b12);
-  --anatomy-paper: var(--anatomy-card);
+  --anatomy-navy-deep: var(--lp-navy-deep, #071936);
+  --anatomy-navy: var(--lp-navy, #0a2144);
+  --anatomy-navy-soft: var(--lp-navy-soft, #0e2d5c);
+  --anatomy-tint: var(--lp-tint, #edf4ff);
+
+  /* Default light architectural base material */
+  --anatomy-paper: var(--anatomy-page);
   --anatomy-face: var(--anatomy-card);
   --anatomy-top: var(--anatomy-card);
-  --anatomy-shade-0: color-mix(in srgb, var(--anatomy-card) 86%, var(--anatomy-text));
-  --anatomy-shade-1: color-mix(in srgb, var(--anatomy-card) 90%, var(--anatomy-text));
-  --anatomy-shade-2: color-mix(in srgb, var(--anatomy-card) 94%, var(--anatomy-text));
-  --anatomy-shade-3: color-mix(in srgb, var(--anatomy-card) 97%, var(--anatomy-text));
-  --anatomy-lit-top: color-mix(in srgb, var(--anatomy-card) 32%, var(--anatomy-accent));
-  --anatomy-lit-shade: color-mix(in srgb, var(--anatomy-card) 52%, var(--anatomy-accent));
+  --anatomy-shade-0: color-mix(in srgb, var(--anatomy-page) 80%, var(--anatomy-text));
+  --anatomy-shade-1: color-mix(in srgb, var(--anatomy-page) 86%, var(--anatomy-text));
+  --anatomy-shade-2: color-mix(in srgb, var(--anatomy-page) 91%, var(--anatomy-text));
+  --anatomy-shade-3: color-mix(in srgb, var(--anatomy-page) 96%, var(--anatomy-text));
+  --anatomy-lit-top: color-mix(in srgb, var(--anatomy-card) 22%, var(--anatomy-accent));
+  --anatomy-lit-shade: color-mix(in srgb, var(--anatomy-card) 42%, var(--anatomy-accent));
   --anatomy-hi: var(--anatomy-text);
   --anatomy-mid: var(--anatomy-muted);
-  --anatomy-lo: color-mix(in srgb, var(--anatomy-card) 58%, var(--anatomy-muted));
-  --anatomy-faint: color-mix(in srgb, var(--anatomy-card) 78%, var(--anatomy-muted));
+  --anatomy-lo: color-mix(in srgb, var(--anatomy-card) 48%, var(--anatomy-muted));
+  --anatomy-faint: color-mix(in srgb, var(--anatomy-card) 72%, var(--anatomy-muted));
   --anatomy-lit: var(--anatomy-accent);
   --anatomy-halo: var(--anatomy-text);
-  --anatomy-halo-opacity: 0.14;
+  --anatomy-halo-opacity: 0.16;
   --anatomy-dot: var(--anatomy-text);
-  --anatomy-weight: 0.65px;
+  --anatomy-weight: 0.7px;
+
+  /* Seatpax Deep Navy material tokens */
+  --anatomy-navy-top: color-mix(in srgb, var(--anatomy-navy-soft) 84%, var(--anatomy-primary));
+  --anatomy-navy-s0: var(--anatomy-navy-deep);
+  --anatomy-navy-s1: color-mix(in srgb, var(--anatomy-navy-deep) 60%, var(--anatomy-navy));
+  --anatomy-navy-s2: var(--anatomy-navy);
+  --anatomy-navy-s3: var(--anatomy-navy-soft);
+  --anatomy-navy-edge: var(--anatomy-navy-deep);
+  --anatomy-navy-crease: color-mix(in srgb, var(--anatomy-navy-soft) 65%, var(--anatomy-card));
+
+  /* Seatpax Blue material tokens */
+  --anatomy-blue-top: color-mix(in srgb, var(--anatomy-primary) 82%, var(--anatomy-card));
+  --anatomy-blue-s0: color-mix(in srgb, var(--anatomy-primary) 64%, var(--anatomy-navy-deep));
+  --anatomy-blue-s1: color-mix(in srgb, var(--anatomy-primary) 76%, var(--anatomy-navy-deep));
+  --anatomy-blue-s2: var(--anatomy-primary);
+  --anatomy-blue-s3: color-mix(in srgb, var(--anatomy-primary) 88%, var(--anatomy-card));
+  --anatomy-blue-edge: color-mix(in srgb, var(--anatomy-primary) 58%, var(--anatomy-navy-deep));
+  --anatomy-blue-crease: color-mix(in srgb, var(--anatomy-primary) 58%, var(--anatomy-card));
+
+  /* Scanner optical glass tokens */
+  --anatomy-glass-top: color-mix(in srgb, var(--anatomy-tint) 70%, var(--anatomy-primary));
+  --anatomy-glass-lit-top: color-mix(in srgb, var(--anatomy-tint) 38%, var(--anatomy-primary));
+  --anatomy-glass-lit-shade: color-mix(in srgb, var(--anatomy-primary) 70%, var(--anatomy-navy-deep));
+  --anatomy-glass-edge: var(--anatomy-primary);
+
+  /* Crisp white screen tokens */
+  --anatomy-screen-edge: color-mix(in srgb, var(--anatomy-navy) 60%, var(--anatomy-muted));
+
   --anatomy-mono: var(--font-geist), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --anatomy-shadow: 0 18px 40px -24px color-mix(in srgb, var(--anatomy-text) 18%, transparent);
   margin: 0;
@@ -35,7 +69,7 @@
   position: relative;
   display: block;
   width: 100%;
-  padding: 48px 24px 44px;
+  padding: 46px 24px 44px;
   border: 1px solid var(--anatomy-border);
   border-radius: 20px;
   background: var(--anatomy-card);
@@ -168,6 +202,64 @@
 
 .iso-solid[data-lit] > .iso-edge {
   stroke: var(--anatomy-lit);
+}
+
+/* High-contrast Seatpax solid materials */
+.iso-figure .iso-solid--navy {
+  --anatomy-paper: var(--anatomy-navy-deep);
+  --anatomy-top: var(--anatomy-navy-top);
+  --anatomy-shade-0: var(--anatomy-navy-s0);
+  --anatomy-shade-1: var(--anatomy-navy-s1);
+  --anatomy-shade-2: var(--anatomy-navy-s2);
+  --anatomy-shade-3: var(--anatomy-navy-s3);
+  --anatomy-hi: var(--anatomy-navy-edge);
+  --anatomy-mid: var(--anatomy-navy-edge);
+  --anatomy-lo: var(--anatomy-navy-crease);
+  --anatomy-faint: var(--anatomy-navy-crease);
+}
+
+.iso-figure .iso-solid--blue {
+  --anatomy-paper: var(--anatomy-primary);
+  --anatomy-top: var(--anatomy-blue-top);
+  --anatomy-shade-0: var(--anatomy-blue-s0);
+  --anatomy-shade-1: var(--anatomy-blue-s1);
+  --anatomy-shade-2: var(--anatomy-blue-s2);
+  --anatomy-shade-3: var(--anatomy-blue-s3);
+  --anatomy-hi: var(--anatomy-blue-edge);
+  --anatomy-mid: var(--anatomy-blue-edge);
+  --anatomy-lo: var(--anatomy-blue-crease);
+  --anatomy-faint: var(--anatomy-blue-crease);
+}
+
+.iso-figure .iso-solid--screen {
+  --anatomy-paper: var(--anatomy-card);
+  --anatomy-top: var(--anatomy-card);
+  --anatomy-hi: var(--anatomy-screen-edge);
+  --anatomy-mid: var(--anatomy-screen-edge);
+}
+
+.iso-figure .iso-solid--glass {
+  --anatomy-paper: var(--anatomy-glass-top);
+  --anatomy-top: var(--anatomy-glass-top);
+  --anatomy-hi: var(--anatomy-glass-edge);
+  --anatomy-mid: var(--anatomy-glass-edge);
+  --anatomy-lo: var(--anatomy-glass-edge);
+  --anatomy-lit-top: var(--anatomy-glass-lit-top);
+  --anatomy-lit-shade: var(--anatomy-glass-lit-shade);
+  --anatomy-lit: var(--anatomy-primary);
+}
+
+.iso-figure .iso-solid--qr {
+  --anatomy-paper: var(--anatomy-navy-deep);
+  --anatomy-top: var(--anatomy-navy-deep);
+  --anatomy-shade-0: var(--anatomy-navy-deep);
+  --anatomy-shade-1: var(--anatomy-navy-deep);
+  --anatomy-shade-2: var(--anatomy-navy);
+  --anatomy-shade-3: var(--anatomy-navy);
+  --anatomy-hi: var(--anatomy-navy-deep);
+  --anatomy-mid: var(--anatomy-navy-deep);
+  --anatomy-lo: var(--anatomy-navy);
+  --anatomy-faint: var(--anatomy-navy);
 }
 
 .iso-halo {

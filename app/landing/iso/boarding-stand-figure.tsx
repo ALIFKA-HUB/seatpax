@@ -11,24 +11,17 @@ import "./iso.css";
 export type { PrepStepIndex } from "./boarding-stand-geometry";
 
 const GEOMETRY = buildBoardingStandGeometry();
-const SPLIT_INDEX = GEOMETRY.staticSolids.findIndex(
-  (solid) => solid.id === "rail-clamp-front-right",
-);
-const BACK_SOLIDS =
-  SPLIT_INDEX >= 0 ? GEOMETRY.staticSolids.slice(0, SPLIT_INDEX) : GEOMETRY.staticSolids;
-const FRONT_SOLIDS =
-  SPLIT_INDEX >= 0 ? GEOMETRY.staticSolids.slice(SPLIT_INDEX) : [];
 
 const STEP_TARGETS: Record<PrepStepIndex, number> = {
-  0: 0.08,
+  0: 0,
   1: 0.48,
-  2: 0.92,
+  2: 1,
 };
 
 const STEP_READOUTS: Record<PrepStepIndex, string> = {
   0: "STEP 01 · TITIK NAIK",
   1: "STEP 02 · 08:00 WIB",
-  2: "STEP 03 · QR SIAP",
+  2: "STEP 03 · PINDAI QR",
 };
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -234,6 +227,16 @@ export default function BoardingStandFigure({
     [activeStep, onSelectStep],
   );
 
+  const solidLitState = (id: string): boolean | undefined => {
+    if (id === "scanner-led" || id === "scanner-glass") {
+      return activeStep === 2;
+    }
+    if (id === `step-pip-${activeStep}` || id === `tower-pip-${activeStep}`) {
+      return true;
+    }
+    return undefined;
+  };
+
   return (
     <figure className="iso-figure">
       <button
@@ -244,14 +247,14 @@ export default function BoardingStandFigure({
         data-step={activeStep}
         onClick={handleCycle}
         onKeyDown={handleKeyDown}
-        aria-label={`Boarding Stand, ${STEP_READOUTS[activeStep]}. Klik untuk pindah langkah.`}
+        aria-label={`QR Boarding Gate, ${STEP_READOUTS[activeStep]}. Klik untuk pindah langkah.`}
       >
         <span className="iso-plate-corners" aria-hidden="true">
           <span className="iso-plate-corner" data-corner="fig">
             Fig 01
           </span>
           <span className="iso-plate-corner" data-corner="title">
-            Boarding Stand
+            QR Boarding Gate
           </span>
           <span className="iso-plate-corner" data-corner="hint">
             Pilih langkah atau klik figur
@@ -268,9 +271,14 @@ export default function BoardingStandFigure({
             aria-hidden="true"
             focusable="false"
           >
-            {BACK_SOLIDS.map((solid) =>
-              renderSolid(solid, solid.id === "scanner-led" ? activeStep === 2 : undefined),
+            {GEOMETRY.staticSolids.map((solid) =>
+              renderSolid(solid, solidLitState(solid.id)),
             )}
+
+            {GEOMETRY.staticLines.map((line, idx) =>
+              renderLine(line, `static-line-${idx}`),
+            )}
+            {renderDots(GEOMETRY.staticDots, "static-dot")}
 
             <g
               ref={carriageRef}
@@ -283,15 +291,6 @@ export default function BoardingStandFigure({
               )}
               {renderDots(GEOMETRY.carriageDots, "carriage-dot")}
             </g>
-
-            {FRONT_SOLIDS.map((solid) =>
-              renderSolid(solid, solid.id === "scanner-led" ? activeStep === 2 : undefined),
-            )}
-
-            {GEOMETRY.staticLines.map((line, idx) =>
-              renderLine(line, `static-line-${idx}`),
-            )}
-            {renderDots(GEOMETRY.staticDots, "static-dot")}
           </svg>
         </span>
       </button>

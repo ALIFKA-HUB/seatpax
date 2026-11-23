@@ -1,8 +1,8 @@
 # Seatpax — UI/UX & Visual Design
 
-## Latest public landing page visual & motion direction — 22 November 2026
+## Latest public landing page visual & motion direction — 22–23 November 2026
 
-The user approved `UI-LANDING-01` ([spec](../superpowers/specs/2026-11-22-landing-redesign-design.md), [plan](../superpowers/plans/2026-11-22-landing-redesign.md)): aligns the `/` passenger landing page with `/trips` (`UI-TRIPS-01`) using the 60–30–10 palette (`#f4f7fb` canvas, `#071936`/`#0a2144` Deep Navy hero & `#alur-pemesanan` contrast band, `#005bd1` Seatpax Blue, `#bd4b12` burnt-orange conversion CTAs), removes Unsplash road photos and tracked-uppercase eyebrows, preserves the `BookingRoute` Bézier track line in `#cara-memesan`, upgrades `BookingMotion` to interactive `motion/react` spring physics, and introduces a light-theme `/anatomy` isometric `Boarding Stand` instrument (`PreparationShowcase`) in `#persiapan`.
+The user approved `UI-LANDING-01` and revision `UI-LANDING-02` ([spec](../superpowers/specs/2026-11-22-landing-redesign-design.md), [initial plan](../superpowers/plans/2026-11-22-landing-redesign.md), [revision plan](../superpowers/plans/2026-11-23-landing-anatomy-seat-revision.md)): aligns the `/` passenger landing page with `/trips` (`UI-TRIPS-01`) using the 60–30–10 palette (`#f4f7fb` canvas, `#071936`/`#0a2144` Deep Navy hero & `#alur-pemesanan` contrast band, `#005bd1` Seatpax Blue, `#bd4b12` burnt-orange conversion CTAs), removes Unsplash road photos and tracked-uppercase eyebrows, preserves the `BookingRoute` Bézier track line in `#cara-memesan`, upgrades `BookingMotion` to interactive `motion/react` spring physics with an open side-by-side seat map + digital ticket card (`overflow: hidden` clean ticket notches), calibrates `--lp-nav-offset` sticky header clearance, and introduces a high-contrast Deep Navy `/anatomy` isometric `QR Boarding Gate` + QR smartphone instrument (`PreparationShowcase`) in `#persiapan`.
 
 ## Latest internal dashboard visual direction — 2 November 2026
 

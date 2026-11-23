@@ -19,7 +19,7 @@ import {
 } from 'motion/react';
 import {
   Armchair,
-  ArrowCounterClockwise,
+  ArrowRight,
   Check,
   CreditCard,
   Scan,
@@ -30,6 +30,7 @@ import './booking-motion.css';
 export type MotionKind = 'seat' | 'deck';
 
 const SEATS = ['01', '02', '03', '04', '05', '06', '07', '08', '09'] as const;
+const DEMO_SEATS = ['03', '05', '08'] as const;
 const MINI_SEATS = ['01', '02', '03', '04', '05', '06'] as const;
 
 const DECK_STEPS = [
@@ -40,15 +41,14 @@ const DECK_STEPS = [
 
 const SPRING_SEAT = {
   type: 'spring',
-  stiffness: 260,
-  damping: 24,
+  stiffness: 280,
+  damping: 25,
 } as const;
 
 const SPRING_SEAL = {
   type: 'spring',
-  stiffness: 320,
-  damping: 20,
-  delay: 0.14,
+  stiffness: 340,
+  damping: 22,
 } as const;
 
 const SPRING_DECK = {
@@ -123,12 +123,14 @@ function Logo(): JSX.Element {
 interface SeatMapCardProps {
   selectedSeat: string;
   seatChipId?: string;
+  reduceMotion: boolean;
   onSelectSeat: (seat: string) => void;
 }
 
 function SeatMapCard({
   selectedSeat,
   seatChipId,
+  reduceMotion,
   onSelectSeat,
 }: SeatMapCardProps): JSX.Element {
   return (
@@ -144,16 +146,19 @@ function SeatMapCard({
       <div className="lpm-seats" role="group" aria-label="Denah pilihan kursi kabin">
         {SEATS.map((seat) => {
           const isChosen = seat === selectedSeat;
+          const useSharedChip = isChosen && Boolean(seatChipId) && !reduceMotion;
           return (
             <button
               key={seat}
               type="button"
-              className={`lpm-seat-btn${isChosen ? ' is-chosen' : ''}`}
+              className={`lpm-seat-btn${isChosen ? ' is-chosen' : ''}${
+                useSharedChip ? ' has-motion-chip' : ''
+              }`}
               aria-pressed={isChosen}
               aria-label={`Pilih kursi ${seat}`}
               onClick={() => onSelectSeat(seat)}
             >
-              {isChosen && seatChipId ? (
+              {useSharedChip ? (
                 <motion.span
                   layoutId={seatChipId}
                   className="lpm-seat-chip-bg"
@@ -176,20 +181,16 @@ function SeatMapCard({
 
 interface BoardingPassCardProps {
   selectedSeat: string;
-  seatChipId?: string;
   reduceMotion: boolean;
-  onReselect?: () => void;
 }
 
 function BoardingPassCard({
   selectedSeat,
-  seatChipId,
   reduceMotion,
-  onReselect,
 }: BoardingPassCardProps): JSX.Element {
   return (
-    <div className="lpm-ticket-wrap">
-      <div className="lpm-ticket">
+    <div className="lpm-ticket" aria-live="polite">
+      <div className="lpm-ticket-shell">
         <div className="lpm-ticket-paper">
           <div className="lpm-ticket-content">
             <div className="lpm-ticket-brand">
@@ -197,24 +198,31 @@ function BoardingPassCard({
               <Ticket size={20} aria-hidden="true" />
             </div>
             <div className="lpm-ticket-seat">
-              <span>Kursi pilihan</span>
-              {seatChipId ? (
-                <motion.div
-                  layoutId={seatChipId}
-                  className="lpm-ticket-seat-chip"
-                  transition={SPRING_SEAT}
-                >
+              <div className="lpm-ticket-seat-meta">
+                <span>Kursi pilihan</span>
+                <strong>Siap dipesan</strong>
+              </div>
+              <div className="lpm-ticket-seat-chip">
+                {reduceMotion ? (
                   <strong className="lpm-ticket-seat-num" data-part="destination">
                     {selectedSeat}
                   </strong>
-                </motion.div>
-              ) : (
-                <div className="lpm-ticket-seat-chip">
-                  <strong className="lpm-ticket-seat-num" data-part="destination">
-                    {selectedSeat}
-                  </strong>
-                </div>
-              )}
+                ) : (
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.strong
+                      key={selectedSeat}
+                      className="lpm-ticket-seat-num"
+                      data-part="destination"
+                      initial={{ opacity: 0, y: 10, scale: 0.78 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.78 }}
+                      transition={SPRING_SEAT}
+                    >
+                      {selectedSeat}
+                    </motion.strong>
+                  </AnimatePresence>
+                )}
+              </div>
             </div>
             <div className="lpm-confirmed">
               <Check size={16} weight="bold" aria-hidden="true" />
@@ -223,38 +231,30 @@ function BoardingPassCard({
           </div>
         </div>
         <div className="lpm-stub">
-          <Scan size={34} aria-hidden="true" />
+          <Scan size={32} aria-hidden="true" />
           <div>
             <strong>Tiket siap dibuka.</strong>
             <span>Di Pesanan saya</span>
           </div>
         </div>
-        {reduceMotion ? (
-          <span className="lpm-seal" aria-hidden="true">
-            <Check size={22} weight="bold" />
-          </span>
-        ) : (
-          <motion.span
-            className="lpm-seal"
-            aria-hidden="true"
-            initial={{ scale: 0.55, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={SPRING_SEAL}
-          >
-            <Check size={22} weight="bold" />
-          </motion.span>
-        )}
       </div>
-      {onReselect ? (
-        <button
-          type="button"
-          className="lpm-reselect-btn"
-          onClick={onReselect}
+
+      {reduceMotion ? (
+        <span className="lpm-seal" aria-hidden="true">
+          <Check size={20} weight="bold" />
+        </span>
+      ) : (
+        <motion.span
+          key={selectedSeat}
+          className="lpm-seal"
+          aria-hidden="true"
+          initial={{ scale: 0.72, opacity: 0.5 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={SPRING_SEAL}
         >
-          <ArrowCounterClockwise size={15} weight="bold" aria-hidden="true" />
-          <span>Pilih kursi lain</span>
-        </button>
-      ) : null}
+          <Check size={20} weight="bold" />
+        </motion.span>
+      )}
     </div>
   );
 }
@@ -268,78 +268,29 @@ function SeatShowcase(): JSX.Element {
   const instanceId = useId();
   const seatChipId = `${instanceId}-seat-chip`;
 
-  const [selectedSeat, setSelectedSeat] = useState<string>('03');
-  const [phase, setPhase] = useState<'select' | 'ticket'>('select');
+  const [demoIndex, setDemoIndex] = useState(0);
+  const [selectedSeat, setSelectedSeat] = useState<string>(DEMO_SEATS[0]);
   const [userInteracted, setUserInteracted] = useState(false);
-  const [autoPlayed, setAutoPlayed] = useState(false);
-  const clickTimerRef = useRef<number | null>(null);
-
-  const clearClickTimer = () => {
-    if (clickTimerRef.current !== null) {
-      window.clearTimeout(clickTimerRef.current);
-      clickTimerRef.current = null;
-    }
-  };
 
   useEffect(() => {
-    return () => {
-      clearClickTimer();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (
-      shouldReduceMotion ||
-      !isInView ||
-      documentHidden ||
-      userInteracted ||
-      autoPlayed ||
-      phase !== 'select'
-    ) {
+    if (shouldReduceMotion || !isInView || documentHidden || userInteracted) {
       return;
     }
 
-    const timer = window.setTimeout(() => {
-      setAutoPlayed(true);
-      setPhase('ticket');
-    }, 1250);
+    const timer = window.setInterval(() => {
+      setDemoIndex((prev) => {
+        const next = (prev + 1) % DEMO_SEATS.length;
+        setSelectedSeat(DEMO_SEATS[next]!);
+        return next;
+      });
+    }, 2600);
 
-    return () => window.clearTimeout(timer);
-  }, [
-    shouldReduceMotion,
-    isInView,
-    documentHidden,
-    userInteracted,
-    autoPlayed,
-    phase,
-  ]);
+    return () => window.clearInterval(timer);
+  }, [shouldReduceMotion, isInView, documentHidden, userInteracted]);
 
   const handleSelectSeat = (seat: string) => {
-    clearClickTimer();
     setUserInteracted(true);
     setSelectedSeat(seat);
-
-    if (shouldReduceMotion) {
-      return;
-    }
-
-    // Let the spring chip land on the clicked seat briefly before morphing into the boarding pass.
-    clickTimerRef.current = window.setTimeout(() => {
-      clickTimerRef.current = null;
-      setPhase('ticket');
-    }, 220);
-  };
-
-  const handleReselect = () => {
-    clearClickTimer();
-    setUserInteracted(true);
-    setPhase('select');
-  };
-
-  const handleShowTicket = () => {
-    clearClickTimer();
-    setUserInteracted(true);
-    setPhase('ticket');
   };
 
   return (
@@ -349,104 +300,84 @@ function SeatShowcase(): JSX.Element {
         role="region"
         aria-label="Simulasi interaktif pemilihan kursi ke tiket digital Seatpax"
       >
-        {shouldReduceMotion ? (
-          <div className="lpm-seat-stage lpm-seat-stage--static">
+        <LayoutGroup id={instanceId}>
+          <div className="lpm-seat-pair" data-demo-step={demoIndex}>
             <SeatMapCard
               selectedSeat={selectedSeat}
+              seatChipId={seatChipId}
+              reduceMotion={shouldReduceMotion}
               onSelectSeat={handleSelectSeat}
             />
+
+            <div className="lpm-seat-link" aria-hidden="true">
+              {shouldReduceMotion ? (
+                <span className="lpm-seat-link-pill">
+                  <ArrowRight size={18} weight="bold" />
+                </span>
+              ) : (
+                <motion.span
+                  key={selectedSeat}
+                  className="lpm-seat-link-pill"
+                  initial={{ scale: 0.84, x: -3 }}
+                  animate={{ scale: 1, x: 0 }}
+                  transition={SPRING_SEAT}
+                >
+                  <ArrowRight size={18} weight="bold" />
+                </motion.span>
+              )}
+            </div>
+
             <BoardingPassCard
               selectedSeat={selectedSeat}
-              reduceMotion
+              reduceMotion={shouldReduceMotion}
             />
           </div>
-        ) : (
-          <LayoutGroup id={instanceId}>
-            <div className="lpm-seat-stage">
-              <AnimatePresence mode="popLayout" initial={false}>
-                {phase === 'select' ? (
-                  <motion.div
-                    key="select"
-                    className="lpm-seat-pane"
-                    initial={{ opacity: 0, scale: 0.96, y: 10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96, y: -8 }}
-                    transition={SPRING_SEAT}
-                  >
-                    <SeatMapCard
-                      selectedSeat={selectedSeat}
-                      seatChipId={seatChipId}
-                      onSelectSeat={handleSelectSeat}
-                    />
-                    <div className="lpm-seat-preview-bar">
-                      <span className="lpm-seat-preview-text">
-                        <Ticket size={16} aria-hidden="true" />
-                        <span>Kursi {selectedSeat} · Siap masuk tiket digital</span>
-                      </span>
-                      <button
-                        type="button"
-                        className="lpm-preview-ticket-btn"
-                        onClick={handleShowTicket}
-                      >
-                        Lihat tiket
-                      </button>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="ticket"
-                    className="lpm-seat-pane"
-                    initial={{ opacity: 0, scale: 0.96, y: 12 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96, y: 8 }}
-                    transition={SPRING_SEAT}
-                  >
-                    <BoardingPassCard
-                      selectedSeat={selectedSeat}
-                      seatChipId={seatChipId}
-                      reduceMotion={false}
-                      onReselect={handleReselect}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </LayoutGroup>
-        )}
+        </LayoutGroup>
       </div>
     </div>
   );
 }
 
-function getCardPose(offset: number, isNarrow: boolean) {
+function getDeckPose(cardIndex: number, activeIndex: number, narrow: boolean) {
+  const offset = (cardIndex - activeIndex + 3) % 3;
   if (offset === 0) {
-    return { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1 };
+    return { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1, zIndex: 3 };
   }
   if (offset === 1) {
     return {
-      x: isNarrow ? 32 : 76,
-      y: 12,
+      x: narrow ? 32 : 76,
+      y: 8,
       scale: 0.9,
-      rotate: isNarrow ? 4 : 6,
-      opacity: 0.94,
+      rotate: 5,
+      opacity: 0.92,
+      zIndex: 2,
     };
   }
   return {
-    x: isNarrow ? -32 : -76,
-    y: 18,
+    x: narrow ? -32 : -76,
+    y: 12,
     scale: 0.86,
-    rotate: isNarrow ? -4 : -6,
-    opacity: 0.88,
+    rotate: -5,
+    opacity: 0.84,
+    zIndex: 1,
   };
 }
 
-function DeckCardContent({ index }: { index: 0 | 1 | 2 }): JSX.Element {
-  if (index === 0) {
+function DeckCardBody({
+  stepId,
+  isActive,
+  reduceMotion,
+}: {
+  stepId: (typeof DECK_STEPS)[number]['id'];
+  isActive: boolean;
+  reduceMotion: boolean;
+}): JSX.Element {
+  if (stepId === 'seat') {
     return (
       <>
         <div className="lpm-card-heading">
           <Armchair size={20} aria-hidden="true" />
-          <strong>01 · Kursi</strong>
+          <strong>Kursi pilihan</strong>
         </div>
         <div className="lpm-mini-seats" aria-hidden="true">
           {MINI_SEATS.map((seat) => (
@@ -459,22 +390,36 @@ function DeckCardContent({ index }: { index: 0 | 1 | 2 }): JSX.Element {
           ))}
         </div>
         <div className="lpm-card-foot">
-          <span>Kursi pilihan</span>
+          <span>Kursi</span>
           <strong>03</strong>
         </div>
       </>
     );
   }
 
-  if (index === 1) {
+  if (stepId === 'payment') {
     return (
       <>
         <div className="lpm-card-heading">
           <CreditCard size={20} aria-hidden="true" />
-          <strong>02 · Pembayaran</strong>
+          <strong>Pembayaran</strong>
         </div>
         <div className="lpm-confirm-symbol" aria-hidden="true">
-          <span className="lpm-confirm-ring" />
+          {reduceMotion ? (
+            <span className="lpm-confirm-ring" />
+          ) : (
+            <motion.span
+              className="lpm-confirm-ring"
+              animate={
+                isActive ? { scale: [0.9, 1.18], opacity: [0.65, 0] } : { opacity: 0 }
+              }
+              transition={
+                isActive
+                  ? { duration: 1.5, repeat: Infinity, ease: 'easeOut' }
+                  : { duration: 0.2 }
+              }
+            />
+          )}
           <span className="lpm-confirm-check">
             <Check size={28} weight="bold" />
           </span>
@@ -493,9 +438,7 @@ function DeckCardContent({ index }: { index: 0 | 1 | 2 }): JSX.Element {
       </div>
       <span className="lpm-card-subhead">Tiket perjalanan</span>
       <strong className="lpm-card-number">03</strong>
-      <span className="lpm-card-subtitle lpm-card-subtitle--left">
-        Kursi Anda
-      </span>
+      <span className="lpm-card-subtitle lpm-card-subtitle--left">Kursi Anda</span>
       <div className="lpm-perforation" aria-hidden="true" />
       <div className="lpm-card-bottom">
         <Scan size={30} aria-hidden="true" />
@@ -511,7 +454,7 @@ function DeckCardContent({ index }: { index: 0 | 1 | 2 }): JSX.Element {
 
 function DeckShowcase(): JSX.Element {
   const rootRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(rootRef, { amount: 0.25 });
+  const isInView = useInView(rootRef, { amount: 0.3 });
   const prefersReducedMotion = useReducedMotion();
   const shouldReduceMotion = prefersReducedMotion === true;
   const documentHidden = useDocumentHidden();
@@ -520,7 +463,7 @@ function DeckShowcase(): JSX.Element {
   const [activeIndex, setActiveIndex] = useState<0 | 1 | 2>(0);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [cycleNonce, setCycleNonce] = useState(0);
+  const [interactionTick, setInteractionTick] = useState(0);
   const paused = hovered || focused;
 
   useEffect(() => {
@@ -528,20 +471,20 @@ function DeckShowcase(): JSX.Element {
       return;
     }
 
-    const timer = window.setInterval(() => {
+    const interval = window.setInterval(() => {
       setActiveIndex((prev) => ((prev + 1) % 3) as 0 | 1 | 2);
     }, 3600);
 
-    return () => window.clearInterval(timer);
-  }, [shouldReduceMotion, isInView, paused, documentHidden, cycleNonce]);
+    return () => window.clearInterval(interval);
+  }, [shouldReduceMotion, isInView, paused, documentHidden, interactionTick]);
 
   const handleSelectStep = (idx: 0 | 1 | 2) => {
     setActiveIndex(idx);
-    setCycleNonce((n) => n + 1);
+    setInteractionTick((t) => t + 1);
   };
 
   const handleBlurCapture = (event: FocusEvent<HTMLDivElement>) => {
-    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
       setFocused(false);
     }
   };
@@ -551,7 +494,7 @@ function DeckShowcase(): JSX.Element {
       <div
         className="lpm-field lpm-deck-field"
         role="group"
-        aria-label="Alur tiga langkah pemesanan Seatpax: Kursi, Pembayaran, dan Tiket"
+        aria-label="Ilustrasi tiga langkah pemesanan. Berputar otomatis, pilih tab atau tekan kartu untuk berpindah langkah."
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onFocusCapture={() => setFocused(true)}
@@ -559,49 +502,60 @@ function DeckShowcase(): JSX.Element {
       >
         {shouldReduceMotion ? (
           <div className="lpm-deck lpm-deck--static">
-            {DECK_STEPS.map((step, idx) => {
-              const stepIdx = idx as 0 | 1 | 2;
-              const isActive = activeIndex === stepIdx;
-              return (
-                <div
-                  key={step.id}
-                  className={`lpm-card lpm-card--${step.id}${isActive ? ' is-active' : ''}`}
-                >
-                  <DeckCardContent index={stepIdx} />
-                  <button
-                    type="button"
-                    className="lpm-card-hit"
-                    aria-label={`Pilih langkah ${step.num} ${step.label}`}
-                    aria-pressed={isActive}
-                    onClick={() => handleSelectStep(stepIdx)}
-                  />
-                </div>
-              );
-            })}
+            {DECK_STEPS.map((step, idx) => (
+              <div
+                key={step.id}
+                className={`lpm-card lpm-card--${step.id}${
+                  activeIndex === idx ? ' is-active' : ''
+                }`}
+              >
+                <DeckCardBody
+                  stepId={step.id}
+                  isActive={activeIndex === idx}
+                  reduceMotion
+                />
+                <button
+                  type="button"
+                  className="lpm-card-hit"
+                  aria-label={`Langkah ${step.num}: ${step.label}`}
+                  onClick={() => handleSelectStep(idx as 0 | 1 | 2)}
+                />
+              </div>
+            ))}
           </div>
         ) : (
           <div className="lpm-deck lpm-deck--animated">
             {DECK_STEPS.map((step, idx) => {
-              const stepIdx = idx as 0 | 1 | 2;
-              const offset = (stepIdx - activeIndex + 3) % 3;
-              const pose = getCardPose(offset, isNarrow);
-              const isActive = offset === 0;
+              const pose = getDeckPose(idx, activeIndex, isNarrow);
+              const isActive = activeIndex === idx;
               return (
                 <motion.div
                   key={step.id}
                   className={`lpm-card lpm-card--${step.id}${isActive ? ' is-active' : ''}`}
-                  style={{ zIndex: 3 - offset }}
                   initial={false}
-                  animate={pose}
+                  animate={{
+                    x: pose.x,
+                    y: pose.y,
+                    scale: pose.scale,
+                    rotate: pose.rotate,
+                    opacity: pose.opacity,
+                    zIndex: pose.zIndex,
+                  }}
                   transition={SPRING_DECK}
+                  style={{ zIndex: pose.zIndex }}
                 >
-                  <DeckCardContent index={stepIdx} />
+                  <DeckCardBody
+                    stepId={step.id}
+                    isActive={isActive}
+                    reduceMotion={false}
+                  />
                   <button
                     type="button"
                     className="lpm-card-hit"
-                    aria-label={`Tampilkan kartu ${step.num} ${step.label}`}
-                    aria-pressed={isActive}
-                    onClick={() => handleSelectStep(stepIdx)}
+                    aria-label={`Kartu ${step.label}. Pilih untuk menampilkan langkah berikutnya.`}
+                    onClick={() =>
+                      handleSelectStep(((isActive ? activeIndex + 1 : idx) % 3) as 0 | 1 | 2)
+                    }
                   />
                 </motion.div>
               );
@@ -609,21 +563,16 @@ function DeckShowcase(): JSX.Element {
           </div>
         )}
 
-        <div
-          className="lpm-step-tabs"
-          role="group"
-          aria-label="Pilih langkah pemesanan"
-        >
+        <div className="lpm-step-tabs" role="group" aria-label="Pilih langkah pemesanan">
           {DECK_STEPS.map((step, idx) => {
-            const stepIdx = idx as 0 | 1 | 2;
-            const isActive = activeIndex === stepIdx;
+            const active = activeIndex === idx;
             return (
               <button
                 key={step.id}
                 type="button"
-                className={`lpm-step-tab${isActive ? ' is-active' : ''}`}
-                aria-pressed={isActive}
-                onClick={() => handleSelectStep(stepIdx)}
+                className={`lpm-step-tab${active ? ' is-active' : ''}`}
+                aria-pressed={active}
+                onClick={() => handleSelectStep(idx as 0 | 1 | 2)}
               >
                 <span className="lpm-step-tab-num">{step.num}</span>
                 <span>{step.label}</span>

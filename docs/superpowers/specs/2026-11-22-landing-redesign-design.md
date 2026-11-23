@@ -59,25 +59,27 @@ ID section (`beranda`, `pilihan-perjalanan`, `pilih-kursi`, `cara-memesan`, `per
 - **Kejujuran Data:** Tetap menyertakan catatan jujur `Contoh tampilan. Rute, jadwal, dan tarif di bawah belum bisa dipesan.` (tanpa klaim data live).
 - **Visual:** Kartu direstyle menyerupai *boarding pass* `/trips` — bagian atas menampilkan asal → tujuan + timeline jam & durasi pill, dipisahkan garis putus-putus + *ticket notch* dari bagian bawah/stub berlatar `--lp-stub` yang menampilkan tarif `tabular-nums`.
 
-### 3. `#pilih-kursi` — Elevated Stage Showcase + `BookingMotion kind="seat"` (Upgraded)
-- **Layout Family:** Asymmetric stage (copy ringkas di kiri, panggung interaktif lebar berbingkai terang di kanan).
+### 3. `#pilih-kursi` — Open Side-by-Side Showcase + `BookingMotion kind="seat"` (Revisi `UI-LANDING-02`)
+- **Layout Family:** Asymmetric open showcase (copy ringkas di kiri, *side-by-side* interaktif di kanan langsung di atas canvas `--lp-canvas`, **tanpa pembungkus card-in-card**).
 - **Motion Upgrade (`motion/react`):**
-  - Mengganti keyframe WAAPI 361-sample dengan komponen `motion/react` berbasis **spring physics** (`type: "spring", stiffness: 260, damping: 24`).
-  - Menampilkan denah kabin 9 kursi (`01`–`09`, layout 2-1 dengan lorong) yang **auto-play** saat masuk viewport (`useInView`): memilih kursi `03`, lalu melakukan transisi *morph* mulus menjadi kartu *boarding pass* Seatpax dengan nomor kursi besar, cap konfirmasi, dan stub QR.
-  - **Interaktivitas Ringan:** Pengguna dapat **mengklik kursi mana pun (`01`–`09`)** untuk memicu ulang animasi morph dengan nomor kursi pilihan tersebut, atau menekan tombol `Pilih ulang` untuk kembali ke denah kursi.
-  - **Reduced Motion / No-JS:** Menampilkan denah kursi + kartu tiket hasil konfirmasi secara statis berdampingan/tersusun rapi.
+  - **Denah 9 kursi (`01`–`09`, layout 2-1 dengan lorong) SELALU tampil** dan interaktif di sisi kiri komponen, dipasangkan langsung dengan **Kartu Tiket Digital (`BoardingPassCard`)** di sisi kanan (bertumpuk rapi di mobile) dan konektor visual di tengah.
+  - Memilih kursi mana pun (`01`–`09`) menggerakkan highlight biru (`layoutId`) dengan spring physics (`type: 'spring', stiffness: 260, damping: 24`) dan langsung memperbarui nomor kursi + konfirmasi pada tiket di sebelahnya dengan transisi spring halus.
+  - Saat masuk viewport (`useInView`) dan sebelum disentuh pengguna (serta `prefers-reduced-motion: reduce` nonaktif), kursi aktif bergilir secara tenang untuk menunjukkan keterkaitan langsung antara pilihan kursi dan tiket.
+  - **Ticket Notch Bersih:** Potongan setengah lingkaran (*ticket notch*) pada `.lpm-ticket-shell` dan `.lp-pass-card` diklip dengan `overflow: hidden` sehingga membentuk coakan inward yang presisi tanpa lingkaran abu-abu menonjol di tepi kartu.
 
 ### 4. `#cara-memesan` — Full-Width Track Line Band (`BookingRoute` — KEPT)
 - **Layout Family:** Full-width 4-step horizontal journey track (vertikal di tablet/mobile).
 - **Track Line (`app/landing/booking-route.tsx`):** **Dipertahankan penuh** — SVG kurva Bézier dinamis dengan `ResizeObserver`, `IntersectionObserver`, mask reveal `.lp-route-reveal`, dan `.lp-route-traveller` via `offsetPath`.
 - **Visual Polish:** Jalur dasar menggunakan `--lp-border`, garis aktif `--sp-primary`, dan titik *traveller* menggunakan `--lp-accent` (`#bd4b12`) berbingkai putih agar menonjol sebagai penanda progres perjalanan. Ikon langkah menyala biru solid dengan *ripple* saat dilewati.
 
-### 5. `#persiapan` — Asymmetric Technical Panel + `/anatomy` Isometric Figure (`Fig 01`)
-- **Layout Family:** Interactive 2-column technical showcase (kiri: 3 kontrol panduan + CTA; kanan: framed isometric instrument card).
-- **Objek Fisik `/anatomy` (Ukuran: Figure, 45–65 part solid, Light Theme):**
-  - **Seatpax Boarding & QR Verification Stand (`Fig 01 · Boarding Stand`)** — instrumen fisik di atas meja: alas berbevel dengan 4 kaki karet & sekrup sudut, rel penggaris bertick (`ruler strip`), jembatan pemindai QR optik dengan celah lensa & indikator LED (`lit` accent), serta kartu *boarding pass* fisik di atas *carriage* yang meluncur masuk ke area pindai.
-  - **Model & Interaksi Terpadu:** Memilih salah satu dari 3 item panduan di kiri (`Tahu harus naik di mana` / `Waktunya sudah sesuai` / `Tiket tinggal ditunjukkan`) atau mengklik/hover pada kartu figur akan menggerakkan *carriage* & menyorot bagian mekanisme yang relevan dengan easing tenang (`follow`/spring), serta memperbarui *live readout* monospace di pojok kanan bawah kartu (`STEP 01 · TITIK NAIK`, `STEP 02 · 08:00 WIB`, `STEP 03 · QR SIAP`).
-  - **Kepatuhan `/anatomy`:** Dibangun dengan kit isometrik murni (`app/landing/iso/iso-kit.ts` + `boarding-stand-geometry.ts` + `"use client"` leaf `boarding-stand-figure.tsx`), 4-tone shading, painter's order benar, tidak ada garis menggantung (*line ends resolve*), berhenti animasi saat offscreen, dan diam saat `prefers-reduced-motion: reduce`.
+### 5. `#persiapan` — Asymmetric Technical Panel + `/anatomy` Isometric Figure (`Fig 01` — Revisi `UI-LANDING-02`)
+- **Layout Family:** Interactive 2-column technical showcase (kiri: 3 kontrol langkah + CTA; kanan: framed isometric instrument card).
+- **Objek Fisik `/anatomy` (Ukuran: Figure, 50+ part solid, High-Contrast Light Theme):**
+  - **Seatpax QR Boarding Gate & Smartphone (`Fig 01 · QR Boarding Gate`)** — menggantikan meja rel mekanik dengan objek perjalanan yang langsung terbaca dalam 1 detik:
+    1. **Podium / Terminal Boarding Deep Navy** (`.iso-solid--navy` + aksen `.iso-solid--blue`): alas dasar berbevel dengan kaki karet & jalur 3 posisi langkah, tiang podium belakang dengan menara indikator status & lampu beacon (`lit` Burnt-Orange pada Step 2), serta dek pembaca QR rendah dengan jendela kaca optik biru muda (`.iso-solid--glass`).
+    2. **Smartphone Penumpang dengan Layar QR Besar** (`.iso-solid--navy` rangka HP + `.iso-solid--screen` layar putih terang): menampilkan header biru Seatpax dan **matriks QR Code Navy kontras tinggi lengkap dengan 3 kotak finder sudut** agar langsung dikenali sebagai tiket QR digital.
+  - **Model & Interaksi Terpadu:** Memilih salah satu dari 3 item panduan di kiri atau mengklik figur akan menggerakkan smartphone secara mulus (`requestAnimationFrame`) dari posisi bersiap (`Step 01 · SIAPKAN TIKET`), mendekat sejajar terminal (`Step 02 · CEK JADWAL`), hingga tepat melayang di atas kaca pemindai QR (`Step 03 · PINDAI QR`) dan menyalakan indikator status `lit`.
+  - **Kepatuhan `/anatomy`:** Dibangun dengan `app/landing/iso/iso-kit.ts`, 4-tone shading per material (`.iso-solid--navy`, `.iso-solid--blue`, `.iso-solid--screen`, `.iso-solid--glass`), painter's order konstan tanpa clipping di seluruh lintasan gerak, garis kabel selalu berakhir pada dot/tepi (`lines.mjs` 0 error), berhenti saat offscreen, dan statis saat `prefers-reduced-motion: reduce`.
 
 ### 6. `#alur-pemesanan` — Deep Navy Contrast Band + `BookingMotion kind="deck"` (Upgraded)
 - **Layout Family:** Full-bleed rounded Deep Navy contrast container (memecah ritme visual halaman terang) dengan deck 3 kartu di kiri & copy + kontrol langkah di kanan.

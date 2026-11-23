@@ -1,4 +1,4 @@
-/* Scoped motion tokens & layout for BookingMotion (seat morph + 3D spring deck).
+/* Scoped motion tokens & layout for BookingMotion (side-by-side seat showcase + 3D spring deck).
    All colors live strictly inside the .lpm-root token block below. */
 .lpm-root {
   --lpm-blue: var(--sp-primary, #005bd1);
@@ -46,41 +46,25 @@
   stroke-width: 1.5;
 }
 
-/* Seat-to-Boarding-Pass Stage */
-.lpm-seat-stage {
-  position: relative;
+/* Open Side-by-Side Seat Map & Live Ticket */
+.lpm-seat-pair {
   display: grid;
-  place-items: center;
-  min-height: 416px;
-  padding: 28px 24px;
-  border: 1px solid var(--lpm-border);
-  border-radius: 24px;
-  background: var(--lpm-canvas);
-  overflow-x: clip;
-}
-
-.lpm-seat-stage--static {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 24px;
-  min-height: 0;
-}
-
-.lpm-seat-pane {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
+  gap: 18px;
   width: 100%;
+  min-width: 0;
 }
 
 .lpm-map {
-  width: min(100%, 306px);
+  width: 100%;
+  max-width: 300px;
+  justify-self: center;
   padding: 22px;
   border: 1px solid var(--lpm-border);
   border-radius: 22px;
   background: var(--lpm-surface);
-  box-shadow: 0 18px 36px -18px var(--lpm-shadow);
+  box-shadow: 0 20px 38px -20px var(--lpm-shadow);
 }
 
 .lpm-map-heading {
@@ -117,7 +101,7 @@
 .lpm-seats {
   display: grid;
   grid-template-columns: 1fr 1fr 0.28fr 1fr;
-  gap: 12px;
+  gap: 11px;
 }
 
 .lpm-seats .lpm-seat-btn:nth-child(3n) {
@@ -178,6 +162,13 @@
   box-shadow: 0 5px 0 -1px var(--lpm-blue-hover);
 }
 
+.sp-landing .lpm-root .lpm-seat-btn.is-chosen.has-motion-chip,
+.lpm-root .lpm-seat-btn.is-chosen.has-motion-chip,
+.sp-landing .lpm-root .lpm-seat-btn.is-chosen.has-motion-chip:hover:not(:disabled),
+.lpm-root .lpm-seat-btn.is-chosen.has-motion-chip:hover:not(:disabled) {
+  background: transparent;
+}
+
 .lpm-root .lpm-seat-btn.is-chosen::after {
   background: var(--lpm-rail-on-blue);
   z-index: 2;
@@ -216,76 +207,41 @@
   font-weight: 600;
 }
 
-.lpm-seat-preview-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px 12px;
-  max-width: 100%;
+/* Connector arrow between seat map and live ticket */
+.lpm-seat-link {
+  display: grid;
+  place-items: center;
 }
 
-.lpm-seat-preview-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--lpm-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.lpm-seat-preview-text svg {
-  color: var(--lpm-blue);
-}
-
-.sp-landing .lpm-root .lpm-preview-ticket-btn,
-.lpm-root .lpm-preview-ticket-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 8px 14px;
+.lpm-seat-link-pill {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
   border: 1px solid var(--lpm-border);
-  border-radius: 999px;
+  border-radius: 50%;
   background: var(--lpm-surface);
   color: var(--lpm-blue);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 650;
-  cursor: pointer;
-  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 10px 22px -10px var(--lpm-shadow);
 }
 
-.sp-landing .lpm-root .lpm-preview-ticket-btn:hover:not(:disabled),
-.lpm-root .lpm-preview-ticket-btn:hover:not(:disabled) {
-  border-color: var(--lpm-blue);
-  background: var(--lpm-tint);
-  transform: translateY(-1px);
-}
-
-.lpm-root .lpm-preview-ticket-btn:focus-visible {
-  outline: 3px solid var(--lpm-blue);
-  outline-offset: 3px;
-}
-
-/* Boarding-Pass Ticket Card */
-.lpm-ticket-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-}
-
+/* Boarding-Pass Ticket Card with clean clipped notches */
 .lpm-ticket {
   position: relative;
-  width: min(100%, 300px);
+  width: 100%;
+  max-width: 296px;
+  justify-self: center;
+}
+
+.lpm-ticket-shell {
+  border: 1px solid var(--lpm-border);
+  border-radius: 20px;
+  background: var(--lpm-surface);
+  box-shadow: 0 20px 38px -20px var(--lpm-shadow);
+  overflow: hidden;
 }
 
 .lpm-ticket-paper {
-  border: 1px solid var(--lpm-border);
-  border-bottom: 0;
-  border-radius: 20px 20px 0 0;
   background: var(--lpm-surface);
 }
 
@@ -302,7 +258,7 @@
 }
 
 .lpm-ticket-brand img {
-  width: 98px;
+  width: 96px;
   height: auto;
   flex: none;
 }
@@ -312,28 +268,42 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 22px;
 }
 
-.lpm-ticket-seat > span {
-  font-size: 12px;
+.lpm-ticket-seat-meta {
+  display: grid;
+  gap: 3px;
+}
+
+.lpm-ticket-seat-meta > span {
+  font-size: 11px;
   color: var(--lpm-muted);
+}
+
+.lpm-ticket-seat-meta > strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lpm-ink);
 }
 
 .lpm-ticket-seat-chip {
   display: inline-grid;
   place-items: center;
-  min-width: 82px;
-  padding: 10px 16px;
+  min-width: 78px;
+  height: 58px;
+  padding: 8px 14px;
   border-radius: 14px;
   background: var(--lpm-blue);
   color: var(--lpm-on-primary);
   box-shadow: 0 8px 18px -6px var(--lpm-shadow-blue);
+  overflow: hidden;
 }
 
 .lpm-ticket-seat-num {
+  display: block;
   font-family: var(--font-geist), var(--font-passenger-jakarta), sans-serif;
-  font-size: 38px;
+  font-size: 34px;
   font-weight: 750;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -344,7 +314,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  margin-top: 22px;
+  margin-top: 20px;
   font-size: 12px;
   font-weight: 600;
   color: var(--lpm-ink);
@@ -359,13 +329,10 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  min-height: 92px;
+  min-height: 88px;
   padding: 18px 22px;
-  border: 1px solid var(--lpm-border);
-  border-top: 1px dashed var(--lpm-border);
-  border-radius: 0 0 20px 20px;
+  border-top: 1.5px dashed var(--lpm-border);
   background: var(--lpm-stub);
-  box-shadow: 0 22px 35px -20px var(--lpm-shadow);
 }
 
 .lpm-stub > svg {
@@ -388,12 +355,13 @@
 .lpm-stub::after {
   content: '';
   position: absolute;
-  top: -9px;
+  top: -10px;
   width: 18px;
   height: 18px;
   border: 1px solid var(--lpm-border);
   border-radius: 50%;
   background: var(--lpm-canvas);
+  pointer-events: none;
 }
 
 .lpm-stub::before {
@@ -408,47 +376,16 @@
   position: absolute;
   display: grid;
   place-items: center;
-  top: -16px;
-  right: -14px;
-  width: 48px;
-  height: 48px;
-  border: 4px solid var(--lpm-surface);
+  top: -14px;
+  right: -12px;
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--lpm-canvas);
   border-radius: 50%;
   background: var(--lpm-blue);
   color: var(--lpm-on-primary);
   box-shadow: 0 8px 18px var(--lpm-shadow-blue);
-}
-
-.sp-landing .lpm-root .lpm-reselect-btn,
-.lpm-root .lpm-reselect-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 18px;
-  border: 1px solid var(--lpm-border);
-  border-radius: 999px;
-  background: var(--lpm-surface);
-  color: var(--lpm-ink);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.sp-landing .lpm-root .lpm-reselect-btn:hover:not(:disabled),
-.lpm-root .lpm-reselect-btn:hover:not(:disabled) {
-  border-color: var(--lpm-blue);
-  background: var(--lpm-tint);
-  color: var(--lpm-blue);
-  transform: translateY(-1px);
-}
-
-.lpm-root .lpm-reselect-btn:focus-visible {
-  outline: 3px solid var(--lpm-blue);
-  outline-offset: 3px;
+  z-index: 2;
 }
 
 /* 3D Spring Step Deck */
@@ -743,16 +680,19 @@
   outline-offset: 3px;
 }
 
-@container (max-width: 500px) {
-  .lpm-seat-stage {
-    min-height: 388px;
-    padding: 20px 14px;
-    border-radius: 20px;
+@container (max-width: 560px) {
+  .lpm-seat-pair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
   }
 
-  .lpm-seat-stage--static {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
+  .lpm-seat-link-pill {
+    transform: rotate(90deg);
+  }
+
+  .lpm-map,
+  .lpm-ticket {
+    max-width: 320px;
   }
 
   .lpm-map {
@@ -802,8 +742,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lpm-root .lpm-seat-btn,
-  .lpm-root .lpm-preview-ticket-btn,
-  .lpm-root .lpm-reselect-btn,
   .lpm-root .lpm-step-tab {
     transition: none;
   }
