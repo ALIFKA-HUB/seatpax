@@ -389,7 +389,7 @@ html:has(.sp-landing) {
 
 .lp-search-fields {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr) minmax(160px, 0.85fr) auto;
+  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr) minmax(160px, 0.85fr) auto;
   gap: 14px;
   align-items: end;
 }
@@ -433,7 +433,7 @@ html:has(.sp-landing) {
 .sp-landing .lp-search-fields .lp-swap {
   display: grid;
   place-items: center;
-  width: 36px;
+  width: 44px;
   min-height: 50px;
   padding: 0;
   border: 1px solid var(--lp-border);
@@ -1252,7 +1252,7 @@ html:has(.sp-landing) {
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.9fr);
 }
 
-.lp-checkout-band {
+.sp-landing .lp-checkout-band {
   position: relative;
   isolation: isolate;
   padding: 48px;
@@ -1498,7 +1498,7 @@ html:has(.sp-landing) {
     padding: 24px;
   }
   .lp-search-fields {
-    grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
   }
   .lp-search-fields label:nth-of-type(3) {
     grid-column: 1 / 3;
@@ -1550,7 +1550,7 @@ html:has(.sp-landing) {
     grid-template-columns: minmax(0, 1fr);
     gap: 28px;
   }
-  .lp-checkout-band {
+  .sp-landing .lp-checkout-band {
     padding: 36px 28px;
   }
   .sp-landing .lp-help {
@@ -1728,7 +1728,7 @@ html:has(.sp-landing) {
   .lp-prep-panel {
     padding-left: 28px;
   }
-  .lp-checkout-band {
+  .sp-landing .lp-checkout-band {
     padding: 28px 18px;
     border-radius: 22px;
   }

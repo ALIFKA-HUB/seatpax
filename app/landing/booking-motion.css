@@ -680,8 +680,9 @@
   outline-offset: 3px;
 }
 
-@container (max-width: 560px) {
-  .lpm-seat-pair {
+@media (max-width: 767px) {
+  .lpm-seat-pair,
+  .lpm-deck--static {
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
   }
@@ -718,7 +719,7 @@
   }
 
   .lpm-card {
-    width: min(72%, 212px);
+    width: min(74%, 212px);
     height: 268px;
     padding: 18px;
   }
@@ -734,9 +735,36 @@
   }
 }
 
-@media (max-width: 767px) {
-  .lpm-deck--static {
-    grid-template-columns: minmax(0, 1fr);
+@container (max-width: 340px) {
+  .lpm-deck--animated {
+    min-height: 284px;
+  }
+
+  .lpm-card {
+    width: min(82%, 202px);
+    height: 258px;
+    padding: 16px;
+  }
+
+  .lpm-card-heading img {
+    width: 78px;
+  }
+
+  .lpm-perforation {
+    margin: 14px -16px;
+  }
+
+  .lpm-step-tabs {
+    padding: 4px;
+    gap: 2px;
+    border-radius: 24px;
+  }
+
+  .sp-landing .lpm-root .lpm-step-tab,
+  .lpm-root .lpm-step-tab {
+    padding: 7px 9px;
+    font-size: 11px;
+    gap: 4px;
   }
 }
 
