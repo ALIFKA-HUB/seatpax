@@ -260,8 +260,12 @@ export default async function AdminDashboardPage({
             {data.upcomingTrips.length > 0 ? (
               <ul className="dash-agenda-list">
                 {data.upcomingTrips.map(trip => {
-                  const statusInfo = tripStatusPresentation(trip.status);
-                  const isOpen = trip.status === 'OPEN_FOR_SALE';
+                  const statusInfo = tripStatusPresentation(trip.status, {
+                    departureAt: trip.departureAt,
+                    salesCloseAt: trip.salesCloseAt,
+                    arrivalAt: trip.arrivalAt,
+                  });
+                  const isOpen = statusInfo.tone === 'success';
                   return (
                     <li key={trip.id}>
                       <Link

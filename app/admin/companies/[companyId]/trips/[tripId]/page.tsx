@@ -26,7 +26,12 @@ export default async function Page({
     crew.crewChoices(context),
   ]);
   const preview = detail.trip.status === 'DRAFT' ? await publication.preview(context, tripId) : undefined;
-  const status = tripStatusPresentation(detail.trip.status);
+  const arrivalAt = detail.stops.length > 0 ? detail.stops[detail.stops.length - 1].arrivalAt : null;
+  const status = tripStatusPresentation(detail.trip.status, {
+    departureAt: detail.trip.departureAt,
+    salesCloseAt: detail.trip.salesCloseAt,
+    arrivalAt,
+  });
 
   return (
     <div className="dash-root">

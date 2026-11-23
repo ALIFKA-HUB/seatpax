@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { CalendarBlank, Clock, Plus, Ticket } from '@phosphor-icons/react/ssr';
 import AdminEmptyState from '@/app/admin/components/admin-empty-state';
 import AdminPaginatedTable from '@/app/admin/components/admin-paginated-table';
-import { tripStatusPresentation } from '@/app/admin/presentation';
+import { isTripOpenForSaleNow, tripStatusPresentation } from '@/app/admin/presentation';
 import { tripData } from '@/app/admin/trip-data';
 
 export default async function Page({
@@ -18,7 +18,14 @@ export default async function Page({
   const deleted = resolvedSearch?.deleted === '1';
   const { context, trips } = await tripData(companyId);
   const list = await trips.list(context);
-  const openCount = list.filter(t => t.status === 'OPEN_FOR_SALE').length;
+  const now = new Date();
+  const openCount = list.filter(t =>
+    isTripOpenForSaleNow(t.status, {
+      departureAt: t.departureAt,
+      salesCloseAt: t.salesCloseAt,
+      now,
+    }),
+  ).length;
   const draftCount = list.filter(t => t.status === 'DRAFT').length;
 
   return (
@@ -98,7 +105,11 @@ export default async function Page({
               </tr>
             }
             rows={list.map(t => {
-              const status = tripStatusPresentation(t.status);
+              const status = tripStatusPresentation(t.status, {
+                departureAt: t.departureAt,
+                salesCloseAt: t.salesCloseAt,
+                now,
+              });
               return (
                 <tr key={t.id} data-row-id={t.id} data-row-name={t.name}>
                   <td>

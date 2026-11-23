@@ -9,6 +9,8 @@ export interface AdminDashboardTripItem {
   name: string;
   status: string;
   departureAt: string;
+  salesCloseAt?: string | null;
+  arrivalAt?: string | null;
   routeName: string;
   vehicleName: string;
   className: string;
@@ -111,7 +113,7 @@ export async function adminDashboardData(companyId: string): Promise<AdminDashbo
       openComplaints: number;
     }[]>`
       select
-        (select count(*)::int from public.trips where company_id = ${companyId} and status = 'OPEN_FOR_SALE') as "openTrips",
+        (select count(*)::int from public.trips where company_id = ${companyId} and status = 'OPEN_FOR_SALE' and clock_timestamp() < least(departure_at, coalesce(sales_close_at, departure_at))) as "openTrips",
         (select count(*)::int from public.trips where company_id = ${companyId} and status = 'DRAFT') as "draftTrips",
         (select count(*)::int from public.trips where company_id = ${companyId}) as "totalTrips",
         (select count(*)::int from public.bookings where company_id = ${companyId} and status = 'CONFIRMED') as "confirmedBookings",
@@ -137,6 +139,8 @@ export async function adminDashboardData(companyId: string): Promise<AdminDashbo
       name: string;
       status: string;
       departureAt: string;
+      salesCloseAt: string | null;
+      arrivalAt: string | null;
       routeName: string;
       vehicleName: string;
       className: string;
@@ -148,6 +152,8 @@ export async function adminDashboardData(companyId: string): Promise<AdminDashbo
         t.name,
         t.status,
         t.departure_at::text as "departureAt",
+        t.sales_close_at::text as "salesCloseAt",
+        (select max(ts.arrival_at)::text from public.trip_stops ts where ts.trip_id = t.id and ts.company_id = t.company_id) as "arrivalAt",
         coalesce(t.identity_snapshot->>'routeName', r.name, 'Rute PO') as "routeName",
         coalesce(t.identity_snapshot->>'vehicleName', v.name, 'Armada') as "vehicleName",
         coalesce(t.identity_snapshot->>'className', sc.name, 'Reguler') as "className",
