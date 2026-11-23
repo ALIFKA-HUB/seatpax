@@ -5,6 +5,7 @@ import FeaturedTrips from '@/app/landing/featured-trips';
 import LandingSearch from '@/app/landing/search';
 import BookingRoute from '@/app/landing/booking-route';
 import BookingMotion from '@/app/landing/booking-motion';
+import HeroStage from '@/app/landing/hero-stage';
 import PreparationShowcase from '@/app/landing/preparation-showcase';
 import {buildBoardingStandGeometry} from '@/app/landing/iso/boarding-stand-geometry';
 
@@ -63,5 +64,12 @@ describe('UI-LANDING-01 contracts', () => {
     expect(html).toContain('Tahu harus naik di mana');
     expect(html).toContain('Waktunya sudah sesuai');
     expect(html).toContain('Tiket tinggal ditunjukkan');
+  });
+
+  it('renders art-directed cabin visual and route arc in HeroStage without decorative metric fluff', () => {
+    const html = render(h(HeroStage));
+    expect(html).toContain('hero-shuttle.jpg');
+    expect(html).toContain('lp-hero-frame');
+    expect(html).toContain('lp-hero-arc');
   });
 });

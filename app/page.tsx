@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {Armchair, Ticket, MagnifyingGlass, CreditCard, ArrowRight} from '@phosphor-icons/react/ssr';
 import PassengerShell from './components/passenger-shell';
 import JourneyPlanner, {PlannerSkeleton} from './landing/journey-planner';
+import HeroStage from './landing/hero-stage';
 import BookingRoute from './landing/booking-route';
 import BookingMotion from './landing/booking-motion';
 import FeaturedTrips from './landing/featured-trips';
@@ -28,20 +29,12 @@ export default function Home() {
     <div className="lp-content">
       <div className="lp-screen lp-screen--hero" id="beranda" data-landing-section>
         <section className="lp-hero" aria-labelledby="landing-title">
-          <svg className="lp-hero-arc" viewBox="0 0 420 220" fill="none" aria-hidden="true" focusable="false">
-            <path className="lp-hero-arc-guide" d="M 32 184 C 122 178, 174 52, 266 56 C 324 58, 354 96, 392 42" strokeWidth="1.5" strokeDasharray="5 7" strokeLinecap="round"/>
-            <path className="lp-hero-arc-main" d="M 52 154 C 138 148, 198 118, 282 104 C 330 96, 360 72, 392 42" strokeWidth="2" strokeLinecap="round"/>
-            <circle className="lp-hero-node-ring" cx="52" cy="154" r="10" strokeWidth="1.5"/>
-            <circle className="lp-hero-node" cx="52" cy="154" r="4"/>
-            <circle className="lp-hero-node-ring" cx="222" cy="116" r="8" strokeWidth="1.5"/>
-            <circle className="lp-hero-node" cx="222" cy="116" r="3.5"/>
-            <circle className="lp-hero-node-ring" cx="392" cy="42" r="12" strokeWidth="1.5"/>
-            <circle className="lp-hero-node-accent" cx="392" cy="42" r="5"/>
-          </svg>
           <div className="lp-hero-copy">
+            <span className="lp-hero-rule" aria-hidden="true"/>
             <h1 id="landing-title">Antarkota,<br/>lebih nyaman.</h1>
             <p className="lp-hero-intro">Cari jadwal, pilih kursi, dan pesan perjalanan Anda bersama Seatpax.</p>
           </div>
+          <HeroStage/>
         </section>
         <div className="lp-hero-planner" id="cari-perjalanan"><Suspense fallback={<PlannerSkeleton/>}><JourneyPlanner/></Suspense></div>
       </div>
