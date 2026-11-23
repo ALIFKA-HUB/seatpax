@@ -60,24 +60,28 @@ const eventTone: Record<string, string> = {
   SELESAI: 'is-ok',
 };
 
+const wibDateTimeFormatter = new Intl.DateTimeFormat('id-ID', {
+  timeZone: 'Asia/Jakarta',
+  day: 'numeric',
+  month: 'short',
+  hour: '2-digit',
+  minute: '2-digit',
+});
+
+const wibTodayFormatter = new Intl.DateTimeFormat('id-ID', {
+  timeZone: 'Asia/Jakarta',
+  weekday: 'long',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+
 function formatWibDateTime(value: Date | string): string {
-  return `${new Intl.DateTimeFormat('id-ID', {
-    timeZone: 'Asia/Jakarta',
-    day: 'numeric',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value))} WIB`;
+  return `${wibDateTimeFormatter.format(new Date(value))} WIB`;
 }
 
 function formatWibToday(): string {
-  return `${new Intl.DateTimeFormat('id-ID', {
-    timeZone: 'Asia/Jakarta',
-    weekday: 'long',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date())} WIB`;
+  return `${wibTodayFormatter.format(new Date())} WIB`;
 }
 
 export default async function HelpdeskPage({
@@ -195,7 +199,7 @@ export default async function HelpdeskPage({
                               <span
                                 className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}
                               >
-                                {priorityLabels[priorityKey]}
+                                {priorityLabels[priorityKey] ?? priorityKey}
                               </span>
                             ) : (
                               <span className="admin-status-pill is-neutral">
@@ -239,12 +243,11 @@ export default async function HelpdeskPage({
                 aria-label="Tabel pengaduan terbaru"
                 tabIndex={0}
               >
-                <table className="admin-modern-table">
+                <table className="admin-modern-table hd-dashboard-table">
                   <thead>
                     <tr>
                       <th>Pengaduan</th>
                       <th>Status</th>
-                      <th>Prioritas</th>
                       <th>Diterima</th>
                       <th className="admin-col-action">Aksi</th>
                     </tr>
@@ -264,25 +267,23 @@ export default async function HelpdeskPage({
                               <span className="hd-case-category">
                                 {categoryLabels[row.category] ?? row.category}
                               </span>
+                              {priorityKey ? (
+                                <span
+                                  className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}
+                                >
+                                  {priorityLabels[priorityKey] ?? priorityKey}
+                                </span>
+                              ) : (
+                                <span className="hd-muted-label">Prioritas: Belum ditentukan</span>
+                              )}
                             </div>
                           </td>
                           <td>
                             <span
                               className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}
                             >
-                              {statusLabels[statusKey]}
+                              {statusLabels[statusKey] ?? statusKey}
                             </span>
-                          </td>
-                          <td>
-                            {priorityKey ? (
-                              <span
-                                className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}
-                              >
-                                {priorityLabels[priorityKey]}
-                              </span>
-                            ) : (
-                              <span className="hd-muted-label">Belum ditentukan</span>
-                            )}
                           </td>
                           <td className="admin-tabular">{formatWibDateTime(row.created_at)}</td>
                           <td className="admin-col-action">

@@ -60,15 +60,17 @@ const eventTone: Record<string, string> = {
   SELESAI: 'is-ok',
 };
 
+const wibDateTimeFormatter = new Intl.DateTimeFormat('id-ID', {
+  timeZone: 'Asia/Jakarta',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+});
+
 function formatWibDateTime(value: Date | string): string {
-  return `${new Intl.DateTimeFormat('id-ID', {
-    timeZone: 'Asia/Jakarta',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value))} WIB`;
+  return `${wibDateTimeFormatter.format(new Date(value))} WIB`;
 }
 
 export default function CaseDetailView({
@@ -97,14 +99,14 @@ export default function CaseDetailView({
           </div>
           <div className="fleet-meta-strip">
             <span className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}>
-              {statusLabels[statusKey]}
+              {statusLabels[statusKey] ?? String(row.status)}
             </span>
             <span className="admin-status-pill is-neutral">
               {categoryLabels[row.category as Category] ?? String(row.category)}
             </span>
             {priorityKey ? (
               <span className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}>
-                {priorityLabels[priorityKey]}
+                {priorityLabels[priorityKey] ?? String(row.priority)}
               </span>
             ) : (
               <span className="admin-status-pill is-neutral">Prioritas belum ditentukan</span>
@@ -195,11 +197,11 @@ export default function CaseDetailView({
               <h2>Status penanganan</h2>
               <div className="fleet-meta-strip">
                 <span className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}>
-                  {statusLabels[statusKey]}
+                  {statusLabels[statusKey] ?? String(row.status)}
                 </span>
                 {priorityKey ? (
                   <span className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}>
-                    {priorityLabels[priorityKey]}
+                    {priorityLabels[priorityKey] ?? String(row.priority)}
                   </span>
                 ) : (
                   <span className="admin-status-pill is-neutral">Prioritas belum ditentukan</span>

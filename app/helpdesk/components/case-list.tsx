@@ -182,7 +182,7 @@ export default function CaseList({
                     </td>
                     <td>
                       <span className={`admin-status-pill ${statusTone[statusKey] ?? 'is-neutral'}`}>
-                        {statusLabels[statusKey]}
+                        {statusLabels[statusKey] ?? String(r.status)}
                       </span>
                     </td>
                     <td>
@@ -190,7 +190,7 @@ export default function CaseList({
                         <span
                           className={`admin-status-pill ${priorityTone[priorityKey] ?? 'is-neutral'}`}
                         >
-                          {priorityLabels[priorityKey]}
+                          {priorityLabels[priorityKey] ?? String(r.priority)}
                         </span>
                       ) : (
                         <span className="hd-muted-dash" aria-label="Prioritas belum ditentukan">

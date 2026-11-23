@@ -109,7 +109,7 @@ export default function CaseActions({
 
         {status !== 'PERLU_DILENGKAPI' && (
           <form
-            key={`${id}:${revision}:status:${status}`}
+            key={`${id}:status:${status}`}
             className="admin-form hd-action-form"
             onSubmit={submit}
           >

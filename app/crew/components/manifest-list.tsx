@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Link from 'next/link';
+import AdminSelect from '@/app/admin/components/admin-select';
 import {
   IconArrowRight,
   IconCheck,
@@ -27,6 +28,7 @@ const COUNTER_ICONS = [
 ] as const;
 
 export default function ManifestList({ view, readOnly = false }: { view: ManifestView; readOnly?: boolean }) {
+  const statusSelectId = useId();
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<'ALL' | 'PENDING' | 'BOARDED'>('ALL');
   const passengers = filterPassengers(view.passengers, query, filter);
@@ -82,17 +84,16 @@ export default function ManifestList({ view, readOnly = false }: { view: Manifes
                 autoComplete="off"
               />
             </label>
-            <label>
-              <span>Status boarding</span>
-              <select
+            <div className="manifest-select-field">
+              <label htmlFor={statusSelectId}>Status boarding</label>
+              <AdminSelect
+                id={statusSelectId}
+                ariaLabel="Status boarding"
                 value={filter}
-                onChange={event => setFilter(event.target.value as typeof filter)}
-              >
-                <option value="ALL">Semua</option>
-                <option value="PENDING">Belum naik</option>
-                <option value="BOARDED">Sudah naik</option>
-              </select>
-            </label>
+                options={FILTERS.map(item => ({ value: item.id, label: item.label }))}
+                onChange={next => setFilter(next as typeof filter)}
+              />
+            </div>
           </div>
 
           {!readOnly && (

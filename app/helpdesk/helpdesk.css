@@ -74,11 +74,17 @@
 .admin-shell.hd-workspace .hd-queue-card:hover .hd-queue-cta{text-decoration:underline}
 .admin-shell .hd-case-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:5px}
 .admin-shell .hd-case-meta .hd-case-category{margin-top:0}
+.admin-shell.hd-workspace .hd-code-pill{max-width:100%;overflow-wrap:anywhere}
+.admin-shell.hd-workspace .hd-dashboard-table th{padding:11px 12px}
+.admin-shell.hd-workspace .hd-dashboard-table td{padding:13px 12px}
+.admin-shell.hd-workspace .hd-dashboard-table th:first-child,.admin-shell.hd-workspace .hd-dashboard-table td:first-child{padding-left:18px}
+.admin-shell.hd-workspace .hd-dashboard-table th:last-child,.admin-shell.hd-workspace .hd-dashboard-table td:last-child{padding-right:18px}
+.admin-shell.hd-workspace .hd-dashboard-table .admin-tabular{font-size:12.5px}
 .admin-shell .dash-root .hd-detail-summary{margin-bottom:0}
 .admin-shell .hd-detail-primary,.admin-shell .hd-detail-side{display:grid;gap:16px;min-width:0}
 .admin-shell .hd-detail-grid .hd-section-card{margin-bottom:0;overflow-wrap:anywhere}
 .admin-shell .hd-detail-facts{margin:0}
-.admin-shell .hd-detail-facts dt{color:var(--admin-muted)}
+.admin-shell .hd-detail-facts dt{margin:0;color:var(--admin-muted)}
 .admin-shell .hd-fact-note{display:block;margin-top:4px;font-size:12px;font-weight:400;color:var(--admin-muted)}
 .admin-shell .hd-section-card dl+h2,.admin-shell .hd-section-card p+h2{margin-top:20px}
 .admin-shell .hd-section-card>.hd-muted-label:last-child{margin-bottom:0}
