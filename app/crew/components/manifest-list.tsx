@@ -84,16 +84,32 @@ export default function ManifestList({ view, readOnly = false }: { view: Manifes
                 autoComplete="off"
               />
             </label>
-            <div className="manifest-select-field">
-              <label htmlFor={statusSelectId}>Status boarding</label>
-              <AdminSelect
-                id={statusSelectId}
-                ariaLabel="Status boarding"
-                value={filter}
-                options={FILTERS.map(item => ({ value: item.id, label: item.label }))}
-                onChange={next => setFilter(next as typeof filter)}
-              />
-            </div>
+            {readOnly ? (
+              <label>
+                <span>Status boarding</span>
+                <select
+                  value={filter}
+                  onChange={event => setFilter(event.target.value as typeof filter)}
+                >
+                  {FILTERS.map(item => (
+                    <option key={item.id} value={item.id}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : (
+              <div className="manifest-select-field">
+                <label htmlFor={statusSelectId}>Status boarding</label>
+                <AdminSelect
+                  id={statusSelectId}
+                  ariaLabel="Status boarding"
+                  value={filter}
+                  options={FILTERS.map(item => ({ value: item.id, label: item.label }))}
+                  onChange={next => setFilter(next as typeof filter)}
+                />
+              </div>
+            )}
           </div>
 
           {!readOnly && (
